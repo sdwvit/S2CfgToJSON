@@ -1,0 +1,37 @@
+{
+  "name": "s2cfgtojson",
+  "version": "1.0.0",
+  "description": "Converts Stalker 2 Cfg file into a POJO",
+  "keywords": [
+    "stalker",
+    "unrealengine",
+    "typescript",
+    "javascript",
+    "modding",
+    "mod",
+    "utility"
+  ],
+  "homepage": "https://github.com/sdwvit/s2cfgtojson#readme",
+  "bugs": {
+    "url": "https://github.com/sdwvit/s2cfgtojson/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sdwvit/s2cfgtojson.git"
+  },
+  "license": "ISC",
+  "author": "sdwvit",
+  "type": "module",
+  "main": "Struct.mts",
+  "scripts": {
+    "test": "vitest"
+  },
+  "devDependencies": {
+    "vitest": "^3.2.4",
+    "typescript": "^5.8.3",
+    "prettier": "^3.6.2"
+  },
+  "engines": {
+    "node": ">=24"
+  }
+}
