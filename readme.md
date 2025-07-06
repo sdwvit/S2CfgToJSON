@@ -18,6 +18,12 @@ A utility to convert Stalker 2 `.cfg` configuration files into structured JavaSc
 - npm (or pnpm/yarn)
 
 ### Installation
+In your project directory, run:
+```bash
+npm install s2cfgtojson
+```
+
+Or, if you checked out the repository, you can install dependencies directly:
 ```bash
 npm install
 ```
