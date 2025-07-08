@@ -68,7 +68,9 @@ export abstract class Struct<T extends Entries = {}> {
     if (Struct.isNumber(Struct.extractKeyFromBrackets(name))) {
       return `_${name.match(/\[(\d+)]/)[1]}`; // Special case for indexed structs
     }
-    return name;
+    const replacer = (text: string) =>
+      text.replace(/\W/g, "_").replace(/_+/g, "_").replace(/^_/, "");
+    return `${replacer(name[0]).replace(/\d/, "")}${replacer(name.slice(1))}`;
   }
 
   static createDynamicClass = (name: string): new () => Struct =>
@@ -76,7 +78,7 @@ export abstract class Struct<T extends Entries = {}> {
 
   toString(): string {
     let text: string;
-    text = this.isRoot ? `${Struct.renderStructName(this._id)} : ` : "";
+    text = this.isRoot ? `${this._id} : ` : "";
     text += "struct.begin";
     const refs = ["refurl", "refkey", "bskipref"]
       .map((k) => [k, this[k]])
@@ -158,9 +160,7 @@ export abstract class Struct<T extends Entries = {}> {
       let name = Struct.parseStructName(match[1].trim());
 
       const dummy = new (Struct.createDynamicClass(name))();
-      if (name === match[1].trim()) {
-        dummy._id = name;
-      }
+      dummy._id = match[1];
       if (match[3]) {
         const refs = match[3]
           .split(";")
