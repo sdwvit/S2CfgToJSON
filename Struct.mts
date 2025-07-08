@@ -197,6 +197,9 @@ export abstract class Struct<T extends Entries = {}> {
       const stack = [];
       while (index < lines.length) {
         const line = lines[index++].trim();
+        if (line.startsWith("#") || line.startsWith("//")) {
+          continue; // Skip comments
+        }
         const current = stack[stack.length - 1];
         if (line.includes("struct.begin")) {
           const newStruct = parseHead(line);
