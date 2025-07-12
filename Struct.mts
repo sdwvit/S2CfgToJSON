@@ -68,9 +68,11 @@ export abstract class Struct<T extends Entries = {}> {
     if (Struct.isNumber(Struct.extractKeyFromBrackets(name))) {
       return `_${name.match(/\[(\d+)]/)[1]}`; // Special case for indexed structs
     }
-    const replacer = (text: string) =>
-      text.replace(/\W/g, "_").replace(/_+/g, "_").replace(/^_/, "");
-    return `${replacer(name[0]).replace(/\d/, "")}${replacer(name.slice(1))}`;
+    return name
+      .replace(/\W/g, "_")
+      .replace(/^\d+/, "_")
+      .replace(/_+/g, "_")
+      .replace(/^_+/, "");
   }
 
   static createDynamicClass = (name: string): new () => Struct =>
@@ -150,14 +152,15 @@ export abstract class Struct<T extends Entries = {}> {
   ): IntendedType[] {
     const lines = text.trim().split("\n");
 
-    const parseHead = (line: string): Struct => {
+    const parseHead = (line: string, index: number): Struct => {
       const match = line.match(
         /^(.*)\s*:\s*struct\.begin\s*({\s*((refurl|refkey|bskipref)\s*(=.+)?)\s*})?/,
       );
       if (!match) {
         throw new Error(`Invalid struct head: ${line}`);
       }
-      let name = Struct.parseStructName(match[1].trim());
+      let name =
+        Struct.parseStructName(match[1].trim()) || `UnnamedStruct${index}`;
 
       const dummy = new (Struct.createDynamicClass(name))();
       dummy._id = match[1];
@@ -202,7 +205,7 @@ export abstract class Struct<T extends Entries = {}> {
         }
         const current = stack[stack.length - 1];
         if (line.includes("struct.begin")) {
-          const newStruct = parseHead(line);
+          const newStruct = parseHead(line, index);
           if (current) {
             const key = Struct.renderStructName(newStruct.constructor.name);
             Struct.addEntry(current, key, newStruct, index);
