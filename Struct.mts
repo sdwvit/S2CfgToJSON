@@ -163,7 +163,7 @@ export abstract class Struct<T extends Entries = {}> {
         Struct.parseStructName(match[1].trim()) || `UnnamedStruct${index}`;
 
       const dummy = new (Struct.createDynamicClass(name))();
-      dummy._id = match[1];
+      dummy._id = match[1].trim();
       if (match[3]) {
         const refs = match[3]
           .split(";")
@@ -190,7 +190,10 @@ export abstract class Struct<T extends Entries = {}> {
         throw new Error(`Invalid key-value pair: ${line}`);
       }
       const key = match[1].trim();
-      const value = match[3].trim();
+      let value: string | number = match[3].trim();
+      try {
+        value = JSON.parse(value);
+      } catch (e) {}
       Struct.addEntry(parent, key, value, index);
     };
     let index = 0;
