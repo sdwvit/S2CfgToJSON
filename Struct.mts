@@ -8,17 +8,20 @@ export type GetTsType<In extends Struct, E = In["entries"]> = {
     ? GetTsType<E[key]>
     : E[key];
 };
-export type GetStructType<In extends Record<string | number, any>> = Struct<{
-  [key in Exclude<keyof In, keyof DefaultEntries>]: In[key] extends In
-    ? GetStructType<In[key]>
-    : In[key] extends string
-      ? string
-      : In[key] extends number
-        ? number
-        : In[key] extends boolean
-          ? boolean
-          : In[key];
-}>;
+type RKey<In> = Exclude<keyof In, keyof DefaultEntries>;
+
+export type GetStructType<In> =
+  In extends Array<any>
+    ? Struct<{ [key: number]: GetStructType<In[number]> }>
+    : In extends Record<any, any>
+      ? Struct<{ [key in RKey<In>]: GetStructType<In[key]> }>
+      : In extends string
+        ? string
+        : In extends number
+          ? number
+          : In extends boolean
+            ? boolean
+            : never;
 
 /**
  * This file is part of the Stalker 2 Modding Tools project.
