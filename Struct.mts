@@ -1,4 +1,5 @@
 export type Value = Omit<Struct, "toTs"> | string | boolean | number;
+const defaultEntries = new Set(["_isArray", "_useAsterisk"]);
 type DefaultEntries = { _isArray?: boolean; _useAsterisk?: boolean };
 export type Entries = Record<string | number, Value> & DefaultEntries;
 
@@ -125,13 +126,15 @@ export abstract class Struct<T extends Entries = {}> {
     const collect = (struct: Struct) => {
       const obj = {};
       if (struct.entries) {
-        Object.entries(struct.entries).forEach(([key, value]) => {
-          if (value instanceof Struct) {
-            obj[key] = collect(value);
-          } else {
-            obj[key] = value;
-          }
-        });
+        Object.entries(struct.entries)
+          .filter(([key]) => !defaultEntries.has(key))
+          .forEach(([key, value]) => {
+            if (value instanceof Struct) {
+              obj[key] = collect(value);
+            } else {
+              obj[key] = value;
+            }
+          });
       }
       return obj;
     };
