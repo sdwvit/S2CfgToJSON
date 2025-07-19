@@ -11,7 +11,13 @@ export type GetTsType<In extends Struct, E = In["entries"]> = {
 export type GetStructType<In extends Record<string | number, any>> = Struct<{
   [key in Exclude<keyof In, keyof DefaultEntries>]: In[key] extends In
     ? GetStructType<In[key]>
-    : In[key];
+    : In[key] extends string
+      ? string
+      : In[key] extends number
+        ? number
+        : In[key] extends boolean
+          ? boolean
+          : In[key];
 }>;
 
 /**
