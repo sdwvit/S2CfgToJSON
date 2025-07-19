@@ -2,6 +2,17 @@ export type Value = Omit<Struct, "toTs"> | string | boolean | number;
 type DefaultEntries = { _isArray?: boolean; _useAsterisk?: boolean };
 export type Entries = Record<string | number, Value> & DefaultEntries;
 
+export type GetTsType<In extends Struct, E = In["entries"]> = {
+  [key in Exclude<keyof E, keyof DefaultEntries>]: E[key] extends Struct
+    ? GetTsType<E[key]>
+    : E[key];
+};
+export type GetStructType<In extends Record<string | number, any>> = Struct<{
+  [key in Exclude<keyof In, keyof DefaultEntries>]: In[key] extends In
+    ? GetStructType<In[key]>
+    : In[key];
+}>;
+
 /**
  * This file is part of the Stalker 2 Modding Tools project.
  * This is a base class for all structs.
