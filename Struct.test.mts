@@ -7,7 +7,7 @@ class ChimeraHPFix extends Struct {
   entries = { MaxHP: 750 };
   isRoot = true;
 }
-class TradersDontBuyWeaponsArmor extends Struct {
+class TradePrototype extends Struct {
   _id = "TradersDontBuyWeaponsArmor";
   refurl = "../TradePrototypes.cfg";
   refkey = 0;
@@ -35,7 +35,7 @@ describe("Struct", () => {
 struct.end`,
     );
 
-    expect(new TradersDontBuyWeaponsArmor().toString()).toBe(
+    expect(new TradePrototype().toString()).toBe(
       `TradersDontBuyWeaponsArmor : struct.begin {refurl=../TradePrototypes.cfg;refkey=[0]}
    TradeGenerators : struct.begin
       [*] : struct.begin
@@ -52,6 +52,23 @@ struct.end`,
   test("pad()", () => {
     expect(Struct.pad("test")).toBe("   test");
     expect(Struct.pad(Struct.pad("test"))).toBe("      test");
+  });
+
+  describe("toTs()", () => {
+    test("1", () => {
+      expect(new TradePrototype().toTs()).toBe(
+        JSON.stringify({
+          TradeGenerators: {
+            "*": {
+              BuyLimitations: {
+                "0": "EItemType::Weapon",
+                "1": "EItemType::Armor",
+              },
+            },
+          },
+        }),
+      );
+    });
   });
 
   describe("fromString()", () => {

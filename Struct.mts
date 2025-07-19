@@ -110,8 +110,21 @@ export abstract class Struct<T extends Entries = {}> {
     return text;
   }
 
-  toTs(): string {
-    return JSON.stringify(this, null, 2);
+  toTs(pretty = false): string {
+    const collect = (struct: Struct) => {
+      const obj = {};
+      if (struct.entries) {
+        Object.entries(struct.entries).forEach(([key, value]) => {
+          if (value instanceof Struct) {
+            obj[key] = collect(value);
+          } else {
+            obj[key] = value;
+          }
+        });
+      }
+      return obj;
+    };
+    return JSON.stringify(collect(this), null, pretty ? 2 : 0);
   }
 
   static addEntry(
