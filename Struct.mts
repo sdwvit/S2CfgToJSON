@@ -229,10 +229,10 @@ export abstract class Struct<T extends Entries = {}> {
       let value: string | number = match[3].trim();
       try {
         // understand 0.1f / 1. / 0.f / .1 / .1f -> ((\d*)\.?(\d+)|(\d+)\.?(\d*))f?
-        const matches = value.match(/(\d*)\.?(\d*)f?/);
-        if (matches) {
-          const first = matches[1];
-          const second = matches[2];
+        const matches = value.match(/^(\d*)\.?(\d*)f?$/);
+        const first = matches[1];
+        const second = matches[2];
+        if (first || second) {
           value = parseFloat(`${first || 0}${second ? `.${second}` : ""}`);
         } else {
           value = JSON.parse(value);
