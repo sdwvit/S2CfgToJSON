@@ -187,5 +187,23 @@ struct.end`;
         dynamicItemGeneratorText,
       );
     });
+
+    test("4", () => {
+      const dynamicItemGeneratorText = `A : struct.begin
+         N1 = 0.1f 
+         N2 = 1. 
+         N3 = 0.f 
+         N4 = .1 
+         N5 = .1f
+       struct.end`;
+      const str = Struct.fromString<
+        Struct<{ N1: number; N2: number; N3: number; N4: number; N5: number }>
+      >(dynamicItemGeneratorText);
+      expect(str[0].entries.N1).toBe(0.1);
+      expect(str[0].entries.N2).toBe(1);
+      expect(str[0].entries.N3).toBe(0);
+      expect(str[0].entries.N4).toBe(0.1);
+      expect(str[0].entries.N5).toBe(0.1);
+    });
   });
 });

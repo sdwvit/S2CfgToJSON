@@ -228,7 +228,15 @@ export abstract class Struct<T extends Entries = {}> {
       const key = match[1].trim();
       let value: string | number = match[3].trim();
       try {
-        value = JSON.parse(value);
+        // understand 0.1f / 1. / 0.f / .1 / .1f -> ((\d*)\.?(\d+)|(\d+)\.?(\d*))f?
+        const matches = value.match(/(\d*)\.?(\d*)f?/);
+        if (matches) {
+          const first = matches[1];
+          const second = matches[2];
+          value = parseFloat(`${first || 0}${second ? `.${second}` : ""}`);
+        } else {
+          value = JSON.parse(value);
+        }
       } catch (e) {}
       Struct.addEntry(parent, key, value, index);
     };
