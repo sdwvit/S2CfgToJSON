@@ -16,7 +16,7 @@ export type GetStructType<In> =
     : In extends Record<any, any>
       ? Struct<{ [key in RKey<In>]: GetStructType<In[key]> }>
       : In extends string
-        ? string
+        ? In
         : In extends number
           ? number
           : In extends boolean
@@ -226,18 +226,22 @@ export abstract class Struct<T extends Entries = {}> {
         throw new Error(`Invalid key-value pair: ${line}`);
       }
       const key = match[1].trim();
-      let value: string | number = match[3].trim();
-      try {
-        // understand 0.1f / 1. / 0.f / .1 / .1f -> ((\d*)\.?(\d+)|(\d+)\.?(\d*))f?
-        const matches = value.match(/^(\d*)\.?(\d*)f?$/);
-        const first = matches[1];
-        const second = matches[2];
-        if (first || second) {
-          value = parseFloat(`${first || 0}${second ? `.${second}` : ""}`);
-        } else {
-          value = JSON.parse(value);
-        }
-      } catch (e) {}
+      let value: string | number | boolean = match[3].trim();
+      if (value === "true" || value === "false") {
+        value = value === "true";
+      } else {
+        try {
+          // understand 0.1f / 1. / 0.f / .1 / .1f -> ((\d*)\.?(\d+)|(\d+)\.?(\d*))f?
+          const matches = value.match(/^(\d*)\.?(\d*)f?$/);
+          const first = matches[1];
+          const second = matches[2];
+          if (first || second) {
+            value = parseFloat(`${first || 0}${second ? `.${second}` : ""}`);
+          } else {
+            value = JSON.parse(value);
+          }
+        } catch (e) {}
+      }
       Struct.addEntry(parent, key, value, index);
     };
     let index = 0;
