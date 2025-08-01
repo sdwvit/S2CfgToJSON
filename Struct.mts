@@ -1,33 +1,12 @@
-export type Value = Omit<Struct, "toTs"> | string | boolean | number;
 const defaultEntries = new Set(["_isArray", "_useAsterisk"]);
-type DefaultEntries = { _isArray?: boolean; _useAsterisk?: boolean };
-export type Entries = Record<string | number, Value> & DefaultEntries;
-
-export type GetTsType<In extends Struct, E = In["entries"]> = {
-  [key in Exclude<keyof E, keyof DefaultEntries>]: E[key] extends Struct
-    ? GetTsType<E[key]>
-    : E[key];
-};
-type RKey<In> = Exclude<keyof In, keyof DefaultEntries>;
-
-export type GetStructType<In> =
-  In extends Array<any>
-    ? Struct<{ [key: number]: GetStructType<In[number]> }>
-    : In extends Record<any, any>
-      ? Struct<{ [key in RKey<In>]: GetStructType<In[key]> }>
-      : In extends string
-        ? In
-        : In extends number
-          ? number
-          : In extends boolean
-            ? boolean
-            : never;
+export * from "./types.mts";
+import { DefaultEntries, Value, Entries, Struct as IStruct } from "./types.mts";
 
 /**
  * This file is part of the Stalker 2 Modding Tools project.
  * This is a base class for all structs.
  */
-export abstract class Struct<T extends Entries = {}> {
+export abstract class Struct<T extends Entries = {}> implements IStruct<T> {
   isRoot?: boolean;
   refurl?: string;
   refkey?: string | number;

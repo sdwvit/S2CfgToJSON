@@ -83,13 +83,13 @@ struct.end`,
    TriggeredCooldowns : struct.begin
       [0] : struct.begin
          CooldownTag = Ability.Cooldown.RunAttack
-         Duration = 50.f
+         Duration = 50
       struct.end
    struct.end
    Effects : struct.begin
       [0] : struct.begin
          EffectPrototypeSID = MutantMediumAttackCameraShake
-         Chance = 1.f
+         Chance = 1
       struct.end
    struct.end
 struct.end`;
@@ -129,8 +129,8 @@ struct.end`;
             [0] : struct.begin
                ItemPrototypeSID = DutyArmor_3_U1
                Weight = 1
-               MinDurability = 1.
-               MaxDurability = 1.
+               MinDurability = 1
+               MaxDurability = 1
             struct.end
          struct.end
       struct.end
@@ -176,8 +176,8 @@ struct.end`;
             [0] : struct.begin
                ItemPrototypeSID = DutyMask_1
                Weight = 2
-               MinDurability = 1.
-               MaxDurability = 1.
+               MinDurability = 1
+               MaxDurability = 1
             struct.end
          struct.end
       struct.end
