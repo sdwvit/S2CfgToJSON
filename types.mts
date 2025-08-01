@@ -379,7 +379,6 @@ export type EDamageBone = `EDamageBone::${"Body" | "Head" | "Limbs"}`;
 export type EDamageSource = `EDamageSource::${
   | "AnomalyStrike"
   | "BiteLarge"
-  | "BiteLarge "
   | "BiteRat"
   | "BiteSmall"
   | "Buckshot"
@@ -388,9 +387,7 @@ export type EDamageSource = `EDamageSource::${
   | "Carousel"
   | "Chemical"
   | "CutLarge"
-  | "CutLarge "
   | "CutSmall"
-  | "CutSmall "
   | "Electricity"
   | "Explosion"
   | "Fire"
@@ -403,7 +400,6 @@ export type EDamageSource = `EDamageSource::${
   | "PoltergeistElectroCollisionAttack"
   | "PoltergeistFireCollisionAttack"
   | "RamLarge"
-  | "RamLarge "
   | "RamSmall"
   | "ShockWave"
   | "WeaponButt"}`;
@@ -953,10 +949,8 @@ export type EItemContainerType = `EItemContainerType::${
   | "Stash"}`;
 export type EItemGenerationCategory = `EItemGenerationCategory::${
   | "Ammo"
-  | "Ammo         "
   | "Artifact"
   | "Attach"
-  | "Attach         "
   | "BodyArmor"
   | "Consumable"
   | "Detector"
@@ -967,7 +961,6 @@ export type EItemGenerationCategory = `EItemGenerationCategory::${
   | "SubItemGenerator"
   | "WeaponPistol"
   | "WeaponPrimary"
-  | "WeaponPrimary         "
   | "WeaponSecondary"}`;
 export type EItemInfoType = `EItemInfoType::${
   | "Accuracy"
@@ -1495,7 +1488,6 @@ export type ERadiationPreset = `ERadiationPreset::${
   | "Topaz"}`;
 export type ERank = `ERank::${
   | "Experienced"
-  | "Experienced "
   | "GetCount"
   | "Master"
   | "Newbie"
@@ -1683,14 +1675,10 @@ export type EUISound = `EUISound::${
   | "UseConsumableWater"}`;
 export type EUpgradeTargetPartType = `EUpgradeTargetPartType::${
   | "Barrel"
-  | "Barrel "
   | "Body"
-  | "Body "
   | "Handguard"
-  | "Handguard "
   | "None"
   | "PistolGrip"
-  | "PistolGrip "
   | "Stock"
   | "Stock "}`;
 export type EUpgradeVerticalPosition = `EUpgradeVerticalPosition::${
