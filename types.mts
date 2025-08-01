@@ -32,7 +32,7 @@ export type GetStructType<In> =
           : In extends boolean
             ? boolean
             : never;
-export type Const = `Const::${"ReflectionCubeMapResolution, 0, PF_B8G8R8A8);"}`;
+
 export type EAIConstraintType = `EAIConstraintType::${"PrepareForEmission"}`;
 export type EAIMovementPose = `EAIMovementPose::${"Stand"}`;
 export type EALifeDirectorScenarioTarget = `EALifeDirectorScenarioTarget::${
