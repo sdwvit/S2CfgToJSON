@@ -7,6 +7,7 @@ export interface Struct<T extends Entries = {}> {
   bskipref?: boolean;
   _id: string;
   entries: T;
+  toTs(): string;
 }
 export type DefaultEntries = { _isArray?: boolean; _useAsterisk?: boolean };
 export type Value = Omit<Struct, "toTs"> | string | boolean | number;
