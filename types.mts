@@ -10,7 +10,9 @@ export interface Struct<T extends Entries = {}> {
   toTs(): string;
 }
 export type DefaultEntries = { _isArray?: boolean; _useAsterisk?: boolean };
+
 export type Value = Omit<Struct, "toTs"> | string | boolean | number;
+
 export type Entries = Record<string | number, Value> & DefaultEntries;
 
 export type GetTsType<In extends Struct, E = In["entries"]> = {
@@ -34,7 +36,9 @@ export type GetStructType<In> =
             : never;
 
 export type EAIConstraintType = `EAIConstraintType::${"PrepareForEmission"}`;
+
 export type EAIMovementPose = `EAIMovementPose::${"Stand"}`;
+
 export type EALifeDirectorScenarioTarget = `EALifeDirectorScenarioTarget::${
   | "AllyLair"
   | "AttackEnemyLair"
@@ -42,10 +46,12 @@ export type EALifeDirectorScenarioTarget = `EALifeDirectorScenarioTarget::${
   | "None"
   | "Player"
   | "TargetEachOther"}`;
+
 export type EALifeFactionGoalType = `EALifeFactionGoalType::${
   | "Aggressive"
   | "Defensive"
   | "Normal"}`;
+
 export type EAbility = `EAbility::${
   | "AOEAttackPassive"
   | "ActivateAnomaly"
@@ -70,8 +76,11 @@ export type EAbility = `EAbility::${
   | "WeaponDrag"
   | "WeaponRiseAndShoot"
   | "Zombification"}`;
+
 export type EAbilityStatePhase = `EAbilityStatePhase::${"Complete"}`;
+
 export type EAgentArchetype = `EAgentArchetype::${"Human" | "Mutant"}`;
+
 export type EAgentType = `EAgentType::${
   | "BlindDog"
   | "Blinddog"
@@ -92,13 +101,16 @@ export type EAgentType = `EAgentType::${
   | "RatSwarm"
   | "Snork"
   | "Tushkan"}`;
+
 export type EAimAssistPresetType = `EAimAssistPresetType::${
   | "Default"
   | "Full"
   | "GetCount"}`;
+
 export type EAimAssistWeightType = `EAimAssistWeightType::${
   | "Angle"
   | "DistanceFromApex"}`;
+
 export type EAmmoCaliber = `EAmmoCaliber::${
   | "A012"
   | "A045"
@@ -115,17 +127,20 @@ export type EAmmoCaliber = `EAmmoCaliber::${
   | "APG7V"
   | "AVOG"
   | "None"}`;
+
 export type EAmmoType = `EAmmoType::${
   | "ArmorPiercing"
   | "Default"
   | "Expanding"
   | "None"
   | "Supersonic"}`;
+
 export type EAnimationReloadTypes = `EAnimationReloadTypes::${
   | "Full"
   | "SingleBullet"
   | "Tactical"
   | "Unload"}`;
+
 export type EAnomalyElementType = `EAnomalyElementType::${
   | "Chemical"
   | "Electro"
@@ -133,6 +148,7 @@ export type EAnomalyElementType = `EAnomalyElementType::${
   | "Gravity"
   | "None"
   | "PSY"}`;
+
 export type EAnomalyType = `EAnomalyType::${
   | "CarouselAnomaly"
   | "ChemicalAnomaly"
@@ -152,7 +168,9 @@ export type EAnomalyType = `EAnomalyType::${
   | "RazorAnomaly"
   | "SoapBubbleAnomaly"
   | "ToxicCloudAnomaly"}`;
+
 export type EApplyRestrictionType = `EApplyRestrictionType::${"LeaveSame"}`;
+
 export type EArchiartifactType = `EArchiartifactType::${
   | "Ball"
   | "Bolt"
@@ -161,18 +179,22 @@ export type EArchiartifactType = `EArchiartifactType::${
   | "None"
   | "Nut"
   | "Water"}`;
+
 export type EArmorScale = `EArmorScale::${
   | "HeavyArmor"
   | "LightArmor"
   | "MediumArmor"}`;
+
 export type EArtifactRarity = `EArtifactRarity::${
   | "Common"
   | "Epic"
   | "Rare"
   | "Uncommon"}`;
+
 export type EArtifactSpawnerExcludeRule = `EArtifactSpawnerExcludeRule::${
   | "ExcludeArchiArtifacts"
   | "ExcludeQuestArtifacts"}`;
+
 export type EArtifactType = `EArtifactType::${
   | "Chemical"
   | "Electro"
@@ -181,7 +203,9 @@ export type EArtifactType = `EArtifactType::${
   | "Gravity"
   | "None"
   | "PSY"}`;
+
 export type EAspectRatio = `EAspectRatio::${"Auto"}`;
+
 export type EAttachSlot = `EAttachSlot::${
   | "Barrel"
   | "Flashlight"
@@ -191,6 +215,7 @@ export type EAttachSlot = `EAttachSlot::${
   | "None"
   | "PlankScope"
   | "Scope"}`;
+
 export type EAttachType = `EAttachType::${
   | "GetCount"
   | "GrenadeLauncher"
@@ -203,11 +228,13 @@ export type EAttachType = `EAttachType::${
   | "Scope"
   | "Shotgun"
   | "Silencer"}`;
+
 export type EAttractionPointType = `EAttractionPointType::${
   | "ExitLookAt"
   | "FollowCharacterBone"
   | "FollowObject"
   | "StaticLocation"}`;
+
 export type EAudioRoomPresetBandwidth = `EAudioRoomPresetBandwidth::${
   | "Close"
   | "Custom"
@@ -215,13 +242,16 @@ export type EAudioRoomPresetBandwidth = `EAudioRoomPresetBandwidth::${
   | "Isolated"
   | "None"
   | "Open"}`;
+
 export type EAvailableCoverActionsSide = `EAvailableCoverActionsSide::${
   | "Center"
   | "Left"
   | "Right"}`;
+
 export type EAvailableCoverEnterTypes = `EAvailableCoverEnterTypes::${
   | "Long"
   | "Short"}`;
+
 export type EBehaviorType = `EBehaviorType::${
   | "Berserk"
   | "Confused"
@@ -239,11 +269,15 @@ export type EBehaviorType = `EBehaviorType::${
   | "Sleep"
   | "Stay"
   | "UseAbility"}`;
+
 export type EBeneficial = `EBeneficial::${"Negative" | "None" | "Positive"}`;
+
 export type EBodyMeshType = `EBodyMeshType::${"Attach" | "Face"}`;
+
 export type EBoltActionWeaponState = `EBoltActionWeaponState::${
   | "NoBoltAction"
   | "ReadyToShoot"}`;
+
 export type EBoolProviderType = `EBoolProviderType::${
   | "And"
   | "And provider - Player has Experienced rank AND at least 500 Reputation with Duty"
@@ -262,29 +296,41 @@ export type EBoolProviderType = `EBoolProviderType::${
   | "TargetRelation"
   | "TraderRegenerationDays"
   | "TraderRegenerationHours"}`;
+
 export type EBrokenGameDataFilter =
   `EBrokenGameDataFilter::${"UnderDraftComment"}`;
+
 export type ECalculateSignificance = `ECalculateSignificance::${"ScreenSize"}`;
+
 export type ECameraShakeEffectSubtype =
   `ECameraShakeEffectSubtype::${"None // MP: There is no camera shake asset mentioned, so I will disable it for now"}`;
+
 export type ECameraShakeGroupType = `ECameraShakeGroupType::${
   | "MaxCount"
   | "None"
   | "Priority"}`;
+
 export type ECameraShakeType = `ECameraShakeType::${
   | "Constant"
   | "FloatProvider"
   | "None"
   | "Vital"}`;
+
 export type ECauseOfDeath = `ECauseOfDeath::${"Range"}`;
+
 export type EChangeValueMode = `EChangeValueMode::${
   | "Add"
   | "Set"
   | "Subtract"}`;
+
 export type ECollisionChannel = `ECollisionChannel::${"ECC_Visibility"}`;
+
 export type ECollisionFormType = `ECollisionFormType::${"Box" | "Cylinder"}`;
+
 export type EColorBlindMode = `EColorBlindMode::${"None"}`;
+
 export type EConditionCheckType = `EConditionCheckType::${"And" | "Or"}`;
+
 export type EConditionComparance = `EConditionComparance::${
   | "Equal"
   | "Greater"
@@ -292,22 +338,27 @@ export type EConditionComparance = `EConditionComparance::${
   | "Less"
   | "LessOrEqual"
   | "NotEqual"}`;
+
 export type EConnectionLineState = `EConnectionLineState::${
   | "Down"
   | "Middle"
   | "None"
   | "Top"}`;
+
 export type EConsumableType = `EConsumableType::${
   | "Food"
   | "Guitar"
   | "Medicine"
   | "None"}`;
+
 export type EContextualActionBodyPart = `EContextualActionBodyPart::${
   | "Back"
   | "Head"
   | "Skirt"}`;
+
 export type EContextualActionEffectType =
   `EContextualActionEffectType::${"ChangeNeedValue"}`;
+
 export type EContextualActionNeeds = `EContextualActionNeeds::${
   | "Anecdote"
   | "Detector"
@@ -329,6 +380,7 @@ export type EContextualActionNeeds = `EContextualActionNeeds::${
   | "Smoke"
   | "WeaponCleaning"
   | "Work"}`;
+
 export type EContextualActionNodeType = `EContextualActionNodeType::${
   | "Animation"
   | "ConditionalSelector"
@@ -337,6 +389,7 @@ export type EContextualActionNodeType = `EContextualActionNodeType::${
   | "SequentialSelector"
   | "SoundDependentAnimation"
   | "Start"}`;
+
 export type EContextualActionPreconditionType =
   `EContextualActionPreconditionType::${
     | "AllowedAgentType"
@@ -344,8 +397,10 @@ export type EContextualActionPreconditionType =
     | "Faction"
     | "GlobalVariable"
     | "ItemInInventory"
+    | "NPCPrototype"
     | "Rank"
     | "Weather"}`;
+
 export type EContextualAgentType = `EContextualAgentType::${
   | "BlindDog"
   | "Bloodsucker"
@@ -362,6 +417,7 @@ export type EContextualAgentType = `EContextualAgentType::${
   | "Snork"
   | "Tushkan"
   | "Zombie"}`;
+
 export type ECrosshairType = `ECrosshairType::${
   | "Arc"
   | "Circle"
@@ -371,11 +427,15 @@ export type ECrosshairType = `ECrosshairType::${
   | "Empty"
   | "Point"
   | "Point // Circle Point Cross Arc"}`;
+
 export type ECrosshairTypeSetting = `ECrosshairTypeSetting::${"Regular"}`;
+
 export type ECustomDataDistribution = `ECustomDataDistribution::${
   | "Custom"
   | "Uniform"}`;
+
 export type EDamageBone = `EDamageBone::${"Body" | "Head" | "Limbs"}`;
+
 export type EDamageSource = `EDamageSource::${
   | "AnomalyStrike"
   | "BiteLarge"
@@ -403,6 +463,7 @@ export type EDamageSource = `EDamageSource::${
   | "RamSmall"
   | "ShockWave"
   | "WeaponButt"}`;
+
 export type EDamageType = `EDamageType::${
   | "Burn"
   | "ChemicalBurn"
@@ -413,7 +474,9 @@ export type EDamageType = `EDamageType::${
   | "Radiation"
   | "Shock"
   | "Strike"}`;
+
 export type EDeadZoneType = `EDeadZoneType::${"Radial"}`;
+
 export type EDestructionActionType = `EDestructionActionType::${
   | "Destroy"
   | "Explode"
@@ -422,12 +485,14 @@ export type EDestructionActionType = `EDestructionActionType::${
   | "PlayVisualEffect"
   | "SetNewMesh"
   | "SpawnItems"}`;
+
 export type EDetectorType = `EDetectorType::${
   | "Bear"
   | "Echo"
   | "Gilka"
   | "None"
   | "Veles"}`;
+
 export type EDialogAction = `EDialogAction::${
   | "Attack"
   | "Bribe"
@@ -457,6 +522,7 @@ export type EDialogAction = `EDialogAction::${
   | "TerminateDialog"
   | "Threat"
   | "TimedAnswer"}`;
+
 export type EDialogAnimationType = `EDialogAnimationType::${
   | "AgathaIdleListeningStiff1"
   | "AgathaIdleListeningStiff2"
@@ -670,9 +736,11 @@ export type EDialogAnimationType = `EDialogAnimationType::${
   | "TalkWalkieTalkie_E14_MQ1_3"
   | "TalkWalkieTalkie_SQ13"
   | "TalkWalkieTalkie_SQ18"}`;
+
 export type EDialogEventCategory = `EDialogEventCategory::${
   | "Combat"
   | "HitReaction"}`;
+
 export type EDialogEventType = `EDialogEventType::${
   | "CallPlayer"
   | "Chatter"
@@ -738,17 +806,22 @@ export type EDialogEventType = `EDialogEventType::${
   | "Relax_EmissionSecondMessage"
   | "Relax_EmissionThirdMessage"
   | "RunOn"}`;
+
 export type EDialogPriority = `EDialogPriority::${"None"}`;
+
 export type EDistanceSelectorCondition = `EDistanceSelectorCondition::${
   | "MinIn"
   | "MinOut"}`;
+
 export type EDuplicateResolveType = `EDuplicateResolveType::${
   | "KeepAll"
   | "KeepNew"
   | "KeepOld"}`;
+
 export type EEffectDisplayType = `EEffectDisplayType::${
   | "EffectLevel"
   | "ValueAndTime"}`;
+
 export type EEffectSource = `EEffectSource::${
   | "Armor"
   | "Artifact"
@@ -757,6 +830,7 @@ export type EEffectSource = `EEffectSource::${
   | "Obj"
   | "Other"
   | "Weapon"}`;
+
 export type EEffectType = `EEffectType::${
   | "Accuracy"
   | "AddAttachment"
@@ -811,17 +885,20 @@ export type EEffectType = `EEffectType::${
   | "SleepinessPoints"
   | "VelocityDamage"
   | "WeaponItemWeight"}`;
+
 export type EEmissionAIEvent = `EEmissionAIEvent::${
   | "EmissionActive"
   | "EmissionDanger"
   | "EmissionEnd"
   | "EmissionStart"}`;
+
 export type EEmissionStage = `EEmissionStage::${
   | "ActivateQuest"
   | "Active"
   | "AfterTheStorm"
   | "BeforeTheStorm"
   | "ShockWave"}`;
+
 export type EEmotionalFaceMasks = `EEmotionalFaceMasks::${
   | "Angry"
   | "Happy"
@@ -829,7 +906,9 @@ export type EEmotionalFaceMasks = `EEmotionalFaceMasks::${
   | "Sad"
   | "Scared"
   | "Surprised"}`;
+
 export type EEvadeActionType = `EEvadeActionType::${"Back" | "Left" | "Right"}`;
+
 export type EFaceBlockingBlendMasks = `EFaceBlockingBlendMasks::${
   | "Cheeks"
   | "Chin"
@@ -846,19 +925,25 @@ export type EFaceBlockingBlendMasks = `EFaceBlockingBlendMasks::${
   | "RightTemple"
   | "Temples"
   | "Throat"}`;
+
 export type EFastUseGroupType = `EFastUseGroupType::${"Secondary"}`;
+
 export type EFireType = `EFireType::${"Automatic" | "Queue" | "SemiAutomatic"}`;
+
 export type EFlashlightAction = `EFlashlightAction::${
   | "Disable"
   | "TurnOff"
   | "TurnOn"}`;
+
 export type EFlashlightPriority = `EFlashlightPriority::${
   | "Chest"
   | "FlashlightWeaponAttachment"
   | "Head"}`;
+
 export type EFleeType = `EFleeType::${
   | "FleeFromCurrentLocation"
   | "FleeFromPlayer"}`;
+
 export type EFloatProviderType = `EFloatProviderType::${
   | "Add"
   | "Blink"
@@ -870,6 +955,7 @@ export type EFloatProviderType = `EFloatProviderType::${
   | "PlayerVital"
   | "PostEffect"
   | "Weather"}`;
+
 export type EGSCTeleportType = `EGSCTeleportType::${
   | "Classic"
   | "Default"
@@ -877,36 +963,46 @@ export type EGSCTeleportType = `EGSCTeleportType::${
   | "Instant"
   | "None"
   | "Quest"}`;
+
 export type EGameDifficulty = `EGameDifficulty::${"Easy" | "Hard" | "Medium"}`;
+
 export type EGlobalVariableType = `EGlobalVariableType::${
   | "Bool"
   | "Int"
   | "String"}`;
+
 export type EGoalPriority = `EGoalPriority::${
   | "HigherThanALife"
   | "HigherThanAnomaly"
   | "HigherThanCombat"
   | "HigherThanEmission"
   | "HigherThanThreat"}`;
+
 export type EGrenadeType = `EGrenadeType::${"F1" | "None" | "RGD5"}`;
+
 export type EGuardType = `EGuardType::${
   | "GuardPlayer"
   | "GuardTarget"
   | "GuardZone"}`;
+
 export type EHealingType = `EHealingType::${
   | "Dialog"
   | "HoldComponent"
   | "Quest"}`;
+
 export type EHideViewType = `EHideViewType::${"ForceHide" | "Hide" | "Unhide"}`;
+
 export type EIgnoreDamageType = `EIgnoreDamageType::${
   | "IgnorePSY"
   | "Invulnerable"
   | "None"
   | "Unfocusable"
   | "Unkillable"}`;
+
 export type EInputController = `EInputController::${
   | "Dualshock4"
   | "KeyboardAndMouse"}`;
+
 export type EInputKey = `EInputKey::${
   | "Circle"
   | "Cross"
@@ -919,12 +1015,14 @@ export type EInputKey = `EInputKey::${
   | "RightTrigger"
   | "Square"
   | "Triangle"}`;
+
 export type EInputMappingContextPriority = `EInputMappingContextPriority::${
   | "Exclusive"
   | "High"
   | "Low"
   | "Lowest"
   | "Medium"}`;
+
 export type EInteractFXType = `EInteractFXType::${
   | "LadderEndInteractBot"
   | "LadderEndInteractTop"
@@ -936,6 +1034,7 @@ export type EInteractFXType = `EInteractFXType::${
   | "LadderMovementJump"
   | "LadderStartInteractBottom"
   | "LadderStartInteractTop"}`;
+
 export type EInventoryEquipmentSlot = `EInventoryEquipmentSlot::${
   | "Artifact1"
   | "Body"
@@ -944,9 +1043,11 @@ export type EInventoryEquipmentSlot = `EInventoryEquipmentSlot::${
   | "None"
   | "Pistol"
   | "PrimaryWeapon"}`;
+
 export type EItemContainerType = `EItemContainerType::${
   | "PackOfItems"
   | "Stash"}`;
+
 export type EItemGenerationCategory = `EItemGenerationCategory::${
   | "Ammo"
   | "Artifact"
@@ -962,12 +1063,14 @@ export type EItemGenerationCategory = `EItemGenerationCategory::${
   | "WeaponPistol"
   | "WeaponPrimary"
   | "WeaponSecondary"}`;
+
 export type EItemInfoType = `EItemInfoType::${
   | "Accuracy"
   | "Damage"
   | "Handling"
   | "Range"
   | "RateOfFire"}`;
+
 export type EItemType = `EItemType::${
   | "Ammo"
   | "Armor"
@@ -980,32 +1083,42 @@ export type EItemType = `EItemType::${
   | "None"
   | "Other"
   | "Weapon"}`;
+
 export type EJamType = `EJamType::${"FirstShotMisfire" | "Jam" | "Misfire"}`;
+
 export type EJournalAction = `EJournalAction::${
   | "Cancel"
   | "Fail"
   | "Finish"
   | "Start"}`;
+
 export type EJournalEntity = `EJournalEntity::${"Quest" | "QuestStage"}`;
+
 export type EJournalState = `EJournalState::${
   | "Active"
   | "Cancelled"
   | "Failed"
   | "Finished"
   | "Pending"}`;
-export type ELairType = `ELairType::${"RestingLair"}`;
+
+export type ELairType = `ELairType::${"RestingLair" | "ALifeLair"}`;
+
 export type ELineDirection = `ELineDirection::${"Left" | "Right"}`;
+
 export type ELoadingDestination = `ELoadingDestination::${
   | "BridgeBetweenCutscenes"
   | "IntroductionLogo"
   | "None"
   | "WhiteBridgeBetweenCutscenes"}`;
+
 export type ELocalizationLanguage = `ELocalizationLanguage::${"English"}`;
+
 export type EMagazineMeshType = `EMagazineMeshType::${
   | "Empty"
   | "Full"
   | "LeftEmpty"
   | "RightEmpty"}`;
+
 export type EMainHandEquipmentType = `EMainHandEquipmentType::${
   | "Bolt"
   | "Grenade"
@@ -1015,6 +1128,7 @@ export type EMainHandEquipmentType = `EMainHandEquipmentType::${
   | "Pistol"
   | "PrimaryWeapon"
   | "SecondaryWeapon"}`;
+
 export type EMappingContext = `EMappingContext::${
   | "Aiming"
   | "AttachSelector"
@@ -1064,7 +1178,9 @@ export type EMappingContext = `EMappingContext::${
   | "Upgrades"
   | "UpgradesNavigation"
   | "UpgradesPopup"}`;
+
 export type EMarkerState = `EMarkerState::${"Default" | "Explored"}`;
+
 export type EMarkerType = `EMarkerType::${
   | "ArchAnomaly"
   | "Bed"
@@ -1077,11 +1193,14 @@ export type EMarkerType = `EMarkerType::${
   | "RegionMarker"
   | "Technician"
   | "Trader"}`;
+
 export type EMeshSubType = `EMeshSubType::${"Skeletal" | "Static"}`;
+
 export type EMisansceneNodeType = `EMisansceneNodeType::${
   | "Action"
   | "Start"
   | "Switch"}`;
+
 export type EModifiedCharacterParam = `EModifiedCharacterParam::${
   | "Bleeding"
   | "HP"
@@ -1095,28 +1214,36 @@ export type EModifiedCharacterParam = `EModifiedCharacterParam::${
   | "SP"
   | "Sleepiness"
   | "Zombie"}`;
+
 export type EModifyAbilitySequenceQuestNodeMode =
   `EModifyAbilitySequenceQuestNodeMode::${"AddAbility" | "RemoveAbility"}`;
+
 export type EMovementBehaviour = `EMovementBehaviour::${
   | "Idle"
   | "Run"
   | "Sprint"
   | "Walk"}`;
+
 export type EMusicState = `EMusicState::${"Region"}`;
+
 export type EMutantAttackType = `EMutantAttackType::${"JumpAttack" | "None"}`;
+
 export type ENPCType = `ENPCType::${
   | "Guide"
   | "None"
   | "Repairman"
   | "Technician"
   | "Trader"}`;
+
 export type ENiagaraProviderType = `ENiagaraProviderType::${
   | "EyeAdaptationProvider"
   | "PlayerLocationProvider"
   | "TerrainOffsetProvider"
   | "TimeOfDayProvider"
   | "WindProvider"}`;
+
 export type ENoteType = `ENoteType::${"Audio" | "Data" | "Notes"}`;
+
 export type ENotificationEventType = `ENotificationEventType::${
   | "AnomalyActivated"
   | "EmissionFinished"
@@ -1126,9 +1253,13 @@ export type ENotificationEventType = `ENotificationEventType::${
   | "None"
   | "ShotAppeared"
   | "ShotHit"}`;
+
 export type EObjAnim = `EObjAnim::${"Actor"}`;
+
 export type EObjFloatParams = `EObjFloatParams::${"AimAlpha" | "Wetness"}`;
+
 export type EObjMesh = `EObjMesh::${"Actor" | "None"}`;
+
 export type EObjSkeletalMeshTraceBone = `EObjSkeletalMeshTraceBone::${
   | "Chest"
   | "EveryBone"
@@ -1140,8 +1271,11 @@ export type EObjSkeletalMeshTraceBone = `EObjSkeletalMeshTraceBone::${
   | "RArm"
   | "RKnee"
   | "RLeg"}`;
+
 export type EObjType = `EObjType::${"Grenade" | "Invalid" | "NPC"}`;
+
 export type EOutputDeviceEffect = `EOutputDeviceEffect::${"Medium" | "Narrow"}`;
+
 export type EOverrideDialogTopic = `EOverrideDialogTopic::${
   | "Busy"
   | "Bye"
@@ -1156,23 +1290,31 @@ export type EOverrideDialogTopic = `EOverrideDialogTopic::${
   | "Trade"
   | "Travel"
   | "Upgrade"}`;
+
 export type EOverweightLock = `EOverweightLock::${"Full"}`;
+
 export type EPDATutorialCategory = `EPDATutorialCategory::${
   | "Earning"
   | "Fight"
   | "Navigation"
   | "Survival"}`;
+
 export type EPassiveDetectorType = `EPassiveDetectorType::${
   | "Anomaly"
   | "None"
   | "Searchpoint"}`;
+
 export type EPerformanceBoostDLSSFGMode =
   `EPerformanceBoostDLSSFGMode::${"Off"}`;
+
 export type EPerformanceBoostFFXFIMode = `EPerformanceBoostFFXFIMode::${"Off"}`;
+
 export type EPerformanceBoostInputLatencyReflex =
   `EPerformanceBoostInputLatencyReflex::${"Off"}`;
+
 export type EPerformanceBoostUpscalingMethod =
   `EPerformanceBoostUpscalingMethod::${"TSR"}`;
+
 export type EPhysicalMaterialType = `EPhysicalMaterialType::${
   | "AirPoltergeist"
   | "ArmoredGlass"
@@ -1220,10 +1362,12 @@ export type EPhysicalMaterialType = `EPhysicalMaterialType::${
   | "Water"
   | "WoodSolid"
   | "WoodThin"}`;
+
 export type EPlayerActionInputModifier = `EPlayerActionInputModifier::${
   | "Negate"
   | "Scalar"
   | "SwizzleAxis"}`;
+
 export type EPlayerActionInputTrigger = `EPlayerActionInputTrigger::${
   | "Down"
   | "HoldWithActivationDelay"
@@ -1231,9 +1375,11 @@ export type EPlayerActionInputTrigger = `EPlayerActionInputTrigger::${
   | "Pulse"
   | "Released"
   | "Tap"}`;
+
 export type EPlayerActionInputTypeCustom = `EPlayerActionInputTypeCustom::${
   | "HoldOnly"
   | "ToggleOrHold"}`;
+
 export type EPostEffectProcessorType = `EPostEffectProcessorType::${
   | "Constant"
   | "Cyclical"
@@ -1241,6 +1387,7 @@ export type EPostEffectProcessorType = `EPostEffectProcessorType::${
   | "Lerp"
   | "None"
   | "Raw"}`;
+
 export type EPostProcessEffectType = `EPostProcessEffectType::${
   | "Blur"
   | "Burn"
@@ -1254,7 +1401,9 @@ export type EPostProcessEffectType = `EPostProcessEffectType::${
   | "Radiation"
   | "Rain"
   | "Vignette"}`;
-export type EPsyNPCType = `EPsyNPCType::${"None"}`;
+
+export type EPsyNPCType = `EPsyNPCType::${"None" | "PsyNPC" | "PsyPhantom"}`;
+
 export type EQuestConditionType = `EQuestConditionType::${
   | "AITarget"
   | "ArmorState"
@@ -1299,6 +1448,7 @@ export type EQuestConditionType = `EQuestConditionType::${
   | "Stamina"
   | "Trigger"
   | "Weather"}`;
+
 export type EQuestEventType = `EQuestEventType::${
   | "OnAbilityEnded"
   | "OnAbilityUsed"
@@ -1336,11 +1486,13 @@ export type EQuestEventType = `EQuestEventType::${
   | "OnTick"
   | "OnTriggerEnter"
   | "OnTriggerExit"}`;
+
 export type EQuestNodeState = `EQuestNodeState::${
   | "Activated"
   | "Excluded"
   | "Finished"
   | "None"}`;
+
 export type EQuestNodeType = `EQuestNodeType::${
   | "ALifeDirectorZoneSwitch"
   | "AchievementUnlock"
@@ -1464,6 +1616,7 @@ export type EQuestNodeType = `EQuestNodeType::${
   | "TrackJournal"
   | "TrackShelter"
   | "Trigger"}`;
+
 export type EQuestRewardType = `EQuestRewardType::${
   | "Ammo"
   | "Armor"
@@ -1475,9 +1628,11 @@ export type EQuestRewardType = `EQuestRewardType::${
   | "Medkit"
   | "Money"
   | "Weapon"}`;
+
 export type ERadiationInnerOffsetPreset = `ERadiationInnerOffsetPreset::${
   | "Custom"
   | "Full"}`;
+
 export type ERadiationPreset = `ERadiationPreset::${
   | "Custom"
   | "Deadly"
@@ -1486,13 +1641,9 @@ export type ERadiationPreset = `ERadiationPreset::${
   | "RadBlock"
   | "Strong"
   | "Topaz"}`;
-export type ERank = `ERank::${
-  | "Experienced"
-  | "GetCount"
-  | "Master"
-  | "Newbie"
-  | "Veteran"
-  | "Veteran, Master"}`;
+
+export type ERank = `ERank::${"Experienced" | "Master" | "Newbie" | "Veteran"}`;
+
 export type ERegion = `ERegion::${
   | "Bolota"
   | "CHAES"
@@ -1519,6 +1670,7 @@ export type ERegion = `ERegion::${
   | "ZementniyZavod"
   | "ZheleznyLes"
   | "Zone"}`;
+
 export type ERelationChangingEvent = `ERelationChangingEvent::${
   | "Damage"
   | "FractionDamage"
@@ -1528,36 +1680,45 @@ export type ERelationChangingEvent = `ERelationChangingEvent::${
   | "KillWounded"
   | "Melee"
   | "Wounded"}`;
+
 export type ERelationLevel = `ERelationLevel::${
   | "Count"
   | "Disaffection"
   | "Enemy"
   | "Friend"
   | "Neutral"}`;
+
 export type ERepetitions = `ERepetitions::${
   | "Infinity"
   | "PlayCount"
   | "TimeInSeconds"}`;
+
 export type ERequiredSquadMembers = `ERequiredSquadMembers::${
   | "AllMembers"
   | "AnyMember"}`;
+
 export type ESaveType = `ESaveType::${"Auto" | "Manual" | "Quest" | "Quick"}`;
+
 export type EScenarioBranch = `EScenarioBranch::${
   | "Noon"
   | "Skif"
   | "Spark"
   | "Strelok"
   | "Varta"}`;
+
 export type ESensitivityType = `ESensitivityType::${"Medium"}`;
+
 export type ESettingCategoryType = `ESettingCategoryType::${
   | "Display = 1"
   | "Input = 2"}`;
+
 export type ESmartCoverType = `ESmartCoverType::${
   | "BehindTreeCover"
   | "Generic"
   | "High"
   | "Low"
   | "NoShootingPosition"}`;
+
 export type ESortGroup = `ESortGroup::${
   | "Bleeding"
   | "Buff"
@@ -1570,6 +1731,7 @@ export type ESortGroup = `ESortGroup::${
   | "Right"
   | "Stamina"
   | "Up"}`;
+
 export type ESoundEventType = `ESoundEventType::${
   | "AnomalyActivated"
   | "Bolt"
@@ -1588,22 +1750,64 @@ export type ESoundEventType = `ESoundEventType::${
   | "StealthKill"
   | "Steps"
   | "Voice"}`;
+
 export type ESpaceRestrictionType = `ESpaceRestrictionType::${
   | "In"
   | "None"
   | "Out"}`;
+
 export type ESpawnNodeExcludeType = `ESpawnNodeExcludeType::${
   | "ForceDespawn"
   | "KillSpawnedObj"
   | "SeamlessDespawn"}`;
-export type ESpawnType = `ESpawnType::${"None"}`;
+
+export type ESpawnType = `ESpawnType::${
+  | "ALifeGroup"
+  | "Anomaly"
+  | "AnomalySpawner"
+  | "ArtifactSpawner"
+  | "ClickerAnomaly"
+  | "ContextualAction"
+  | "DailyScheduleZone"
+  | "DeadBody"
+  | "DestructibleObject"
+  | "ElectroAnomaly"
+  | "FogVolume"
+  | "GuardZone"
+  | "Hub"
+  | "Item"
+  | "ItemContainer"
+  | "LairSpawner"
+  | "LightningBallAnomaly"
+  | "Marker"
+  | "MoveToPath"
+  | "None"
+  | "Obj"
+  | "OnlineModifierZone"
+  | "PSYControllerAnomaly"
+  | "PackOfItems"
+  | "Patrol"
+  | "PillowAnomaly"
+  | "PsyAnomaly"
+  | "Radiation"
+  | "SafeZone"
+  | "Searchpoint"
+  | "Shelter"
+  | "SoapBubbleAnomaly"
+  | "Squad"
+  | "TeleportPoint"
+  | "Trigger"
+  | "WeatherSelection"}`;
+
 export type ESpeechEventType = `ESpeechEventType::${
   | "Combat_EnemyDetected"
   | "Combat_EnemySearch"
   | "Combat_HitByEnemy"
   | "Combat_Reloading"
   | "Combat_TakeCover"}`;
+
 export type EStaminaAction = `EStaminaAction::${"Run" | "Sprint" | "Walk"}`;
+
 export type EStateTag = `EStateTag::${
   | "Aim"
   | "Climb"
@@ -1617,25 +1821,31 @@ export type EStateTag = `EStateTag::${
   | "SprintUnderRunSpeed"
   | "Vault"
   | "Walk"}`;
+
 export type ESubtitlesSize = `ESubtitlesSize::${"Standart"}`;
+
 export type ESummonBehaviourOnSpawn = `ESummonBehaviourOnSpawn::${
   | "Default"
   | "Kill"}`;
+
 export type ESummonSpawnOrientation = `ESummonSpawnOrientation::${
   | "LookAtEnemy"
   | "LookFromOwner"
   | "MatchOwner"}`;
+
 export type EThreatActionType = `EThreatActionType::${
   | "CallAllies"
   | "MoveToLocation"
   | "SearchEnemy"
   | "TurnHead"}`;
+
 export type EThreatAwareness = `EThreatAwareness::${
   | "Battle"
   | "Calm"
   | "MoveToLocation"
   | "SearchEnemy"
   | "TurnHead"}`;
+
 export type EThreatType = `EThreatType::${
   | "CharacterTouch"
   | "Corpse"
@@ -1646,12 +1856,15 @@ export type EThreatType = `EThreatType::${
   | "PossibleEnemy"
   | "Sound"
   | "UnidentifiedEnemy"}`;
+
 export type EThrowQueueDisarmMode =
   `EThrowQueueDisarmMode::${"DispatchAtLastKnownPosition"}`;
+
 export type ETriggerReact = `ETriggerReact::${
   | "ReactBoth"
   | "ReactOnAlive"
   | "ReactOnDead"}`;
+
 export type EUISound = `EUISound::${
   | "CloseInventory"
   | "Count"
@@ -1673,6 +1886,7 @@ export type EUISound = `EUISound::${
   | "UseConsumableSausage"
   | "UseConsumableVodka"
   | "UseConsumableWater"}`;
+
 export type EUpgradeTargetPartType = `EUpgradeTargetPartType::${
   | "Barrel"
   | "Body"
@@ -1681,14 +1895,17 @@ export type EUpgradeTargetPartType = `EUpgradeTargetPartType::${
   | "PistolGrip"
   | "Stock"
   | "Stock "}`;
+
 export type EUpgradeVerticalPosition = `EUpgradeVerticalPosition::${
   | "Down"
   | "None"
   | "Top"}`;
+
 export type EUserNotificationType = `EUserNotificationType::${
   | "None"
   | "SideText"
   | "Voice"}`;
+
 export type EVitalType = `EVitalType::${
   | "Bleeding"
   | "Drunkness"
@@ -1699,17 +1916,21 @@ export type EVitalType = `EVitalType::${
   | "Radiation"
   | "SleepinessPoints"
   | "SuppressionPoints"}`;
+
 export type EWaterImmersionLevel = `EWaterImmersionLevel::${
   | "Deadly"
   | "High"
   | "Low"
   | "Medium"}`;
+
 export type EWeaponState = `EWeaponState::${"Combat" | "NoWeapon" | "Relax"}`;
+
 export type EWeaponType = `EWeaponType::${
   | "None"
   | "Pistol"
   | "Rifle"
   | "Shotgun"}`;
+
 export type EWeather = `EWeather::${
   | "CalmBeforeEmission"
   | "Clearly"
@@ -1720,14 +1941,41 @@ export type EWeather = `EWeather::${
   | "Rainy"
   | "Stormy"
   | "Thundery"}`;
+
+export type EALifeGroupPriorityType = `EALifeGroupPriorityType::${
+  | "Global"
+  | "Local"
+  | "Quest"}`;
+
+export type ELairPreferredSpawnType = `ELairPreferredSpawnType::${
+  | "CoreVolume"
+  | "TerritoryVolume"}`;
+
+export type EPillowAnomalyBiomeType = `EPillowAnomalyBiomeType::${
+  | "Forest"
+  | "Industrial"
+  | "Paper"
+  | "RedForest"
+  | "Rock"
+  | "Urban"}`;
+
+export type ETriggerShape = `ETriggerShape::${
+  | "Box"
+  | "Cylinder"
+  | "Freeform"
+  | "Sphere"}`;
+
 export type EWeatherParam = `EWeatherParam::${"RainIntensity"}`;
+
 export type EWeightStatus = `EWeightStatus::${
   | "Heavy"
   | "Normal"
   | "Overweight"}`;
+
 export type EZombificationType = `EZombificationType::${
   | "AliveHuman"
   | "CorpseHuman"}`;
+
 export type PanningRule = `PanningRule::${
   | "PanningRule_Headphones"
   | "PanningRule_Speakers"}`;
