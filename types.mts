@@ -478,7 +478,7 @@ export type ALifeDirectorScenarioPrototype = GetStructType<{
   };
 }>;
 
-export type _QuestDialog = GetStructType<{
+export type DialogPrototype = GetStructType<{
   SID: string;
   DialogChainPrototypeSID: string;
   DialogMemberIndex: number;
@@ -523,13 +523,33 @@ export type _QuestDialog = GetStructType<{
     False: { NextDialogSID: string; Terminate: boolean };
   };
   HasVOInSequence: boolean;
-  DialogActions: string;
+  DialogActions: {
+    DialogAction: EDialogAction;
+    DialogActionParam:
+      | {
+          VariableType: EGlobalVariableType;
+          VariableValue: number | string | boolean;
+        }
+      | number;
+    ItemsCount: {
+      VariableType: EGlobalVariableType;
+      VariableValue: number | string | boolean;
+    };
+    WithEquipped: boolean;
+  }[];
   DialogAnswerActions: {
     DialogAction: EDialogAction;
-    DialogActionParam: {
+    DialogActionParam:
+      | {
+          VariableType: EGlobalVariableType;
+          VariableValue: number | string | boolean;
+        }
+      | number;
+    ItemsCount: {
       VariableType: EGlobalVariableType;
-      VariableValue: number;
+      VariableValue: number | string | boolean;
     };
+    WithEquipped: boolean;
   }[];
   NodePrototypeVersion: number;
   FaceAnimationSubPath: string;
@@ -550,22 +570,6 @@ export type _QuestDialog = GetStructType<{
   VisibleOnFailedCondition: boolean;
   MainReply: boolean;
 }>;
-
-export type RSQ01_Dialog_Warlock_RSQ = _QuestDialog;
-
-export type RSQ04_Dialog_Drabadan_RSQ = _QuestDialog;
-
-export type RSQ05_Dialog_Sich_RSQ = _QuestDialog;
-
-export type RSQ06_Dialog_Sidorovich_RSQ = _QuestDialog;
-
-export type RSQ07_Dialog_Barmen_RSQ = _QuestDialog;
-
-export type RSQ08_Dialog_Barmen_RSQ = _QuestDialog;
-
-export type RSQ09_Dialog_Spica_RSQ = _QuestDialog;
-
-export type RSQ10_Dialog_Harpy_RSQ = _QuestDialog;
 
 export type DifficultyPrototype = GetStructType<{
   SID: string;
