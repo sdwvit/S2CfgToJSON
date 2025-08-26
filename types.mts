@@ -60,6 +60,10 @@ import {
   ESoundEffectSubtype,
   EInputAxisType,
   EActionType,
+  EQuestNodeType,
+  EOverrideDialogTopic,
+  ETriggerReact,
+  ERequiredSquadMembers,
 } from "./enums.mjs";
 
 export interface Struct<T extends Entries = {}> {
@@ -836,6 +840,8 @@ export type ItemGeneratorPrototype = GetStructType<{
       MaxDurability: number;
       MinCount: number;
       MaxCount: number;
+      AmmoMinCount: number;
+      AmmoMaxCount: number;
     }[];
     bAllowSameCategoryGeneration: boolean;
   }[];
@@ -1713,4 +1719,65 @@ export type NPCWeaponSettingsPrototype = GetStructType<{
   BulletDropHeight: number;
   ArmorPiercing: number;
   CombatSynchronizationScore: { TokenTag: string; Score: string }[];
+}>;
+
+export type QuestNodePrototype = GetStructType<{
+  InGameHours?: number;
+  SID: string;
+  NodePrototypeVersion: number;
+  QuestSID: string;
+  NodeType: EQuestNodeType;
+  StartDelay: number;
+  LaunchOnQuestStart: boolean;
+
+  Repeatable: boolean;
+  OutputPinNames: string[];
+  Launchers: {
+    Excluding: boolean;
+    Connections: {
+      SID: string;
+      Name: string;
+    };
+  }[];
+  LastPhrases: {
+    FinishNode: boolean;
+    LastPhraseSID: string;
+    NextLaunchedPhraseSID: string;
+  }[];
+  DialogChainPrototypeSID: string;
+  DialogMembers: string[];
+  TalkThroughRadio: boolean[];
+  DialogObjectLocation: {
+    X: number;
+    Y: number;
+    Z: number;
+  };
+  NPCToStartDialog: number;
+  StartForcedDialog: boolean;
+  WaitAllDialogEndingsToFinish: boolean;
+  IsComment: boolean;
+  OverrideDialogTopic: EOverrideDialogTopic;
+  CanExitAnytime: boolean;
+  ContinueThroughRadio: boolean;
+  CallPlayer: boolean;
+  SeekPlayer: boolean;
+  CallPlayerRadius: number;
+  ExcludeAllNodesInContainer: boolean;
+  GlobalVariablePrototypeSID: string;
+  ChangeValueMode: EChangeValueMode;
+  VariableValue: any;
+  PinWeights: number[];
+  Conditions: {
+    ConditionType: EQuestConditionType;
+    ConditionComparance: EConditionComparance;
+    LinkedNodePrototypeSID: string;
+    CompletedNodeLauncherNames: never[];
+    TargetNPC: string;
+    TargetContextualActionPlaceholder: string;
+    TargetCharacter: string;
+    Trigger: string;
+    bTriggersByAnybody: boolean;
+    ReactType: ETriggerReact;
+    RequiredSquadMembers: ERequiredSquadMembers;
+  }[][];
 }>;

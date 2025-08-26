@@ -1605,7 +1605,13 @@ export type ERadiationPreset = `ERadiationPreset::${
   | "Strong"
   | "Topaz"}`;
 
-export type ERank = `ERank::${"Experienced" | "Master" | "Newbie" | "Veteran"}`;
+export type _ERank =
+  `ERank::${"Experienced" | "Master" | "Newbie" | "Veteran"}`;
+export type ERank =
+  | _ERank
+  | `${_ERank}, ${_ERank}`
+  | `${_ERank}, ${_ERank}, ${_ERank}`
+  | `${_ERank}, ${_ERank}, ${_ERank}, ${_ERank}`;
 
 export type ERegion = `ERegion::${
   | "Bolota"
