@@ -1942,3 +1942,25 @@ export type EZombificationType = `EZombificationType::${
 export type PanningRule = `PanningRule::${
   | "PanningRule_Headphones"
   | "PanningRule_Speakers"}`;
+
+export type ESoundEffectSubtype = `ESoundEffectSubtype::${
+  | "PlaySoundAttached"
+  | "SetParameter"
+  | "SetSwitch"
+  | "SetState"
+  | "StopInfiniteSound"
+  | "SetGlobalParameter"}`;
+
+export type EInputAxisType = `EInputAxisType::${"XY" | "Rotate2D"}`;
+
+export type EActionType = `EActionType::${
+  | "AutoCover"
+  | "Crouch"
+  | "Fall"
+  | "HandleAimInput"
+  | "Lean"
+  | "None"
+  | "Sprint"
+  | "UseMainItem"
+  | "Vault"
+  | "ThrowItem"}`;
