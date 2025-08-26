@@ -1,5 +1,6 @@
 const defaultEntries = new Set(["_isArray", "_useAsterisk"]);
 export * from "./types.mts";
+export * from "./enums.mts";
 import { DefaultEntries, Value, Entries, Struct as IStruct } from "./types.mts";
 
 /**
@@ -210,12 +211,15 @@ export abstract class Struct<T extends Entries = {}> implements IStruct<T> {
         value = value === "true";
       } else {
         try {
-          // understand 0.1f / 1. / 0.f / .1 / .1f -> ((\d*)\.?(\d+)|(\d+)\.?(\d*))f?
-          const matches = value.match(/^(\d*)\.?(\d*)f?$/);
-          const first = matches[1];
-          const second = matches[2];
+          // understand +- 0.1f / 1. / 0.f / .1 / .1f -> ((\d*)\.?(\d+)|(\d+)\.?(\d*))f?
+          const matches = value.match(/^(-?)(\d*)\.?(\d*)f?$/);
+          const minus = matches[1];
+          const first = matches[2];
+          const second = matches[3];
           if (first || second) {
-            value = parseFloat(`${first || 0}${second ? `.${second}` : ""}`);
+            value = parseFloat(
+              `${minus ? "-" : ""}${first || 0}${second ? `.${second}` : ""}`,
+            );
           } else {
             value = JSON.parse(value);
           }

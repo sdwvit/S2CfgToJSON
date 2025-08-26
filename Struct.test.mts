@@ -195,15 +195,17 @@ struct.end`;
          N3 = 0.f 
          N4 = .1 
          N5 = .1f
+         N6 = -2.22f
        struct.end`;
-      const str = Struct.fromString<
-        Struct<{ N1: number; N2: number; N3: number; N4: number; N5: number }>
-      >(dynamicItemGeneratorText);
+      const str = Struct.fromString<Struct<{ [key: `N${number}`]: number }>>(
+        dynamicItemGeneratorText,
+      );
       expect(str[0].entries.N1).toBe(0.1);
       expect(str[0].entries.N2).toBe(1);
       expect(str[0].entries.N3).toBe(0);
       expect(str[0].entries.N4).toBe(0.1);
       expect(str[0].entries.N5).toBe(0.1);
+      expect(str[0].entries.N6).toBe(-2.22);
     });
   });
 });
