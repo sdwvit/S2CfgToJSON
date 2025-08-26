@@ -456,6 +456,8 @@ export type ALifeDirectorScenarioPrototype = GetStructType<{
     [key: string]: {
       SID: string;
       PlayerRequiredRank: ERank;
+      ExpansionSquadNumMin: number;
+      ExpansionSquadNumMax: number;
       ScenarioSquads: {
         AgentArchetype: EAgentArchetype;
         bPlayerEnemy: boolean;
