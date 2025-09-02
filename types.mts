@@ -1833,3 +1833,29 @@ export type WeaponAttributesPrototype = GetStructType<{
     };
   }[];
 }>;
+
+export type CharacterWeaponSettingsPrototypes = GetStructType<{
+  SID: string;
+  DurabilityDamagePerShot: number;
+  ArmorDamage: number;
+  ArmorPiercing: number;
+  CoverPiercing: number;
+  BaseDamage: number;
+  BaseBleeding: number;
+  ChanceBleedingPerShot: string;
+  EffectiveFireDistanceMin: number;
+  EffectiveFireDistanceMax: number;
+  FireDistanceDropOff: number;
+  MinBulletDistanceDamageModifier: number;
+  MinBulletDistanceArmorPiercingModifier: number;
+  DispersionRadius: number;
+  BaseComfort: number;
+  FireLoudness: number;
+  AccuracyUI: number;
+  RateOfFireUI: number;
+  HandlingUI: number;
+  DamageUI: number;
+  RangeUI: number;
+  DistanceDropOffLength: number;
+  BulletDropHeight: number;
+}>;
