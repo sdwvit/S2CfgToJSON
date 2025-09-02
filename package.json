@@ -1,6 +1,6 @@
 {
   "name": "s2cfgtojson",
-  "version": "2.2.10",
+  "version": "2.2.11",
   "description": "Converts Stalker 2 Cfg file into a POJO",
   "keywords": [
     "stalker",

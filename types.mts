@@ -64,6 +64,7 @@ import {
   EOverrideDialogTopic,
   ETriggerReact,
   ERequiredSquadMembers,
+  EMeshSubType,
 } from "./enums.mjs";
 
 export interface Struct<T extends Entries = {}> {
@@ -1782,4 +1783,53 @@ export type QuestNodePrototype = GetStructType<{
     ReactType: ETriggerReact;
     RequiredSquadMembers: ERequiredSquadMembers;
   }[][];
+}>;
+
+export type MeshPrototype = GetStructType<{
+  SID: string;
+  MeshPath: string;
+  MaterialPath: string;
+  MeshType: EMeshSubType;
+  ID: number;
+}>;
+
+export type WeaponPrototype = GetStructType<{
+  SID: string;
+  MeshPrototypeSID: string;
+  MeshInWorldPrototypeSID: string;
+  Weight: number;
+  Cost: number;
+  GeneralWeaponSetup: string;
+  PlayerWeaponAttributes: string;
+  NPCWeaponAttributes: string;
+  BaseDurability: number;
+  Icon: string;
+  SectionSettings: {
+    SectionIsEnabled: true;
+    UpgradeTargetPartType: EUpgradeTargetPartType;
+    BottomPosition: number;
+    RightPoition: number;
+    LeftPosition: number;
+    TopPosition: number;
+    ModuleLineDirection: ELineDirection;
+  }[];
+}>;
+
+export type WeaponAttributesPrototype = GetStructType<{
+  SID: string;
+  DefaultWeaponSettingsSID: string;
+  AnimBlueprint: string;
+  ParticlesBasedOnHeating: {
+    VFXGroupName: string;
+    Shooting: {
+      SocketName: string;
+      PFXPath: string;
+      MinHeatingValueToAppear: 0;
+    };
+    PostShooting: {
+      SocketName: string;
+      PFXPath: string;
+      MinHeatingValueToAppear: 5;
+    };
+  }[];
 }>;
