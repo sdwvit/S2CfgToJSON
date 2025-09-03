@@ -1834,7 +1834,7 @@ export type WeaponAttributesPrototype = GetStructType<{
   }[];
 }>;
 
-export type CharacterWeaponSettingsPrototypes = GetStructType<{
+export type CharacterWeaponSettingsPrototype = GetStructType<{
   SID: string;
   DurabilityDamagePerShot: number;
   ArmorDamage: number;
