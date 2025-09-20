@@ -1605,13 +1605,28 @@ export type ERadiationPreset = `ERadiationPreset::${
   | "Strong"
   | "Topaz"}`;
 
-export type _ERank =
-  `ERank::${"Experienced" | "Master" | "Newbie" | "Veteran"}`;
+type Newbie = "ERank::Newbie";
+type Experienced = "ERank::Experienced";
+type Veteran = "ERank::Veteran";
+type Master = "ERank::Master";
+type Permutations2<A, B> = A extends string
+  ? B extends string
+    ? A | B | `${A}, ${B}`
+    : A
+  : never;
+
+type Permutations3<A, B, C> = A extends string
+  ? B extends string
+    ? C extends string
+      ? Permutations2<A, B> | Permutations2<B, C> | `${A}, ${B}, ${C}`
+      : Permutations2<A, B>
+    : A
+  : never;
+
 export type ERank =
-  | _ERank
-  | `${_ERank}, ${_ERank}`
-  | `${_ERank}, ${_ERank}, ${_ERank}`
-  | `${_ERank}, ${_ERank}, ${_ERank}, ${_ERank}`;
+  | Permutations3<Newbie, Experienced, Veteran>
+  | Permutations3<Experienced, Veteran, Master>
+  | `${Newbie}, ${Experienced}, ${Veteran}, ${Master}`;
 
 export type ERegion = `ERegion::${
   | "Bolota"

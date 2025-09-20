@@ -1,5 +1,5 @@
 import { describe, test, expect } from "vitest";
-import { Struct } from "./Struct.mjs";
+import { ERank, Struct } from "./Struct.mjs";
 
 class ChimeraHPFix extends Struct {
   _id = "ChimeraHPFix";
@@ -209,3 +209,6 @@ struct.end`;
     });
   });
 });
+
+// noinspection JSUnusedLocalSymbols
+const MyRank: ERank = "ERank::Experienced, ERank::Veteran, ERank::Master";
