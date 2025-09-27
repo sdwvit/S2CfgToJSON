@@ -66,6 +66,7 @@ import {
   ERequiredSquadMembers,
   EMeshSubType,
 } from "./enums.mjs";
+import { Struct } from "./Struct.mjs";
 
 export type Internal = "__internal__";
 export type IStruct = {
@@ -84,28 +85,8 @@ export interface DefaultEntries {
 }
 
 export type Value = string | boolean | number;
-
 export type Entries = Record<string | number, Value>;
-
-export type GetTsType<E extends IStruct> = {
-  [key in Exclude<keyof E, Internal>]: E[key] extends IStruct
-    ? GetTsType<E[key]>
-    : E[key];
-};
-type RKey<In> = Exclude<keyof In, keyof DefaultEntries>;
-
-export type GetStructType<In> =
-  In extends Array<any>
-    ? IStruct & { [key in number]: GetStructType<In[key]> }
-    : In extends Record<any, any>
-      ? IStruct & { [key in RKey<In>]: GetStructType<In[key]> }
-      : In extends string
-        ? In
-        : In extends number
-          ? number
-          : In extends boolean
-            ? boolean
-            : never;
+export type GetStructType<In> = Struct & In;
 
 export type ArmorPrototype = GetStructType<{
   SID: string;
