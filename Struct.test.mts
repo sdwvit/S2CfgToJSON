@@ -1,5 +1,11 @@
 import { describe, test, expect } from "vitest";
-import { createDynamicClassInstance, ERank, pad, Struct } from "./Struct.mjs";
+import {
+  createDynamicClassInstance,
+  ERank,
+  pad,
+  IStruct,
+  Struct,
+} from "./Struct.mjs";
 import fs from "node:fs";
 
 class ChimeraHPFix extends Struct {
@@ -196,7 +202,7 @@ struct.end`;
          N5 = .1f
          N6 = -2.22f
        struct.end`;
-      const str = Struct.fromString<Struct & { [key: `N${number}`]: number }>(
+      const str = Struct.fromString<IStruct & { [key: `N${number}`]: number }>(
         dynamicItemGeneratorText,
       );
       expect(str[0].N1).toBe(0.1);

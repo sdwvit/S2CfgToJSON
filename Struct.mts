@@ -1,6 +1,6 @@
 export * from "./types.mts";
 export * from "./enums.mts";
-import { DefaultEntries, Struct as IStruct, Value } from "./types.mts";
+import { DefaultEntries, IStruct, Value } from "./types.mts";
 
 const TAB = "   ";
 const WILDCARD = "_wildcard";

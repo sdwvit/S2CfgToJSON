@@ -68,7 +68,7 @@ import {
 } from "./enums.mjs";
 
 export type Internal = "__internal__";
-export type Struct = {
+export type IStruct = {
   [k in Internal]: DefaultEntries;
 };
 
@@ -87,8 +87,8 @@ export type Value = string | boolean | number;
 
 export type Entries = Record<string | number, Value>;
 
-export type GetTsType<E extends Struct> = {
-  [key in Exclude<keyof E, Internal>]: E[key] extends Struct
+export type GetTsType<E extends IStruct> = {
+  [key in Exclude<keyof E, Internal>]: E[key] extends IStruct
     ? GetTsType<E[key]>
     : E[key];
 };
@@ -96,9 +96,9 @@ type RKey<In> = Exclude<keyof In, keyof DefaultEntries>;
 
 export type GetStructType<In> =
   In extends Array<any>
-    ? Struct & { [key in number]: GetStructType<In[key]> }
+    ? IStruct & { [key in number]: GetStructType<In[key]> }
     : In extends Record<any, any>
-      ? Struct & { [key in RKey<In>]: GetStructType<In[key]> }
+      ? IStruct & { [key in RKey<In>]: GetStructType<In[key]> }
       : In extends string
         ? In
         : In extends number
