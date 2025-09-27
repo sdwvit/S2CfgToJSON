@@ -5,6 +5,7 @@ import {
   pad,
   IStruct,
   Struct,
+  ArmorPrototype,
 } from "./Struct.mjs";
 import fs from "node:fs";
 
@@ -259,3 +260,5 @@ struct.end`;
 
 // noinspection JSUnusedLocalSymbols
 const MyRank: ERank = "ERank::Experienced, ERank::Veteran, ERank::Master";
+// noinspection BadExpressionStatementJS
+(({}) as ArmorPrototype).Protection;

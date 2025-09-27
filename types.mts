@@ -86,7 +86,18 @@ export interface DefaultEntries {
 
 export type Value = string | boolean | number;
 export type Entries = Record<string | number, Value>;
-export type GetStructType<In> = Struct & In;
+export type GetStructType<In> =
+  In extends Array<any>
+    ? Struct & { [key in number]: GetStructType<In[key]> }
+    : In extends Record<any, any>
+      ? Struct & { [key in keyof In]: GetStructType<In[key]> }
+      : In extends string
+        ? In
+        : In extends number
+          ? number
+          : In extends boolean
+            ? boolean
+            : In;
 
 export type ArmorPrototype = GetStructType<{
   SID: string;

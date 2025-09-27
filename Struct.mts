@@ -22,12 +22,15 @@ export abstract class Struct implements IStruct {
   /**
    * Creates a new struct instance.
    */
-  constructor(parentOrRaw?: string | Struct) {
+  constructor(parentOrRaw?: string | Struct | object) {
     if (parentOrRaw instanceof Struct) {
       Object.assign(this, parentOrRaw.clone());
     }
     if (typeof parentOrRaw === "string") {
       Object.assign(this, Struct.fromString(parentOrRaw)[0]);
+    }
+    if (typeof parentOrRaw === "object" && parentOrRaw !== null) {
+      Object.assign(this, parentOrRaw);
     }
   }
 
@@ -233,7 +236,7 @@ function walk(lines: string[]) {
   return roots;
 }
 
-function parseKey(key: string, parent: Struct, index: number) {
+export function parseKey(key: string, parent: Struct, index: number) {
   let normKey: string | number = key;
 
   if (key.startsWith("[") && key.endsWith("]")) {
