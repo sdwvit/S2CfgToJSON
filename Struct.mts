@@ -1,262 +1,328 @@
-const defaultEntries = new Set(["_isArray", "_useAsterisk"]);
 export * from "./types.mts";
 export * from "./enums.mts";
-import { DefaultEntries, Value, Entries, Struct as IStruct } from "./types.mts";
+import { DefaultEntries, Struct as IStruct, Value } from "./types.mts";
+
+const TAB = "   ";
+const WILDCARD = "_wildcard";
+const KEYWORDS = [
+  "refurl", // a file path to override
+  "refkey", // SID to override
+  "bskipref", // ??? not sure
+  "bpatch", // allows patching only specific keys
+];
+const REMOVE_NODE = "removenode";
 
 /**
  * This file is part of the Stalker 2 Modding Tools project.
  * This is a base class for all structs.
  */
-export abstract class Struct<T extends Entries = {}> implements IStruct<T> {
-  isRoot?: boolean;
-  refurl?: string;
-  refkey?: string | number;
-  bskipref?: boolean;
-  abstract _id: string;
-  entries: T;
+export abstract class Struct implements IStruct {
+  __internal__: Refs = new Refs();
 
-  static TAB = "   ";
-  static pad(text: string): string {
-    return `${Struct.TAB}${text.replace(/\n+/g, `\n${Struct.TAB}`)}`;
-  }
-  static WILDCARD = "_wildcard";
-  static isNumber(ref: string): boolean {
-    return Number.isInteger(parseInt(ref)) || typeof ref === "number";
-  }
-  static isArrayKey(key: string) {
-    return key.includes("[") && key.includes("]");
-  }
-  static renderKeyName(ref: string, useAsterisk?: boolean): string {
-    if (`${ref}`.startsWith("_")) {
-      return Struct.renderKeyName(ref.slice(1), useAsterisk); // Special case for indexed structs
+  /**
+   * Creates a new struct instance.
+   */
+  constructor(parentOrRaw?: string | Struct) {
+    if (parentOrRaw instanceof Struct) {
+      Object.assign(this, parentOrRaw.clone());
     }
-    if (`${ref}`.includes("*") || useAsterisk) {
-      return "[*]"; // Special case for wildcard structs
+    if (typeof parentOrRaw === "string") {
+      Object.assign(this, Struct.fromString(parentOrRaw)[0]);
     }
-    if (`${ref}`.includes("_dupe_")) {
-      return Struct.renderKeyName(ref.slice(0, ref.indexOf("_dupe_")));
-    }
-    if (Struct.isNumber(ref)) {
-      return `[${parseInt(ref)}]`;
-    }
-    return ref;
   }
 
-  static renderStructName(name: string): string {
-    if (name === Struct.WILDCARD) {
-      return "[*]"; // Special case for wildcard structs
+  fork(clone = false) {
+    const patch = clone
+      ? this.clone()
+      : createDynamicClassInstance(
+          this.__internal__.rawName || this.constructor.name,
+        );
+
+    function markAsbPatch(s: Struct) {
+      s.__internal__.bpatch = true;
+      Object.values(s)
+        .filter((v) => v instanceof Struct)
+        .forEach(markAsbPatch);
     }
-    if (`${name}`.startsWith("_")) {
-      return Struct.renderStructName(name.slice(1)); // Special case for indexed structs
-    }
-    if (Struct.isNumber(name)) {
-      return `[${parseInt(name)}]`;
-    }
-    return name;
+
+    markAsbPatch(patch);
+    return patch as this;
   }
 
-  static extractKeyFromBrackets(key: string) {
-    if (/\[(.+)]/.test(key)) {
-      return key.match(/\[(.+)]/)[1];
+  removeNode(key: keyof this) {
+    if (this.__internal__.bpatch !== true) {
+      throw new Error(
+        "Cannot remove node from non-patch struct. Use fork() first.",
+      );
     }
-    return "";
+    this[key] = REMOVE_NODE as any;
+    return this;
   }
 
-  static parseStructName(name: string): string {
-    if (Struct.extractKeyFromBrackets(name) === "*") {
-      return Struct.WILDCARD; // Special case for wildcard structs
-    }
-    if (Struct.isNumber(Struct.extractKeyFromBrackets(name))) {
-      return `_${name.match(/\[(\d+)]/)[1]}`; // Special case for indexed structs
-    }
-    return name
-      .replace(/\W/g, "_")
-      .replace(/^\d+/, "_")
-      .replace(/_+/g, "_")
-      .replace(/^_+/, "");
+  clone() {
+    return Struct.fromString(this.toString())[0] as this;
   }
-
-  static createDynamicClass = (name: string): new () => Struct =>
-    new Function("parent", `return class ${name} extends parent {}`)(Struct);
 
   toString(): string {
-    let text: string;
-    text = this.isRoot ? `${this._id} : ` : "";
+    if (!(this.__internal__ instanceof Refs)) {
+      this.__internal__ = new Refs(this.__internal__);
+    }
+    const { __internal__: internal, ...entries } = this;
+
+    let text: string = internal.rawName ? `${internal.rawName} : ` : "";
     text += "struct.begin";
-    const refs = ["refurl", "refkey", "bskipref"]
-      .map((k) => [k, this[k]])
-      .filter(([_, v]) => v !== "" && v !== undefined && v !== false)
-      .map(([k, v]) => {
-        if (v === true) return k;
-        return `${k}=${Struct.renderKeyName(v)}`;
-      })
-      .join(";");
+
+    const refs = internal.toString();
     if (refs) {
       text += ` {${refs}}`;
     }
+
     text += "\n";
     // Add all keys
-    text += Object.entries(this.entries || {})
-      .filter(([key]) => key !== "_useAsterisk" && key !== "_isArray")
+    text += Object.entries(entries || {})
       .map(([key, value]) => {
-        const keyOrIndex = Struct.renderKeyName(key, this.entries._useAsterisk);
-        const equalsOrColon = value instanceof Struct ? ":" : "=";
-        const spaceOrNoSpace = value === "" ? "" : " ";
-        return Struct.pad(
-          `${keyOrIndex} ${equalsOrColon}${spaceOrNoSpace}${value}`,
-        );
+        const nameAlreadyRendered =
+          value instanceof Struct && value.__internal__.rawName;
+        const useAsterisk = internal.isArray && internal.useAsterisk;
+        let keyOrIndex = "";
+        let equalsOrColon = "";
+        let spaceOrNoSpace = "";
+        if (!nameAlreadyRendered) {
+          keyOrIndex = renderKeyName(key, useAsterisk) + " ";
+          equalsOrColon = value instanceof Struct ? ":" : "=";
+          spaceOrNoSpace = value === "" ? "" : " ";
+        }
+
+        return pad(`${keyOrIndex}${equalsOrColon}${spaceOrNoSpace}${value}`);
       })
       .join("\n");
     text += "\nstruct.end";
     return text;
   }
 
-  toTs(pretty = false): string {
-    const collect = (struct: Struct) => {
-      const obj = {};
-      if (struct.entries) {
-        Object.entries(struct.entries)
-          .filter(([key]) => !defaultEntries.has(key))
-          .forEach(([key, value]) => {
-            if (value instanceof Struct) {
-              obj[key] = collect(value);
-            } else {
-              obj[key] = value;
-            }
-          });
-      }
-      return obj;
-    };
-    return JSON.stringify(collect(this), null, pretty ? 2 : 0);
-  }
-
-  static addEntry(
-    parent: Struct<DefaultEntries>,
-    key: string,
-    value: Value,
-    index: number,
-  ) {
-    parent.entries ||= {};
-
-    const getKey = () => {
-      let normKey: string | number = key;
-      if (Struct.isArrayKey(key)) {
-        parent.entries._isArray = true;
-        normKey = Struct.extractKeyFromBrackets(key);
-
-        if (normKey === "*") {
-          parent.entries._useAsterisk = true;
-          return Object.keys(parent.entries).length;
-        }
-
-        if (parent.entries[normKey] !== undefined) {
-          return `${normKey}_dupe_${index}`;
-        }
-        return normKey;
-      }
-      if (parent.entries[normKey] !== undefined) {
-        return `${normKey}_dupe_${index}`;
-      }
-      return normKey;
-    };
-
-    parent.entries[getKey()] = value;
-  }
-
   static fromString<IntendedType extends Partial<Struct> = Struct>(
     text: string,
   ): IntendedType[] {
-    const lines = text.trim().split("\n");
-
-    const parseHead = (line: string, index: number): Struct => {
-      const match = line.match(
-        /^(.*)\s*:\s*struct\.begin\s*({\s*((refurl|refkey|bskipref)\s*(=.+)?)\s*})?/,
-      );
-      if (!match) {
-        throw new Error(`Invalid struct head: ${line}`);
-      }
-      let name =
-        Struct.parseStructName(match[1].trim()) || `UnnamedStruct${index}`;
-
-      const dummy = new (Struct.createDynamicClass(name))();
-      dummy._id = match[1].trim();
-      if (match[3]) {
-        const refs = match[3]
-          .split(";")
-          .map((ref) => ref.trim())
-          .filter(Boolean)
-          .reduce(
-            (acc, ref) => {
-              const [key, value] = ref.split("=");
-              acc[key.trim()] = value ? value.trim() : true;
-              return acc;
-            },
-            {} as { refurl?: string; refkey?: string; bskipref?: boolean },
-          );
-        if (refs.refurl) dummy.refurl = refs.refurl;
-        if (refs.refkey) dummy.refkey = refs.refkey;
-        if (refs.bskipref) dummy.bskipref = refs.bskipref;
-      }
-      return dummy as Struct;
-    };
-
-    const parseKeyValue = (line: string, parent: Struct): void => {
-      const match = line.match(/^(.*?)(\s*:\s*|\s*=\s*)(.*)$/);
-      if (!match) {
-        throw new Error(`Invalid key-value pair: ${line}`);
-      }
-      const key = match[1].trim();
-      let value: string | number | boolean = match[3].trim();
-      if (value === "true" || value === "false") {
-        value = value === "true";
-      } else {
-        try {
-          // understand +- 0.1f / 1. / 0.f / .1 / .1f -> ((\d*)\.?(\d+)|(\d+)\.?(\d*))f?
-          const matches = value.match(/^(-?)(\d*)\.?(\d*)f?$/);
-          const minus = matches[1];
-          const first = matches[2];
-          const second = matches[3];
-          if (first || second) {
-            value = parseFloat(
-              `${minus ? "-" : ""}${first || 0}${second ? `.${second}` : ""}`,
-            );
-          } else {
-            value = JSON.parse(value);
-          }
-        } catch (e) {}
-      }
-      Struct.addEntry(parent, key, value, index);
-    };
-    let index = 0;
-
-    const walk = () => {
-      const roots: Struct[] = [];
-      const stack = [];
-      while (index < lines.length) {
-        const line = lines[index++].trim();
-        if (line.startsWith("#") || line.startsWith("//")) {
-          continue; // Skip comments
-        }
-        const current = stack[stack.length - 1];
-        if (line.includes("struct.begin")) {
-          const newStruct = parseHead(line, index);
-          if (current) {
-            const key = Struct.renderStructName(newStruct.constructor.name);
-            Struct.addEntry(current, key, newStruct, index);
-          } else {
-            newStruct.isRoot = true;
-            roots.push(newStruct);
-          }
-          stack.push(newStruct);
-        } else if (line.includes("struct.end")) {
-          stack.pop();
-        } else if (line.includes("=") && current) {
-          parseKeyValue(line, current);
-        }
-      }
-      return roots;
-    };
-
-    return walk() as IntendedType[];
+    return walk(text.trim().split("\n")) as IntendedType[];
   }
+}
+
+export class Refs implements DefaultEntries {
+  rawName?: string;
+  refurl?: string;
+  refkey?: string | number;
+  bskipref?: boolean;
+  bpatch?: boolean;
+  isArray?: boolean;
+  useAsterisk?: boolean;
+
+  constructor(ref?: string | object) {
+    if (typeof ref === "string") {
+      ref
+        .split(";")
+        .map((ref) => ref.trim())
+        .filter(Boolean)
+        .reduce((acc, ref) => {
+          const [key, value] = ref.split("=");
+          if (KEYWORDS.includes(key.trim())) {
+            acc[key.trim()] = value ? value.trim() : true;
+          }
+          return acc;
+        }, this);
+    }
+    if (typeof ref === "object") {
+      Object.assign(this, ref);
+    }
+  }
+
+  toString() {
+    return KEYWORDS.map((k) => [k, this[k]])
+      .filter(([_, v]) => v !== "" && v !== undefined && v !== false)
+      .map(([k, v]) => {
+        if (v === true) return k;
+        if (k === "refkey") {
+          return `${k}=${renderKeyName(`${v}`, this.useAsterisk)}`;
+        }
+        return `${k}=${v}`;
+      })
+      .join(";");
+  }
+}
+
+const structHeadRegex = new RegExp(
+  `^(.*)\\s*:\\s*struct\\.begin\\s*({\\s*((${KEYWORDS.join("|")})\\s*(=.+)?)\\s*})?`,
+);
+
+function parseHead(line: string, index: number): Struct {
+  const match = line.match(structHeadRegex);
+  if (!match) {
+    throw new Error(`Invalid struct head: ${line}`);
+  }
+
+  const dummy = createDynamicClassInstance(match[1].trim(), index);
+  if (match[3]) {
+    Object.assign(dummy.__internal__, new Refs(match[3]));
+  }
+
+  return dummy as Struct;
+}
+
+export function pad(text: string): string {
+  return `${TAB}${text.replace(/\n+/g, `\n${TAB}`)}`;
+}
+
+function isNumber(ref: string): boolean {
+  return Number.isInteger(parseInt(ref)) || typeof ref === "number";
+}
+
+export function createDynamicClassInstance<T extends Struct = Struct>(
+  rawName: string,
+  index?: number,
+): T {
+  const name = parseStructName(rawName) || `UnnamedStruct${index}`;
+  return new (new Function(
+    "parent",
+    "Refs",
+    `return class ${name} extends parent {
+      __internal__ = new Refs({ rawName: "${rawName.trim()}" });
+    }`,
+  )(Struct, Refs))() as T;
+}
+
+function parseKeyValue(line: string, parent: Struct, index: number): void {
+  const match = line.match(/^(.*?)(\s*:\s*|\s*=\s*)(.*)$/);
+  if (!match) {
+    throw new Error(`Invalid key-value pair: ${line}`);
+  }
+
+  const key = parseKey(match[1].trim(), parent, index);
+
+  parent[key] = parseValue(match[3].trim());
+}
+
+function walk(lines: string[]) {
+  const roots: Struct[] = [];
+  const stack = [];
+  let index = 0;
+  while (index < lines.length) {
+    const line = lines[index++].trim();
+    if (line.startsWith("#") || line.startsWith("//")) {
+      continue; // Skip comments
+    }
+    const current = stack[stack.length - 1];
+
+    if (line.includes("struct.begin")) {
+      const newStruct = parseHead(line, index);
+      if (current) {
+        const key = parseKey(
+          renderStructName(newStruct.constructor.name),
+          current,
+          index,
+        );
+        current[key] = newStruct;
+      } else {
+        roots.push(newStruct);
+      }
+      stack.push(newStruct);
+    } else if (line.includes("struct.end")) {
+      stack.pop();
+    } else if (line.includes("=") && current) {
+      parseKeyValue(line, current, index);
+    }
+  }
+  return roots;
+}
+
+function parseKey(key: string, parent: Struct, index: number) {
+  let normKey: string | number = key;
+
+  if (key.startsWith("[") && key.endsWith("]")) {
+    parent.__internal__.isArray = true;
+    normKey = extractKeyFromBrackets(key);
+
+    if (normKey === "*") {
+      parent.__internal__.useAsterisk = true;
+      return Object.keys(parent).length - 1;
+    }
+
+    if (parent[normKey] !== undefined) {
+      return `${normKey}_dupe_${index}`;
+    }
+    return normKey;
+  }
+  if (parent[normKey] !== undefined) {
+    return `${normKey}_dupe_${index}`;
+  }
+  return normKey;
+}
+
+function parseValue(value: string): Value {
+  if (value === "true" || value === "false") {
+    return value === "true";
+  }
+  try {
+    // understand +- 0.1f / 1. / 0.f / .1 / .1f -> ((\d*)\.?(\d+)|(\d+)\.?(\d*))f?
+    const matches = value.match(/^(-?)(\d*)\.?(\d*)f?$/);
+    const minus = matches[1];
+    const first = matches[2];
+    const second = matches[3];
+    if (first || second) {
+      return parseFloat(
+        `${minus ? "-" : ""}${first || 0}${second ? `.${second}` : ""}`,
+      );
+    }
+    return JSON.parse(value);
+  } catch (e) {
+    return value;
+  }
+}
+
+function renderStructName(name: string): string {
+  if (name === WILDCARD) {
+    return "[*]"; // Special case for wildcard structs
+  }
+  if (`${name}`.startsWith("_")) {
+    return renderStructName(name.slice(1)); // Special case for indexed structs
+  }
+  if (isNumber(name)) {
+    return `[${parseInt(name)}]`;
+  }
+  return name;
+}
+
+function renderKeyName(key: string, useAsterisk?: boolean): string {
+  if (`${key}`.startsWith("_")) {
+    return renderKeyName(key.slice(1), useAsterisk); // Special case for indexed structs
+  }
+  if (`${key}`.includes("*") || useAsterisk) {
+    return "[*]"; // Special case for wildcard structs
+  }
+  if (`${key}`.includes("_dupe_")) {
+    return renderKeyName(key.slice(0, key.indexOf("_dupe_")));
+  }
+  if (isNumber(key)) {
+    return `[${parseInt(key)}]`;
+  }
+  return key;
+}
+
+function extractKeyFromBrackets(key: string) {
+  if (/\[(.+)]/.test(key)) {
+    return key.match(/\[(.+)]/)[1];
+  }
+  return "";
+}
+
+function parseStructName(name: string): string {
+  if (extractKeyFromBrackets(name) === "*") {
+    return WILDCARD; // Special case for wildcard structs
+  }
+  if (isNumber(extractKeyFromBrackets(name))) {
+    return `_${name.match(/\[(\d+)]/)[1]}`; // Special case for indexed structs
+  }
+  return name
+    .replace(/\W/g, "_")
+    .replace(/^\d+/, "_")
+    .replace(/_+/g, "_")
+    .replace(/^_+/, "");
 }

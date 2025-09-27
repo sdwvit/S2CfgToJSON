@@ -1,7 +1,7 @@
 {
   "name": "s2cfgtojson",
-  "version": "2.2.14",
-  "description": "Converts Stalker 2 Cfg file into a POJO",
+  "version": "2.3.0",
+  "description": "Converts Stalker 2 Cfg file into POJOs",
   "keywords": [
     "stalker",
     "unrealengine",
@@ -27,9 +27,10 @@
     "test": "vitest"
   },
   "devDependencies": {
-    "vitest": "^3.2.4",
+    "@types/node": "^24.5.2",
+    "prettier": "^3.6.2",
     "typescript": "^5.8.3",
-    "prettier": "^3.6.2"
+    "vitest": "^3.2.4"
   },
   "engines": {
     "node": ">=24"

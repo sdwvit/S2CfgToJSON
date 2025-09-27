@@ -1,34 +1,40 @@
 import { describe, test, expect } from "vitest";
-import { ERank, Struct } from "./Struct.mjs";
+import { createDynamicClassInstance, ERank, pad, Struct } from "./Struct.mjs";
+import fs from "node:fs";
 
 class ChimeraHPFix extends Struct {
-  _id = "ChimeraHPFix";
-  bskipref = true;
-  entries = { MaxHP: 750 };
-  isRoot = true;
+  __internal__ = {
+    rawName: "ChimeraHPFix",
+    bskipref: true,
+  };
+
+  MaxHP = 750;
 }
 class TradePrototype extends Struct {
-  _id = "TradersDontBuyWeaponsArmor";
-  refurl = "../TradePrototypes.cfg";
-  refkey = 0;
-  isRoot = true;
-  entries = { TradeGenerators: new TradeGenerators() };
+  __internal__ = {
+    rawName: "TradersDontBuyWeaponsArmor",
+    refurl: "../TradePrototypes.cfg",
+    refkey: 0,
+  };
+
+  TradeGenerators = new TradeGenerators();
 }
 class TradeGenerators extends Struct {
-  _id = "TradeGenerators";
-  entries = { "*": new TradeGenerator() };
+  "*" = new TradeGenerator();
 }
 class TradeGenerator extends Struct {
-  _id = "TradeGenerator";
-  entries = { BuyLimitations: new BuyLimitations() };
+  BuyLimitations = new BuyLimitations();
 }
+
 class BuyLimitations extends Struct {
-  _id = "BuyLimitations";
-  entries = { [0]: "EItemType::Weapon", [1]: "EItemType::Armor" };
+  [0] = "EItemType::Weapon";
+  [1] = "EItemType::Armor";
 }
 
 describe("Struct", () => {
   test("toString()", () => {
+    const c = new ChimeraHPFix();
+    expect(c.MaxHP).toBe(750);
     expect(new ChimeraHPFix().toString()).toBe(
       `ChimeraHPFix : struct.begin {bskipref}
    MaxHP = 750
@@ -50,23 +56,16 @@ struct.end`,
   });
 
   test("pad()", () => {
-    expect(Struct.pad("test")).toBe("   test");
-    expect(Struct.pad(Struct.pad("test"))).toBe("      test");
+    expect(pad("test")).toBe("   test");
+    expect(pad(pad("test"))).toBe("      test");
   });
 
-  describe("toTs()", () => {
+  describe("createDynamicClassInstance", () => {
     test("1", () => {
-      expect(new TradePrototype().toTs()).toBe(
-        JSON.stringify({
-          TradeGenerators: {
-            "*": {
-              BuyLimitations: {
-                "0": "EItemType::Weapon",
-                "1": "EItemType::Armor",
-              },
-            },
-          },
-        }),
+      const instance = createDynamicClassInstance("DynamicClass");
+      expect(instance).toBeInstanceOf(Struct);
+      expect(instance.toString()).toBe(
+        `DynamicClass : struct.begin\n\nstruct.end`,
       );
     });
   });
@@ -197,15 +196,57 @@ struct.end`;
          N5 = .1f
          N6 = -2.22f
        struct.end`;
-      const str = Struct.fromString<Struct<{ [key: `N${number}`]: number }>>(
+      const str = Struct.fromString<Struct & { [key: `N${number}`]: number }>(
         dynamicItemGeneratorText,
       );
-      expect(str[0].entries.N1).toBe(0.1);
-      expect(str[0].entries.N2).toBe(1);
-      expect(str[0].entries.N3).toBe(0);
-      expect(str[0].entries.N4).toBe(0.1);
-      expect(str[0].entries.N5).toBe(0.1);
-      expect(str[0].entries.N6).toBe(-2.22);
+      expect(str[0].N1).toBe(0.1);
+      expect(str[0].N2).toBe(1);
+      expect(str[0].N3).toBe(0);
+      expect(str[0].N4).toBe(0.1);
+      expect(str[0].N5).toBe(0.1);
+      expect(str[0].N6).toBe(-2.22);
+    });
+
+    test("5", () => {
+      const testCfg = fs.readFileSync("./test.cfg", "utf-8").trim();
+      const structs = Struct.fromString(testCfg);
+      expect(structs.map((s) => s.toString()).join("\n")).toBe(testCfg);
+    });
+  });
+
+  describe("fork", () => {
+    test("1", () => {
+      const a = new TradePrototype();
+      const b = a.fork() as TradePrototype;
+
+      expect(a === b).toBe(false);
+      b.TradeGenerators = new TradeGenerators().fork();
+      expect(b.toString()).toBe(
+        "TradersDontBuyWeaponsArmor : struct.begin {bpatch}\n" +
+          "   TradeGenerators : struct.begin {bpatch}\n" +
+          "   struct.end\n" +
+          "struct.end",
+      );
+    });
+  });
+
+  describe("clone", () => {
+    test("1", () => {
+      const a = new TradePrototype();
+      const b = a.clone() as TradePrototype;
+
+      expect(a === b).toBe(false);
+      expect(a.toString()).toBe(b.toString());
+    });
+  });
+
+  describe("removeNode", () => {
+    test("1", () => {
+      const a = new TradePrototype().fork(true);
+      expect(a.TradeGenerators[0].BuyLimitations[0]).toBe("EItemType::Weapon");
+      expect(a.TradeGenerators[0].BuyLimitations[1]).toBe("EItemType::Armor");
+      a.TradeGenerators[0].BuyLimitations.removeNode(0);
+      expect(a.TradeGenerators[0].BuyLimitations[0]).toBe("removenode");
     });
   });
 });

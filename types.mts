@@ -67,23 +67,28 @@ import {
   EMeshSubType,
 } from "./enums.mjs";
 
-export interface Struct<T extends Entries = {}> {
-  isRoot?: boolean;
+export type Internal = "__internal__";
+export type Struct = {
+  [k in Internal]: DefaultEntries;
+};
+
+export interface DefaultEntries {
+  rawName?: string;
   refurl?: string;
   refkey?: string | number;
   bskipref?: boolean;
-  _id: string;
-  entries: T;
-  toTs(): string;
+  bpatch?: boolean;
+
+  isArray?: boolean;
+  useAsterisk?: boolean;
 }
-export type DefaultEntries = { _isArray?: boolean; _useAsterisk?: boolean };
 
-export type Value = Omit<Struct, "toTs"> | string | boolean | number;
+export type Value = string | boolean | number;
 
-export type Entries = Record<string | number, Value> & DefaultEntries;
+export type Entries = Record<string | number, Value>;
 
-export type GetTsType<In extends Struct, E = In["entries"]> = {
-  [key in Exclude<keyof E, keyof DefaultEntries>]: E[key] extends Struct
+export type GetTsType<E extends Struct> = {
+  [key in Exclude<keyof E, Internal>]: E[key] extends Struct
     ? GetTsType<E[key]>
     : E[key];
 };
@@ -91,9 +96,9 @@ type RKey<In> = Exclude<keyof In, keyof DefaultEntries>;
 
 export type GetStructType<In> =
   In extends Array<any>
-    ? Struct<{ [key: number]: GetStructType<In[number]> }>
+    ? Struct & { [key in number]: GetStructType<In[key]> }
     : In extends Record<any, any>
-      ? Struct<{ [key in RKey<In>]: GetStructType<In[key]> }>
+      ? Struct & { [key in RKey<In>]: GetStructType<In[key]> }
       : In extends string
         ? In
         : In extends number
