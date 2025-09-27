@@ -16,7 +16,7 @@ const REMOVE_NODE = "removenode";
  * This file is part of the Stalker 2 Modding Tools project.
  * This is a base class for all structs.
  */
-export abstract class Struct implements IStruct {
+export class Struct implements IStruct {
   __internal__: Refs = new Refs();
 
   /**
