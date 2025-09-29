@@ -3,9 +3,9 @@ import {
   createDynamicClassInstance,
   ERank,
   pad,
-  IStruct,
   Struct,
   ArmorPrototype,
+  Refs,
 } from "./Struct.mjs";
 import fs from "node:fs";
 
@@ -27,15 +27,23 @@ class TradePrototype extends Struct {
   TradeGenerators = new TradeGenerators();
 }
 class TradeGenerators extends Struct {
-  "*" = new TradeGenerator();
+  __internal__ = new Refs({
+    isArray: true,
+    useAsterisk: true,
+  });
+  "0" = new TradeGenerator();
 }
 class TradeGenerator extends Struct {
   BuyLimitations = new BuyLimitations();
 }
 
 class BuyLimitations extends Struct {
-  [0] = "EItemType::Weapon";
-  [1] = "EItemType::Armor";
+  __internal__ = new Refs({
+    rawName: "BuyLimitations",
+    isArray: true,
+  });
+  "0" = "EItemType::Weapon";
+  "1" = "EItemType::Armor";
 }
 
 describe("Struct", () => {
@@ -203,7 +211,7 @@ struct.end`;
          N5 = .1f
          N6 = -2.22f
        struct.end`;
-      const str = Struct.fromString<IStruct & { [key: `N${number}`]: number }>(
+      const str = Struct.fromString<{ [key: `N${number}`]: number }>(
         dynamicItemGeneratorText,
       );
       expect(str[0].N1).toBe(0.1);
@@ -237,6 +245,55 @@ struct.end`;
     });
   });
 
+  describe("addNode", () => {
+    test("1", () => {
+      const a = new TradePrototype().fork(true);
+      expect(a.TradeGenerators[0].BuyLimitations[0]).toBe("EItemType::Weapon");
+      expect(a.TradeGenerators[0].BuyLimitations[1]).toBe("EItemType::Armor");
+      a.TradeGenerators[0].BuyLimitations.addNode("EItemType::Artifact");
+      expect(a.TradeGenerators[0].BuyLimitations[2]).toBe(
+        "EItemType::Artifact",
+      );
+    });
+  });
+
+  describe("forEach", () => {
+    test("1", () => {
+      const a = new TradePrototype().fork(true);
+      expect(a.TradeGenerators[0].BuyLimitations[0]).toBe("EItemType::Weapon");
+      expect(a.TradeGenerators[0].BuyLimitations[1]).toBe("EItemType::Armor");
+      a.TradeGenerators[0].BuyLimitations.forEach(([k]) => {
+        a.TradeGenerators[0].BuyLimitations[k] = "forEach";
+      });
+      expect(a.TradeGenerators[0].BuyLimitations[0]).toBe("forEach");
+      expect(a.TradeGenerators[0].BuyLimitations[1]).toBe("forEach");
+    });
+  });
+
+  describe("filter", () => {
+    test("1", () => {
+      const a = new TradePrototype().fork(true);
+      expect(a.TradeGenerators[0].BuyLimitations[0]).toBe("EItemType::Weapon");
+      expect(a.TradeGenerators[0].BuyLimitations[1]).toBe("EItemType::Armor");
+      const b = a.TradeGenerators[0].BuyLimitations.filter(([k]) => k === "0");
+      expect(b[0]).toBe("EItemType::Weapon");
+      expect(b[1]).toBeUndefined();
+    });
+  });
+
+  describe("map", () => {
+    test("1", () => {
+      const a = new TradePrototype();
+      expect(a.TradeGenerators[0].BuyLimitations[0]).toBe("EItemType::Weapon");
+      expect(a.TradeGenerators[0].BuyLimitations[1]).toBe("EItemType::Armor");
+      const b = a.TradeGenerators[0].BuyLimitations.map(
+        ([k, v]) => `${v}-mapped-${k}`,
+      );
+      expect(b[0]).toBe("EItemType::Weapon-mapped-0");
+      expect(b[1]).toBe("EItemType::Armor-mapped-1");
+    });
+  });
+
   describe("clone", () => {
     test("1", () => {
       const a = new TradePrototype();
@@ -252,7 +309,7 @@ struct.end`;
       const a = new TradePrototype().fork(true);
       expect(a.TradeGenerators[0].BuyLimitations[0]).toBe("EItemType::Weapon");
       expect(a.TradeGenerators[0].BuyLimitations[1]).toBe("EItemType::Armor");
-      a.TradeGenerators[0].BuyLimitations.removeNode(0);
+      a.TradeGenerators[0].BuyLimitations.removeNode("0");
       expect(a.TradeGenerators[0].BuyLimitations[0]).toBe("removenode");
     });
   });
@@ -261,4 +318,4 @@ struct.end`;
 // noinspection JSUnusedLocalSymbols
 const MyRank: ERank = "ERank::Experienced, ERank::Veteran, ERank::Master";
 // noinspection BadExpressionStatementJS
-(({}) as ArmorPrototype).Protection;
+({}) as ArmorPrototype["MeshGenerator"];

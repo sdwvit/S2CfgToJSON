@@ -68,10 +68,31 @@ import {
 } from "./enums.mjs";
 import { Struct } from "./Struct.mjs";
 
-export type Internal = "__internal__";
-export type IStruct = {
-  [k in Internal]: DefaultEntries;
+export type Internal =
+  | "__internal__"
+  | "fork"
+  | "removeNode"
+  | "addNode"
+  | "clone"
+  | "forEach"
+  | "filter"
+  | "map"
+  | "entries"
+  | "toString";
+
+export type DeeplyPartial<T> = {
+  [P in keyof T]?: T[P] extends Array<infer U>
+    ? Array<DeeplyPartial<U>>
+    : T[P] extends ReadonlyArray<infer U>
+      ? ReadonlyArray<DeeplyPartial<U>>
+      : T[P] extends object
+        ? DeeplyPartial<T[P]>
+        : T[P];
 };
+
+export type DeeplyPartialStruct<T> = DeeplyPartial<
+  T extends Struct ? Exclude<T, Internal> : T
+>;
 
 export interface DefaultEntries {
   rawName?: string;
@@ -84,11 +105,9 @@ export interface DefaultEntries {
   useAsterisk?: boolean;
 }
 
-export type Value = string | boolean | number;
-export type Entries = Record<string | number, Value>;
 export type GetStructType<In> =
   In extends Array<any>
-    ? Struct & { [key in number]: GetStructType<In[key]> }
+    ? Struct & { [key: `${number}`]: GetStructType<In[typeof key]> }
     : In extends Record<any, any>
       ? Struct & { [key in keyof In]: GetStructType<In[key]> }
       : In extends string
@@ -747,7 +766,7 @@ export type DynamicItemGenerator = GetStructType<{
       Category: EItemGenerationCategory;
       PlayerRank: ERank;
       bAllowSameCategoryGeneration: boolean;
-      ReputationThreshold: string;
+      ReputationThreshold: number;
       RefreshTime: string;
       PossibleItems: {
         ItemPrototypeSID: string;

@@ -1,6 +1,6 @@
 export * from "./types.mts";
 export * from "./enums.mts";
-import { DefaultEntries, IStruct, Value } from "./types.mts";
+import { DefaultEntries, Internal } from "./types.mts";
 
 const TAB = "   ";
 const WILDCARD = "_wildcard";
@@ -11,12 +11,23 @@ const KEYWORDS = [
   "bpatch", // allows patching only specific keys
 ];
 const REMOVE_NODE = "removenode";
+const INTERNAL_PROPS = new Set([
+  "__internal__",
+  "fork",
+  "removeNode",
+  "addNode",
+  "clone",
+  "forEach",
+  "filter",
+  "map",
+  "toString",
+] satisfies Array<keyof Struct>);
 
 /**
  * This file is part of the Stalker 2 Modding Tools project.
  * This is a base class for all structs.
  */
-export class Struct implements IStruct {
+export class Struct {
   __internal__: Refs = new Refs();
 
   /**
@@ -62,36 +73,102 @@ export class Struct implements IStruct {
     return this;
   }
 
+  addNode(value: any, key?: string | number): this {
+    if (this.__internal__.isArray !== true) {
+      throw new Error("Cannot add node to non-array struct.");
+    }
+    if (key === undefined) {
+      const nextIndex = Object.keys(this)
+        .map((k) => parseInt(k))
+        .filter((k) => !isNaN(k))
+        .sort((a, b) => a - b)
+        .pop();
+      this[nextIndex !== undefined ? nextIndex + 1 : 0] = value;
+    } else {
+      this[key] = value;
+    }
+    return this;
+  }
+
   clone() {
     return Struct.fromString(this.toString())[0] as this;
+  }
+
+  entries<
+    K extends Exclude<keyof this, Internal>,
+    V extends (typeof this)[K],
+  >() {
+    return Object.entries(this).filter(
+      ([key]) => !INTERNAL_PROPS.has(key as any),
+    ) as [K, V][];
+  }
+
+  forEach<K extends Exclude<keyof this, Internal>, V extends (typeof this)[K]>(
+    callback: ([key, value]: [K, V], i: number, arr: [K, V][]) => void,
+  ): void {
+    this.entries().forEach(([key, value], i, arr) =>
+      callback([key as K, value as V], i, arr as any),
+    );
+  }
+
+  /**
+   * Filters the struct entries based on a callback function. Returns a copy.
+   * @param callback
+   */
+  filter<K extends Exclude<keyof this, Internal>, V extends (typeof this)[K]>(
+    callback: ([key, value]: [K, V], i: number, arr: [K, V][]) => boolean,
+  ): Partial<this> & Struct {
+    const clone = this.clone();
+    clone.entries().forEach(([key, value], i, arr) => {
+      if (!callback([key as K, value as V], i, arr as any)) {
+        delete clone[key];
+      }
+    });
+    return clone;
+  }
+
+  /**
+   * Maps the struct entries based on a callback function. Returns a copy.
+   * @param callback
+   */
+  map<K extends Exclude<keyof this, Internal>, V extends (typeof this)[K]>(
+    callback: ([key, value]: [K, V], i: number, arr: [K, V][]) => V,
+  ): this {
+    const clone = this.clone();
+    clone.entries().forEach(([key, value], i, arr) => {
+      clone[key] = callback([key as K, value as V], i, arr as any);
+    });
+    return clone;
   }
 
   toString(): string {
     if (!(this.__internal__ instanceof Refs)) {
       this.__internal__ = new Refs(this.__internal__);
     }
-    const { __internal__: internal, ...entries } = this;
 
-    let text: string = internal.rawName ? `${internal.rawName} : ` : "";
+    let text: string = this.__internal__.rawName
+      ? `${this.__internal__.rawName} : `
+      : "";
     text += "struct.begin";
 
-    const refs = internal.toString();
+    const refs = this.__internal__.toString();
     if (refs) {
       text += ` {${refs}}`;
     }
 
     text += "\n";
     // Add all keys
-    text += Object.entries(entries || {})
+    text += this.entries()
       .map(([key, value]) => {
         const nameAlreadyRendered =
           value instanceof Struct && value.__internal__.rawName;
-        const useAsterisk = internal.isArray && internal.useAsterisk;
+        const useAsterisk =
+          this.__internal__.isArray && this.__internal__.useAsterisk;
         let keyOrIndex = "";
         let equalsOrColon = "";
         let spaceOrNoSpace = "";
         if (!nameAlreadyRendered) {
-          keyOrIndex = renderKeyName(key, useAsterisk) + " ";
+          keyOrIndex = renderKeyName(key as string, useAsterisk) + " ";
           equalsOrColon = value instanceof Struct ? ":" : "=";
           spaceOrNoSpace = value === "" ? "" : " ";
         }
@@ -103,10 +180,8 @@ export class Struct implements IStruct {
     return text;
   }
 
-  static fromString<IntendedType extends Partial<Struct> = Struct>(
-    text: string,
-  ): IntendedType[] {
-    return walk(text.trim().split("\n")) as IntendedType[];
+  static fromString<IntendedType>(text: string): (IntendedType & Struct)[] {
+    return walk(text.trim().split("\n")) as any[];
   }
 }
 
@@ -119,7 +194,7 @@ export class Refs implements DefaultEntries {
   isArray?: boolean;
   useAsterisk?: boolean;
 
-  constructor(ref?: string | object) {
+  constructor(ref?: string | Refs) {
     if (typeof ref === "string") {
       ref
         .split(";")
@@ -153,7 +228,7 @@ export class Refs implements DefaultEntries {
 }
 
 const structHeadRegex = new RegExp(
-  `^(.*)\\s*:\\s*struct\\.begin\\s*({\\s*((${KEYWORDS.join("|")})\\s*(=.+)?)\\s*})?`,
+  `^\s*(.*)\\s*:\\s*struct\\.begin\\s*({\\s*((${KEYWORDS.join("|")})\\s*(=.+)?)\\s*})?`,
 );
 
 function parseHead(line: string, index: number): Struct {
@@ -259,7 +334,7 @@ export function parseKey(key: string, parent: Struct, index: number) {
   return normKey;
 }
 
-function parseValue(value: string): Value {
+function parseValue(value: string): string | number | boolean {
   if (value === "true" || value === "false") {
     return value === "true";
   }
@@ -274,10 +349,8 @@ function parseValue(value: string): Value {
         `${minus ? "-" : ""}${first || 0}${second ? `.${second}` : ""}`,
       );
     }
-    return JSON.parse(value);
-  } catch (e) {
-    return value;
-  }
+  } catch (e) {}
+  return value;
 }
 
 function renderStructName(name: string): string {
