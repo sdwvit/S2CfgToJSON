@@ -51,6 +51,9 @@ export class Struct {
       : createDynamicClassInstance(
           this.__internal__.rawName || this.constructor.name,
         );
+    patch.__internal__.isRoot = this.__internal__.isRoot;
+    patch.__internal__.isArray = this.__internal__.isArray;
+    patch.__internal__.useAsterisk = this.__internal__.useAsterisk;
 
     function markAsbPatch(s: Struct) {
       s.__internal__.bpatch = true;
@@ -91,7 +94,11 @@ export class Struct {
   }
 
   clone() {
-    return Struct.fromString(this.toString())[0] as this;
+    const isRoot = this.__internal__.isRoot;
+    this.__internal__.isRoot = true;
+    const newInstance = Struct.fromString(this.toString())[0] as this;
+    this.__internal__.isRoot = isRoot;
+    return newInstance;
   }
 
   entries<
@@ -137,6 +144,9 @@ export class Struct {
     const clone = this.clone();
     clone.entries().forEach(([key, value], i, arr) => {
       clone[key] = callback([key as K, value as V], i, arr as any);
+      if (clone[key] === null || clone[key] === undefined) {
+        delete clone[key];
+      }
     });
     return clone;
   }
@@ -146,7 +156,7 @@ export class Struct {
       this.__internal__ = new Refs(this.__internal__);
     }
 
-    let text: string = this.__internal__.rawName
+    let text: string = this.__internal__.isRoot
       ? `${this.__internal__.rawName} : `
       : "";
     text += "struct.begin";
@@ -161,7 +171,7 @@ export class Struct {
     text += this.entries()
       .map(([key, value]) => {
         const nameAlreadyRendered =
-          value instanceof Struct && value.__internal__.rawName;
+          value instanceof Struct && value.__internal__.isRoot;
         const useAsterisk =
           this.__internal__.isArray && this.__internal__.useAsterisk;
         let keyOrIndex = "";
@@ -192,6 +202,7 @@ export class Refs implements DefaultEntries {
   bskipref?: boolean;
   bpatch?: boolean;
   isArray?: boolean;
+  isRoot?: boolean;
   useAsterisk?: boolean;
 
   constructor(ref?: string | Refs) {
@@ -228,7 +239,7 @@ export class Refs implements DefaultEntries {
 }
 
 const structHeadRegex = new RegExp(
-  `^\s*(.*)\\s*:\\s*struct\\.begin\\s*({\\s*((${KEYWORDS.join("|")})\\s*(=.+)?)\\s*})?`,
+  `^\s*((.*)\\s*:)?\\s*struct\\.begin\\s*({\\s*((${KEYWORDS.join("|")})\\s*(=.+)?)\\s*})?`,
 );
 
 function parseHead(line: string, index: number): Struct {
@@ -237,9 +248,13 @@ function parseHead(line: string, index: number): Struct {
     throw new Error(`Invalid struct head: ${line}`);
   }
 
-  const dummy = createDynamicClassInstance(match[1].trim(), index);
+  const dummy = createDynamicClassInstance(match[2]?.trim() || "", index);
   if (match[3]) {
-    Object.assign(dummy.__internal__, new Refs(match[3]));
+    const parsed = new Refs(match[4]);
+    dummy.__internal__.refurl = parsed.refurl;
+    dummy.__internal__.refkey = parsed.refkey;
+    dummy.__internal__.bskipref = parsed.bskipref;
+    dummy.__internal__.bpatch = parsed.bpatch;
   }
 
   return dummy as Struct;
@@ -299,6 +314,7 @@ function walk(lines: string[]) {
         );
         current[key] = newStruct;
       } else {
+        newStruct.__internal__.isRoot = true;
         roots.push(newStruct);
       }
       stack.push(newStruct);

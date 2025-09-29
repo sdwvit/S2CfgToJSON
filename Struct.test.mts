@@ -12,6 +12,7 @@ import fs from "node:fs";
 class ChimeraHPFix extends Struct {
   __internal__ = {
     rawName: "ChimeraHPFix",
+    isRoot: true,
     bskipref: true,
   };
 
@@ -22,6 +23,7 @@ class TradePrototype extends Struct {
     rawName: "TradersDontBuyWeaponsArmor",
     refurl: "../TradePrototypes.cfg",
     refkey: 0,
+    isRoot: true,
   };
 
   TradeGenerators = new TradeGenerators();
@@ -78,6 +80,8 @@ struct.end`,
   describe("createDynamicClassInstance", () => {
     test("1", () => {
       const instance = createDynamicClassInstance("DynamicClass");
+      instance.__internal__.isRoot = true;
+
       expect(instance).toBeInstanceOf(Struct);
       expect(instance.toString()).toBe(
         `DynamicClass : struct.begin\n\nstruct.end`,
