@@ -122,16 +122,20 @@ export class Struct {
    * Filters the struct entries based on a callback function. Returns a copy.
    * @param callback
    */
-  filter<K extends Exclude<keyof this, Internal>, V extends (typeof this)[K]>(
-    callback: ([key, value]: [K, V], i: number, arr: [K, V][]) => boolean,
-  ): Partial<this> & Struct {
+  filter<
+    K extends Exclude<keyof this, Internal>,
+    V extends (typeof this)[K],
+    S extends [K, V],
+  >(
+    callback: (value: [K, V], index: number, array: [K, V][]) => value is S,
+  ): Record<K, V> & Struct {
     const clone = this.clone();
-    clone.entries().forEach(([key, value], i, arr) => {
-      if (!callback([key as K, value as V], i, arr as any)) {
-        delete clone[key];
+    clone.entries().forEach((entry, i, arr) => {
+      if (!callback(entry as any, i, arr as any)) {
+        delete clone[entry[0]];
       }
     });
-    return clone;
+    return clone as any;
   }
 
   /**
