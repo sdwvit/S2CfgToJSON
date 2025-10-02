@@ -336,7 +336,7 @@ export function parseKey(key: string, parent: Struct, index: number) {
     normKey = extractKeyFromBrackets(key);
 
     if (normKey === "*") {
-      parent.__internal__.useAsterisk = true;
+      // parent.__internal__.useAsterisk = true; never use asterisk for space-saving reasons
       return Object.keys(parent).length - 1;
     }
 
