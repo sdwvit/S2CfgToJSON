@@ -77,9 +77,6 @@ export class Struct {
   }
 
   addNode(value: any, key?: string | number): this {
-    if (this.__internal__.isArray !== true) {
-      throw new Error("Cannot add node to non-array struct.");
-    }
     if (key === undefined) {
       const nextIndex = Object.keys(this)
         .map((k) => parseInt(k))
