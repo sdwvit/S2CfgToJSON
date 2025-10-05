@@ -156,12 +156,30 @@ export class Struct {
     if (typeof obj === "object" && !!obj) {
       const instance = new Struct();
       Object.entries(obj).forEach(([key, value]) => {
-        instance[key] = Struct.fromJson(value);
+        if (key === "__internal__") {
+          instance[key] = new Refs(value);
+        } else {
+          instance[key] = Struct.fromJson(value);
+        }
       });
       return instance as any;
     }
 
     return obj as any;
+  }
+
+  toJson<T extends object>() {
+    const obj = {};
+    Object.entries(this).forEach(([key, value]) => {
+      if (value instanceof Struct) {
+        obj[key] = value.toJson();
+      } else if (value instanceof Refs) {
+        obj[key] = { ...value };
+      } else {
+        obj[key] = value;
+      }
+    });
+    return obj as T;
   }
 
   toString(): string {

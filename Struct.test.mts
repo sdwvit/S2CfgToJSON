@@ -31,11 +31,15 @@ class TradePrototype extends Struct {
 class TradeGenerators extends Struct {
   __internal__ = new Refs({
     isArray: true,
+    rawName: "TradeGenerators",
     //useAsterisk: true, this option is not supported for now
   });
   "0" = new TradeGenerator();
 }
 class TradeGenerator extends Struct {
+  __internal__ = {
+    rawName: "0",
+  };
   BuyLimitations = new BuyLimitations();
 }
 
@@ -270,7 +274,7 @@ struct.end`;
       expect(a.TradeGenerators[0].BuyLimitations[0]).toBe("EItemType::Weapon");
       expect(a.TradeGenerators[0].BuyLimitations[1]).toBe("EItemType::Armor");
       a.TradeGenerators[0].BuyLimitations.forEach(([k]) => {
-        a.TradeGenerators[0].BuyLimitations[k] = "forEach";
+        a.TradeGenerators[0].BuyLimitations[k] = "forEach" as any;
       });
       expect(a.TradeGenerators[0].BuyLimitations[0]).toBe("forEach");
       expect(a.TradeGenerators[0].BuyLimitations[1]).toBe("forEach");
@@ -318,6 +322,31 @@ struct.end`;
       expect(a.TradeGenerators[0].BuyLimitations[1]).toBe("EItemType::Armor");
       a.TradeGenerators[0].BuyLimitations.removeNode("0");
       expect(a.TradeGenerators[0].BuyLimitations[0]).toBe("removenode");
+    });
+  });
+
+  describe("toJson", () => {
+    test("1", () => {
+      const struct = new TradePrototype();
+      expect(struct.toJson()).toEqual({
+        __internal__: {
+          rawName: "TradersDontBuyWeaponsArmor",
+          isRoot: true,
+          refurl: "../TradePrototypes.cfg",
+          refkey: 0,
+        },
+        TradeGenerators: {
+          __internal__: { rawName: "TradeGenerators", isArray: true },
+          "0": {
+            __internal__: { rawName: "0" },
+            BuyLimitations: {
+              __internal__: { rawName: "BuyLimitations", isArray: true },
+              "0": "EItemType::Weapon",
+              "1": "EItemType::Armor",
+            },
+          },
+        },
+      });
     });
   });
 
