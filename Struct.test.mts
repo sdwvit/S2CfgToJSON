@@ -10,21 +10,21 @@ import {
 import fs from "node:fs";
 
 class ChimeraHPFix extends Struct {
-  __internal__ = {
+  __internal__ = new Refs({
     rawName: "ChimeraHPFix",
     isRoot: true,
     bskipref: true,
-  };
+  });
 
   MaxHP = 750;
 }
 class TradePrototype extends Struct {
-  __internal__ = {
+  __internal__ = new Refs({
     rawName: "TradersDontBuyWeaponsArmor",
     refurl: "../TradePrototypes.cfg",
     refkey: 0,
     isRoot: true,
-  };
+  });
 
   TradeGenerators = new TradeGenerators();
 }
@@ -37,9 +37,9 @@ class TradeGenerators extends Struct {
   "0" = new TradeGenerator();
 }
 class TradeGenerator extends Struct {
-  __internal__ = {
+  __internal__ = new Refs({
     rawName: "0",
-  };
+  });
   BuyLimitations = new BuyLimitations();
 }
 
@@ -348,6 +348,14 @@ struct.end`;
         },
       });
     });
+
+    test("2", () => {
+      const struct = new ChimeraHPFix();
+      expect(struct.toJson(true)).toEqual({
+        _: { w: "ChimeraHPFix", r: true, s: true },
+        MaxHP: 750,
+      });
+    });
   });
 
   describe("fromJson", () => {
@@ -378,6 +386,54 @@ struct.end`;
         },
       };
       const struct = Struct.fromJson(json);
+      expect(struct.toString()).toBe(`Test : struct.begin
+   MeshGenerator : struct.begin
+      Meshes : struct.begin
+         [0] : struct.begin
+            MeshPath = path/to/mesh
+            Offset : struct.begin
+               X = 0
+               Y = 0
+               Z = 0
+            struct.end
+            Rotation : struct.begin
+               Pitch = 0
+               Yaw = 0
+               Roll = 0
+            struct.end
+         struct.end
+      struct.end
+   struct.end
+struct.end`);
+    });
+
+    test("2", () => {
+      const json = {
+        _: { w: "Test", r: true },
+        MeshGenerator: {
+          _: { w: "MeshGenerator" },
+          Meshes: {
+            _: { w: "Meshes", a: true },
+            "0": {
+              _: { w: "0" },
+              MeshPath: "path/to/mesh",
+              Offset: {
+                _: { w: "Offset" },
+                X: 0,
+                Y: 0,
+                Z: 0,
+              },
+              Rotation: {
+                _: { w: "Rotation" },
+                Pitch: 0,
+                Yaw: 0,
+                Roll: 0,
+              },
+            },
+          },
+        },
+      };
+      const struct = Struct.fromJson(json, true);
       expect(struct.toString()).toBe(`Test : struct.begin
    MeshGenerator : struct.begin
       Meshes : struct.begin

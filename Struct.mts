@@ -13,17 +13,33 @@ const KEYWORDS = [
   "bpatch", // allows patching only specific keys
 ];
 const REMOVE_NODE = "removenode";
-const INTERNAL_PROPS = new Set([
-  "__internal__",
-  "fork",
-  "removeNode",
-  "addNode",
-  "clone",
-  "forEach",
-  "filter",
-  "map",
-  "toString",
-] satisfies Array<keyof Struct>);
+const INTERNAL_PROPS = new Map([
+  ["__internal__", "_"],
+  ["fork", ""], // methods
+  ["removeNode", ""], // methods
+  ["addNode", ""], // methods
+  ["clone", ""], // methods
+  ["forEach", ""], // methods
+  ["filter", ""], // methods
+  ["map", ""], // methods
+  ["toString", ""], // methods
+] as const);
+const INTERNAL_PROPS_INV = new Map(
+  Array.from(INTERNAL_PROPS.entries()).map(([k, v]) => [v, k]),
+);
+const REF_INTERNAL_PROPS = new Map([
+  ["rawName", "w"],
+  ["refurl", "u"],
+  ["refkey", "k"],
+  ["bskipref", "s"],
+  ["bpatch", "p"],
+  ["isArray", "a"],
+  ["isRoot", "r"],
+  ["useAsterisk", "*"],
+] as const);
+const REF_INTERNAL_PROPS_INV = new Map(
+  Array.from(REF_INTERNAL_PROPS.entries()).map(([k, v]) => [v, k]),
+);
 
 /**
  * This file is part of the Stalker 2 Modding Tools project.
@@ -152,14 +168,26 @@ export class Struct {
     return clone;
   }
 
-  static fromJson<T>(obj: T): T extends object ? GetStructType<T> : T {
+  static fromJson<T>(
+    obj: T,
+    minified = false,
+  ): T extends object ? GetStructType<T> : T {
     if (typeof obj === "object" && !!obj) {
       const instance = new Struct();
       Object.entries(obj).forEach(([key, value]) => {
-        if (key === "__internal__") {
-          instance[key] = new Refs(value);
+        const nKey = fromMinifiedKey(key, minified);
+
+        if (nKey === "__internal__") {
+          instance[nKey] = new Refs(
+            Object.fromEntries(
+              Object.entries(value).map(([k, v]) => [
+                fromMinifiedKey(k, minified),
+                v,
+              ]),
+            ),
+          );
         } else {
-          instance[key] = Struct.fromJson(value);
+          instance[nKey] = Struct.fromJson(value, minified);
         }
       });
       return instance as any;
@@ -168,15 +196,19 @@ export class Struct {
     return obj as any;
   }
 
-  toJson<T extends object>() {
+  toJson<T extends object>(minify = false): T {
     const obj = {};
+
     Object.entries(this).forEach(([key, value]) => {
+      let nKey = maybeMinifyKey(key, minify);
       if (value instanceof Struct) {
-        obj[key] = value.toJson();
+        obj[nKey] = value.toJson(minify);
       } else if (value instanceof Refs) {
-        obj[key] = { ...value };
+        obj[nKey] = Object.fromEntries(
+          Object.entries(value).map(([k, v]) => [maybeMinifyKey(k, minify), v]),
+        );
       } else {
-        obj[key] = value;
+        obj[nKey] = value;
       }
     });
     return obj as T;
@@ -448,4 +480,20 @@ function parseStructName(name: string): string {
     .replace(/^\d+/, "_")
     .replace(/_+/g, "_")
     .replace(/^_+/, "");
+}
+
+function maybeMinifyKey(key: string, minify: boolean) {
+  return minify &&
+    (INTERNAL_PROPS.has(key as any) || REF_INTERNAL_PROPS.has(key as any))
+    ? INTERNAL_PROPS.get(key as any) || REF_INTERNAL_PROPS.get(key as any)
+    : key;
+}
+
+function fromMinifiedKey(key: string, minified: boolean) {
+  if (!minified) return key;
+  return (
+    INTERNAL_PROPS_INV.get(key as any) ||
+    REF_INTERNAL_PROPS_INV.get(key as any) ||
+    key
+  );
 }
