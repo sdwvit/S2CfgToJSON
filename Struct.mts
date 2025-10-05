@@ -1,6 +1,8 @@
+import { type } from "node:os";
+
 export * from "./types.mts";
 export * from "./enums.mts";
-import { DefaultEntries, Internal } from "./types.mts";
+import { DefaultEntries, GetStructType, Internal } from "./types.mts";
 
 const TAB = "   ";
 const WILDCARD = "_wildcard";
@@ -41,7 +43,7 @@ export class Struct {
       Object.assign(this, Struct.fromString(parentOrRaw)[0]);
     }
     if (typeof parentOrRaw === "object" && parentOrRaw !== null) {
-      Object.assign(this, parentOrRaw);
+      Object.assign(this, Struct.fromJson(parentOrRaw));
     }
   }
 
@@ -122,10 +124,8 @@ export class Struct {
   filter<
     K extends Exclude<keyof this, Internal>,
     V extends (typeof this)[K],
-    S extends [K, V],
-  >(
-    callback: (value: [K, V], index: number, array: [K, V][]) => value is S,
-  ): Record<K, V> & Struct {
+    S extends this,
+  >(callback: (value: [K, V], index: number, array: [K, V][]) => boolean): S {
     const clone = this.clone();
     clone.entries().forEach((entry, i, arr) => {
       if (!callback(entry as any, i, arr as any)) {
@@ -150,6 +150,18 @@ export class Struct {
       }
     });
     return clone;
+  }
+
+  static fromJson<T>(obj: T): T extends object ? GetStructType<T> : T {
+    if (typeof obj === "object" && !!obj) {
+      const instance = new Struct();
+      Object.entries(obj).forEach(([key, value]) => {
+        instance[key] = Struct.fromJson(value);
+      });
+      return instance as any;
+    }
+
+    return obj as any;
   }
 
   toString(): string {

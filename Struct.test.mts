@@ -31,7 +31,7 @@ class TradePrototype extends Struct {
 class TradeGenerators extends Struct {
   __internal__ = new Refs({
     isArray: true,
-    useAsterisk: true,
+    //useAsterisk: true, this option is not supported for now
   });
   "0" = new TradeGenerator();
 }
@@ -61,7 +61,7 @@ struct.end`,
     expect(new TradePrototype().toString()).toBe(
       `TradersDontBuyWeaponsArmor : struct.begin {refurl=../TradePrototypes.cfg;refkey=[0]}
    TradeGenerators : struct.begin
-      [*] : struct.begin
+      [0] : struct.begin
          BuyLimitations : struct.begin
             [0] = EItemType::Weapon
             [1] = EItemType::Armor
@@ -254,7 +254,10 @@ struct.end`;
       const a = new TradePrototype().fork(true);
       expect(a.TradeGenerators[0].BuyLimitations[0]).toBe("EItemType::Weapon");
       expect(a.TradeGenerators[0].BuyLimitations[1]).toBe("EItemType::Armor");
-      a.TradeGenerators[0].BuyLimitations.addNode("EItemType::Artifact");
+      a.TradeGenerators[0].BuyLimitations.addNode(
+        "EItemType::Artifact",
+        undefined,
+      );
       expect(a.TradeGenerators[0].BuyLimitations[2]).toBe(
         "EItemType::Artifact",
       );
@@ -315,6 +318,56 @@ struct.end`;
       expect(a.TradeGenerators[0].BuyLimitations[1]).toBe("EItemType::Armor");
       a.TradeGenerators[0].BuyLimitations.removeNode("0");
       expect(a.TradeGenerators[0].BuyLimitations[0]).toBe("removenode");
+    });
+  });
+
+  describe("fromJson", () => {
+    test("1", () => {
+      const json = {
+        __internal__: { rawName: "Test", isRoot: true },
+        MeshGenerator: {
+          __internal__: { rawName: "MeshGenerator" },
+          Meshes: {
+            __internal__: { rawName: "Meshes", isArray: true },
+            "0": {
+              __internal__: { rawName: "0" },
+              MeshPath: "path/to/mesh",
+              Offset: {
+                __internal__: { rawName: "Offset" },
+                X: 0,
+                Y: 0,
+                Z: 0,
+              },
+              Rotation: {
+                __internal__: { rawName: "Rotation" },
+                Pitch: 0,
+                Yaw: 0,
+                Roll: 0,
+              },
+            },
+          },
+        },
+      };
+      const struct = Struct.fromJson(json);
+      expect(struct.toString()).toBe(`Test : struct.begin
+   MeshGenerator : struct.begin
+      Meshes : struct.begin
+         [0] : struct.begin
+            MeshPath = path/to/mesh
+            Offset : struct.begin
+               X = 0
+               Y = 0
+               Z = 0
+            struct.end
+            Rotation : struct.begin
+               Pitch = 0
+               Yaw = 0
+               Roll = 0
+            struct.end
+         struct.end
+      struct.end
+   struct.end
+struct.end`);
     });
   });
 });
