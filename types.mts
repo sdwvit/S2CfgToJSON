@@ -74,11 +74,14 @@ export type Internal =
   | "removeNode"
   | "addNode"
   | "clone"
+  | "entries"
   | "forEach"
   | "filter"
   | "map"
-  | "entries"
-  | "toString";
+  | "fromJson"
+  | "toJson"
+  | "toString"
+  | "fromString";
 
 export type DeeplyPartial<T> = {
   [P in keyof T]?: T[P] extends Array<infer U>
@@ -100,7 +103,7 @@ export interface DefaultEntries {
   refkey?: string | number;
   bskipref?: boolean;
   bpatch?: boolean;
-
+  isRoot?: boolean;
   isArray?: boolean;
   useAsterisk?: boolean;
 }

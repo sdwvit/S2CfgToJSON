@@ -1,5 +1,3 @@
-import { type } from "node:os";
-
 export * from "./types.mts";
 export * from "./enums.mts";
 import { DefaultEntries, GetStructType, Internal } from "./types.mts";
@@ -19,10 +17,14 @@ const INTERNAL_PROPS = new Map([
   ["removeNode", ""], // methods
   ["addNode", ""], // methods
   ["clone", ""], // methods
+  ["entries", ""], // methods
   ["forEach", ""], // methods
   ["filter", ""], // methods
   ["map", ""], // methods
+  ["fromJson", ""], // methods
+  ["toJson", ""], // methods
   ["toString", ""], // methods
+  ["fromString", ""], // methods
 ] as const);
 const INTERNAL_PROPS_INV = new Map(
   Array.from(INTERNAL_PROPS.entries()).map(([k, v]) => [v, k]),
