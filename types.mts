@@ -1759,7 +1759,7 @@ export type QuestNodePrototype = GetStructType<{
     Connections: {
       SID: string;
       Name: string;
-    };
+    }[];
   }[];
   LastPhrases: {
     FinishNode: boolean;
