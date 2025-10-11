@@ -75,6 +75,7 @@ import {
   EGrenadeType,
   EFastUseGroupType,
   EDetectorType,
+  ESpawnType,
 } from "./enums.mts";
 
 import { Struct } from "./Struct.mjs";
@@ -2167,3 +2168,68 @@ interface IWeaponPrototype extends IItemPrototype {
 }
 
 export type WeaponPrototype = GetStructType<IWeaponPrototype>;
+
+export type SpawnActorPrototype = GetStructType<{
+  SID: string;
+  SpawnOnStart: boolean;
+  PositionX: number;
+  PositionY: number;
+  PositionZ: number;
+  RotatorAngleYaw: number;
+  RotatorAnglePitch: number;
+  RotatorAngleRoll: number;
+  ScaleX: number;
+  ScaleY: number;
+  ScaleZ: number;
+  TextAboveActor: string;
+  DLC: string;
+  LevelName: string;
+  PlaceholderActorGuid: string;
+  PlaceholderMapPath: string;
+  MeshPath: string;
+  SpawnedPrototypeSID: string;
+  SpawnType: ESpawnType;
+  bForceCodePhysicsDisabled: boolean;
+  bWakeUpOnStart: boolean;
+  StashPrototypeSID: string;
+  ItemGeneratorSettings: string;
+  TileOffsetIndex: number;
+  ItemSID: string;
+  Durability: number;
+  DisablePhysicsAndCollision: boolean;
+  bRandomChancesForSeparateItems: boolean;
+  ClueVariablePrototypeSID: string;
+  PackOfItemsPrototypeSID: string;
+  UpgradeSID: string;
+  AttachmentSID: string;
+  NodePrototypeVersion: number;
+  NodeCreationVersion: number;
+  DataLayers: string[];
+  Rank: ERank;
+  SignalReceivers: {
+    DestroyReceiver: {
+      Guid: string;
+    };
+  };
+  SignalSenders: {
+    DestroySender: {
+      Guid: string;
+      Signals: string[];
+    };
+  };
+  DisablePhysics: boolean;
+  DisableCollision: boolean;
+  DisableDespawn: boolean;
+  DisableLoot: boolean;
+  DisableDrag: boolean;
+  CorpseStashSID: string;
+  DeadPose: string;
+  AmmoCount: number;
+  OverrideRank: boolean;
+  HP: number;
+  DamageMultiplier: number;
+  MoveSpeedMultiplier: number;
+  PsyNPCType: EPsyNPCType;
+  CanBeWounded: boolean;
+  AllowSpawnOnIsolatedNavMesh: boolean;
+}>;
