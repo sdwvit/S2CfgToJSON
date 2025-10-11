@@ -2192,7 +2192,12 @@ export type SpawnActorPrototype = GetStructType<{
   bForceCodePhysicsDisabled: boolean;
   bWakeUpOnStart: boolean;
   StashPrototypeSID: string;
-  ItemGeneratorSettings: string;
+  ItemGeneratorSettings: {
+    PlayerRank: ERank;
+    ItemGenerators: {
+      PrototypeSID: string;
+    }[];
+  }[];
   TileOffsetIndex: number;
   ItemSID: string;
   Durability: number;
