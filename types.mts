@@ -1785,7 +1785,7 @@ interface IAmmoPrototype extends IItemPrototype {
   CaliberSoundSwitch: string;
 }
 
-export type AmmoPrototype = IAmmoPrototype;
+export type AmmoPrototype = GetStructType<IAmmoPrototype>;
 
 interface IArtifactPrototype extends IItemPrototype {
   AnomalyElementType: EAnomalyElementType;
@@ -1861,7 +1861,7 @@ interface IArtifactPrototype extends IItemPrototype {
   IsQuestItem: boolean;
 }
 
-export type ArtifactPrototype = IArtifactPrototype;
+export type ArtifactPrototype = GetStructType<IArtifactPrototype>;
 
 interface IArmorPrototype extends IItemPrototype {
   ArtifactSlots: number;
@@ -1911,14 +1911,14 @@ interface IArmorPrototype extends IItemPrototype {
   LocalizationSID: string;
 }
 
-export type ArmorPrototype = IArmorPrototype;
+export type ArmorPrototype = GetStructType<IArmorPrototype>;
 
 interface IBlueprintPrototype extends IItemPrototype {
   LocalizationSID: string;
   IsQuestItemPrototype: boolean;
 }
 
-export type BlueprintPrototype = IBlueprintPrototype;
+export type BlueprintPrototype = GetStructType<IBlueprintPrototype>;
 
 interface IAttachPrototype extends IItemPrototype {
   AttachType: EAttachType;
@@ -1990,7 +1990,7 @@ interface IAttachPrototype extends IItemPrototype {
   MeshInWorldPrototypeSID: string;
 }
 
-export type AttachPrototype = IAttachPrototype;
+export type AttachPrototype = GetStructType<IAttachPrototype>;
 
 interface IConsumablePrototype extends IItemPrototype {
   Icon1x1: string;
@@ -2014,7 +2014,7 @@ interface IConsumablePrototype extends IItemPrototype {
   StaticMeshPrototypeSID: string;
 }
 
-export type ConsumablePrototype = IConsumablePrototype;
+export type ConsumablePrototype = GetStructType<IConsumablePrototype>;
 
 interface IDetectorPrototype extends IItemPrototype {
   DetectorType: EDetectorType;
@@ -2044,7 +2044,7 @@ interface IDetectorPrototype extends IItemPrototype {
   ExclusionAnomalyList: string[];
 }
 
-export type DetectorPrototype = IDetectorPrototype;
+export type DetectorPrototype = GetStructType<IDetectorPrototype>;
 
 interface IGDItemPrototype extends IItemPrototype {
   IsQuestItemPrototype: boolean;
@@ -2052,7 +2052,7 @@ interface IGDItemPrototype extends IItemPrototype {
   LocalizationSID: string;
 }
 
-export type GDItemPrototype = IGDItemPrototype;
+export type GDItemPrototype = GetStructType<IGDItemPrototype>;
 
 interface IGrenadePrototype extends IItemPrototype {
   GrenadeType: EGrenadeType;
@@ -2080,26 +2080,26 @@ interface IGrenadePrototype extends IItemPrototype {
   SkeletalMeshPrototypeSID: string;
 }
 
-export type GrenadePrototype = IGrenadePrototype;
+export type GrenadePrototype = GetStructType<IGrenadePrototype>;
 
 interface IKeyItemPrototype extends IItemPrototype {
   LocalizationSID: string;
 }
 
-export type KeyItemPrototype = IKeyItemPrototype;
+export type KeyItemPrototype = GetStructType<IKeyItemPrototype>;
 
 interface IMoneyPrototype extends IItemPrototype {
   LocalizationSID: string;
   MeshInWorldPrototypeSID: string;
 }
 
-export type MoneyPrototype = IMoneyPrototype;
+export type MoneyPrototype = GetStructType<IMoneyPrototype>;
 
 interface IMutantLootPrototype extends IItemPrototype {
   LocalizationSID: string;
 }
 
-export type MutantLootPrototype = IMutantLootPrototype;
+export type MutantLootPrototype = GetStructType<IMutantLootPrototype>;
 
 interface INightVisionGogglesPrototype extends IItemPrototype {
   Icon1x1: string;
@@ -2110,7 +2110,8 @@ interface INightVisionGogglesPrototype extends IItemPrototype {
   NPCGogglesPrototypeSID: string;
 }
 
-export type NightVisionGogglesPrototype = INightVisionGogglesPrototype;
+export type NightVisionGogglesPrototype =
+  GetStructType<INightVisionGogglesPrototype>;
 
 interface IQuestItemPrototype extends IItemPrototype {
   IsQuestItemPrototype: boolean;
@@ -2143,7 +2144,7 @@ interface IQuestItemPrototype extends IItemPrototype {
   LocalizationSID: string;
 }
 
-export type QuestItemPrototype = IQuestItemPrototype;
+export type QuestItemPrototype = GetStructType<IQuestItemPrototype>;
 
 interface IWeaponPrototype extends IItemPrototype {
   MeleeWeaponSID: string;
@@ -2165,4 +2166,4 @@ interface IWeaponPrototype extends IItemPrototype {
   IsQuestItem: boolean;
 }
 
-export type WeaponPrototype = IWeaponPrototype;
+export type WeaponPrototype = GetStructType<IWeaponPrototype>;
