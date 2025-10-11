@@ -65,7 +65,18 @@ import {
   ETriggerReact,
   ERequiredSquadMembers,
   EMeshSubType,
-} from "./enums.mjs";
+  EAnomalyElementType,
+  EArtifactType,
+  EArtifactRarity,
+  EArchiartifactType,
+  EEffectDisplayType,
+  EAnomalyType,
+  EConsumableType,
+  EGrenadeType,
+  EFastUseGroupType,
+  EDetectorType,
+} from "./enums.mts";
+
 import { Struct } from "./Struct.mjs";
 
 export type Internal =
@@ -120,72 +131,6 @@ export type GetStructType<In> =
           : In extends boolean
             ? boolean
             : In;
-
-export type ArmorPrototype = GetStructType<{
-  SID: string;
-  Icon: string;
-  MeshPrototypeSID: string;
-  BaseDurability: number;
-  Weight: number;
-  bBlockHead?: boolean;
-  Cost: number;
-  ItemGridWidth?: number;
-  ItemGridHeight?: number;
-  ArtifactSlots: number;
-  Protection: {
-    Burn: number;
-    Shock: number;
-    ChemicalBurn: number;
-    Radiation: number;
-    PSY: number;
-    Strike: number;
-    Fall: number;
-  };
-  ProtectionNPC: {
-    Burn: number;
-    Shock: number;
-    ChemicalBurn: number;
-    Radiation: number;
-    PSY: number;
-    Strike: number;
-    Fall: number;
-  };
-  UpgradePrototypeSIDs: string[];
-  SectionSettings: {
-    SectionIsEnabled: boolean;
-    UpgradeTargetPartType: EUpgradeTargetPartType;
-    BottomPosition: number;
-    RightPoition: number;
-    LeftPosition: number;
-    TopPosition: number;
-    UpgradeLineDirection: ELineDirection;
-    ModuleLineDirection: ELineDirection;
-  }[];
-  MeshGenerator: {
-    MeshGeneratorPrototypeSID: string;
-    Weight: number;
-    Cost: number;
-  }[];
-  NpcMeshGenerator: {
-    MeshGeneratorPrototypeSID: string;
-    Weight: number;
-  }[];
-  Invisible?: boolean;
-  Type: EItemType;
-  ItemSlotType: EInventoryEquipmentSlot;
-  MaxStackCount: number;
-  bPreventFromLimping: boolean;
-  IncreaseSpeedCoef: number;
-  NoiseCoef: number;
-  ArmorSoundType: string;
-  StaggerEffectPrototypeSID: string;
-  EffectPrototypeSIDs: string[];
-  VoiceModulatorSID: string;
-  ItemTypeSwitchValue: string;
-  PhysicsInteractionPrototypeSID: string;
-  PreinstalledUpgrades: string[];
-  LocalizationSID: string;
-}>;
 
 export type WeaponGeneralSetupPrototype = GetStructType<{
   SID: string;
@@ -373,81 +318,6 @@ export type WeaponGeneralSetupPrototype = GetStructType<{
   ShouldOverrideCooldownAfterShots: boolean;
   NumberOfShotsBeforeDelay: number;
   PostShotDelay: number;
-}>;
-
-export type AttachPrototype = GetStructType<{
-  SID: string;
-  Type: EItemType;
-  MaxStackCount: number;
-  Cost: number;
-  Weight: number;
-  AttachType: EAttachType;
-  AttachInstallSound: string;
-  AttachUninstallSound: string;
-  CanHoldBreath: boolean;
-  Magazine: {
-    IsTwinMagazine: boolean;
-    MaxAmmo: number;
-    BindBulletsToAttach: boolean;
-    HasMultipleMeshes: boolean;
-    MeshArray: {
-      MeshPrototypeSID: string;
-      MagazineMeshType: EMagazineMeshType;
-    }[];
-    PhysicsInteractionPrototypeSID: string;
-  };
-  Scope: {
-    ZoomCoefficients: number[];
-    BaseZoomCoefficientIndex: number;
-    ChangeZoomScopeSound: string;
-    bOverrideAimingEffects: boolean;
-    AimingEffects: { PlayerOnlyEffects: string[] };
-    AimingCutoutRadius: number;
-    AimingCutoutThreshold: number;
-  };
-  WeaponFlashlight: { FlashlightPrototypeID: number };
-  IronSight: { MeshArray: { MeshPrototypeSID: string; Socket: string }[] };
-  ShootingAttach: { WeaponPrototypeSID: string };
-  Slot: EAttachSlot;
-  InventoryActionTime: number;
-  bPermanent: boolean;
-  FPParticlesBasedOnHeating: {
-    VFXGroupName: string;
-    Shooting: {
-      SocketName: string;
-      PFXPath: string;
-      MinHeatingValueToAppear: number;
-    };
-    PostShooting: {
-      SocketName: string;
-      PFXPath: string;
-      MinHeatingValueToAppear: number;
-    };
-  }[];
-  ItemTypeSwitchValue: string;
-  PhysicsInteractionPrototypeSID: string;
-  EffectPrototypeSIDs: string[];
-  LayerImagePriority: number;
-  SortGroup: ESortGroup;
-  ItemGridWidth: number;
-  SortPriority: number;
-  Icon: string;
-  MeshPrototypeSID: string;
-  FittingWeaponsSIDs: string[];
-  HideOnAttachPrototypeIDInstalled: string[];
-  LaserSight: {
-    MinLaserDistance: number;
-    MaxLaserDistance: number;
-    MinLaserTimeOnDrop: number;
-    MaxLaserTimeOnDrop: number;
-    LaserStartTraceOffset: string;
-    LaserEndLightOffset: number;
-    StartSocketName: string;
-    VFXPath: string;
-  };
-  ItemGridHeight: number;
-  LocalizationSID: string;
-  MeshInWorldPrototypeSID: string;
 }>;
 
 export type ALifeDirectorScenarioPrototype = GetStructType<{
@@ -1812,28 +1682,6 @@ export type MeshPrototype = GetStructType<{
   ID: number;
 }>;
 
-export type WeaponPrototype = GetStructType<{
-  SID: string;
-  MeshPrototypeSID: string;
-  MeshInWorldPrototypeSID: string;
-  Weight: number;
-  Cost: number;
-  GeneralWeaponSetup: string;
-  PlayerWeaponAttributes: string;
-  NPCWeaponAttributes: string;
-  BaseDurability: number;
-  Icon: string;
-  SectionSettings: {
-    SectionIsEnabled: true;
-    UpgradeTargetPartType: EUpgradeTargetPartType;
-    BottomPosition: number;
-    RightPoition: number;
-    LeftPosition: number;
-    TopPosition: number;
-    ModuleLineDirection: ELineDirection;
-  }[];
-}>;
-
 export type WeaponAttributesPrototype = GetStructType<{
   SID: string;
   DefaultWeaponSettingsSID: string;
@@ -1843,12 +1691,12 @@ export type WeaponAttributesPrototype = GetStructType<{
     Shooting: {
       SocketName: string;
       PFXPath: string;
-      MinHeatingValueToAppear: 0;
+      MinHeatingValueToAppear: number;
     };
     PostShooting: {
       SocketName: string;
       PFXPath: string;
-      MinHeatingValueToAppear: 5;
+      MinHeatingValueToAppear: number;
     };
   }[];
 }>;
@@ -1878,3 +1726,443 @@ export type CharacterWeaponSettingsPrototype = GetStructType<{
   DistanceDropOffLength: number;
   BulletDropHeight: number;
 }>;
+
+type IItemPrototype = {
+  SID: string;
+  Hint: string;
+  Icon: string;
+  IconBig: string;
+  MeshPrototypeSID: string;
+  BaseDurability: number;
+  MaxStackCount: number;
+  ConsumeOnUse: boolean;
+  Usable: boolean;
+  HasPhysics: boolean;
+  Invisible: boolean;
+  InvisibleInPlayerInventory: boolean;
+  Weight: number;
+  ItemGridWidth: number;
+  ItemGridHeight: number;
+  ItemSlotType: EInventoryEquipmentSlot;
+  Type: EItemType;
+  SortGroup: ESortGroup;
+  SortPriority: number;
+  EffectPrototypeSIDs: string[];
+  ShouldShowEffects: boolean[];
+  SectionPositions: string[];
+  Cost: number;
+  DestroyOnPickup: boolean;
+  IgnoreEquippedWeight: boolean;
+  EffectOnPickPrototypeSIDs: string[];
+  EffectsDisplayTypes: EEffectDisplayType[];
+  ItemTypeSwitchValue: string;
+  PhysicsInteractionPrototypeSID: string;
+  FittingWeaponsSIDs: string[];
+};
+
+interface IAmmoPrototype extends IItemPrototype {
+  Caliber: EAmmoCaliber;
+  FractionCount: number;
+  AmmoType: EAmmoType;
+  CrosshairMod: ECrosshairType;
+  DamageSource: EDamageSource;
+  ArmorPiercingMod: number;
+  CoverPiercingMod: number;
+  ArmorDamageMod: number;
+  WeaponExhaustionMod: number;
+  DamageMod: number;
+  BleedingMod: number;
+  AmmoPackCount: number;
+  ImpulseToObjectsMod: number;
+  FlatnessMod: number;
+  RecoilMod: number;
+  DispersionMod: number;
+  AimDispersionMod: number;
+  OffsetAimDispersionMod: number;
+  FPShellFXPath: string;
+  TPShellFXPath: string;
+  ShellSoundEventPath: string;
+  CaliberSoundSwitch: string;
+}
+
+export type AmmoPrototype = IAmmoPrototype;
+
+interface IArtifactPrototype extends IItemPrototype {
+  AnomalyElementType: EAnomalyElementType;
+  ArtifactType: EArtifactType;
+  ArchiartifactType: EArchiartifactType;
+  JumpDistance: number;
+  JumpAmount: number;
+  JumpDelay: number;
+  JumpSeriesDelay: number;
+  JumpHeight: number;
+  JumpForce: number;
+  JumpSpeedCoef: number;
+  LifeTime: number;
+  PlayerDistance: number;
+  ReturnDistanceValue: number;
+  StateTransitionDelay: number;
+  Radius: number;
+  Rarity: EArtifactRarity;
+  DetectorRequired: boolean;
+  LifeTimeDependant: boolean;
+  Persistent: boolean;
+  DisableCollisionWhenHide: boolean;
+  Strafe: boolean;
+  ArtifactSpawn: boolean;
+  ParticleStateTransitionFadeOutDelay: number;
+  ParticleStateTransitionFadeInDelay: number;
+  ParticleOnShow: string;
+  ParticleStateTransitionFadeOut: string;
+  ParticleStateTransitionFadeIn: string;
+  FakeArtifactDistortionVFX: string;
+  FakeArtifactDissolveVFX: string;
+  SoundStateTransitionOnHide: string;
+  SoundStateTransitionOnShow: string;
+  FakeArtifactDistortionSound: string;
+  FakeArtifactDissolveSound: string;
+  ChargingSound: string;
+  JumpSound: string;
+  ArtifactTypeSwitch: string;
+  Blueprint: string;
+  ParticleOnImpact: string;
+  FakeArtifactHaloVFX: string;
+  ViewOffset: {
+    X: number;
+    Y: number;
+    Z: number;
+  };
+  LocalizationSID: string;
+  DamageToStaminaCoefficient: number;
+  DamageToWeightCoefficient: number;
+  MinWeight: number;
+  MaxWeight: number;
+  WeightDecreaseDelay: number;
+  WeightDecreaseRate: number;
+  WeightDecreaseAmount: number;
+  MinimalDrunkenness: number;
+  InactiveIcon: string;
+  EffectsDuration: number;
+  WakeUpEffectSIDs: string[];
+  PositiveEffectPrototypeSIDs: string[];
+  NegativeEffectPrototypeSIDs: string[];
+  MaxCharge: number;
+  ChargeThreshold: number;
+  ChargingSpeed: number;
+  bUseCharge: boolean; // defines whether damage deflection should be constant or proportional to current artifact charge level;
+  AnomalyDamageDeflections: {
+    AnomalyType: EAnomalyType;
+    ChargeQuantity: number;
+    DamageDeflection: number;
+    TimeToReduceCharge: number;
+  }[];
+  ChargeFullDecreaseSound: string;
+  ChargeFullIncreaseSound: string;
+  IsQuestItem: boolean;
+}
+
+export type ArtifactPrototype = IArtifactPrototype;
+
+interface IArmorPrototype extends IItemPrototype {
+  ArtifactSlots: number;
+  bBlockHead: boolean;
+  bPreventFromLimping: boolean;
+  IncreaseSpeedCoef: number;
+  NoiseCoef: number;
+  ArmorSoundType: string;
+  StaggerEffectPrototypeSID: string;
+  Protection: {
+    Strike: number;
+    Radiation: number;
+    Burn: number;
+    Shock: number;
+    ChemicalBurn: number;
+    PSY: number;
+    Fall: number;
+  };
+  ProtectionNPC: {
+    Strike: number;
+    Radiation: number;
+    Burn: number;
+    Shock: number;
+    ChemicalBurn: number;
+    PSY: number;
+    Fall: number;
+  };
+  UpgradePrototypeSIDs: string[];
+  MeshGenerator: {
+    MeshGeneratorPrototypeSID: string;
+  }[];
+  NpcMeshGenerator: {
+    MeshGeneratorPrototypeSID: string;
+  }[];
+  VoiceModulatorSID: string;
+  PreinstalledUpgrades: string[];
+  SectionSettings: {
+    SectionIsEnabled: boolean;
+    UpgradeTargetPartType: EUpgradeTargetPartType;
+    BottomPosition: number;
+    RightPoition: number;
+    LeftPosition: number;
+    TopPosition: number;
+    UpgradeLineDirection: ELineDirection;
+    ModuleLineDirection: ELineDirection;
+  }[];
+  LocalizationSID: string;
+}
+
+export type ArmorPrototype = IArmorPrototype;
+
+interface IBlueprintPrototype extends IItemPrototype {
+  LocalizationSID: string;
+  IsQuestItemPrototype: boolean;
+}
+
+export type BlueprintPrototype = IBlueprintPrototype;
+
+interface IAttachPrototype extends IItemPrototype {
+  AttachType: EAttachType;
+  AttachInstallSound: string;
+  AttachUninstallSound: string;
+  CanHoldBreath: boolean;
+  Magazine: {
+    IsTwinMagazine: boolean;
+    MaxAmmo: number;
+    BindBulletsToAttach: boolean;
+    HasMultipleMeshes: boolean;
+    MeshArray: {
+      MagazineMeshType: EMagazineMeshType;
+    }[];
+  };
+  Scope: {
+    ZoomCoefficients: number[];
+    BaseZoomCoefficientIndex: number;
+    ChangeZoomScopeSound: string;
+    bOverrideAimingEffects: boolean;
+    AimingEffects: {
+      PlayerOnlyEffects: string[];
+    };
+    AimingCutoutRadius: number;
+    AimingCutoutThreshold: number;
+  };
+  WeaponFlashlight: {
+    FlashlightPrototypeID: number;
+  };
+  IronSight: {
+    MeshArray: {
+      Socket: string;
+    }[];
+  };
+  ShootingAttach: {
+    WeaponPrototypeSID: string;
+  };
+  Slot: EAttachSlot;
+  InventoryActionTime: number;
+  bPermanent: boolean;
+  FPParticlesBasedOnHeating: {
+    VFXGroupName: string;
+    Shooting: {
+      SocketName: string;
+      PFXPath: string;
+      MinHeatingValueToAppear: number;
+    };
+    PostShooting: {
+      SocketName: string;
+      PFXPath: string;
+      MinHeatingValueToAppear: number;
+    };
+  }[];
+  LayerImagePriority: number;
+  HideOnAttachPrototypeIDInstalled: string[];
+  LaserSight: {
+    MinLaserDistance: number;
+    MinOffsetAimLaserDistance: number;
+    MaxLaserDistance: number;
+    MinLaserTimeOnDrop: number;
+    MaxLaserTimeOnDrop: number;
+    LaserStartTraceOffset: number;
+    LaserEndLightOffset: number;
+    StartSocketName: string;
+    VFXPath: string;
+    PlayerVFXPath: string;
+  };
+  LocalizationSID: string;
+  MeshInWorldPrototypeSID: string;
+}
+
+export type AttachPrototype = IAttachPrototype;
+
+interface IConsumablePrototype extends IItemPrototype {
+  Icon1x1: string;
+  ConsumableType: EConsumableType;
+  UIUseSound: EUISound;
+  InventoryActionTime: number;
+  bIsUsesLeftHand: boolean;
+  bIsUsesRightHand: boolean;
+  SocketName: string;
+  MeshPath: string;
+  AnimBlueprint: string;
+  AlternativeEffectPrototypeSIDs: string[];
+  NegativeEffectPrototypeSIDs: {
+    Effect: string;
+  }[];
+  NegativeEffectsChance: number;
+  IsQuestItemPrototype: boolean;
+  ItemTags: string[];
+  FastUseGroup: EFastUseGroupType;
+  FastUsePrio: number;
+  StaticMeshPrototypeSID: string;
+}
+
+export type ConsumablePrototype = IConsumablePrototype;
+
+interface IDetectorPrototype extends IItemPrototype {
+  DetectorType: EDetectorType;
+  ShowArtifactRadius: "250.0 // artifats become visible in this radius";
+  AnimBlueprint: string;
+  DisplayUpdateInterval: number;
+  DangerLevelSoundParameter: string;
+  MinDetectRadius: number;
+  DetectorWorkRadius: "10000.0 // detection sound is playing is this radius";
+  DetectorWorkSFX: string;
+  DetectorWorkCurve: string;
+  ArtifactSignalCurve: string;
+  ExclusionArtifactList: string[];
+  MeshInWorldPrototypeSID: string;
+  DefaultArtifactRadius: number;
+  RadiusDivider: number;
+  SonarRadius: number;
+  AnomalyDetectionRadius: number;
+  RenderTargetResolution: number;
+  CanvasMaterialPath: string;
+  SpriteMaterialPath: string;
+  ArtifactTexturePath: string;
+  AnomalyTexturePaths: {
+    AnomalyElementType: EAnomalyElementType;
+    SpriteTexturePath: string;
+  }[];
+  ExclusionAnomalyList: string[];
+}
+
+export type DetectorPrototype = IDetectorPrototype;
+
+interface IGDItemPrototype extends IItemPrototype {
+  IsQuestItemPrototype: boolean;
+  IsQuestItem: boolean;
+  LocalizationSID: string;
+}
+
+export type GDItemPrototype = IGDItemPrototype;
+
+interface IGrenadePrototype extends IItemPrototype {
+  GrenadeType: EGrenadeType;
+  CrosshairType: ECrosshairType;
+  Blueprint: string;
+  TimeToExplode: number;
+  SafeTimeAfterThrow: number;
+  GrenadeExplosionLethalThreshold: "50%";
+  GrenadeExplosionHandNonlethal: "90%";
+  GrenadeExplosionHandLethal: "100%";
+  BaseComfort: number;
+  StaticMeshPrototypeSID: string;
+  GrenadeAnimBlueprint: string;
+  ExplosionPrototypeSID: string;
+  ImpulseStrength: number;
+  EffectApplyDistanceCoefficient: number;
+  RollVelocityThreshold: number;
+  NPCWeaponAttributes: string;
+  ArmorDamage: number;
+  ArmorPiercing: number;
+  MeshInWorldPrototypeSID: string;
+  OuterWoundingRadius: number;
+  InnerDamage: number;
+  OuterDamage: number;
+  SkeletalMeshPrototypeSID: string;
+}
+
+export type GrenadePrototype = IGrenadePrototype;
+
+interface IKeyItemPrototype extends IItemPrototype {
+  LocalizationSID: string;
+}
+
+export type KeyItemPrototype = IKeyItemPrototype;
+
+interface IMoneyPrototype extends IItemPrototype {
+  LocalizationSID: string;
+  MeshInWorldPrototypeSID: string;
+}
+
+export type MoneyPrototype = IMoneyPrototype;
+
+interface IMutantLootPrototype extends IItemPrototype {
+  LocalizationSID: string;
+}
+
+export type MutantLootPrototype = IMutantLootPrototype;
+
+interface INightVisionGogglesPrototype extends IItemPrototype {
+  Icon1x1: string;
+  ActiveEffectSIDs: string[];
+  TurnOnAudioEvent: string;
+  TurnOffAudioEvent: string;
+  LocalizationSID: string;
+  NPCGogglesPrototypeSID: string;
+}
+
+export type NightVisionGogglesPrototype = INightVisionGogglesPrototype;
+
+interface IQuestItemPrototype extends IItemPrototype {
+  IsQuestItemPrototype: boolean;
+  IsQuestItem: boolean;
+  ShouldTriggerAnomalies: boolean;
+  RequireWeight: boolean;
+  Icon1x1: string;
+  MeshPath: string;
+  AlternativeEffectPrototypeSIDs: string[];
+  Name: string;
+  JumpDistance: number;
+  JumpAmount: number;
+  JumpDelay: number;
+  JumpSeriesDelay: number;
+  JumpHeight: number;
+  JumpForce: number;
+  JumpSpeedCoef: number;
+  LandingForce: number;
+  LifeTime: number;
+  PlayerDistance: number;
+  ReturnDistanceValue: number;
+  DetectorRequired: boolean;
+  Strafe: boolean;
+  Blueprint: string;
+  SoundStateTransitionOnHide: string;
+  SoundStateTransitionOnShow: string;
+  ArtifactTypeSwitch: string;
+  MeshInWorldPrototypeSID: string;
+  StaticMeshPrototypeSID: string;
+  LocalizationSID: string;
+}
+
+export type QuestItemPrototype = IQuestItemPrototype;
+
+interface IWeaponPrototype extends IItemPrototype {
+  MeleeWeaponSID: string;
+  MeshInWorldPrototypeSID: string;
+  GeneralWeaponSetup: string;
+  PlayerWeaponAttributes: string;
+  NPCWeaponAttributes: string;
+  PreinstalledUpgrades: string[];
+  SectionSettings: {
+    SectionIsEnabled: boolean;
+    UpgradeTargetPartType: EUpgradeTargetPartType;
+    BottomPosition: number;
+    RightPoition: number;
+    LeftPosition: number;
+    TopPosition: number;
+    UpgradeLineDirection: ELineDirection;
+  }[];
+  LocalizationSID: string;
+  IsQuestItem: boolean;
+}
+
+export type WeaponPrototype = IWeaponPrototype;
