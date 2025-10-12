@@ -76,6 +76,14 @@ import {
   EFastUseGroupType,
   EDetectorType,
   ESpawnType,
+  EJournalEntity,
+  EJournalState,
+  EQuestNodeState,
+  ERelationLevel,
+  EThreatAwareness,
+  EMainHandEquipmentType,
+  EBrokenGameDataFilter,
+  EDialogAnimationType,
 } from "./enums.mts";
 
 import { Struct } from "./Struct.mjs";
@@ -375,7 +383,7 @@ export type ALifeDirectorScenarioPrototype = GetStructType<{
   };
 }>;
 
-export type DialogPrototype = GetStructType<{
+interface IDialogPrototype {
   SID: string;
   DialogChainPrototypeSID: string;
   DialogMemberIndex: number;
@@ -383,90 +391,183 @@ export type DialogPrototype = GetStructType<{
   DialogMembersAnimations: {
     EmotionalState: EEmotionalFaceMasks;
     LookAtTarget: number;
-    DialogAnimations: string;
+    DialogAnimations: {
+      GestureTiming: number[];
+      DialogAnimationType: EDialogAnimationType;
+    }[];
   }[];
   AKEventName: string;
   AKEventSubPath: string;
-  NextDialogOptions: {
-    [key: number]: {
-      NextDialogSID: string;
-      Terminate: boolean;
-      AvailableFromStart: boolean;
-      VisibleOnFailedCondition: boolean;
-      MainReply: boolean;
-      AnswerTo: string;
-      IncludeBy: string;
-      ExcludeBy: string;
-      Conditions: {
-        ConditionType: EQuestConditionType;
-        ConditionComparance: EConditionComparance;
-        LinkedNodePrototypeSID: string;
-        CompletedNodeLauncherNames: never[];
-      }[][];
-    };
-    True: {
-      Conditions: {
-        ConditionType: EQuestConditionType;
-        ConditionComparance: EConditionComparance;
-        GlobalVariablePrototypeSID: string;
-        ChangeValueMode: EChangeValueMode;
-        VariableValue: number;
-        LinkedNodePrototypeSID: string;
-        CompletedNodeLauncherNames: never[];
-      }[][];
-      NextDialogSID: string;
-      Terminate: boolean;
-    };
-    False: { NextDialogSID: string; Terminate: boolean };
-  };
-  HasVOInSequence: boolean;
-  DialogActions: {
-    DialogAction: EDialogAction;
-    DialogActionParam:
-      | {
-          VariableType: EGlobalVariableType;
-          VariableValue: number | string | boolean;
-        }
-      | number;
-    ItemsCount: {
-      VariableType: EGlobalVariableType;
-      VariableValue: number | string | boolean;
-    };
-    WithEquipped: boolean;
-  }[];
-  DialogAnswerActions: {
-    DialogAction: EDialogAction;
-    DialogActionParam:
-      | {
-          VariableType: EGlobalVariableType;
-          VariableValue: number | string | boolean;
-        }
-      | number;
-    ItemsCount: {
-      VariableType: EGlobalVariableType;
-      VariableValue: number | string | boolean;
-    };
-    WithEquipped: boolean;
-  }[];
-  NodePrototypeVersion: number;
   FaceAnimationSubPath: string;
   FaceAnimationAssetName: string;
-  LocalizedSequences: never[];
+  NextDialogOptions: {
+    NextDialogSID: string;
+    Terminate: boolean;
+    AvailableFromStart: boolean;
+    VisibleOnFailedCondition: boolean;
+    MainReply: boolean;
+    AnswerTo: number;
+    IncludeBy: string[];
+    ExcludeBy: string[];
+    Conditions: {
+      ConditionType: EQuestConditionType;
+      ConditionComparance: EConditionComparance;
+      JournalEntity: EJournalEntity;
+      JournalState: EJournalState;
+      JournalQuestSID: string;
+      JournalQuestStageSID: string;
+      TargetCharacter: string;
+      ItemPrototypeSID:
+        | string
+        | { VariableType: EGlobalVariableType; VariableValue: string };
+      ItemsCount:
+        | number
+        | { VariableType: EGlobalVariableType; VariableValue: number };
+      WithEquipped: boolean;
+      WithInventory: boolean;
+      RandomProbability: number;
+      Money:
+        | number
+        | { VariableType: EGlobalVariableType; VariableValue: number };
+      LinkedNodePrototypeSID: string;
+      CompletedNodeLauncherNames: string[];
+      TargetNode: string;
+      NodeState: EQuestNodeState;
+      GlobalVariablePrototypeSID: string;
+      ChangeValueMode: EChangeValueMode;
+      VariableValue: number;
+      Rank: ERank;
+      Faction: string;
+      Relationships: ERelationLevel;
+      Equipment: EMainHandEquipmentType;
+    }[][];
+  }[];
+  HasVOInSequence: boolean;
+  VisibleOnFailedCondition: boolean;
+  MainReply: boolean;
+  DialogActions: { DialogAction: EDialogAction }[];
+  NodePrototypeVersion: number;
+  Text: string;
+  AnswerText: string;
+  CanBeInterrupted: boolean;
+  TopicAvailabilityConditions: ({
+    ConditionType: EQuestConditionType;
+    TargetNPC: string;
+    TargetContextualActionPlaceholder: string;
+    ConditionComparance: EConditionComparance;
+    Money: {
+      VariableType: EGlobalVariableType;
+      VariableValue: number;
+    };
+    TargetCharacter: string;
+    IncludePartialOverload: boolean;
+    ItemPrototypeSID:
+      | string
+      | { VariableType: EGlobalVariableType; VariableValue: string };
+    ItemsCount:
+      | number
+      | { VariableType: EGlobalVariableType; VariableValue: number };
+    WithEquipped: boolean;
+    WithInventory: boolean;
+    ThreatAwareness: EThreatAwareness;
+    RequiredSquadMembers: ERequiredSquadMembers;
+    EmissionPrototypeSID: string;
+    NumericValue: number;
+    TargetPoint: {
+      X: number;
+      Y: number;
+      Z: number;
+    };
+    Rank: ERank;
+    Faction: string;
+    Relationships: ERelationLevel;
+    Trigger: string;
+    bTriggersByAnybody: boolean;
+    ReactType: ETriggerReact;
+  }[] & {
+    ConditionType: EQuestConditionType;
+    ConditionComparance: EConditionComparance;
+    EmissionPrototypeSID: string;
+  })[];
+  LocalizedSequences: string[];
   LoopSequence: boolean;
   PreblendSequence: boolean;
   PreblendTime: number;
   BlendExpForEaseInOut: number;
   SpeechDuration: number;
   ShowNextDialogOptionsAsAnswers: boolean;
+  WaitForSequenceToFinish: boolean;
   Conditions: {
     ConditionType: EQuestConditionType;
     ConditionComparance: EConditionComparance;
+    NumericValue: number;
+    TargetCharacter: string;
+    ItemPrototypeSID:
+      | string
+      | {
+          VariableType: EGlobalVariableType;
+          VariableValue: string;
+        };
+    WithEquipped: boolean;
+    WithInventory: boolean;
+    DialogMemberIndex: number;
+    ItemsCount: {
+      VariableType: EGlobalVariableType;
+      VariableValue: number;
+    };
+    TargetNode: string;
+    NodeState: EQuestNodeState;
+    TargetNPC: string;
+    TargetContextualActionPlaceholder: string;
+    GlobalVariablePrototypeSID: string;
+    ChangeValueMode: EChangeValueMode;
+    VariableValue: number;
+    JournalEntity: EJournalEntity;
+    JournalState: EJournalState;
+    JournalQuestSID: string;
+    Rank: ERank;
+    Faction: string;
+    Relationships: ERelationLevel;
     LinkedNodePrototypeSID: string;
-    CompletedNodeLauncherNames: never[];
+    CompletedNodeLauncherNames: string[];
+    RequiredSquadMembers: ERequiredSquadMembers;
   }[][];
-  VisibleOnFailedCondition: boolean;
-  MainReply: boolean;
-}>;
+  DialogAnswerActions: {
+    DialogAction: EDialogAction;
+    DialogActionParam: {
+      VariableType: EGlobalVariableType;
+      VariableValue: string | number;
+    };
+    ItemsCount: {
+      VariableType: EGlobalVariableType;
+      VariableValue: number;
+    };
+    WithEquipped: boolean;
+    GlobalVariablePrototypeSID: string;
+    ChangeValueMode: EChangeValueMode;
+    VariableValue: number;
+    ConsumablePrototypeSID: {
+      VariableType: EGlobalVariableType;
+      VariableValue: string;
+    };
+  }[];
+  DialogMemberName: string;
+  AssetsSubPath: string;
+  VoiceModulatorPrototypeID: string;
+  BrokenGameDataFilter: EBrokenGameDataFilter;
+  TargetLocation: string;
+  SelfLocation: string;
+  RotationTime: number;
+  Actions: {
+    DialogAction: EDialogAction;
+    DialogActionParam: {
+      VariableType: EGlobalVariableType;
+      VariableValue: string | number;
+    };
+  }[];
+}
+
+export type DialogPrototype = GetStructType<IDialogPrototype>;
 
 export type DifficultyPrototype = GetStructType<{
   SID: string;
@@ -1761,6 +1862,8 @@ type IItemPrototype = {
   FittingWeaponsSIDs: string[];
 };
 
+export type ItemPrototype = GetStructType<IItemPrototype>;
+
 interface IAmmoPrototype extends IItemPrototype {
   Caliber: EAmmoCaliber;
   FractionCount: number;
@@ -2061,9 +2164,9 @@ interface IGrenadePrototype extends IItemPrototype {
   Blueprint: string;
   TimeToExplode: number;
   SafeTimeAfterThrow: number;
-  GrenadeExplosionLethalThreshold: "50%";
-  GrenadeExplosionHandNonlethal: "90%";
-  GrenadeExplosionHandLethal: "100%";
+  GrenadeExplosionLethalThreshold: `${number}%`;
+  GrenadeExplosionHandNonlethal: `${number}%`;
+  GrenadeExplosionHandLethal: `${number}%`;
   BaseComfort: number;
   StaticMeshPrototypeSID: string;
   GrenadeAnimBlueprint: string;
