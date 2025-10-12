@@ -1045,7 +1045,8 @@ export type EItemType = `EItemType::${
   | "MutantLoot"
   | "None"
   | "Other"
-  | "Weapon"}`;
+  | "Weapon"
+  | "NightVisionGoggles"}`;
 
 export type EJamType = `EJamType::${"FirstShotMisfire" | "Jam" | "Misfire"}`;
 
