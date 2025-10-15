@@ -84,6 +84,7 @@ import {
   EMainHandEquipmentType,
   EBrokenGameDataFilter,
   EDialogAnimationType,
+  ERelationChangingEvent,
 } from "./enums.mts";
 
 import { Struct } from "./Struct.mjs";
@@ -2340,4 +2341,132 @@ export type SpawnActorPrototype = GetStructType<{
   PsyNPCType: EPsyNPCType;
   CanBeWounded: boolean;
   AllowSpawnOnIsolatedNavMesh: boolean;
+}>;
+
+export type Reactions =
+  | "Enemy"
+  | "Disaffection"
+  | "Neutral"
+  | "Friend"
+  | "Self";
+
+export type Factions =
+  | ""
+  | "Humanoid"
+  | "Player"
+  | "Bandits"
+  | "Monolith"
+  | "FreeStalkers"
+  | "Army"
+  | "Duty"
+  | "Freedom"
+  | "Varta"
+  | "Neutrals"
+  | "Militaries"
+  | "Noon"
+  | "Scientists"
+  | "Mercenaries"
+  | "Flame"
+  | "Law"
+  | "Spark"
+  | "Corpus"
+  | "WildBandits"
+  | "GarmataMilitaries"
+  | "SphereMilitaries"
+  | "NeutralBandits"
+  | "VaranBandits"
+  | "RooseveltBandits"
+  | "ShahBandits"
+  | "LokotBandits"
+  | "DepoBandits"
+  | "DepoVictims"
+  | "DocentBandits"
+  | "VaranStashBandits"
+  | "Diggers"
+  | "KosakBandits"
+  | "AzimutVarta"
+  | "UdavMercenaries"
+  | "SafariHunters"
+  | "AzimuthMilitaries"
+  | "SultanBandits"
+  | "ShevchenkoStalkers"
+  | "VartaLesnichestvo"
+  | "SparkLesnichestvo"
+  | "IkarVarta"
+  | "KabanBandits"
+  | "CrazyGuardians"
+  | "ArenaEnemy"
+  | "ArenaFriend"
+  | "DrozdMilitaries"
+  | "EnemyVarta"
+  | "NeutralMSOP"
+  | "YanovCorpus"
+  | "MoleStalkers"
+  | "Mutant"
+  | "Controller"
+  | "Poltergeist"
+  | "Bloodsucker"
+  | "Zombie"
+  | "Chimera"
+  | "Burer"
+  | "Pseudogiant"
+  | "Anamorph"
+  | "Sinister"
+  | "Pseudobear"
+  | "Snork"
+  | "Pseudodog"
+  | "Boar"
+  | "Flesh"
+  | "Beaver"
+  | "Ratwolf"
+  | "Deer"
+  | "Rat"
+  | "Tushkan"
+  | "Stickman"
+  | "Blinddog"
+  | "Bayun"
+  | "CorpusStorm"
+  | "DocileLabMutants"
+  | "VartaSIRCAA"
+  | "YantarZombie"
+  | "FriendlyBlinddog"
+  | "Lessy"
+  | "AlliedMutants"
+  | "NoahLesya"
+  | "KlenMercenaries"
+  | "SIRCAA_Scientist"
+  | "MALACHITE_Scientist"
+  | "NoonFaustians"
+  | "SQ89_SidorMercs"
+  | "ScarBoss_Faction"
+  | "KorshunovBoss_Faction"
+  | "StrelokBoss_Faction"
+  | "FaustBoss_Faction";
+
+type Faction = string; // for performance
+export type RelationPrototype = GetStructType<{
+  SID: string;
+  FactionsInvolvedDistance: number;
+  ReputationRollbackRadius: number;
+  ReputationRollbackCooldown: number;
+  RelationVersion: number;
+  RelationLevelRanges: { start: number; end: number }[];
+  MinRelationLevelToTrade: ERelationLevel;
+  CharacterReactions: ({
+    Type: ERelationChangingEvent;
+  } & {
+    [key in `${Reactions}->${Reactions}`]: number;
+  })[];
+  FactionReactions: ({
+    Type: ERelationChangingEvent;
+  } & {
+    [key in `${Reactions}->${Reactions}`]: number;
+  })[];
+  Factions: Record<Faction, Faction>;
+  Relations: {
+    [key in `${Faction}<->${Faction}`]: number;
+  };
+  PositiveReactionsExcludedFactions: `${Faction}<->${Faction}`[];
+  NegativeReactionsExcludedFactions: `${Faction}<->${Faction}`[];
+  FactionRollbackCooldowns: Record<Faction, number>;
 }>;
