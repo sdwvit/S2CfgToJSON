@@ -2470,3 +2470,17 @@ export type RelationPrototype = GetStructType<{
   NegativeReactionsExcludedFactions: `${Faction}<->${Faction}`[];
   FactionRollbackCooldowns: Record<Faction, number>;
 }>;
+
+export type BarbedWirePrototype = GetStructType<{
+  ID: number;
+  SID: string;
+  Damage: number;
+  DamageDelay: number;
+  BleedingChance: number;
+  BleedingValue: number;
+  ArmorDamage: number;
+  ArmorPiercing: number;
+  MovementSpeedDegradeDelay: number;
+  bOverlappable: boolean;
+  NegativeEffectPrototypeSIDs: string[];
+}>;
