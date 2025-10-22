@@ -105,6 +105,9 @@ export class Struct {
         .pop();
       this[nextIndex !== undefined ? nextIndex + 1 : 0] = value;
     } else {
+      if (value instanceof Struct) {
+        value.__internal__.rawName = String(key);
+      }
       this[key] = value;
     }
     return this;
