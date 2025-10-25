@@ -85,6 +85,21 @@ import {
   EBrokenGameDataFilter,
   EDialogAnimationType,
   ERelationChangingEvent,
+  EModifiedCharacterParam,
+  EJournalAction,
+  EQuestEventType,
+  ESpawnNodeExcludeType,
+  EGoalPriority,
+  EWeaponState,
+  EBehaviorType,
+  EHideViewType,
+  EMovementBehaviour,
+  EWeather,
+  EApplyRestrictionType,
+  EAttractionPointType,
+  Reactions,
+  EDialogEventType,
+  EConditionCheckType,
 } from "./enums.mts";
 
 import { Struct } from "./Struct.mjs";
@@ -410,38 +425,7 @@ interface IDialogPrototype {
     AnswerTo: number;
     IncludeBy: string[];
     ExcludeBy: string[];
-    Conditions: {
-      ConditionType: EQuestConditionType;
-      ConditionComparance: EConditionComparance;
-      JournalEntity: EJournalEntity;
-      JournalState: EJournalState;
-      JournalQuestSID: string;
-      JournalQuestStageSID: string;
-      TargetCharacter: string;
-      ItemPrototypeSID:
-        | string
-        | { VariableType: EGlobalVariableType; VariableValue: string };
-      ItemsCount:
-        | number
-        | { VariableType: EGlobalVariableType; VariableValue: number };
-      WithEquipped: boolean;
-      WithInventory: boolean;
-      RandomProbability: number;
-      Money:
-        | number
-        | { VariableType: EGlobalVariableType; VariableValue: number };
-      LinkedNodePrototypeSID: string;
-      CompletedNodeLauncherNames: string[];
-      TargetNode: string;
-      NodeState: EQuestNodeState;
-      GlobalVariablePrototypeSID: string;
-      ChangeValueMode: EChangeValueMode;
-      VariableValue: number;
-      Rank: ERank;
-      Faction: string;
-      Relationships: ERelationLevel;
-      Equipment: EMainHandEquipmentType;
-    }[][];
+    Conditions: Condition[][];
   }[];
   HasVOInSequence: boolean;
   VisibleOnFailedCondition: boolean;
@@ -451,41 +435,7 @@ interface IDialogPrototype {
   Text: string;
   AnswerText: string;
   CanBeInterrupted: boolean;
-  TopicAvailabilityConditions: ({
-    ConditionType: EQuestConditionType;
-    TargetNPC: string;
-    TargetContextualActionPlaceholder: string;
-    ConditionComparance: EConditionComparance;
-    Money: {
-      VariableType: EGlobalVariableType;
-      VariableValue: number;
-    };
-    TargetCharacter: string;
-    IncludePartialOverload: boolean;
-    ItemPrototypeSID:
-      | string
-      | { VariableType: EGlobalVariableType; VariableValue: string };
-    ItemsCount:
-      | number
-      | { VariableType: EGlobalVariableType; VariableValue: number };
-    WithEquipped: boolean;
-    WithInventory: boolean;
-    ThreatAwareness: EThreatAwareness;
-    RequiredSquadMembers: ERequiredSquadMembers;
-    EmissionPrototypeSID: string;
-    NumericValue: number;
-    TargetPoint: {
-      X: number;
-      Y: number;
-      Z: number;
-    };
-    Rank: ERank;
-    Faction: string;
-    Relationships: ERelationLevel;
-    Trigger: string;
-    bTriggersByAnybody: boolean;
-    ReactType: ETriggerReact;
-  }[] & {
+  TopicAvailabilityConditions: (Condition[] & {
     ConditionType: EQuestConditionType;
     ConditionComparance: EConditionComparance;
     EmissionPrototypeSID: string;
@@ -498,59 +448,16 @@ interface IDialogPrototype {
   SpeechDuration: number;
   ShowNextDialogOptionsAsAnswers: boolean;
   WaitForSequenceToFinish: boolean;
-  Conditions: {
-    ConditionType: EQuestConditionType;
-    ConditionComparance: EConditionComparance;
-    NumericValue: number;
-    TargetCharacter: string;
-    ItemPrototypeSID:
-      | string
-      | {
-          VariableType: EGlobalVariableType;
-          VariableValue: string;
-        };
-    WithEquipped: boolean;
-    WithInventory: boolean;
-    DialogMemberIndex: number;
-    ItemsCount: {
-      VariableType: EGlobalVariableType;
-      VariableValue: number;
-    };
-    TargetNode: string;
-    NodeState: EQuestNodeState;
-    TargetNPC: string;
-    TargetContextualActionPlaceholder: string;
-    GlobalVariablePrototypeSID: string;
-    ChangeValueMode: EChangeValueMode;
-    VariableValue: number;
-    JournalEntity: EJournalEntity;
-    JournalState: EJournalState;
-    JournalQuestSID: string;
-    Rank: ERank;
-    Faction: string;
-    Relationships: ERelationLevel;
-    LinkedNodePrototypeSID: string;
-    CompletedNodeLauncherNames: string[];
-    RequiredSquadMembers: ERequiredSquadMembers;
-  }[][];
+  Conditions: Condition[][];
   DialogAnswerActions: {
     DialogAction: EDialogAction;
-    DialogActionParam: {
-      VariableType: EGlobalVariableType;
-      VariableValue: string | number;
-    };
-    ItemsCount: {
-      VariableType: EGlobalVariableType;
-      VariableValue: number;
-    };
+    DialogActionParam: Param;
+    ItemsCount: Param;
     WithEquipped: boolean;
     GlobalVariablePrototypeSID: string;
     ChangeValueMode: EChangeValueMode;
     VariableValue: number;
-    ConsumablePrototypeSID: {
-      VariableType: EGlobalVariableType;
-      VariableValue: string;
-    };
+    ConsumablePrototypeSID: Param;
   }[];
   DialogMemberName: string;
   AssetsSubPath: string;
@@ -561,10 +468,7 @@ interface IDialogPrototype {
   RotationTime: number;
   Actions: {
     DialogAction: EDialogAction;
-    DialogActionParam: {
-      VariableType: EGlobalVariableType;
-      VariableValue: string | number;
-    };
+    DialogActionParam: Param;
   }[];
 }
 
@@ -737,84 +641,13 @@ export type EffectPrototype = GetStructType<{
 
 export type DynamicItemGenerator = GetStructType<{
   SID: string;
-  ItemGenerator: {
-    [key: number]: {
-      Category: EItemGenerationCategory;
-      PlayerRank: ERank;
-      bAllowSameCategoryGeneration: boolean;
-      ReputationThreshold: number;
-      RefreshTime: string;
-      PossibleItems: {
-        ItemPrototypeSID: string;
-        Weight: number;
-        MinDurability: number;
-        MaxDurability: number;
-        AmmoMinCount: number;
-        AmmoMaxCount: number;
-        ItemGeneratorPrototypeSID: string;
-        Chance: number;
-        MinCount: number;
-        MaxCount: number;
-      }[];
-    };
-    Head: {
-      Category: EItemGenerationCategory;
-      PlayerRank: ERank;
-      bAllowSameCategoryGeneration: boolean;
-      PossibleItems: {
-        ItemPrototypeSID: string;
-        Chance: number;
-        Weight: number;
-      }[];
-    };
-    BodyArmor: {
-      Category: EItemGenerationCategory;
-      PlayerRank: ERank;
-      bAllowSameCategoryGeneration: boolean;
-      PossibleItems: { ItemPrototypeSID: string; Weight: number }[];
-    };
-    Attach: {
-      Category: EItemGenerationCategory;
-      PlayerRank: ERank;
-      bAllowSameCategoryGeneration: boolean;
-      PossibleItems: { ItemPrototypeSID: string; Chance: number }[];
-    };
-    WeaponPrimary: {
-      Category: EItemGenerationCategory;
-      PlayerRank: ERank;
-      bAllowSameCategoryGeneration: boolean;
-      PossibleItems: {
-        ItemPrototypeSID: string;
-        Chance: number;
-        MinDurability: number;
-        MaxDurability: number;
-      }[];
-    };
-  };
+  ItemGenerator: ItemGenerator[];
   RefreshTime: string;
 }>;
 
 export type Gamepass_ItemGenerator = GetStructType<{
   SID: string;
-  ItemGenerator: {
-    Category: EItemGenerationCategory;
-    Diff: EGameDifficulty;
-    bAllowSameCategoryGeneration: boolean;
-    PossibleItems: {
-      ItemPrototypeSID: string;
-      Chance: number;
-      MinCount: number;
-      MaxCount: number;
-      ItemGeneratorPrototypeSID: string;
-      Weight: number;
-      MinDurability: number;
-      MaxDurability: number;
-      AmmoMinCount: number;
-      AmmoMaxCount: number;
-      bRequireWeapon: boolean;
-    }[];
-    PlayerRank: ERank;
-  }[];
+  ItemGenerator: ItemGenerator[];
 }>;
 export type _QuestReward = GetStructType<{
   SID: string;
@@ -825,21 +658,7 @@ export type _QuestReward = GetStructType<{
 export type ItemGeneratorPrototype = GetStructType<{
   SID: string;
   SpecificRewardSound: EUISound;
-  ItemGenerator: {
-    Category: EItemGenerationCategory;
-    PossibleItems: {
-      ItemPrototypeSID: string;
-      Chance: number;
-      ItemGeneratorPrototypeSID: string;
-      MinDurability: number;
-      MaxDurability: number;
-      MinCount: number;
-      MaxCount: number;
-      AmmoMinCount: number;
-      AmmoMaxCount: number;
-    }[];
-    bAllowSameCategoryGeneration: boolean;
-  }[];
+  ItemGenerator: ItemGenerator[];
   MoneyGenerator: { MinCount: number; MaxCount: number };
   ID: number;
 }>;
@@ -959,51 +778,11 @@ export type GeneralNPCObjPrototype = GetStructType<{
     OneHandedWeaponRelax: { StartDistance: number; Animation: string };
     TwoHandedWeaponRelax: { StartDistance: number; Animation: string };
   };
-  MovementParams: {
-    WalkSpeed: number;
-    RunSpeed: number;
-    CrouchSpeed: number;
-    LowCrouchSpeed: number;
-    SprintSpeed: number;
-    ClimbSpeedCoef: number;
-    JumpSpeedCoef: number;
-    LimpSpeedCoef: number;
-    RunDiagonalBackCoef: number;
-    WalkDiagonalBackCoef: number;
-    WalkBackCoef: number;
-    RunBackCoef: number;
-    MoveBackCrouchCoef: number;
-    MoveBackLowCrouchCoef: number;
-    AirControlCoef: number;
-    WalkTransitionCoef: number;
-    BaseTurnRate: number;
-    BaseLookUpRate: number;
-    MaxSlowdownValue: number;
-    StaggerAngle: number;
-    CanDash: boolean;
-    MovementSpeedCoef: number;
-  };
+  MovementParams: MovementParams;
   ReactOnApproachWithWeapon: boolean;
   FlairSensorPrototypeSID: string;
-  VitalParams: {
-    MaxHP: number;
-    MaxSP: number;
-    DegenBleeding: number;
-    DegenRadiation: number;
-    DegenPsyPoints: number;
-    DegenSuppressionPoints: number;
-    RegenHP: number;
-    RegenHPDelayTimeSeconds: number;
-  };
-  Protection: {
-    Burn: number;
-    Shock: number;
-    ChemicalBurn: number;
-    Radiation: number;
-    PSY: number;
-    Strike: number;
-    Fall: number;
-  };
+  VitalParams: VitalParams;
+  Protection: Protection;
   NPCType: ENPCType;
   NeedsPresetSID: string;
   IgnoreEmission: boolean;
@@ -1035,52 +814,17 @@ export type MutantBase = GetStructType<{
     Climb: number;
     Jump: number;
   };
-  VitalParams: {
-    MaxHP: number;
-    MaxFP: number;
-    MaxBleeding: number;
-    MaxRadiation: number;
-    MaxSleepinessPoints: string;
-    MaxHungerPoints: number;
-    MaxThirstPoints: number;
-    MaxSuppressionPoints: number;
-    RegenHungerPoints: number;
-    RegenThirstPoints: number;
-    DegenBleeding: number;
-    DegenRadiation: number;
-    RegenSleepinessPoints: number;
-    RegenHP: number;
-    RegenFP: number;
-  };
-  MovementParams: {
-    WalkSpeed: number;
-    RunSpeed: number;
-    SprintSpeed: number;
-    ClimbSpeedCoef: number;
-    JumpSpeedCoef: number;
-    AimSpeedCoef: number;
-    AirControlCoef: number;
-    BaseTurnRate: number;
-    BaseLookUpRate: number;
-    AimTurnCoef: number;
-    AimLookUpCoef: number;
-    CrouchSpeed: number;
-    LowCrouchSpeed: number;
-    RunDiagonalBackCoef: number;
-    WalkDiagonalBackCoef: number;
-    WalkBackCoef: number;
-    RunBackCoef: number;
-    MoveBackCrouchCoef: number;
-    MoveBackLowCrouchCoef: number;
-  };
+  VitalParams: VitalParams;
+  MovementParams: MovementParams;
   AttackParams: {
     MeleeDamage: number;
     MeleeAttackAcceptanceDistance: number;
     MeleeAttackHeight: number;
     MeleeAttackRadius: number;
     ForceDistance: number;
-    MutantAttackParams: {
-      JumpAttack: {
+    MutantAttackParams: Record<
+      string,
+      {
         MutantAttackType: EMutantAttackType;
         DamageSource: EDamageSource;
         MinAttackDistance: number;
@@ -1092,20 +836,8 @@ export type MutantBase = GetStructType<{
         BleedingChanceIncrement: number;
         Cooldown: number;
         Effects: { EffectPrototypeSID: string; Chance: number }[];
-      };
-      ExampleAttack: {
-        MutantAttackType: EMutantAttackType;
-        DamageSource: EDamageSource;
-        MinAttackDistance: number;
-        MaxAttackAngle: number;
-        AttackRootMotionTravelDistance: number;
-        Damage: number;
-        ArmorPiercing: number;
-        Bleeding: number;
-        BleedingChanceIncrement: number;
-        Effects: { EffectPrototypeSID: string; Chance: number }[];
-      };
-    };
+      }
+    >;
     FireDispersionParams: {
       Default: number;
       DefaultAim: number;
@@ -1115,15 +847,7 @@ export type MutantBase = GetStructType<{
       Jump: number;
     };
   };
-  Protection: {
-    Burn: number;
-    Shock: number;
-    ChemicalBurn: number;
-    Radiation: number;
-    PSY: number;
-    Strike: number;
-    Fall: number;
-  };
+  Protection: Protection;
   SpawnPhantomParams: {
     PhantomBlueprint: string;
     PermanentEffects: string[];
@@ -1219,61 +943,8 @@ export type ObjPrototype = GetStructType<{
   };
   IsZombie: boolean;
   ZombieLayingIdleTime: number;
-  VitalParams: {
-    MaxHP: number;
-    MaxSP: number;
-    MaxBleeding: number;
-    MaxRadiation: number;
-    MaxDrunknessPoints: number;
-    MaxOverDrunknessPoints: number;
-    MaxSleepinessPoints: number;
-    MaxHungerPoints: number;
-    MaxThirstPoints: number;
-    MaxSuppressionPoints: number;
-    RegenHungerPoints: number;
-    RegenThirstPoints: number;
-    DegenBleeding: number;
-    DegenRadiation: number;
-    DegenPsyPoints: number;
-    DegenSuppressionPoints: number;
-    DegenDrunknessPoints: number;
-    RegenSleepinessPoints: string;
-    RegenHP: number;
-    RegenHPDelayTimeSeconds: number;
-    DegenSuppressionDelayTimeSeconds: number;
-    RegenSP: number;
-    RegenPoppyFieldSleepiness: number;
-    RegenHealthModifier: number;
-    StaminaDisableThresholds: {
-      Threshold: number;
-      RegenerationDelay: number;
-      StateTags: EStateTag[];
-    }[];
-  };
-  MovementParams: {
-    WalkSpeed: number;
-    RunSpeed: number;
-    CrouchSpeed: number;
-    LowCrouchSpeed: number;
-    SprintSpeed: number;
-    ClimbSpeedCoef: number;
-    JumpSpeedCoef: number;
-    LimpSpeedCoef: number;
-    RunDiagonalBackCoef: number;
-    WalkDiagonalBackCoef: number;
-    WalkBackCoef: number;
-    RunBackCoef: number;
-    MoveBackCrouchCoef: number;
-    MoveBackLowCrouchCoef: number;
-    AirControlCoef: number;
-    WalkTransitionCoef: number;
-    BaseTurnRate: number;
-    BaseLookUpRate: number;
-    MaxSlowdownValue: number;
-    StaggerAngle: number;
-    CanDash: boolean;
-    MovementSpeedCoef: number;
-  };
+  VitalParams: VitalParams;
+  MovementParams: MovementParams;
   VaultingParams: {
     MaxAngle: number;
     MaxTestDistance: number;
@@ -1393,15 +1064,7 @@ export type ObjPrototype = GetStructType<{
     SpaceTraceOffsetModifier: number;
     AvailabilityDelayTimeSeconds: string;
   };
-  Protection: {
-    Burn: number;
-    Shock: number;
-    ChemicalBurn: number;
-    Radiation: number;
-    PSY: number;
-    Strike: number;
-    Fall: number;
-  };
+  Protection: Protection;
   ItemGeneratorPrototypeSID: string;
   Mesh: EObjMesh;
   MeshGeneratorPrototypeSID: string;
@@ -1509,29 +1172,7 @@ export type ObjPrototype = GetStructType<{
       AddedShootingDistanceOnTheGo: number;
       MaxShootingAngle: number;
     };
-    ZombieAllowedEquipItems: {
-      GunAKU_PP: ERank;
-      GunViper_PP: ERank;
-      GunObrez_SG: ERank;
-      GunAK74_ST: ERank;
-      GunM16_ST: ERank;
-      GunBucket_PP: ERank;
-      GunTOZ_SG: ERank;
-      GunG37_ST: ERank;
-      GunFora_ST: ERank;
-      GunGvintar_ST: ERank;
-      GunGrim_ST: ERank;
-      GunSPSA_SG: ERank;
-      GunIntegral_PP: ERank;
-      GunLavina_ST: ERank;
-      GunKharod_ST: ERank;
-      GunDnipro_ST: ERank;
-      GunZubr_PP: ERank;
-      GunD12_SG: ERank;
-      GunRam2_SG: ERank;
-      GunKora_HG: ERank;
-      GunThreeLine_SP: ERank;
-    };
+    ZombieAllowedEquipItems: Record<string, ERank>;
   };
   PostResurrectionEffects: string[];
   WaterContactInfo: {
@@ -1742,11 +1383,7 @@ export type QuestNodePrototype = GetStructType<{
   DialogChainPrototypeSID: string;
   DialogMembers: string[];
   TalkThroughRadio: boolean[];
-  DialogObjectLocation: {
-    X: number;
-    Y: number;
-    Z: number;
-  };
+  DialogObjectLocation: Point;
   NPCToStartDialog: number;
   StartForcedDialog: boolean;
   WaitAllDialogEndingsToFinish: boolean;
@@ -1762,19 +1399,7 @@ export type QuestNodePrototype = GetStructType<{
   ChangeValueMode: EChangeValueMode;
   VariableValue: any;
   PinWeights: number[];
-  Conditions: {
-    ConditionType: EQuestConditionType;
-    ConditionComparance: EConditionComparance;
-    LinkedNodePrototypeSID: string;
-    CompletedNodeLauncherNames: never[];
-    TargetNPC: string;
-    TargetContextualActionPlaceholder: string;
-    TargetCharacter: string;
-    Trigger: string;
-    bTriggersByAnybody: boolean;
-    ReactType: ETriggerReact;
-    RequiredSquadMembers: ERequiredSquadMembers;
-  }[][];
+  Conditions: Condition[][];
 }>;
 
 export type MeshPrototype = GetStructType<{
@@ -1932,11 +1557,7 @@ interface IArtifactPrototype extends IItemPrototype {
   Blueprint: string;
   ParticleOnImpact: string;
   FakeArtifactHaloVFX: string;
-  ViewOffset: {
-    X: number;
-    Y: number;
-    Z: number;
-  };
+  ViewOffset: Point;
   LocalizationSID: string;
   DamageToStaminaCoefficient: number;
   DamageToWeightCoefficient: number;
@@ -1976,24 +1597,8 @@ interface IArmorPrototype extends IItemPrototype {
   NoiseCoef: number;
   ArmorSoundType: string;
   StaggerEffectPrototypeSID: string;
-  Protection: {
-    Strike: number;
-    Radiation: number;
-    Burn: number;
-    Shock: number;
-    ChemicalBurn: number;
-    PSY: number;
-    Fall: number;
-  };
-  ProtectionNPC: {
-    Strike: number;
-    Radiation: number;
-    Burn: number;
-    Shock: number;
-    ChemicalBurn: number;
-    PSY: number;
-    Fall: number;
-  };
+  Protection: Protection;
+  ProtectionNPC: Protection;
   UpgradePrototypeSIDs: string[];
   MeshGenerator: {
     MeshGeneratorPrototypeSID: string;
@@ -2123,12 +1728,12 @@ export type ConsumablePrototype = GetStructType<IConsumablePrototype>;
 
 interface IDetectorPrototype extends IItemPrototype {
   DetectorType: EDetectorType;
-  ShowArtifactRadius: "250.0 // artifats become visible in this radius";
+  ShowArtifactRadius: number; // artifats become visible in this radius";
   AnimBlueprint: string;
   DisplayUpdateInterval: number;
   DangerLevelSoundParameter: string;
   MinDetectRadius: number;
-  DetectorWorkRadius: "10000.0 // detection sound is playing is this radius";
+  DetectorWorkRadius: number; // detection sound is playing is this radius";
   DetectorWorkSFX: string;
   DetectorWorkCurve: string;
   ArtifactSignalCurve: string;
@@ -2343,106 +1948,6 @@ export type SpawnActorPrototype = GetStructType<{
   AllowSpawnOnIsolatedNavMesh: boolean;
 }>;
 
-export type Reactions =
-  | "Enemy"
-  | "Disaffection"
-  | "Neutral"
-  | "Friend"
-  | "Self";
-
-export type Factions =
-  | ""
-  | "Humanoid"
-  | "Player"
-  | "Bandits"
-  | "Monolith"
-  | "FreeStalkers"
-  | "Army"
-  | "Duty"
-  | "Freedom"
-  | "Varta"
-  | "Neutrals"
-  | "Militaries"
-  | "Noon"
-  | "Scientists"
-  | "Mercenaries"
-  | "Flame"
-  | "Law"
-  | "Spark"
-  | "Corpus"
-  | "WildBandits"
-  | "GarmataMilitaries"
-  | "SphereMilitaries"
-  | "NeutralBandits"
-  | "VaranBandits"
-  | "RooseveltBandits"
-  | "ShahBandits"
-  | "LokotBandits"
-  | "DepoBandits"
-  | "DepoVictims"
-  | "DocentBandits"
-  | "VaranStashBandits"
-  | "Diggers"
-  | "KosakBandits"
-  | "AzimutVarta"
-  | "UdavMercenaries"
-  | "SafariHunters"
-  | "AzimuthMilitaries"
-  | "SultanBandits"
-  | "ShevchenkoStalkers"
-  | "VartaLesnichestvo"
-  | "SparkLesnichestvo"
-  | "IkarVarta"
-  | "KabanBandits"
-  | "CrazyGuardians"
-  | "ArenaEnemy"
-  | "ArenaFriend"
-  | "DrozdMilitaries"
-  | "EnemyVarta"
-  | "NeutralMSOP"
-  | "YanovCorpus"
-  | "MoleStalkers"
-  | "Mutant"
-  | "Controller"
-  | "Poltergeist"
-  | "Bloodsucker"
-  | "Zombie"
-  | "Chimera"
-  | "Burer"
-  | "Pseudogiant"
-  | "Anamorph"
-  | "Sinister"
-  | "Pseudobear"
-  | "Snork"
-  | "Pseudodog"
-  | "Boar"
-  | "Flesh"
-  | "Beaver"
-  | "Ratwolf"
-  | "Deer"
-  | "Rat"
-  | "Tushkan"
-  | "Stickman"
-  | "Blinddog"
-  | "Bayun"
-  | "CorpusStorm"
-  | "DocileLabMutants"
-  | "VartaSIRCAA"
-  | "YantarZombie"
-  | "FriendlyBlinddog"
-  | "Lessy"
-  | "AlliedMutants"
-  | "NoahLesya"
-  | "KlenMercenaries"
-  | "SIRCAA_Scientist"
-  | "MALACHITE_Scientist"
-  | "NoonFaustians"
-  | "SQ89_SidorMercs"
-  | "ScarBoss_Faction"
-  | "KorshunovBoss_Faction"
-  | "StrelokBoss_Faction"
-  | "FaustBoss_Faction";
-
 type Faction = string; // for performance
 export type RelationPrototype = GetStructType<{
   SID: string;
@@ -2483,4 +1988,363 @@ export type BarbedWirePrototype = GetStructType<{
   MovementSpeedDegradeDelay: number;
   bOverlappable: boolean;
   NegativeEffectPrototypeSIDs: string[];
+}>;
+
+export type DialogPoolPrototype = GetStructType<{
+  SID: string;
+  NodePrototypeVersion: number;
+  QuestSID: string;
+  NodeType: EQuestNodeType;
+  StartDelay: number;
+  LaunchOnQuestStart: boolean;
+  ExcludeAllNodesInContainer: boolean;
+  TargetQuestGuid: string;
+  TriggerQuestGuid: string;
+  bTriggersByAnybody: boolean;
+  TriggerAction: number;
+  RequiredSquadMembers: ERequiredSquadMembers;
+  ReactType: ETriggerReact;
+  TrackBeforeActive: boolean;
+  ItemSID: string;
+  ItemsCount: number;
+  AddToPlayerStash: boolean;
+  JournalEntity: EJournalEntity;
+  JournalAction: EJournalAction;
+  JournalQuestSID: string;
+  JournalQuestStageSID: string;
+  Markers: string;
+  EventType: EQuestEventType;
+  BrokenGameDataFilter: EBrokenGameDataFilter;
+  Params: {
+    ModifiedCharacterParam: EModifiedCharacterParam;
+    ChangeValueMode: EChangeValueMode;
+    ChangeValue: number;
+  }[];
+  InGameHours: number;
+  InGameMinutes: number;
+  ReplaceInventory: boolean;
+  EquipItems: boolean;
+  ItemGeneratorSID: string;
+  JournalQuestDescriptionIndex: number;
+  SetQuestActive: boolean;
+  IgnoreDamageType: EIgnoreDamageType;
+  SpawnHidden: boolean;
+  SpawnNodeExcludeType: ESpawnNodeExcludeType;
+  Repeatable: boolean;
+  TeleportLocationAndRotation: LocationAndRotation;
+  TeleportType: EGSCTeleportType;
+  ShouldBlendViaFade: boolean;
+  GoalPriority: EGoalPriority;
+  IgnoreRadiationFeilds: boolean;
+  IgnoreAnomalyFields: boolean;
+  IgnoreEmission: boolean;
+  IgnoreCombat: boolean;
+  IgnoreThreat: boolean;
+  ReactOnApproachWithWeapon: boolean;
+  ReactOnNonEnemySounds: boolean;
+  FailureByEmission: boolean;
+  FailureByCombat: boolean;
+  FailureByThreat: boolean;
+  FailureByTargetLost: boolean;
+  FailureByPlayerKill: boolean;
+  FailureByHumanKil: boolean;
+  FailureByMutantKill: boolean;
+  ThreatsReactRange: number;
+  CanBeInterrupted: boolean;
+  WeaponState: EWeaponState;
+  UseSecondaryWeapon: boolean;
+  BehaviorType: EBehaviorType;
+  SimulateBattle: boolean;
+  ImmediatelyIdentifyEnemy: boolean;
+  TargetQuestGuids: string[];
+  DialogChainPrototypeSID: string;
+  NPCToStartDialog: number;
+  StartForcedDialog: boolean;
+  WaitAllDialogEndingsToFinish: boolean;
+  IsComment: boolean;
+  OverrideDialogTopic: EOverrideDialogTopic;
+  CanExitAnytime: boolean;
+  ContinueThroughRadio: boolean;
+  CallPlayer: boolean;
+  SeekPlayer: boolean;
+  CallPlayerRadius: number;
+  EquipmentTypeFilter: EMainHandEquipmentType;
+  EquipmentItemSID: string;
+  HideViewType: EHideViewType;
+  MovementType: EMovementBehaviour;
+  RotationAfterMoveTo: LocationAndRotation;
+  MoveToPath: string;
+  MoveToSuccessRange: number;
+  MoveToFailureRange: number;
+  ContaineredQuestPrototypeSID: string;
+  SignalSenderGuid: string;
+  ItemPrototypeSID: string;
+  ExpectedItemsCount: number;
+  WithEquipped: boolean;
+  LocalizedSequences: string[];
+  LoopSequence: boolean;
+  PreblendSequence: boolean;
+  PreblendTime: number;
+  BlendExpForEaseInOut: number;
+  NotePrototypeSID: string;
+  PlayWhenReceived: boolean;
+  SoundLocation: Point;
+  AKEventPath: string;
+  MasterAKEventForLoad: string;
+  FinishOnAKEvent: boolean;
+  DataLayerName: string;
+  IsDataLayerEnabled: boolean;
+  Continue: boolean;
+  SignalReceiverGuid: string;
+  SpecificItemDespawn: boolean;
+  PauseEmission: boolean;
+  StayContextualAction: string;
+  CanBeTeleported: boolean;
+  VolumeGuid: number;
+  MarkerSID: string;
+  Explored: boolean;
+  Weather: EWeather;
+  Force: boolean;
+  VideoAssetPath: string;
+  TimeToStartNextNodeBeforeEnd: number;
+  IsFinalVideo: boolean;
+  GlobalVariablePrototypeSID: string;
+  ChangeValueMode: EChangeValueMode;
+  VariableValue: any;
+  NewZoneState: boolean;
+  OverrideScenarioGroupSID: string;
+  HitProducer: string;
+  HitReceiver: string;
+  QuestItem: boolean;
+  RestrictDialogInteractions: boolean;
+  RestrictDefeatStateInteraction: boolean;
+  RestrictDefeatStateMovementInteraction: boolean;
+  RestrictDeadBodyMovementInteraction: boolean;
+  RestrictDeadBodyLootInteraction: boolean;
+  RestrictDeadBodyDespawn: boolean;
+  LookAtLocation: Point;
+  Duration: number;
+  EnteringDuration: number;
+  LookAtActorFName: string;
+  AttractionPointType: EAttractionPointType;
+  ActorBoneName: string;
+  ReactionTime: number;
+  Priority: number;
+  CollisionChannel: number;
+  ApplyRestrictionType: EApplyRestrictionType;
+  RotationFreemoveEdge: number;
+  RotationStopEdge: number;
+  PresetName: string;
+  ShootingPosition: Point;
+  ShootTargetLocation: Point;
+  ShotsQueueCount: number;
+  AIThreatState: number;
+  AssetsToLoad: string[];
+  AudioLocalizedAssetsToLoad: string[][];
+  FirstTargetSID: string;
+  SecondTargetSID: string;
+  UseDeltaValue: boolean;
+  UsePreset: boolean;
+  RelationshipValue: number;
+  SetFactionRelationshipAsPersonal: boolean;
+  ShouldLockPersonalRelationship: boolean;
+  DataLayerCombination: string;
+  DLC: string;
+
+  OutputPinNames: string[];
+  Launchers: {
+    Excluding: boolean;
+    Connections: {
+      SID: string;
+      Name: string;
+    }[];
+  }[];
+  LastPhrases: {
+    FinishNode: boolean;
+    LastPhraseSID: string;
+    NextLaunchedPhraseSID: string;
+  }[];
+  DialogMembers: string[];
+  TalkThroughRadio: boolean[];
+  DialogObjectLocation: Point[];
+
+  Conditions: Condition[][];
+
+  DialogEventType: EDialogEventType;
+  RequiresGroup: boolean;
+  RequiredMembersCount: number;
+  OptionalMembersCount: number;
+  DialogMemberRestrictions: {
+    FactionRestrictions: {
+      Faction: Faction;
+    };
+    ExcludedFactions: {
+      Faction: Faction;
+    };
+    ObjPrototypeRestrictions: {
+      NPCPrototypeSID: string;
+    };
+    ExcludedObjPrototypes: {
+      NPCPrototypeSID: string;
+    };
+  };
+  AvailableDialogs: string[];
+}>;
+
+export type Condition = GetStructType<{
+  DialogMemberIndex: number;
+  RandomProbability: number;
+  Money: number | Param;
+  GlobalVariablePrototypeSID: string;
+  ChangeValueMode: EChangeValueMode;
+  VariableValue: number;
+  Rank: ERank;
+  Faction: string;
+  Relationships: ERelationLevel;
+  Equipment: EMainHandEquipmentType;
+  ConditionCheckType: EConditionCheckType;
+  ConditionType: EQuestConditionType;
+  ConditionComparance: EConditionComparance;
+  LinkedNodePrototypeSID: string;
+  CompletedNodeLauncherNames: never[];
+  TargetNPC: string;
+  TargetContextualActionPlaceholder: string;
+  TargetCharacter: string;
+  Trigger: string;
+  bTriggersByAnybody: boolean;
+  ReactType: ETriggerReact;
+  RequiredSquadMembers: ERequiredSquadMembers;
+  NumericValue: number;
+  TargetPoint: Point;
+  ItemPrototypeSID: Param;
+  ItemsCount: Param;
+  WithEquipped: boolean;
+  WithInventory: boolean;
+  BoolValue: boolean;
+  PointToLookAt: Point;
+  JournalEntity: EJournalEntity;
+  JournalState: EJournalState;
+  JournalQuestSID: string;
+  JournalQuestStageSID: string;
+  TargetNode: string;
+  NodeState: EQuestNodeState;
+
+  IncludePartialOverload: boolean;
+  ThreatAwareness: EThreatAwareness;
+  EmissionPrototypeSID: string;
+}>;
+
+export type Point = GetStructType<{
+  X: number;
+  Y: number;
+  Z: number;
+}>;
+
+export type LocationAndRotation = GetStructType<
+  Point & {
+    Pitch: number;
+    Yaw: number;
+    Roll: number;
+  }
+>;
+
+export type Param = GetStructType<{
+  VariableType: EGlobalVariableType;
+  VariableValue: any;
+}>;
+
+export type Protection = GetStructType<{
+  Strike: number;
+  Radiation: number;
+  Burn: number;
+  Shock: number;
+  ChemicalBurn: number;
+  PSY: number;
+  Fall: number;
+}>;
+
+export type MovementParams = GetStructType<{
+  WalkSpeed: number;
+  RunSpeed: number;
+  CrouchSpeed: number;
+  LowCrouchSpeed: number;
+  SprintSpeed: number;
+  ClimbSpeedCoef: number;
+  JumpSpeedCoef: number;
+  LimpSpeedCoef: number;
+  RunDiagonalBackCoef: number;
+  WalkDiagonalBackCoef: number;
+  WalkBackCoef: number;
+  RunBackCoef: number;
+  MoveBackCrouchCoef: number;
+  MoveBackLowCrouchCoef: number;
+  AirControlCoef: number;
+  WalkTransitionCoef: number;
+  BaseTurnRate: number;
+  BaseLookUpRate: number;
+  MaxSlowdownValue: number;
+  StaggerAngle: number;
+  CanDash: boolean;
+  MovementSpeedCoef: number;
+  AimSpeedCoef: number;
+  AimTurnCoef: number;
+  AimLookUpCoef: number;
+}>;
+
+export type PossibleItem = GetStructType<{
+  ItemPrototypeSID: string;
+  Weight: number;
+  MinDurability: number;
+  MaxDurability: number;
+  AmmoMinCount: number;
+  AmmoMaxCount: number;
+  ItemGeneratorPrototypeSID: string;
+  Chance: number;
+  MinCount: number;
+  MaxCount: number;
+  bRequireWeapon: boolean;
+}>;
+
+export type ItemGenerator = GetStructType<{
+  Category: EItemGenerationCategory;
+  PlayerRank: ERank;
+  bAllowSameCategoryGeneration: boolean;
+  ReputationThreshold: number;
+  RefreshTime: string;
+  PossibleItems: PossibleItem[];
+  Diff: EGameDifficulty;
+}>;
+
+export type VitalParams = GetStructType<{
+  MaxHP: number;
+  MaxSP: number;
+  MaxFP: number;
+  RegenFP: number;
+  MaxBleeding: number;
+  MaxRadiation: number;
+  MaxDrunknessPoints: number;
+  MaxOverDrunknessPoints: number;
+  MaxSleepinessPoints: number;
+  MaxHungerPoints: number;
+  MaxThirstPoints: number;
+  MaxSuppressionPoints: number;
+  RegenHungerPoints: number;
+  RegenThirstPoints: number;
+  DegenBleeding: number;
+  DegenRadiation: number;
+  DegenPsyPoints: number;
+  DegenSuppressionPoints: number;
+  DegenDrunknessPoints: number;
+  RegenSleepinessPoints: string;
+  RegenHP: number;
+  RegenHPDelayTimeSeconds: number;
+  DegenSuppressionDelayTimeSeconds: number;
+  RegenSP: number;
+  RegenPoppyFieldSleepiness: number;
+  RegenHealthModifier: number;
+  StaminaDisableThresholds: {
+    Threshold: number;
+    RegenerationDelay: number;
+    StateTags: EStateTag[];
+  }[];
 }>;
