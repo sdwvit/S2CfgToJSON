@@ -2348,3 +2348,18 @@ export type VitalParams = GetStructType<{
     StateTags: EStateTag[];
   }[];
 }>;
+
+export type DialogChainPrototype = GetStructType<{
+  SID: string;
+  DLC: string;
+  StartingDialogPrototypeSID: string;
+  DialogOnTheGo: boolean;
+  CanBeInterrupted: boolean;
+  ContinueAfterInterrupt: boolean;
+  IsInteractive: boolean;
+  DialogMembers: {
+    DialogMemberName: string;
+    OptionalMember: boolean;
+  }[];
+  IsPCDialogMember: boolean;
+}>;
