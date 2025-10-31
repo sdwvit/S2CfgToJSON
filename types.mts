@@ -100,6 +100,14 @@ import {
   Reactions,
   EDialogEventType,
   EConditionCheckType,
+  ELoadingDestination,
+  ESpaceRestrictionType,
+  EEmissionStage,
+  EAIMovementPose,
+  EFlashlightAction,
+  ESaveType,
+  EModifyAbilitySequenceQuestNodeMode,
+  EHealingType,
 } from "./enums.mts";
 
 import { Struct } from "./Struct.mjs";
@@ -1358,16 +1366,13 @@ export type NPCWeaponSettingsPrototype = GetStructType<{
 }>;
 
 export type QuestNodePrototype = GetStructType<{
-  InGameHours?: number;
   SID: string;
-  NodePrototypeVersion: number;
   QuestSID: string;
   NodeType: EQuestNodeType;
   StartDelay: number;
   LaunchOnQuestStart: boolean;
-
-  Repeatable: boolean;
-  OutputPinNames: string[];
+  NodePrototypeVersion: number;
+  BrokenGameDataFilter: EBrokenGameDataFilter;
   Launchers: {
     Excluding: boolean;
     Connections: {
@@ -1375,6 +1380,17 @@ export type QuestNodePrototype = GetStructType<{
       Name: string;
     }[];
   }[];
+  ExcludeAllNodesInContainer: boolean;
+  TargetQuestGuid: string;
+  ReplaceInventory: boolean;
+  EquipItems: boolean;
+  ItemGeneratorSID: string;
+  TeleportLocationAndRotation: LocationAndRotation;
+  TeleportType: EGSCTeleportType;
+  ShouldBlendViaFade: boolean;
+  EventType: EQuestEventType;
+  TrackBeforeActive: boolean;
+  OutputPinNames: string[];
   LastPhrases: {
     FinishNode: boolean;
     LastPhraseSID: string;
@@ -1383,7 +1399,7 @@ export type QuestNodePrototype = GetStructType<{
   DialogChainPrototypeSID: string;
   DialogMembers: string[];
   TalkThroughRadio: boolean[];
-  DialogObjectLocation: Point;
+  DialogObjectLocation: Location[];
   NPCToStartDialog: number;
   StartForcedDialog: boolean;
   WaitAllDialogEndingsToFinish: boolean;
@@ -1394,12 +1410,274 @@ export type QuestNodePrototype = GetStructType<{
   CallPlayer: boolean;
   SeekPlayer: boolean;
   CallPlayerRadius: number;
-  ExcludeAllNodesInContainer: boolean;
+  IgnoreDamageType: EIgnoreDamageType;
+  SpawnHidden: boolean;
+  SpawnNodeExcludeType: ESpawnNodeExcludeType;
+  JournalEntity: EJournalEntity;
+  JournalAction: EJournalAction;
+  JournalQuestSID: string;
+  JournalQuestDescriptionIndex: number;
+  SetQuestActive: boolean;
+  Repeatable: boolean;
+  ContaineredQuestPrototypeSID: string;
+  TriggerQuestGuid: string;
+  bTriggersByAnybody: boolean;
+  TriggerAction: number;
+  RequiredSquadMembers: ERequiredSquadMembers;
+  ReactType: ETriggerReact;
+  LinkedNodePrototypeSID: string;
+  GoalPriority: EGoalPriority;
+  IgnoreRadiationFeilds: boolean;
+  IgnoreAnomalyFields: boolean;
+  IgnoreEmission: boolean;
+  IgnoreCombat: boolean;
+  IgnoreThreat: boolean;
+  ReactOnApproachWithWeapon: boolean;
+  ReactOnNonEnemySounds: boolean;
+  FailureByEmission: boolean;
+  FailureByCombat: boolean;
+  FailureByThreat: boolean;
+  FailureByTargetLost: boolean;
+  FailureByPlayerKill: boolean;
+  FailureByHumanKil: boolean;
+  FailureByMutantKill: boolean;
+  ThreatsReactRange: number;
+  CanBeInterrupted: boolean;
+  WeaponState: EWeaponState;
+  UseSecondaryWeapon: boolean;
+  BehaviorType: EBehaviorType;
+  MovementType: EMovementBehaviour;
+  StayContextualAction: string;
+  CanBeTeleported: boolean;
+  SimulateBattle: boolean;
+  ImmediatelyIdentifyEnemy: boolean;
+  TargetQuestGuids: string[];
+  FirstTargetSID: string;
+  SecondTargetSID: string;
+  UseDeltaValue: boolean;
+  UsePreset: boolean;
+  RelationshipValue: number;
+  SetFactionRelationshipAsPersonal: boolean;
+  ShouldLockPersonalRelationship: boolean;
+  JournalQuestStageSID: string;
+  Markers: string;
+  Conditions: Condition[][];
+  ConsoleCommand: string[];
+  RestrictDialogInteractions: boolean;
+  RestrictDefeatStateInteraction: boolean;
+  RestrictDefeatStateMovementInteraction: boolean;
+  RestrictDeadBodyMovementInteraction: boolean;
+  RestrictDeadBodyLootInteraction: boolean;
+  RestrictDeadBodyDespawn: boolean;
+  HitProducer: string;
+  HitReceiver: string;
+  WoundedOn: boolean;
+  HealingType: EHealingType;
+  PinWeights: number[];
   GlobalVariablePrototypeSID: string;
   ChangeValueMode: EChangeValueMode;
-  VariableValue: any;
-  PinWeights: number[];
-  Conditions: Condition[][];
+  VariableValue: boolean;
+  AIThreatState: number;
+  Activate: boolean;
+  ForceDespawn: boolean;
+  ScreenText: string;
+  FadeTime: number;
+  ImagePath: string;
+  HideViewType: EHideViewType;
+  ItemPrototypeSID: string;
+  ExpectedItemsCount: number;
+  WithEquipped: boolean;
+  NotePrototypeSID: string;
+  PlayWhenReceived: boolean;
+  SignalReceiverGuid: string;
+  StartHour: number;
+  EndHour: number;
+  SelectedDaysOfWeek: number;
+  InGameHours: number;
+  LocalizedSequences: string[];
+  LoopSequence: boolean;
+  PreblendSequence: boolean;
+  PreblendTime: number;
+  BlendExpForEaseInOut: number;
+  MainQuest: boolean;
+  MarkerDescription: string;
+  Squad: string;
+  Remove: boolean;
+  MoveToPath: string;
+  MoveToSuccessRange: number;
+  MoveToFailureRange: number;
+  SignalSenderGuid: string;
+  EquipmentTypeFilter: EMainHandEquipmentType;
+  EquipmentItemSID: string;
+  TargetFaction: string;
+  InteractableQuestGuid: string;
+  TargetLocations: Location[];
+  VolumeGuid: string;
+  ShouldBeKilled: string;
+  FullSquad: boolean;
+  IncludeWoundedEvent: boolean;
+  SpecificItemDespawn: boolean;
+  GoalTargetQuestGuid: string;
+  Location: string;
+  NewTitle: number;
+  NewDescription: number;
+  IdlePosition: Location;
+  LookAt: Location;
+  MinimalReputationLevel: ERelationLevel;
+  EffectLocation: Location;
+  EffectPath: string;
+  Continue: boolean;
+  SoundLocation: Location;
+  AKEventPath: string;
+  MasterAKEventForLoad: string;
+  FinishOnAKEvent: boolean;
+  RotationAfterMoveTo: LocationAndRotation;
+  ContextualActionLookAtPlayerRange: number;
+  SoundPath: string;
+  RepeatableStayAnimation: boolean;
+  StayAnimation: string;
+  NavModifier: string;
+  Params: {
+    ModifiedCharacterParam: EModifiedCharacterParam;
+    ChangeValueMode: EChangeValueMode;
+    IgnoreDamageType: EIgnoreDamageType;
+    ChangeValue: number;
+    Rank: ERank;
+  }[];
+  ThreatSensor: number;
+  ContextualActionRange: number;
+  QuestItem: boolean;
+  AbilityPrototypeSID: string;
+  SequentialAbilityPriority: number;
+  SequentialAbilityModificationMode: EModifyAbilitySequenceQuestNodeMode;
+  LookAtLocation: Location;
+  Duration: number;
+  EnteringDuration: number;
+  LookAtActorFName: string;
+  AttractionPointType: EAttractionPointType;
+  ActorBoneName: string;
+  ReactionTime: number;
+  Priority: number;
+  CollisionChannel: number;
+  ApplyRestrictionType: EApplyRestrictionType;
+  RotationFreemoveEdge: number;
+  RotationStopEdge: number;
+  PresetName: string;
+  ItemSID: string;
+  ItemsCount: number;
+  PauseEmission: boolean;
+  EmissionPrototypeSID: string;
+  UseDefaultEmissionPrototype: boolean;
+  StartQuest: boolean;
+  ForceEmission: boolean;
+  NavAreaClass: string;
+  PersonalRestriction: Record<string, ESpaceRestrictionType>;
+  SaveTypes: ESaveType[];
+  AchievementSID: string;
+  DataLayerName: string;
+  IsDataLayerEnabled: boolean;
+  OwnedHub: string;
+  InGameMinutes: number;
+  NodesToCleanUpResults: string[];
+  InfotopicLastPhrases: {
+    LastPhraseSID: string;
+    NextLaunchedPhraseSID: string;
+  }[];
+  TimerRate: number;
+  WidgetType: number;
+  TutorialHeadLocalizedSID: string;
+  TutorialTextLocalizedSID: string;
+  PDATutorialNoteSID: string;
+  TutorialSID: string;
+  RequiredInputs: string[];
+  ShootingPosition: Location;
+  ShootTargetLocation: Location;
+  ShotsQueueCount: number;
+  PostEffectProcessorSID: string;
+  PostProcessParamValue: number;
+  NewZoneState: boolean;
+  OverrideScenarioGroupSID: string;
+  IgnoreEnabledCheck: boolean;
+  FlashlightAction: EFlashlightAction;
+  MeshGeneratorSID: string;
+  Faction: string;
+  PatrolPlaceholderGUID: string;
+  PatrolCycleCount: number;
+  StartPointID: number;
+  MarkerSID: string;
+  Explored: boolean;
+  EffectPrototypeSID: string;
+  DisableFlashlightControl: boolean;
+  AddToPlayerStash: boolean;
+  MovementPose: EAIMovementPose;
+  CustomRestPlaceSelection: boolean;
+  RestLocation: Location;
+  QuestItemGeneratorSID: string;
+  LookAtPlaceholder: string;
+  MoveFrom: string;
+  MoveTo: string;
+  MoveQuestItems: boolean;
+  StageID: EEmissionStage;
+  WaitingPlayer: boolean;
+  Radius: number;
+  WaitingTime: number;
+  PlayerLeavesWhileMovingComments: string[];
+  PlayerLeavesWhileCombatComments: string[];
+  ContinueWhileMovingComments: string[];
+  ContinueWhileCombatComments: string;
+  StartBattleComments: string;
+  FinishBattleComments: string;
+  ReachAnomalyZoneComments: string;
+  LeaveAnomalyZoneComments: string;
+  ReachPointComments: {
+    ReachPointComment: string;
+    ReachPointLocation: Location;
+    DialogMembers: string;
+  }[];
+  TargetMoneyAmount: number;
+  Event: EDialogEventType;
+  FollowStartRange: number;
+  FollowStopRange: number;
+  Weather: EWeather;
+  Force: boolean;
+  DisabledEvents: EDialogEventType[];
+  DataLayerCombination: string;
+  AssetsToLoad: string[];
+  AudioLocalizedAssetsToLoad: string[][];
+  UseAbilityPrototypeSID: string;
+  UseAbilityTarget: string;
+  TimeToUseAbility: number;
+  UseAbilityMovementType: EMovementBehaviour;
+  TransitionTime: number;
+  FullAmount: boolean;
+  ShouldTargetPrimaryWeapon: boolean;
+  PrimaryWeaponDurabilityPercent: number;
+  ShouldTargetSecondaryWeapon: boolean;
+  SecondaryWeaponDurabilityPercent: number;
+  ShouldTargetPistol: boolean;
+  PistolDurabilityPercent: number;
+  CameraHeight: number;
+  CircleRadius: number;
+  InitialPitch: number;
+  InitialYaw: number;
+  BenchRuns: number;
+  ProfileCsv: boolean;
+  TargetRank: ERank;
+  DialogToStart: string;
+  LoadingScreenType: ELoadingDestination;
+  WithInventory: boolean;
+  Discovered: boolean;
+  VideoAssetPath: string;
+  TimeToStartNextNodeBeforeEnd: number;
+  IsFinalVideo: boolean;
+  UpgradePrototypeSID: string;
+  UpgradeSIDs: string[];
+  NewTechnicianSkill: string;
+  RestrictedFaction: Record<Faction, ESpaceRestrictionType>;
+  NameSID: string;
+  MoveToPlayer: boolean;
+  TargetLocation: Location;
+  CustomSleepPlaceSelection: boolean;
 }>;
 
 export type MeshPrototype = GetStructType<{
@@ -1557,7 +1835,7 @@ interface IArtifactPrototype extends IItemPrototype {
   Blueprint: string;
   ParticleOnImpact: string;
   FakeArtifactHaloVFX: string;
-  ViewOffset: Point;
+  ViewOffset: Location;
   LocalizationSID: string;
   DamageToStaminaCoefficient: number;
   DamageToWeightCoefficient: number;
@@ -2088,7 +2366,7 @@ export type DialogPoolPrototype = GetStructType<{
   BlendExpForEaseInOut: number;
   NotePrototypeSID: string;
   PlayWhenReceived: boolean;
-  SoundLocation: Point;
+  SoundLocation: Location;
   AKEventPath: string;
   MasterAKEventForLoad: string;
   FinishOnAKEvent: boolean;
@@ -2122,7 +2400,7 @@ export type DialogPoolPrototype = GetStructType<{
   RestrictDeadBodyMovementInteraction: boolean;
   RestrictDeadBodyLootInteraction: boolean;
   RestrictDeadBodyDespawn: boolean;
-  LookAtLocation: Point;
+  LookAtLocation: Location;
   Duration: number;
   EnteringDuration: number;
   LookAtActorFName: string;
@@ -2135,8 +2413,8 @@ export type DialogPoolPrototype = GetStructType<{
   RotationFreemoveEdge: number;
   RotationStopEdge: number;
   PresetName: string;
-  ShootingPosition: Point;
-  ShootTargetLocation: Point;
+  ShootingPosition: Location;
+  ShootTargetLocation: Location;
   ShotsQueueCount: number;
   AIThreatState: number;
   AssetsToLoad: string[];
@@ -2166,7 +2444,7 @@ export type DialogPoolPrototype = GetStructType<{
   }[];
   DialogMembers: string[];
   TalkThroughRadio: boolean[];
-  DialogObjectLocation: Point[];
+  DialogObjectLocation: Location[];
 
   Conditions: Condition[][];
 
@@ -2215,13 +2493,13 @@ export type Condition = GetStructType<{
   ReactType: ETriggerReact;
   RequiredSquadMembers: ERequiredSquadMembers;
   NumericValue: number;
-  TargetPoint: Point;
+  TargetPoint: Location;
   ItemPrototypeSID: Param;
   ItemsCount: Param;
   WithEquipped: boolean;
   WithInventory: boolean;
   BoolValue: boolean;
-  PointToLookAt: Point;
+  PointToLookAt: Location;
   JournalEntity: EJournalEntity;
   JournalState: EJournalState;
   JournalQuestSID: string;
@@ -2234,14 +2512,14 @@ export type Condition = GetStructType<{
   EmissionPrototypeSID: string;
 }>;
 
-export type Point = GetStructType<{
+export type Location = GetStructType<{
   X: number;
   Y: number;
   Z: number;
 }>;
 
 export type LocationAndRotation = GetStructType<
-  Point & {
+  Location & {
     Pitch: number;
     Yaw: number;
     Roll: number;
