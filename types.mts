@@ -1462,7 +1462,7 @@ export type QuestNodePrototype = GetStructType<{
   JournalQuestStageSID: string;
   Markers: string;
   Conditions: Condition[][];
-  ConsoleCommand: string[];
+  ConsoleCommand: string;
   RestrictDialogInteractions: boolean;
   RestrictDefeatStateInteraction: boolean;
   RestrictDefeatStateMovementInteraction: boolean;
