@@ -433,7 +433,9 @@ interface IDialogPrototype {
     AnswerTo: number;
     IncludeBy: string[];
     ExcludeBy: string[];
-    Conditions: Condition[][] & { ConditionCheckType: EConditionCheckType };
+    Conditions: GetStructType<Condition[][]> & {
+      ConditionCheckType: EConditionCheckType;
+    };
   }[];
   HasVOInSequence: boolean;
   VisibleOnFailedCondition: boolean;
@@ -456,7 +458,7 @@ interface IDialogPrototype {
   SpeechDuration: number;
   ShowNextDialogOptionsAsAnswers: boolean;
   WaitForSequenceToFinish: boolean;
-  Conditions: Condition[][] & {
+  Conditions: GetStructType<Condition[][]> & {
     ConditionCheckType: EConditionCheckType;
   };
   DialogAnswerActions: {
@@ -1463,7 +1465,9 @@ export type QuestNodePrototype = GetStructType<{
   ShouldLockPersonalRelationship: boolean;
   JournalQuestStageSID: string;
   Markers: string;
-  Conditions: Condition[][] & { ConditionCheckType: EConditionCheckType };
+  Conditions: GetStructType<Condition[][]> & {
+    ConditionCheckType: EConditionCheckType;
+  };
   ConsoleCommand: string;
   RestrictDialogInteractions: boolean;
   RestrictDefeatStateInteraction: boolean;
@@ -2448,7 +2452,9 @@ export type DialogPoolPrototype = GetStructType<{
   TalkThroughRadio: boolean[];
   DialogObjectLocation: Location[];
 
-  Conditions: Condition[][] & { ConditionCheckType: EConditionCheckType };
+  Conditions: GetStructType<Condition[][]> & {
+    ConditionCheckType: EConditionCheckType;
+  };
 
   DialogEventType: EDialogEventType;
   RequiresGroup: boolean;
