@@ -2490,6 +2490,7 @@ export type Condition = GetStructType<{
   Equipment: EMainHandEquipmentType;
   ConditionType: EQuestConditionType;
   ConditionComparance: EConditionComparance;
+  TargetPlaceholder: string;
   LinkedNodePrototypeSID: string;
   CompletedNodeLauncherNames: never[];
   TargetNPC: string;
