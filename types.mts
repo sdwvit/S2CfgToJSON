@@ -2230,6 +2230,13 @@ export type SpawnActorPrototype = GetStructType<{
   PsyNPCType: EPsyNPCType;
   CanBeWounded: boolean;
   AllowSpawnOnIsolatedNavMesh: boolean;
+  SquadMembersQuestSIDs: string;
+  SpawnInRadius: number;
+  SpawnedGenericMembers: {
+    SpawnedSquadMembersCount: number;
+    SpawnedPrototypeSID: string;
+  }[];
+  RespawnMembers: boolean;
 }>;
 
 type Faction = string; // for performance
