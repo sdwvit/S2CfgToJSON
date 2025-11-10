@@ -2656,3 +2656,64 @@ export type DialogChainPrototype = GetStructType<{
   }[];
   IsPCDialogMember: boolean;
 }>;
+
+type CommonMeshSlots =
+  | "BodyArmor"
+  | "Face"
+  | "Hea"
+  | "Lhi_a"
+  | "Rhi_a"
+  | "Rhi_b"
+  | "Han"
+  | "Clo"
+  | "Fbe_b"
+  | "Fbe_f"
+  | "Gla"
+  | "Rch"
+  | "Lhi_a_c"
+  | "Lhi_b"
+  | "Rhi_c"
+  | "Leg"
+  | "Fbe"
+  | "Cap"
+  | "Rhi"
+  | "Lhi"
+  | "Hands"
+  | "Hea_a_e_f"
+  | "Lhi_f"
+  | "Rhi_f"
+  | "Rhi_g"
+  | "Fbe_g"
+  | "Fbe_a"
+  | "Fbe_d"
+  | "Lhi_d"
+  | "Rhi_e"
+  | "Fbe_c_d_e_f"
+  | "Mas";
+
+export type MeshGeneratorPrototype = GetStructType<{
+  SID: string;
+  ParentMeshGeneratorSID: string;
+  Attachments: Record<
+    CommonMeshSlots | `${number}`,
+    { SlotName: string; Attaches: { BodyMeshSID: string; Weight: number }[] }
+  >;
+  Materials: {
+    MaterialGroup: string;
+    Variations: Variation[];
+  }[];
+  CustomData: {
+    MaterialGroup: string;
+    Variations: Variation[];
+  }[];
+  Groom: {
+    CategoryName: string;
+    Variations: Variation[];
+  }[];
+  MergedMesh: string;
+}>;
+
+export type Variation = {
+  VariationIndex: number;
+  Weight: number;
+};
