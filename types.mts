@@ -108,6 +108,7 @@ import {
   ESaveType,
   EModifyAbilitySequenceQuestNodeMode,
   EHealingType,
+  ELairType,
 } from "./enums.mts";
 
 import { Struct } from "./Struct.mjs";
@@ -396,9 +397,7 @@ export type ALifeDirectorScenarioPrototype = GetStructType<{
   ScenarioGroups: {
     [key: string]: {
       SID: string;
-      ScenarioSIDs: {
-        [key: string]: { ScenarioWeight: number };
-      };
+      ScenarioSIDs: { [key: string]: { ScenarioWeight: number } };
       SpawnDelayMin: number;
       SpawnDelayMax: number;
       PostSpawnDirectorTimeoutMin: number;
@@ -478,10 +477,7 @@ interface IDialogPrototype {
   TargetLocation: string;
   SelfLocation: string;
   RotationTime: number;
-  Actions: {
-    DialogAction: EDialogAction;
-    DialogActionParam: Param;
-  }[];
+  Actions: { DialogAction: EDialogAction; DialogActionParam: Param }[];
 }
 
 export type DialogPrototype = GetStructType<IDialogPrototype>;
@@ -661,6 +657,7 @@ export type Gamepass_ItemGenerator = GetStructType<{
   SID: string;
   ItemGenerator: ItemGenerator[];
 }>;
+
 export type _QuestReward = GetStructType<{
   SID: string;
   MoneyGenerator: { MinCount: number; MaxCount: number };
@@ -1379,10 +1376,7 @@ export type QuestNodePrototype = GetStructType<{
   BrokenGameDataFilter: EBrokenGameDataFilter;
   Launchers: {
     Excluding: boolean;
-    Connections: {
-      SID: string;
-      Name: string;
-    }[];
+    Connections: { SID: string; Name: string }[];
   }[];
   ExcludeAllNodesInContainer: boolean;
   TargetQuestGuid: string;
@@ -1859,7 +1853,7 @@ interface IArtifactPrototype extends IItemPrototype {
   MaxCharge: number;
   ChargeThreshold: number;
   ChargingSpeed: number;
-  bUseCharge: boolean; // defines whether damage deflection should be constant or proportional to current artifact charge level;
+  bUseCharge: boolean;
   AnomalyDamageDeflections: {
     AnomalyType: EAnomalyType;
     ChargeQuantity: number;
@@ -1884,12 +1878,8 @@ interface IArmorPrototype extends IItemPrototype {
   Protection: Protection;
   ProtectionNPC: Protection;
   UpgradePrototypeSIDs: string[];
-  MeshGenerator: {
-    MeshGeneratorPrototypeSID: string;
-  }[];
-  NpcMeshGenerator: {
-    MeshGeneratorPrototypeSID: string;
-  }[];
+  MeshGenerator: { MeshGeneratorPrototypeSID: string }[];
+  NpcMeshGenerator: { MeshGeneratorPrototypeSID: string }[];
   VoiceModulatorSID: string;
   PreinstalledUpgrades: string[];
   SectionSettings: {
@@ -1924,32 +1914,20 @@ interface IAttachPrototype extends IItemPrototype {
     MaxAmmo: number;
     BindBulletsToAttach: boolean;
     HasMultipleMeshes: boolean;
-    MeshArray: {
-      MagazineMeshType: EMagazineMeshType;
-    }[];
+    MeshArray: { MagazineMeshType: EMagazineMeshType }[];
   };
   Scope: {
     ZoomCoefficients: number[];
     BaseZoomCoefficientIndex: number;
     ChangeZoomScopeSound: string;
     bOverrideAimingEffects: boolean;
-    AimingEffects: {
-      PlayerOnlyEffects: string[];
-    };
+    AimingEffects: { PlayerOnlyEffects: string[] };
     AimingCutoutRadius: number;
     AimingCutoutThreshold: number;
   };
-  WeaponFlashlight: {
-    FlashlightPrototypeID: number;
-  };
-  IronSight: {
-    MeshArray: {
-      Socket: string;
-    }[];
-  };
-  ShootingAttach: {
-    WeaponPrototypeSID: string;
-  };
+  WeaponFlashlight: { FlashlightPrototypeID: number };
+  IronSight: { MeshArray: { Socket: string }[] };
+  ShootingAttach: { WeaponPrototypeSID: string };
   Slot: EAttachSlot;
   InventoryActionTime: number;
   bPermanent: boolean;
@@ -1997,9 +1975,7 @@ interface IConsumablePrototype extends IItemPrototype {
   MeshPath: string;
   AnimBlueprint: string;
   AlternativeEffectPrototypeSIDs: string[];
-  NegativeEffectPrototypeSIDs: {
-    Effect: string;
-  }[];
+  NegativeEffectPrototypeSIDs: { Effect: string }[];
   NegativeEffectsChance: number;
   IsQuestItemPrototype: boolean;
   ItemTags: string[];
@@ -2012,12 +1988,12 @@ export type ConsumablePrototype = GetStructType<IConsumablePrototype>;
 
 interface IDetectorPrototype extends IItemPrototype {
   DetectorType: EDetectorType;
-  ShowArtifactRadius: number; // artifats become visible in this radius";
+  ShowArtifactRadius: number;
   AnimBlueprint: string;
   DisplayUpdateInterval: number;
   DangerLevelSoundParameter: string;
   MinDetectRadius: number;
-  DetectorWorkRadius: number; // detection sound is playing is this radius";
+  DetectorWorkRadius: number;
   DetectorWorkSFX: string;
   DetectorWorkCurve: string;
   ArtifactSignalCurve: string;
@@ -2187,9 +2163,7 @@ export type SpawnActorPrototype = GetStructType<{
   StashPrototypeSID: string;
   ItemGeneratorSettings: {
     PlayerRank: ERank;
-    ItemGenerators: {
-      PrototypeSID: string;
-    }[];
+    ItemGenerators: { PrototypeSID: string }[];
   }[];
   TileOffsetIndex: number;
   ItemSID: string;
@@ -2204,17 +2178,8 @@ export type SpawnActorPrototype = GetStructType<{
   NodeCreationVersion: number;
   DataLayers: string[];
   Rank: ERank;
-  SignalReceivers: {
-    DestroyReceiver: {
-      Guid: string;
-    };
-  };
-  SignalSenders: {
-    DestroySender: {
-      Guid: string;
-      Signals: string[];
-    };
-  };
+  SignalReceivers: { DestroyReceiver: { Guid: string } };
+  SignalSenders: { DestroySender: { Guid: string; Signals: string[] } };
   DisablePhysics: boolean;
   DisableCollision: boolean;
   DisableDespawn: boolean;
@@ -2239,7 +2204,8 @@ export type SpawnActorPrototype = GetStructType<{
   RespawnMembers: boolean;
 }>;
 
-type Faction = string; // for performance
+type Faction = string;
+
 export type RelationPrototype = GetStructType<{
   SID: string;
   FactionsInvolvedDistance: number;
@@ -2248,20 +2214,14 @@ export type RelationPrototype = GetStructType<{
   RelationVersion: number;
   RelationLevelRanges: { start: number; end: number }[];
   MinRelationLevelToTrade: ERelationLevel;
-  CharacterReactions: ({
-    Type: ERelationChangingEvent;
-  } & {
+  CharacterReactions: ({ Type: ERelationChangingEvent } & {
     [key in `${Reactions}->${Reactions}`]: number;
   })[];
-  FactionReactions: ({
-    Type: ERelationChangingEvent;
-  } & {
+  FactionReactions: ({ Type: ERelationChangingEvent } & {
     [key in `${Reactions}->${Reactions}`]: number;
   })[];
   Factions: Record<Faction, Faction>;
-  Relations: {
-    [key in `${Faction}<->${Faction}`]: number;
-  };
+  Relations: { [key in `${Faction}<->${Faction}`]: number };
   PositiveReactionsExcludedFactions: `${Faction}<->${Faction}`[];
   NegativeReactionsExcludedFactions: `${Faction}<->${Faction}`[];
   FactionRollbackCooldowns: Record<Faction, number>;
@@ -2441,14 +2401,10 @@ export type DialogPoolPrototype = GetStructType<{
   ShouldLockPersonalRelationship: boolean;
   DataLayerCombination: string;
   DLC: string;
-
   OutputPinNames: string[];
   Launchers: {
     Excluding: boolean;
-    Connections: {
-      SID: string;
-      Name: string;
-    }[];
+    Connections: { SID: string; Name: string }[];
   }[];
   LastPhrases: {
     FinishNode: boolean;
@@ -2458,28 +2414,18 @@ export type DialogPoolPrototype = GetStructType<{
   DialogMembers: string[];
   TalkThroughRadio: boolean[];
   DialogObjectLocation: Location[];
-
   Conditions: GetStructType<Condition[][]> & {
     ConditionCheckType: EConditionCheckType;
   };
-
   DialogEventType: EDialogEventType;
   RequiresGroup: boolean;
   RequiredMembersCount: number;
   OptionalMembersCount: number;
   DialogMemberRestrictions: {
-    FactionRestrictions: {
-      Faction: Faction;
-    };
-    ExcludedFactions: {
-      Faction: Faction;
-    };
-    ObjPrototypeRestrictions: {
-      NPCPrototypeSID: string;
-    };
-    ExcludedObjPrototypes: {
-      NPCPrototypeSID: string;
-    };
+    FactionRestrictions: { Faction: Faction };
+    ExcludedFactions: { Faction: Faction };
+    ObjPrototypeRestrictions: { NPCPrototypeSID: string };
+    ExcludedObjPrototypes: { NPCPrototypeSID: string };
   };
   AvailableDialogs: string[];
 }>;
@@ -2521,24 +2467,15 @@ export type Condition = GetStructType<{
   JournalQuestStageSID: string;
   TargetNode: string;
   NodeState: EQuestNodeState;
-
   IncludePartialOverload: boolean;
   ThreatAwareness: EThreatAwareness;
   EmissionPrototypeSID: string;
 }>;
 
-export type Location = GetStructType<{
-  X: number;
-  Y: number;
-  Z: number;
-}>;
+export type Location = GetStructType<{ X: number; Y: number; Z: number }>;
 
 export type LocationAndRotation = GetStructType<
-  Location & {
-    Pitch: number;
-    Yaw: number;
-    Roll: number;
-  }
+  Location & { Pitch: number; Yaw: number; Roll: number }
 >;
 
 export type Param = GetStructType<{
@@ -2650,10 +2587,7 @@ export type DialogChainPrototype = GetStructType<{
   CanBeInterrupted: boolean;
   ContinueAfterInterrupt: boolean;
   IsInteractive: boolean;
-  DialogMembers: {
-    DialogMemberName: string;
-    OptionalMember: boolean;
-  }[];
+  DialogMembers: { DialogMemberName: string; OptionalMember: boolean }[];
   IsPCDialogMember: boolean;
 }>;
 
@@ -2698,22 +2632,1699 @@ export type MeshGeneratorPrototype = GetStructType<{
     CommonMeshSlots | `${number}`,
     { SlotName: string; Attaches: { BodyMeshSID: string; Weight: number }[] }
   >;
-  Materials: {
-    MaterialGroup: string;
-    Variations: Variation[];
-  }[];
-  CustomData: {
-    MaterialGroup: string;
-    Variations: Variation[];
-  }[];
-  Groom: {
-    CategoryName: string;
-    Variations: Variation[];
-  }[];
+  Materials: { MaterialGroup: string; Variations: Variation[] }[];
+  CustomData: { MaterialGroup: string; Variations: Variation[] }[];
+  Groom: { CategoryName: string; Variations: Variation[] }[];
   MergedMesh: string;
 }>;
 
-export type Variation = {
-  VariationIndex: number;
-  Weight: number;
-};
+export type Variation = { VariationIndex: number; Weight: number };
+
+export type LairPrototype = GetStructType<{
+  SID: string;
+  Preset: {
+    InitialInhabitantFaction: string;
+    IsALifePoint: true;
+    PossibleInhabitantFactions: {
+      Militaries: {
+        Faction: string;
+        SpawnSettingsPerPlayerRanks: Record<
+          "Newbie" | "Experienced" | "Veteran" | "Master",
+          {
+            MaxSpawnQuantity: number;
+            InitialSpawnQuantityPercent: number;
+            InitialSpawnQuantityRespawnTimeSeconds: number;
+            MaxSpawnQuantityRespawnTimeSeconds: number;
+            WipeRespawnTimeoutSeconds: number;
+            SpawnSettingsPerArchetypes: Record<
+              string,
+              { MinQuantityPerArchetype: number; SpawnWeight: number }
+            >;
+          }
+        >;
+      };
+      NeutralMSOP: {
+        Faction: string;
+        SpawnSettingsPerPlayerRanks: Record<
+          "Newbie" | "Experienced" | "Veteran" | "Master",
+          {
+            MaxSpawnQuantity: number;
+            InitialSpawnQuantityPercent: number;
+            InitialSpawnQuantityRespawnTimeSeconds: number;
+            MaxSpawnQuantityRespawnTimeSeconds: number;
+            WipeRespawnTimeoutSeconds: number;
+            SpawnSettingsPerArchetypes: Record<
+              string,
+              { MinQuantityPerArchetype: number; SpawnWeight: number }
+            >;
+          }
+        >;
+      };
+      Neutrals: {
+        Faction: string;
+        SpawnSettingsPerPlayerRanks: {
+          Newbie: {
+            MaxSpawnQuantity: number;
+            InitialSpawnQuantityPercent: number;
+            InitialSpawnQuantityRespawnTimeSeconds: number;
+            MaxSpawnQuantityRespawnTimeSeconds: number;
+            WipeRespawnTimeoutSeconds: number;
+            SpawnSettingsPerArchetypes: Record<
+              string,
+              { MinQuantityPerArchetype: number; SpawnWeight: number }
+            >;
+          };
+          Experienced: {
+            MaxSpawnQuantity: number;
+            InitialSpawnQuantityPercent: number;
+            InitialSpawnQuantityRespawnTimeSeconds: number;
+            MaxSpawnQuantityRespawnTimeSeconds: number;
+            WipeRespawnTimeoutSeconds: number;
+            SpawnSettingsPerArchetypes: Record<
+              string,
+              { MinQuantityPerArchetype: number; SpawnWeight: number }
+            >;
+          };
+          Veteran: {
+            MaxSpawnQuantity: number;
+            InitialSpawnQuantityPercent: number;
+            InitialSpawnQuantityRespawnTimeSeconds: number;
+            MaxSpawnQuantityRespawnTimeSeconds: number;
+            WipeRespawnTimeoutSeconds: number;
+            SpawnSettingsPerArchetypes: Record<
+              string,
+              { MinQuantityPerArchetype: number; SpawnWeight: number }
+            >;
+          };
+          Master: {
+            MaxSpawnQuantity: number;
+            InitialSpawnQuantityPercent: number;
+            InitialSpawnQuantityRespawnTimeSeconds: number;
+            MaxSpawnQuantityRespawnTimeSeconds: number;
+            WipeRespawnTimeoutSeconds: number;
+            SpawnSettingsPerArchetypes: Record<
+              string,
+              { MinQuantityPerArchetype: number; SpawnWeight: number }
+            >;
+          };
+        };
+      };
+      Diggers: {
+        Faction: string;
+        SpawnSettingsPerPlayerRanks: {
+          Newbie: {
+            MaxSpawnQuantity: number;
+            InitialSpawnQuantityPercent: number;
+            InitialSpawnQuantityRespawnTimeSeconds: number;
+            MaxSpawnQuantityRespawnTimeSeconds: number;
+            WipeRespawnTimeoutSeconds: number;
+            SpawnSettingsPerArchetypes: Record<
+              string,
+              { MinQuantityPerArchetype: number; SpawnWeight: number }
+            >;
+          };
+          Experienced: {
+            MaxSpawnQuantity: number;
+            InitialSpawnQuantityPercent: number;
+            InitialSpawnQuantityRespawnTimeSeconds: number;
+            MaxSpawnQuantityRespawnTimeSeconds: number;
+            WipeRespawnTimeoutSeconds: number;
+            SpawnSettingsPerArchetypes: Record<
+              string,
+              { MinQuantityPerArchetype: number; SpawnWeight: number }
+            >;
+          };
+          Veteran: {
+            MaxSpawnQuantity: number;
+            InitialSpawnQuantityPercent: number;
+            InitialSpawnQuantityRespawnTimeSeconds: number;
+            MaxSpawnQuantityRespawnTimeSeconds: number;
+            WipeRespawnTimeoutSeconds: number;
+            SpawnSettingsPerArchetypes: Record<
+              string,
+              { MinQuantityPerArchetype: number; SpawnWeight: number }
+            >;
+          };
+          Master: {
+            MaxSpawnQuantity: number;
+            InitialSpawnQuantityPercent: number;
+            InitialSpawnQuantityRespawnTimeSeconds: number;
+            MaxSpawnQuantityRespawnTimeSeconds: number;
+            WipeRespawnTimeoutSeconds: number;
+            SpawnSettingsPerArchetypes: Record<
+              string,
+              { MinQuantityPerArchetype: number; SpawnWeight: number }
+            >;
+          };
+        };
+      };
+      Varta: {
+        Faction: string;
+        SpawnSettingsPerPlayerRanks: {
+          Newbie: {
+            MaxSpawnQuantity: number;
+            InitialSpawnQuantityPercent: number;
+            InitialSpawnQuantityRespawnTimeSeconds: number;
+            MaxSpawnQuantityRespawnTimeSeconds: number;
+            WipeRespawnTimeoutSeconds: number;
+            SpawnSettingsPerArchetypes: Record<
+              string,
+              { MinQuantityPerArchetype: number; SpawnWeight: number }
+            >;
+          };
+          Experienced: {
+            MaxSpawnQuantity: number;
+            InitialSpawnQuantityPercent: number;
+            InitialSpawnQuantityRespawnTimeSeconds: number;
+            MaxSpawnQuantityRespawnTimeSeconds: number;
+            WipeRespawnTimeoutSeconds: number;
+            SpawnSettingsPerArchetypes: Record<
+              string,
+              { MinQuantityPerArchetype: number; SpawnWeight: number }
+            >;
+          };
+          Veteran: {
+            MaxSpawnQuantity: number;
+            InitialSpawnQuantityPercent: number;
+            InitialSpawnQuantityRespawnTimeSeconds: number;
+            MaxSpawnQuantityRespawnTimeSeconds: number;
+            WipeRespawnTimeoutSeconds: number;
+            SpawnSettingsPerArchetypes: Record<
+              string,
+              { MinQuantityPerArchetype: number; SpawnWeight: number }
+            >;
+          };
+          Master: {
+            MaxSpawnQuantity: number;
+            InitialSpawnQuantityPercent: number;
+            InitialSpawnQuantityRespawnTimeSeconds: number;
+            MaxSpawnQuantityRespawnTimeSeconds: number;
+            WipeRespawnTimeoutSeconds: number;
+            SpawnSettingsPerArchetypes: Record<
+              string,
+              { MinQuantityPerArchetype: number; SpawnWeight: number }
+            >;
+          };
+        };
+      };
+      IkarVarta: {
+        Faction: string;
+        SpawnSettingsPerPlayerRanks: {
+          Newbie: {
+            MaxSpawnQuantity: number;
+            InitialSpawnQuantityPercent: number;
+            InitialSpawnQuantityRespawnTimeSeconds: number;
+            MaxSpawnQuantityRespawnTimeSeconds: number;
+            WipeRespawnTimeoutSeconds: number;
+            SpawnSettingsPerArchetypes: Record<
+              string,
+              { MinQuantityPerArchetype: number; SpawnWeight: number }
+            >;
+          };
+          Experienced: {
+            MaxSpawnQuantity: number;
+            InitialSpawnQuantityPercent: number;
+            InitialSpawnQuantityRespawnTimeSeconds: number;
+            MaxSpawnQuantityRespawnTimeSeconds: number;
+            WipeRespawnTimeoutSeconds: number;
+            SpawnSettingsPerArchetypes: Record<
+              string,
+              { MinQuantityPerArchetype: number; SpawnWeight: number }
+            >;
+          };
+          Veteran: {
+            MaxSpawnQuantity: number;
+            InitialSpawnQuantityPercent: number;
+            InitialSpawnQuantityRespawnTimeSeconds: number;
+            MaxSpawnQuantityRespawnTimeSeconds: number;
+            WipeRespawnTimeoutSeconds: number;
+            SpawnSettingsPerArchetypes: Record<
+              string,
+              { MinQuantityPerArchetype: number; SpawnWeight: number }
+            >;
+          };
+          Master: {
+            MaxSpawnQuantity: number;
+            InitialSpawnQuantityPercent: number;
+            InitialSpawnQuantityRespawnTimeSeconds: number;
+            MaxSpawnQuantityRespawnTimeSeconds: number;
+            WipeRespawnTimeoutSeconds: number;
+            SpawnSettingsPerArchetypes: Record<
+              string,
+              { MinQuantityPerArchetype: number; SpawnWeight: number }
+            >;
+          };
+        };
+      };
+      EnemyVarta: {
+        Faction: string;
+        SpawnSettingsPerPlayerRanks: {
+          Newbie: {
+            MaxSpawnQuantity: number;
+            InitialSpawnQuantityPercent: number;
+            InitialSpawnQuantityRespawnTimeSeconds: number;
+            MaxSpawnQuantityRespawnTimeSeconds: number;
+            WipeRespawnTimeoutSeconds: number;
+            SpawnSettingsPerArchetypes: Record<
+              string,
+              { MinQuantityPerArchetype: number; SpawnWeight: number }
+            >;
+          };
+          Experienced: {
+            MaxSpawnQuantity: number;
+            InitialSpawnQuantityPercent: number;
+            InitialSpawnQuantityRespawnTimeSeconds: number;
+            MaxSpawnQuantityRespawnTimeSeconds: number;
+            WipeRespawnTimeoutSeconds: number;
+            SpawnSettingsPerArchetypes: Record<
+              string,
+              { MinQuantityPerArchetype: number; SpawnWeight: number }
+            >;
+          };
+          Veteran: {
+            MaxSpawnQuantity: number;
+            InitialSpawnQuantityPercent: number;
+            InitialSpawnQuantityRespawnTimeSeconds: number;
+            MaxSpawnQuantityRespawnTimeSeconds: number;
+            WipeRespawnTimeoutSeconds: number;
+            SpawnSettingsPerArchetypes: Record<
+              string,
+              { MinQuantityPerArchetype: number; SpawnWeight: number }
+            >;
+          };
+          Master: {
+            MaxSpawnQuantity: number;
+            InitialSpawnQuantityPercent: number;
+            InitialSpawnQuantityRespawnTimeSeconds: number;
+            MaxSpawnQuantityRespawnTimeSeconds: number;
+            WipeRespawnTimeoutSeconds: number;
+            SpawnSettingsPerArchetypes: Record<
+              string,
+              { MinQuantityPerArchetype: number; SpawnWeight: number }
+            >;
+          };
+        };
+      };
+      Mercenaries: {
+        Faction: string;
+        SpawnSettingsPerPlayerRanks: {
+          Newbie: {
+            MaxSpawnQuantity: number;
+            InitialSpawnQuantityPercent: number;
+            InitialSpawnQuantityRespawnTimeSeconds: number;
+            MaxSpawnQuantityRespawnTimeSeconds: number;
+            WipeRespawnTimeoutSeconds: number;
+            SpawnSettingsPerArchetypes: Record<
+              string,
+              { MinQuantityPerArchetype: number; SpawnWeight: number }
+            >;
+          };
+          Experienced: {
+            MaxSpawnQuantity: number;
+            InitialSpawnQuantityPercent: number;
+            InitialSpawnQuantityRespawnTimeSeconds: number;
+            MaxSpawnQuantityRespawnTimeSeconds: number;
+            WipeRespawnTimeoutSeconds: number;
+            SpawnSettingsPerArchetypes: Record<
+              string,
+              { MinQuantityPerArchetype: number; SpawnWeight: number }
+            >;
+          };
+          Veteran: {
+            MaxSpawnQuantity: number;
+            InitialSpawnQuantityPercent: number;
+            InitialSpawnQuantityRespawnTimeSeconds: number;
+            MaxSpawnQuantityRespawnTimeSeconds: number;
+            WipeRespawnTimeoutSeconds: number;
+            SpawnSettingsPerArchetypes: Record<
+              string,
+              { MinQuantityPerArchetype: number; SpawnWeight: number }
+            >;
+          };
+          Master: {
+            MaxSpawnQuantity: number;
+            InitialSpawnQuantityPercent: number;
+            InitialSpawnQuantityRespawnTimeSeconds: number;
+            MaxSpawnQuantityRespawnTimeSeconds: number;
+            WipeRespawnTimeoutSeconds: number;
+            SpawnSettingsPerArchetypes: Record<
+              string,
+              { MinQuantityPerArchetype: number; SpawnWeight: number }
+            >;
+          };
+        };
+      };
+      Freedom: {
+        Faction: string;
+        SpawnSettingsPerPlayerRanks: {
+          Newbie: {
+            MaxSpawnQuantity: number;
+            InitialSpawnQuantityPercent: number;
+            InitialSpawnQuantityRespawnTimeSeconds: number;
+            MaxSpawnQuantityRespawnTimeSeconds: number;
+            WipeRespawnTimeoutSeconds: number;
+            SpawnSettingsPerArchetypes: Record<
+              string,
+              { MinQuantityPerArchetype: number; SpawnWeight: number }
+            >;
+          };
+          Experienced: {
+            MaxSpawnQuantity: number;
+            InitialSpawnQuantityPercent: number;
+            InitialSpawnQuantityRespawnTimeSeconds: number;
+            MaxSpawnQuantityRespawnTimeSeconds: number;
+            WipeRespawnTimeoutSeconds: number;
+            SpawnSettingsPerArchetypes: Record<
+              string,
+              { MinQuantityPerArchetype: number; SpawnWeight: number }
+            >;
+          };
+          Veteran: {
+            MaxSpawnQuantity: number;
+            InitialSpawnQuantityPercent: number;
+            InitialSpawnQuantityRespawnTimeSeconds: number;
+            MaxSpawnQuantityRespawnTimeSeconds: number;
+            WipeRespawnTimeoutSeconds: number;
+            SpawnSettingsPerArchetypes: Record<
+              string,
+              { MinQuantityPerArchetype: number; SpawnWeight: number }
+            >;
+          };
+          Master: {
+            MaxSpawnQuantity: number;
+            InitialSpawnQuantityPercent: number;
+            InitialSpawnQuantityRespawnTimeSeconds: number;
+            MaxSpawnQuantityRespawnTimeSeconds: number;
+            WipeRespawnTimeoutSeconds: number;
+            SpawnSettingsPerArchetypes: Record<
+              string,
+              { MinQuantityPerArchetype: number; SpawnWeight: number }
+            >;
+          };
+        };
+      };
+      Bandits: {
+        Faction: string;
+        SpawnSettingsPerPlayerRanks: {
+          Newbie: {
+            MaxSpawnQuantity: number;
+            InitialSpawnQuantityPercent: number;
+            InitialSpawnQuantityRespawnTimeSeconds: number;
+            MaxSpawnQuantityRespawnTimeSeconds: number;
+            WipeRespawnTimeoutSeconds: number;
+            SpawnSettingsPerArchetypes: Record<
+              string,
+              { MinQuantityPerArchetype: number; SpawnWeight: number }
+            >;
+          };
+          Experienced: {
+            MaxSpawnQuantity: number;
+            InitialSpawnQuantityPercent: number;
+            InitialSpawnQuantityRespawnTimeSeconds: number;
+            MaxSpawnQuantityRespawnTimeSeconds: number;
+            WipeRespawnTimeoutSeconds: number;
+            SpawnSettingsPerArchetypes: Record<
+              string,
+              { MinQuantityPerArchetype: number; SpawnWeight: number }
+            >;
+          };
+          Veteran: {
+            MaxSpawnQuantity: number;
+            InitialSpawnQuantityPercent: number;
+            InitialSpawnQuantityRespawnTimeSeconds: number;
+            MaxSpawnQuantityRespawnTimeSeconds: number;
+            WipeRespawnTimeoutSeconds: number;
+            SpawnSettingsPerArchetypes: Record<
+              string,
+              { MinQuantityPerArchetype: number; SpawnWeight: number }
+            >;
+          };
+          Master: {
+            MaxSpawnQuantity: number;
+            InitialSpawnQuantityPercent: number;
+            InitialSpawnQuantityRespawnTimeSeconds: number;
+            MaxSpawnQuantityRespawnTimeSeconds: number;
+            WipeRespawnTimeoutSeconds: number;
+            SpawnSettingsPerArchetypes: Record<
+              string,
+              { MinQuantityPerArchetype: number; SpawnWeight: number }
+            >;
+          };
+        };
+      };
+      SultanBandits: {
+        Faction: string;
+        SpawnSettingsPerPlayerRanks: {
+          Newbie: {
+            MaxSpawnQuantity: number;
+            InitialSpawnQuantityPercent: number;
+            InitialSpawnQuantityRespawnTimeSeconds: number;
+            MaxSpawnQuantityRespawnTimeSeconds: number;
+            WipeRespawnTimeoutSeconds: number;
+            SpawnSettingsPerArchetypes: Record<
+              string,
+              { MinQuantityPerArchetype: number; SpawnWeight: number }
+            >;
+          };
+          Experienced: {
+            MaxSpawnQuantity: number;
+            InitialSpawnQuantityPercent: number;
+            InitialSpawnQuantityRespawnTimeSeconds: number;
+            MaxSpawnQuantityRespawnTimeSeconds: number;
+            WipeRespawnTimeoutSeconds: number;
+            SpawnSettingsPerArchetypes: Record<
+              string,
+              { MinQuantityPerArchetype: number; SpawnWeight: number }
+            >;
+          };
+          Veteran: {
+            MaxSpawnQuantity: number;
+            InitialSpawnQuantityPercent: number;
+            InitialSpawnQuantityRespawnTimeSeconds: number;
+            MaxSpawnQuantityRespawnTimeSeconds: number;
+            WipeRespawnTimeoutSeconds: number;
+            SpawnSettingsPerArchetypes: Record<
+              string,
+              { MinQuantityPerArchetype: number; SpawnWeight: number }
+            >;
+          };
+          Master: {
+            MaxSpawnQuantity: number;
+            InitialSpawnQuantityPercent: number;
+            InitialSpawnQuantityRespawnTimeSeconds: number;
+            MaxSpawnQuantityRespawnTimeSeconds: number;
+            WipeRespawnTimeoutSeconds: number;
+            SpawnSettingsPerArchetypes: Record<
+              string,
+              { MinQuantityPerArchetype: number; SpawnWeight: number }
+            >;
+          };
+        };
+      };
+      NeutralBandits: {
+        Faction: string;
+        SpawnSettingsPerPlayerRanks: {
+          Newbie: {
+            MaxSpawnQuantity: number;
+            InitialSpawnQuantityPercent: number;
+            InitialSpawnQuantityRespawnTimeSeconds: number;
+            MaxSpawnQuantityRespawnTimeSeconds: number;
+            WipeRespawnTimeoutSeconds: number;
+            SpawnSettingsPerArchetypes: Record<
+              string,
+              { MinQuantityPerArchetype: number; SpawnWeight: number }
+            >;
+          };
+          Experienced: {
+            MaxSpawnQuantity: number;
+            InitialSpawnQuantityPercent: number;
+            InitialSpawnQuantityRespawnTimeSeconds: number;
+            MaxSpawnQuantityRespawnTimeSeconds: number;
+            WipeRespawnTimeoutSeconds: number;
+            SpawnSettingsPerArchetypes: Record<
+              string,
+              { MinQuantityPerArchetype: number; SpawnWeight: number }
+            >;
+          };
+          Veteran: {
+            MaxSpawnQuantity: number;
+            InitialSpawnQuantityPercent: number;
+            InitialSpawnQuantityRespawnTimeSeconds: number;
+            MaxSpawnQuantityRespawnTimeSeconds: number;
+            WipeRespawnTimeoutSeconds: number;
+            SpawnSettingsPerArchetypes: Record<
+              string,
+              { MinQuantityPerArchetype: number; SpawnWeight: number }
+            >;
+          };
+          Master: {
+            MaxSpawnQuantity: number;
+            InitialSpawnQuantityPercent: number;
+            InitialSpawnQuantityRespawnTimeSeconds: number;
+            MaxSpawnQuantityRespawnTimeSeconds: number;
+            WipeRespawnTimeoutSeconds: number;
+            SpawnSettingsPerArchetypes: Record<
+              string,
+              { MinQuantityPerArchetype: number; SpawnWeight: number }
+            >;
+          };
+        };
+      };
+      Monolith: {
+        Faction: string;
+        SpawnSettingsPerPlayerRanks: {
+          Newbie: {
+            MaxSpawnQuantity: number;
+            InitialSpawnQuantityPercent: number;
+            InitialSpawnQuantityRespawnTimeSeconds: number;
+            MaxSpawnQuantityRespawnTimeSeconds: number;
+            WipeRespawnTimeoutSeconds: number;
+            SpawnSettingsPerArchetypes: Record<
+              string,
+              { MinQuantityPerArchetype: number; SpawnWeight: number }
+            >;
+          };
+          Experienced: {
+            MaxSpawnQuantity: number;
+            InitialSpawnQuantityPercent: number;
+            InitialSpawnQuantityRespawnTimeSeconds: number;
+            MaxSpawnQuantityRespawnTimeSeconds: number;
+            WipeRespawnTimeoutSeconds: number;
+            SpawnSettingsPerArchetypes: Record<
+              string,
+              { MinQuantityPerArchetype: number; SpawnWeight: number }
+            >;
+          };
+          Veteran: {
+            MaxSpawnQuantity: number;
+            InitialSpawnQuantityPercent: number;
+            InitialSpawnQuantityRespawnTimeSeconds: number;
+            MaxSpawnQuantityRespawnTimeSeconds: number;
+            WipeRespawnTimeoutSeconds: number;
+            SpawnSettingsPerArchetypes: Record<
+              string,
+              { MinQuantityPerArchetype: number; SpawnWeight: number }
+            >;
+          };
+          Master: {
+            MaxSpawnQuantity: number;
+            InitialSpawnQuantityPercent: number;
+            InitialSpawnQuantityRespawnTimeSeconds: number;
+            MaxSpawnQuantityRespawnTimeSeconds: number;
+            WipeRespawnTimeoutSeconds: number;
+            SpawnSettingsPerArchetypes: Record<
+              string,
+              { MinQuantityPerArchetype: number; SpawnWeight: number }
+            >;
+          };
+        };
+      };
+      Duty: {
+        Faction: string;
+        SpawnSettingsPerPlayerRanks: {
+          Newbie: {
+            MaxSpawnQuantity: number;
+            InitialSpawnQuantityPercent: number;
+            InitialSpawnQuantityRespawnTimeSeconds: number;
+            MaxSpawnQuantityRespawnTimeSeconds: number;
+            WipeRespawnTimeoutSeconds: number;
+            SpawnSettingsPerArchetypes: Record<
+              string,
+              { MinQuantityPerArchetype: number; SpawnWeight: number }
+            >;
+          };
+          Experienced: {
+            MaxSpawnQuantity: number;
+            InitialSpawnQuantityPercent: number;
+            InitialSpawnQuantityRespawnTimeSeconds: number;
+            MaxSpawnQuantityRespawnTimeSeconds: number;
+            WipeRespawnTimeoutSeconds: number;
+            SpawnSettingsPerArchetypes: Record<
+              string,
+              { MinQuantityPerArchetype: number; SpawnWeight: number }
+            >;
+          };
+          Veteran: {
+            MaxSpawnQuantity: number;
+            InitialSpawnQuantityPercent: number;
+            InitialSpawnQuantityRespawnTimeSeconds: number;
+            MaxSpawnQuantityRespawnTimeSeconds: number;
+            WipeRespawnTimeoutSeconds: number;
+            SpawnSettingsPerArchetypes: Record<
+              string,
+              { MinQuantityPerArchetype: number; SpawnWeight: number }
+            >;
+          };
+          Master: {
+            MaxSpawnQuantity: number;
+            InitialSpawnQuantityPercent: number;
+            InitialSpawnQuantityRespawnTimeSeconds: number;
+            MaxSpawnQuantityRespawnTimeSeconds: number;
+            WipeRespawnTimeoutSeconds: number;
+            SpawnSettingsPerArchetypes: Record<
+              string,
+              { MinQuantityPerArchetype: number; SpawnWeight: number }
+            >;
+          };
+        };
+      };
+      Noon: {
+        Faction: string;
+        SpawnSettingsPerPlayerRanks: {
+          Newbie: {
+            MaxSpawnQuantity: number;
+            InitialSpawnQuantityPercent: number;
+            InitialSpawnQuantityRespawnTimeSeconds: number;
+            MaxSpawnQuantityRespawnTimeSeconds: number;
+            WipeRespawnTimeoutSeconds: number;
+            SpawnSettingsPerArchetypes: Record<
+              string,
+              { MinQuantityPerArchetype: number; SpawnWeight: number }
+            >;
+          };
+          Experienced: {
+            MaxSpawnQuantity: number;
+            InitialSpawnQuantityPercent: number;
+            InitialSpawnQuantityRespawnTimeSeconds: number;
+            MaxSpawnQuantityRespawnTimeSeconds: number;
+            WipeRespawnTimeoutSeconds: number;
+            SpawnSettingsPerArchetypes: Record<
+              string,
+              { MinQuantityPerArchetype: number; SpawnWeight: number }
+            >;
+          };
+          Veteran: {
+            MaxSpawnQuantity: number;
+            InitialSpawnQuantityPercent: number;
+            InitialSpawnQuantityRespawnTimeSeconds: number;
+            MaxSpawnQuantityRespawnTimeSeconds: number;
+            WipeRespawnTimeoutSeconds: number;
+            SpawnSettingsPerArchetypes: Record<
+              string,
+              { MinQuantityPerArchetype: number; SpawnWeight: number }
+            >;
+          };
+          Master: {
+            MaxSpawnQuantity: number;
+            InitialSpawnQuantityPercent: number;
+            InitialSpawnQuantityRespawnTimeSeconds: number;
+            MaxSpawnQuantityRespawnTimeSeconds: number;
+            WipeRespawnTimeoutSeconds: number;
+            SpawnSettingsPerArchetypes: Record<
+              string,
+              { MinQuantityPerArchetype: number; SpawnWeight: number }
+            >;
+          };
+        };
+      };
+      Scientists: {
+        Faction: string;
+        SpawnSettingsPerPlayerRanks: {
+          Newbie: {
+            MaxSpawnQuantity: number;
+            InitialSpawnQuantityPercent: number;
+            InitialSpawnQuantityRespawnTimeSeconds: number;
+            MaxSpawnQuantityRespawnTimeSeconds: number;
+            WipeRespawnTimeoutSeconds: number;
+            SpawnSettingsPerArchetypes: Record<
+              string,
+              { MinQuantityPerArchetype: number; SpawnWeight: number }
+            >;
+          };
+          Experienced: {
+            MaxSpawnQuantity: number;
+            InitialSpawnQuantityPercent: number;
+            InitialSpawnQuantityRespawnTimeSeconds: number;
+            MaxSpawnQuantityRespawnTimeSeconds: number;
+            WipeRespawnTimeoutSeconds: number;
+            SpawnSettingsPerArchetypes: Record<
+              string,
+              { MinQuantityPerArchetype: number; SpawnWeight: number }
+            >;
+          };
+          Veteran: {
+            MaxSpawnQuantity: number;
+            InitialSpawnQuantityPercent: number;
+            InitialSpawnQuantityRespawnTimeSeconds: number;
+            MaxSpawnQuantityRespawnTimeSeconds: number;
+            WipeRespawnTimeoutSeconds: number;
+            SpawnSettingsPerArchetypes: Record<
+              string,
+              { MinQuantityPerArchetype: number; SpawnWeight: number }
+            >;
+          };
+          Master: {
+            MaxSpawnQuantity: number;
+            InitialSpawnQuantityPercent: number;
+            InitialSpawnQuantityRespawnTimeSeconds: number;
+            MaxSpawnQuantityRespawnTimeSeconds: number;
+            WipeRespawnTimeoutSeconds: number;
+            SpawnSettingsPerArchetypes: Record<
+              string,
+              { MinQuantityPerArchetype: number; SpawnWeight: number }
+            >;
+          };
+        };
+      };
+      Spark: {
+        Faction: string;
+        SpawnSettingsPerPlayerRanks: {
+          Newbie: {
+            MaxSpawnQuantity: number;
+            InitialSpawnQuantityPercent: number;
+            InitialSpawnQuantityRespawnTimeSeconds: number;
+            MaxSpawnQuantityRespawnTimeSeconds: number;
+            WipeRespawnTimeoutSeconds: number;
+            SpawnSettingsPerArchetypes: Record<
+              string,
+              { MinQuantityPerArchetype: number; SpawnWeight: number }
+            >;
+          };
+          Experienced: {
+            MaxSpawnQuantity: number;
+            InitialSpawnQuantityPercent: number;
+            InitialSpawnQuantityRespawnTimeSeconds: number;
+            MaxSpawnQuantityRespawnTimeSeconds: number;
+            WipeRespawnTimeoutSeconds: number;
+            SpawnSettingsPerArchetypes: Record<
+              string,
+              { MinQuantityPerArchetype: number; SpawnWeight: number }
+            >;
+          };
+          Veteran: {
+            MaxSpawnQuantity: number;
+            InitialSpawnQuantityPercent: number;
+            InitialSpawnQuantityRespawnTimeSeconds: number;
+            MaxSpawnQuantityRespawnTimeSeconds: number;
+            WipeRespawnTimeoutSeconds: number;
+            SpawnSettingsPerArchetypes: Record<
+              string,
+              { MinQuantityPerArchetype: number; SpawnWeight: number }
+            >;
+          };
+          Master: {
+            MaxSpawnQuantity: number;
+            InitialSpawnQuantityPercent: number;
+            InitialSpawnQuantityRespawnTimeSeconds: number;
+            MaxSpawnQuantityRespawnTimeSeconds: number;
+            WipeRespawnTimeoutSeconds: number;
+            SpawnSettingsPerArchetypes: Record<
+              string,
+              { MinQuantityPerArchetype: number; SpawnWeight: number }
+            >;
+          };
+        };
+      };
+      Corpus: {
+        Faction: string;
+        SpawnSettingsPerPlayerRanks: {
+          Newbie: {
+            MaxSpawnQuantity: number;
+            InitialSpawnQuantityPercent: number;
+            InitialSpawnQuantityRespawnTimeSeconds: number;
+            MaxSpawnQuantityRespawnTimeSeconds: number;
+            WipeRespawnTimeoutSeconds: number;
+            SpawnSettingsPerArchetypes: Record<
+              string,
+              { MinQuantityPerArchetype: number; SpawnWeight: number }
+            >;
+          };
+          Experienced: {
+            MaxSpawnQuantity: number;
+            InitialSpawnQuantityPercent: number;
+            InitialSpawnQuantityRespawnTimeSeconds: number;
+            MaxSpawnQuantityRespawnTimeSeconds: number;
+            WipeRespawnTimeoutSeconds: number;
+            SpawnSettingsPerArchetypes: Record<
+              string,
+              { MinQuantityPerArchetype: number; SpawnWeight: number }
+            >;
+          };
+          Veteran: {
+            MaxSpawnQuantity: number;
+            InitialSpawnQuantityPercent: number;
+            InitialSpawnQuantityRespawnTimeSeconds: number;
+            MaxSpawnQuantityRespawnTimeSeconds: number;
+            WipeRespawnTimeoutSeconds: number;
+            SpawnSettingsPerArchetypes: Record<
+              string,
+              { MinQuantityPerArchetype: number; SpawnWeight: number }
+            >;
+          };
+          Master: {
+            MaxSpawnQuantity: number;
+            InitialSpawnQuantityPercent: number;
+            InitialSpawnQuantityRespawnTimeSeconds: number;
+            MaxSpawnQuantityRespawnTimeSeconds: number;
+            WipeRespawnTimeoutSeconds: number;
+            SpawnSettingsPerArchetypes: Record<
+              string,
+              { MinQuantityPerArchetype: number; SpawnWeight: number }
+            >;
+          };
+        };
+      };
+      Zombie: {
+        Faction: string;
+        SpawnSettingsPerPlayerRanks: {
+          Newbie: {
+            MaxSpawnQuantity: number;
+            InitialSpawnQuantityPercent: number;
+            InitialSpawnQuantityRespawnTimeSeconds: number;
+            MaxSpawnQuantityRespawnTimeSeconds: number;
+            WipeRespawnTimeoutSeconds: number;
+            SpawnSettingsPerArchetypes: Record<
+              string,
+              { MinQuantityPerArchetype: number; SpawnWeight: number }
+            >;
+          };
+          Experienced: {
+            MaxSpawnQuantity: number;
+            InitialSpawnQuantityPercent: number;
+            InitialSpawnQuantityRespawnTimeSeconds: number;
+            MaxSpawnQuantityRespawnTimeSeconds: number;
+            WipeRespawnTimeoutSeconds: number;
+            SpawnSettingsPerArchetypes: Record<
+              string,
+              { MinQuantityPerArchetype: number; SpawnWeight: number }
+            >;
+          };
+          Veteran: {
+            MaxSpawnQuantity: number;
+            InitialSpawnQuantityPercent: number;
+            InitialSpawnQuantityRespawnTimeSeconds: number;
+            MaxSpawnQuantityRespawnTimeSeconds: number;
+            WipeRespawnTimeoutSeconds: number;
+            SpawnSettingsPerArchetypes: Record<
+              string,
+              { MinQuantityPerArchetype: number; SpawnWeight: number }
+            >;
+          };
+          Master: {
+            MaxSpawnQuantity: number;
+            InitialSpawnQuantityPercent: number;
+            InitialSpawnQuantityRespawnTimeSeconds: number;
+            MaxSpawnQuantityRespawnTimeSeconds: number;
+            WipeRespawnTimeoutSeconds: number;
+            SpawnSettingsPerArchetypes: Record<
+              string,
+              { MinQuantityPerArchetype: number; SpawnWeight: number }
+            >;
+          };
+        };
+      };
+      Blinddog: {
+        Faction: string;
+        SpawnSettingsPerPlayerRanks: {
+          Newbie: {
+            MaxSpawnQuantity: number;
+            InitialSpawnQuantityPercent: number;
+            InitialSpawnQuantityRespawnTimeSeconds: number;
+            MaxSpawnQuantityRespawnTimeSeconds: number;
+            WipeRespawnTimeoutSeconds: number;
+            SpawnSettingsPerArchetypes: Record<
+              string,
+              { MinQuantityPerArchetype: number; SpawnWeight: number }
+            >;
+          };
+          Experienced: {
+            MaxSpawnQuantity: number;
+            InitialSpawnQuantityPercent: number;
+            InitialSpawnQuantityRespawnTimeSeconds: number;
+            MaxSpawnQuantityRespawnTimeSeconds: number;
+            WipeRespawnTimeoutSeconds: number;
+            SpawnSettingsPerArchetypes: Record<
+              string,
+              { MinQuantityPerArchetype: number; SpawnWeight: number }
+            >;
+          };
+          Veteran: {
+            MaxSpawnQuantity: number;
+            InitialSpawnQuantityPercent: number;
+            InitialSpawnQuantityRespawnTimeSeconds: number;
+            MaxSpawnQuantityRespawnTimeSeconds: number;
+            WipeRespawnTimeoutSeconds: number;
+            SpawnSettingsPerArchetypes: Record<
+              string,
+              { MinQuantityPerArchetype: number; SpawnWeight: number }
+            >;
+          };
+          Master: {
+            MaxSpawnQuantity: number;
+            InitialSpawnQuantityPercent: number;
+            InitialSpawnQuantityRespawnTimeSeconds: number;
+            MaxSpawnQuantityRespawnTimeSeconds: number;
+            WipeRespawnTimeoutSeconds: number;
+            SpawnSettingsPerArchetypes: Record<
+              string,
+              { MinQuantityPerArchetype: number; SpawnWeight: number }
+            >;
+          };
+        };
+      };
+      Bloodsucker: {
+        Faction: string;
+        SpawnSettingsPerPlayerRanks: {
+          Newbie: {
+            MaxSpawnQuantity: number;
+            InitialSpawnQuantityPercent: number;
+            InitialSpawnQuantityRespawnTimeSeconds: number;
+            MaxSpawnQuantityRespawnTimeSeconds: number;
+            WipeRespawnTimeoutSeconds: number;
+            SpawnSettingsPerArchetypes: Record<
+              string,
+              { MinQuantityPerArchetype: number; SpawnWeight: number }
+            >;
+          };
+          Experienced: {
+            MaxSpawnQuantity: number;
+            InitialSpawnQuantityPercent: number;
+            InitialSpawnQuantityRespawnTimeSeconds: number;
+            MaxSpawnQuantityRespawnTimeSeconds: number;
+            WipeRespawnTimeoutSeconds: number;
+            SpawnSettingsPerArchetypes: Record<
+              string,
+              { MinQuantityPerArchetype: number; SpawnWeight: number }
+            >;
+          };
+          Veteran: {
+            MaxSpawnQuantity: number;
+            InitialSpawnQuantityPercent: number;
+            InitialSpawnQuantityRespawnTimeSeconds: number;
+            MaxSpawnQuantityRespawnTimeSeconds: number;
+            WipeRespawnTimeoutSeconds: number;
+            SpawnSettingsPerArchetypes: Record<
+              string,
+              { MinQuantityPerArchetype: number; SpawnWeight: number }
+            >;
+          };
+          Master: {
+            MaxSpawnQuantity: number;
+            InitialSpawnQuantityPercent: number;
+            InitialSpawnQuantityRespawnTimeSeconds: number;
+            MaxSpawnQuantityRespawnTimeSeconds: number;
+            WipeRespawnTimeoutSeconds: number;
+            SpawnSettingsPerArchetypes: Record<
+              string,
+              { MinQuantityPerArchetype: number; SpawnWeight: number }
+            >;
+          };
+        };
+      };
+      Boar: {
+        Faction: string;
+        SpawnSettingsPerPlayerRanks: {
+          Newbie: {
+            MaxSpawnQuantity: number;
+            InitialSpawnQuantityPercent: number;
+            InitialSpawnQuantityRespawnTimeSeconds: number;
+            MaxSpawnQuantityRespawnTimeSeconds: number;
+            WipeRespawnTimeoutSeconds: number;
+            SpawnSettingsPerArchetypes: Record<
+              string,
+              { MinQuantityPerArchetype: number; SpawnWeight: number }
+            >;
+          };
+          Experienced: {
+            MaxSpawnQuantity: number;
+            InitialSpawnQuantityPercent: number;
+            InitialSpawnQuantityRespawnTimeSeconds: number;
+            MaxSpawnQuantityRespawnTimeSeconds: number;
+            WipeRespawnTimeoutSeconds: number;
+            SpawnSettingsPerArchetypes: Record<
+              string,
+              { MinQuantityPerArchetype: number; SpawnWeight: number }
+            >;
+          };
+          Veteran: {
+            MaxSpawnQuantity: number;
+            InitialSpawnQuantityPercent: number;
+            InitialSpawnQuantityRespawnTimeSeconds: number;
+            MaxSpawnQuantityRespawnTimeSeconds: number;
+            WipeRespawnTimeoutSeconds: number;
+            SpawnSettingsPerArchetypes: Record<
+              string,
+              { MinQuantityPerArchetype: number; SpawnWeight: number }
+            >;
+          };
+          Master: {
+            MaxSpawnQuantity: number;
+            InitialSpawnQuantityPercent: number;
+            InitialSpawnQuantityRespawnTimeSeconds: number;
+            MaxSpawnQuantityRespawnTimeSeconds: number;
+            WipeRespawnTimeoutSeconds: number;
+            SpawnSettingsPerArchetypes: Record<
+              string,
+              { MinQuantityPerArchetype: number; SpawnWeight: number }
+            >;
+          };
+        };
+      };
+      Flesh: {
+        Faction: string;
+        SpawnSettingsPerPlayerRanks: {
+          Newbie: {
+            MaxSpawnQuantity: number;
+            InitialSpawnQuantityPercent: number;
+            InitialSpawnQuantityRespawnTimeSeconds: number;
+            MaxSpawnQuantityRespawnTimeSeconds: number;
+            WipeRespawnTimeoutSeconds: number;
+            SpawnSettingsPerArchetypes: Record<
+              string,
+              { MinQuantityPerArchetype: number; SpawnWeight: number }
+            >;
+          };
+          Experienced: {
+            MaxSpawnQuantity: number;
+            InitialSpawnQuantityPercent: number;
+            InitialSpawnQuantityRespawnTimeSeconds: number;
+            MaxSpawnQuantityRespawnTimeSeconds: number;
+            WipeRespawnTimeoutSeconds: number;
+            SpawnSettingsPerArchetypes: Record<
+              string,
+              { MinQuantityPerArchetype: number; SpawnWeight: number }
+            >;
+          };
+          Veteran: {
+            MaxSpawnQuantity: number;
+            InitialSpawnQuantityPercent: number;
+            InitialSpawnQuantityRespawnTimeSeconds: number;
+            MaxSpawnQuantityRespawnTimeSeconds: number;
+            WipeRespawnTimeoutSeconds: number;
+            SpawnSettingsPerArchetypes: Record<
+              string,
+              { MinQuantityPerArchetype: number; SpawnWeight: number }
+            >;
+          };
+          Master: {
+            MaxSpawnQuantity: number;
+            InitialSpawnQuantityPercent: number;
+            InitialSpawnQuantityRespawnTimeSeconds: number;
+            MaxSpawnQuantityRespawnTimeSeconds: number;
+            WipeRespawnTimeoutSeconds: number;
+            SpawnSettingsPerArchetypes: Record<
+              string,
+              { MinQuantityPerArchetype: number; SpawnWeight: number }
+            >;
+          };
+        };
+      };
+      Controller: {
+        Faction: string;
+        SpawnSettingsPerPlayerRanks: {
+          Newbie: {
+            MaxSpawnQuantity: number;
+            InitialSpawnQuantityPercent: number;
+            InitialSpawnQuantityRespawnTimeSeconds: number;
+            MaxSpawnQuantityRespawnTimeSeconds: number;
+            WipeRespawnTimeoutSeconds: number;
+            SpawnSettingsPerArchetypes: Record<
+              string,
+              { MinQuantityPerArchetype: number; SpawnWeight: number }
+            >;
+          };
+          Experienced: {
+            MaxSpawnQuantity: number;
+            InitialSpawnQuantityPercent: number;
+            InitialSpawnQuantityRespawnTimeSeconds: number;
+            MaxSpawnQuantityRespawnTimeSeconds: number;
+            WipeRespawnTimeoutSeconds: number;
+            SpawnSettingsPerArchetypes: Record<
+              string,
+              { MinQuantityPerArchetype: number; SpawnWeight: number }
+            >;
+          };
+          Veteran: {
+            MaxSpawnQuantity: number;
+            InitialSpawnQuantityPercent: number;
+            InitialSpawnQuantityRespawnTimeSeconds: number;
+            MaxSpawnQuantityRespawnTimeSeconds: number;
+            WipeRespawnTimeoutSeconds: number;
+            SpawnSettingsPerArchetypes: Record<
+              string,
+              { MinQuantityPerArchetype: number; SpawnWeight: number }
+            >;
+          };
+          Master: {
+            MaxSpawnQuantity: number;
+            InitialSpawnQuantityPercent: number;
+            InitialSpawnQuantityRespawnTimeSeconds: number;
+            MaxSpawnQuantityRespawnTimeSeconds: number;
+            WipeRespawnTimeoutSeconds: number;
+            SpawnSettingsPerArchetypes: Record<
+              string,
+              { MinQuantityPerArchetype: number; SpawnWeight: number }
+            >;
+          };
+        };
+      };
+      Poltergeist: {
+        Faction: string;
+        SpawnSettingsPerPlayerRanks: {
+          Newbie: {
+            MaxSpawnQuantity: number;
+            InitialSpawnQuantityPercent: number;
+            InitialSpawnQuantityRespawnTimeSeconds: number;
+            MaxSpawnQuantityRespawnTimeSeconds: number;
+            WipeRespawnTimeoutSeconds: number;
+            SpawnSettingsPerArchetypes: Record<
+              string,
+              { MinQuantityPerArchetype: number; SpawnWeight: number }
+            >;
+          };
+          Experienced: {
+            MaxSpawnQuantity: number;
+            InitialSpawnQuantityPercent: number;
+            InitialSpawnQuantityRespawnTimeSeconds: number;
+            MaxSpawnQuantityRespawnTimeSeconds: number;
+            WipeRespawnTimeoutSeconds: number;
+            SpawnSettingsPerArchetypes: Record<
+              string,
+              { MinQuantityPerArchetype: number; SpawnWeight: number }
+            >;
+          };
+          Veteran: {
+            MaxSpawnQuantity: number;
+            InitialSpawnQuantityPercent: number;
+            InitialSpawnQuantityRespawnTimeSeconds: number;
+            MaxSpawnQuantityRespawnTimeSeconds: number;
+            WipeRespawnTimeoutSeconds: number;
+            SpawnSettingsPerArchetypes: Record<
+              string,
+              { MinQuantityPerArchetype: number; SpawnWeight: number }
+            >;
+          };
+          Master: {
+            MaxSpawnQuantity: number;
+            InitialSpawnQuantityPercent: number;
+            InitialSpawnQuantityRespawnTimeSeconds: number;
+            MaxSpawnQuantityRespawnTimeSeconds: number;
+            WipeRespawnTimeoutSeconds: number;
+            SpawnSettingsPerArchetypes: Record<
+              string,
+              { MinQuantityPerArchetype: number; SpawnWeight: number }
+            >;
+          };
+        };
+      };
+      Chimera: {
+        Faction: string;
+        SpawnSettingsPerPlayerRanks: {
+          Newbie: {
+            MaxSpawnQuantity: number;
+            InitialSpawnQuantityPercent: number;
+            InitialSpawnQuantityRespawnTimeSeconds: number;
+            MaxSpawnQuantityRespawnTimeSeconds: number;
+            WipeRespawnTimeoutSeconds: number;
+            SpawnSettingsPerArchetypes: Record<
+              string,
+              { MinQuantityPerArchetype: number; SpawnWeight: number }
+            >;
+          };
+          Experienced: {
+            MaxSpawnQuantity: number;
+            InitialSpawnQuantityPercent: number;
+            InitialSpawnQuantityRespawnTimeSeconds: number;
+            MaxSpawnQuantityRespawnTimeSeconds: number;
+            WipeRespawnTimeoutSeconds: number;
+            SpawnSettingsPerArchetypes: Record<
+              string,
+              { MinQuantityPerArchetype: number; SpawnWeight: number }
+            >;
+          };
+          Veteran: {
+            MaxSpawnQuantity: number;
+            InitialSpawnQuantityPercent: number;
+            InitialSpawnQuantityRespawnTimeSeconds: number;
+            MaxSpawnQuantityRespawnTimeSeconds: number;
+            WipeRespawnTimeoutSeconds: number;
+            SpawnSettingsPerArchetypes: Record<
+              string,
+              { MinQuantityPerArchetype: number; SpawnWeight: number }
+            >;
+          };
+          Master: {
+            MaxSpawnQuantity: number;
+            InitialSpawnQuantityPercent: number;
+            InitialSpawnQuantityRespawnTimeSeconds: number;
+            MaxSpawnQuantityRespawnTimeSeconds: number;
+            WipeRespawnTimeoutSeconds: number;
+            SpawnSettingsPerArchetypes: Record<
+              string,
+              { MinQuantityPerArchetype: number; SpawnWeight: number }
+            >;
+          };
+        };
+      };
+      Burer: {
+        Faction: string;
+        SpawnSettingsPerPlayerRanks: {
+          Newbie: {
+            MaxSpawnQuantity: number;
+            InitialSpawnQuantityPercent: number;
+            InitialSpawnQuantityRespawnTimeSeconds: number;
+            MaxSpawnQuantityRespawnTimeSeconds: number;
+            WipeRespawnTimeoutSeconds: number;
+            SpawnSettingsPerArchetypes: Record<
+              string,
+              { MinQuantityPerArchetype: number; SpawnWeight: number }
+            >;
+          };
+          Experienced: {
+            MaxSpawnQuantity: number;
+            InitialSpawnQuantityPercent: number;
+            InitialSpawnQuantityRespawnTimeSeconds: number;
+            MaxSpawnQuantityRespawnTimeSeconds: number;
+            WipeRespawnTimeoutSeconds: number;
+            SpawnSettingsPerArchetypes: Record<
+              string,
+              { MinQuantityPerArchetype: number; SpawnWeight: number }
+            >;
+          };
+          Veteran: {
+            MaxSpawnQuantity: number;
+            InitialSpawnQuantityPercent: number;
+            InitialSpawnQuantityRespawnTimeSeconds: number;
+            MaxSpawnQuantityRespawnTimeSeconds: number;
+            WipeRespawnTimeoutSeconds: number;
+            SpawnSettingsPerArchetypes: Record<
+              string,
+              { MinQuantityPerArchetype: number; SpawnWeight: number }
+            >;
+          };
+          Master: {
+            MaxSpawnQuantity: number;
+            InitialSpawnQuantityPercent: number;
+            InitialSpawnQuantityRespawnTimeSeconds: number;
+            MaxSpawnQuantityRespawnTimeSeconds: number;
+            WipeRespawnTimeoutSeconds: number;
+            SpawnSettingsPerArchetypes: Record<
+              string,
+              { MinQuantityPerArchetype: number; SpawnWeight: number }
+            >;
+          };
+        };
+      };
+      Pseudogiant: {
+        Faction: string;
+        SpawnSettingsPerPlayerRanks: {
+          Newbie: {
+            MaxSpawnQuantity: number;
+            InitialSpawnQuantityPercent: number;
+            InitialSpawnQuantityRespawnTimeSeconds: number;
+            MaxSpawnQuantityRespawnTimeSeconds: number;
+            WipeRespawnTimeoutSeconds: number;
+            SpawnSettingsPerArchetypes: Record<
+              string,
+              { MinQuantityPerArchetype: number; SpawnWeight: number }
+            >;
+          };
+          Experienced: {
+            MaxSpawnQuantity: number;
+            InitialSpawnQuantityPercent: number;
+            InitialSpawnQuantityRespawnTimeSeconds: number;
+            MaxSpawnQuantityRespawnTimeSeconds: number;
+            WipeRespawnTimeoutSeconds: number;
+            SpawnSettingsPerArchetypes: Record<
+              string,
+              { MinQuantityPerArchetype: number; SpawnWeight: number }
+            >;
+          };
+          Veteran: {
+            MaxSpawnQuantity: number;
+            InitialSpawnQuantityPercent: number;
+            InitialSpawnQuantityRespawnTimeSeconds: number;
+            MaxSpawnQuantityRespawnTimeSeconds: number;
+            WipeRespawnTimeoutSeconds: number;
+            SpawnSettingsPerArchetypes: Record<
+              string,
+              { MinQuantityPerArchetype: number; SpawnWeight: number }
+            >;
+          };
+          Master: {
+            MaxSpawnQuantity: number;
+            InitialSpawnQuantityPercent: number;
+            InitialSpawnQuantityRespawnTimeSeconds: number;
+            MaxSpawnQuantityRespawnTimeSeconds: number;
+            WipeRespawnTimeoutSeconds: number;
+            SpawnSettingsPerArchetypes: Record<
+              string,
+              { MinQuantityPerArchetype: number; SpawnWeight: number }
+            >;
+          };
+        };
+      };
+      Snork: {
+        Faction: string;
+        SpawnSettingsPerPlayerRanks: {
+          Newbie: {
+            MaxSpawnQuantity: number;
+            InitialSpawnQuantityPercent: number;
+            InitialSpawnQuantityRespawnTimeSeconds: number;
+            MaxSpawnQuantityRespawnTimeSeconds: number;
+            WipeRespawnTimeoutSeconds: number;
+            SpawnSettingsPerArchetypes: Record<
+              string,
+              { MinQuantityPerArchetype: number; SpawnWeight: number }
+            >;
+          };
+          Experienced: {
+            MaxSpawnQuantity: number;
+            InitialSpawnQuantityPercent: number;
+            InitialSpawnQuantityRespawnTimeSeconds: number;
+            MaxSpawnQuantityRespawnTimeSeconds: number;
+            WipeRespawnTimeoutSeconds: number;
+            SpawnSettingsPerArchetypes: Record<
+              string,
+              { MinQuantityPerArchetype: number; SpawnWeight: number }
+            >;
+          };
+          Veteran: {
+            MaxSpawnQuantity: number;
+            InitialSpawnQuantityPercent: number;
+            InitialSpawnQuantityRespawnTimeSeconds: number;
+            MaxSpawnQuantityRespawnTimeSeconds: number;
+            WipeRespawnTimeoutSeconds: number;
+            SpawnSettingsPerArchetypes: Record<
+              string,
+              { MinQuantityPerArchetype: number; SpawnWeight: number }
+            >;
+          };
+          Master: {
+            MaxSpawnQuantity: number;
+            InitialSpawnQuantityPercent: number;
+            InitialSpawnQuantityRespawnTimeSeconds: number;
+            MaxSpawnQuantityRespawnTimeSeconds: number;
+            WipeRespawnTimeoutSeconds: number;
+            SpawnSettingsPerArchetypes: Record<
+              string,
+              { MinQuantityPerArchetype: number; SpawnWeight: number }
+            >;
+          };
+        };
+      };
+      Pseudodog: {
+        Faction: string;
+        SpawnSettingsPerPlayerRanks: {
+          Newbie: {
+            MaxSpawnQuantity: number;
+            InitialSpawnQuantityPercent: number;
+            InitialSpawnQuantityRespawnTimeSeconds: number;
+            MaxSpawnQuantityRespawnTimeSeconds: number;
+            WipeRespawnTimeoutSeconds: number;
+            SpawnSettingsPerArchetypes: Record<
+              string,
+              { MinQuantityPerArchetype: number; SpawnWeight: number }
+            >;
+          };
+          Experienced: {
+            MaxSpawnQuantity: number;
+            InitialSpawnQuantityPercent: number;
+            InitialSpawnQuantityRespawnTimeSeconds: number;
+            MaxSpawnQuantityRespawnTimeSeconds: number;
+            WipeRespawnTimeoutSeconds: number;
+            SpawnSettingsPerArchetypes: Record<
+              string,
+              { MinQuantityPerArchetype: number; SpawnWeight: number }
+            >;
+          };
+          Veteran: {
+            MaxSpawnQuantity: number;
+            InitialSpawnQuantityPercent: number;
+            InitialSpawnQuantityRespawnTimeSeconds: number;
+            MaxSpawnQuantityRespawnTimeSeconds: number;
+            WipeRespawnTimeoutSeconds: number;
+            SpawnSettingsPerArchetypes: Record<
+              string,
+              { MinQuantityPerArchetype: number; SpawnWeight: number }
+            >;
+          };
+          Master: {
+            MaxSpawnQuantity: number;
+            InitialSpawnQuantityPercent: number;
+            InitialSpawnQuantityRespawnTimeSeconds: number;
+            MaxSpawnQuantityRespawnTimeSeconds: number;
+            WipeRespawnTimeoutSeconds: number;
+            SpawnSettingsPerArchetypes: Record<
+              string,
+              { MinQuantityPerArchetype: number; SpawnWeight: number }
+            >;
+          };
+        };
+      };
+      Deer: {
+        Faction: string;
+        SpawnSettingsPerPlayerRanks: {
+          Newbie: {
+            MaxSpawnQuantity: number;
+            InitialSpawnQuantityPercent: number;
+            InitialSpawnQuantityRespawnTimeSeconds: number;
+            MaxSpawnQuantityRespawnTimeSeconds: number;
+            WipeRespawnTimeoutSeconds: number;
+            SpawnSettingsPerArchetypes: Record<
+              string,
+              { MinQuantityPerArchetype: number; SpawnWeight: number }
+            >;
+          };
+          Experienced: {
+            MaxSpawnQuantity: number;
+            InitialSpawnQuantityPercent: number;
+            InitialSpawnQuantityRespawnTimeSeconds: number;
+            MaxSpawnQuantityRespawnTimeSeconds: number;
+            WipeRespawnTimeoutSeconds: number;
+            SpawnSettingsPerArchetypes: Record<
+              string,
+              { MinQuantityPerArchetype: number; SpawnWeight: number }
+            >;
+          };
+          Veteran: {
+            MaxSpawnQuantity: number;
+            InitialSpawnQuantityPercent: number;
+            InitialSpawnQuantityRespawnTimeSeconds: number;
+            MaxSpawnQuantityRespawnTimeSeconds: number;
+            WipeRespawnTimeoutSeconds: number;
+            SpawnSettingsPerArchetypes: Record<
+              string,
+              { MinQuantityPerArchetype: number; SpawnWeight: number }
+            >;
+          };
+          Master: {
+            MaxSpawnQuantity: number;
+            InitialSpawnQuantityPercent: number;
+            InitialSpawnQuantityRespawnTimeSeconds: number;
+            MaxSpawnQuantityRespawnTimeSeconds: number;
+            WipeRespawnTimeoutSeconds: number;
+            SpawnSettingsPerArchetypes: Record<
+              string,
+              { MinQuantityPerArchetype: number; SpawnWeight: number }
+            >;
+          };
+        };
+      };
+      Bayun: {
+        Faction: string;
+        SpawnSettingsPerPlayerRanks: {
+          Newbie: {
+            MaxSpawnQuantity: number;
+            InitialSpawnQuantityPercent: number;
+            InitialSpawnQuantityRespawnTimeSeconds: number;
+            MaxSpawnQuantityRespawnTimeSeconds: number;
+            WipeRespawnTimeoutSeconds: number;
+            SpawnSettingsPerArchetypes: Record<
+              string,
+              { MinQuantityPerArchetype: number; SpawnWeight: number }
+            >;
+          };
+          Experienced: {
+            MaxSpawnQuantity: number;
+            InitialSpawnQuantityPercent: number;
+            InitialSpawnQuantityRespawnTimeSeconds: number;
+            MaxSpawnQuantityRespawnTimeSeconds: number;
+            WipeRespawnTimeoutSeconds: number;
+            SpawnSettingsPerArchetypes: Record<
+              string,
+              { MinQuantityPerArchetype: number; SpawnWeight: number }
+            >;
+          };
+          Veteran: {
+            MaxSpawnQuantity: number;
+            InitialSpawnQuantityPercent: number;
+            InitialSpawnQuantityRespawnTimeSeconds: number;
+            MaxSpawnQuantityRespawnTimeSeconds: number;
+            WipeRespawnTimeoutSeconds: number;
+            SpawnSettingsPerArchetypes: Record<
+              string,
+              { MinQuantityPerArchetype: number; SpawnWeight: number }
+            >;
+          };
+          Master: {
+            MaxSpawnQuantity: number;
+            InitialSpawnQuantityPercent: number;
+            InitialSpawnQuantityRespawnTimeSeconds: number;
+            MaxSpawnQuantityRespawnTimeSeconds: number;
+            WipeRespawnTimeoutSeconds: number;
+            SpawnSettingsPerArchetypes: Record<
+              string,
+              { MinQuantityPerArchetype: number; SpawnWeight: number }
+            >;
+          };
+        };
+      };
+      Rat: {
+        Faction: string;
+        SpawnSettingsPerPlayerRanks: {
+          Newbie: {
+            MaxSpawnQuantity: number;
+            InitialSpawnQuantityPercent: number;
+            InitialSpawnQuantityRespawnTimeSeconds: number;
+            MaxSpawnQuantityRespawnTimeSeconds: number;
+            WipeRespawnTimeoutSeconds: number;
+            SpawnSettingsPerArchetypes: Record<
+              string,
+              { MinQuantityPerArchetype: number; SpawnWeight: number }
+            >;
+          };
+          Experienced: {
+            MaxSpawnQuantity: number;
+            InitialSpawnQuantityPercent: number;
+            InitialSpawnQuantityRespawnTimeSeconds: number;
+            MaxSpawnQuantityRespawnTimeSeconds: number;
+            WipeRespawnTimeoutSeconds: number;
+            SpawnSettingsPerArchetypes: Record<
+              string,
+              { MinQuantityPerArchetype: number; SpawnWeight: number }
+            >;
+          };
+          Veteran: {
+            MaxSpawnQuantity: number;
+            InitialSpawnQuantityPercent: number;
+            InitialSpawnQuantityRespawnTimeSeconds: number;
+            MaxSpawnQuantityRespawnTimeSeconds: number;
+            WipeRespawnTimeoutSeconds: number;
+            SpawnSettingsPerArchetypes: Record<
+              string,
+              { MinQuantityPerArchetype: number; SpawnWeight: number }
+            >;
+          };
+          Master: {
+            MaxSpawnQuantity: number;
+            InitialSpawnQuantityPercent: number;
+            InitialSpawnQuantityRespawnTimeSeconds: number;
+            MaxSpawnQuantityRespawnTimeSeconds: number;
+            WipeRespawnTimeoutSeconds: number;
+            SpawnSettingsPerArchetypes: Record<
+              string,
+              { MinQuantityPerArchetype: number; SpawnWeight: number }
+            >;
+          };
+        };
+      };
+      Tushkan: {
+        Faction: string;
+        SpawnSettingsPerPlayerRanks: {
+          Newbie: {
+            MaxSpawnQuantity: number;
+            InitialSpawnQuantityPercent: number;
+            InitialSpawnQuantityRespawnTimeSeconds: number;
+            MaxSpawnQuantityRespawnTimeSeconds: number;
+            WipeRespawnTimeoutSeconds: number;
+            SpawnSettingsPerArchetypes: Record<
+              string,
+              { MinQuantityPerArchetype: number; SpawnWeight: number }
+            >;
+          };
+          Experienced: {
+            MaxSpawnQuantity: number;
+            InitialSpawnQuantityPercent: number;
+            InitialSpawnQuantityRespawnTimeSeconds: number;
+            MaxSpawnQuantityRespawnTimeSeconds: number;
+            WipeRespawnTimeoutSeconds: number;
+            SpawnSettingsPerArchetypes: Record<
+              string,
+              { MinQuantityPerArchetype: number; SpawnWeight: number }
+            >;
+          };
+          Veteran: {
+            MaxSpawnQuantity: number;
+            InitialSpawnQuantityPercent: number;
+            InitialSpawnQuantityRespawnTimeSeconds: number;
+            MaxSpawnQuantityRespawnTimeSeconds: number;
+            WipeRespawnTimeoutSeconds: number;
+            SpawnSettingsPerArchetypes: Record<
+              string,
+              { MinQuantityPerArchetype: number; SpawnWeight: number }
+            >;
+          };
+          Master: {
+            MaxSpawnQuantity: number;
+            InitialSpawnQuantityPercent: number;
+            InitialSpawnQuantityRespawnTimeSeconds: number;
+            MaxSpawnQuantityRespawnTimeSeconds: number;
+            WipeRespawnTimeoutSeconds: number;
+            SpawnSettingsPerArchetypes: Record<
+              string,
+              { MinQuantityPerArchetype: number; SpawnWeight: number }
+            >;
+          };
+        };
+      };
+      SIRCAA_Scientist: {
+        Faction: string;
+        SpawnSettingsPerPlayerRanks: {
+          Newbie: {
+            MaxSpawnQuantity: number;
+            InitialSpawnQuantityPercent: number;
+            InitialSpawnQuantityRespawnTimeSeconds: number;
+            MaxSpawnQuantityRespawnTimeSeconds: number;
+            WipeRespawnTimeoutSeconds: number;
+            SpawnSettingsPerArchetypes: Record<
+              string,
+              { MinQuantityPerArchetype: number; SpawnWeight: number }
+            >;
+          };
+          Experienced: {
+            MaxSpawnQuantity: number;
+            InitialSpawnQuantityPercent: number;
+            InitialSpawnQuantityRespawnTimeSeconds: number;
+            MaxSpawnQuantityRespawnTimeSeconds: number;
+            WipeRespawnTimeoutSeconds: number;
+            SpawnSettingsPerArchetypes: Record<
+              string,
+              { MinQuantityPerArchetype: number; SpawnWeight: number }
+            >;
+          };
+          Veteran: {
+            MaxSpawnQuantity: number;
+            InitialSpawnQuantityPercent: number;
+            InitialSpawnQuantityRespawnTimeSeconds: number;
+            MaxSpawnQuantityRespawnTimeSeconds: number;
+            WipeRespawnTimeoutSeconds: number;
+            SpawnSettingsPerArchetypes: Record<
+              string,
+              { MinQuantityPerArchetype: number; SpawnWeight: number }
+            >;
+          };
+          Master: {
+            MaxSpawnQuantity: number;
+            InitialSpawnQuantityPercent: number;
+            InitialSpawnQuantityRespawnTimeSeconds: number;
+            MaxSpawnQuantityRespawnTimeSeconds: number;
+            WipeRespawnTimeoutSeconds: number;
+            SpawnSettingsPerArchetypes: Record<
+              string,
+              { MinQuantityPerArchetype: number; SpawnWeight: number }
+            >;
+          };
+        };
+      };
+      MALACHITE_Scientist: {
+        Faction: string;
+        SpawnSettingsPerPlayerRanks: Record<
+          "Newbie" | "Experienced" | "Veteran" | "Master",
+          {
+            MaxSpawnQuantity: number;
+            InitialSpawnQuantityPercent: number;
+            InitialSpawnQuantityRespawnTimeSeconds: number;
+            MaxSpawnQuantityRespawnTimeSeconds: number;
+            WipeRespawnTimeoutSeconds: number;
+            SpawnSettingsPerArchetypes: Record<
+              string,
+              { MinQuantityPerArchetype: number; SpawnWeight: number }
+            >;
+          }
+        >;
+      };
+    };
+    LairType: ELairType;
+    RestingLairInstantSpawnScenarioChance: number;
+    RestingLairShortDelayedSpawnScenarioChance: number;
+    RestingLairMinNPCCount: number;
+    RestingLairMaxNPCCount: number;
+    RestingLairShortDelaySpawnMin: number;
+    RestingLairShortDelaySpawnMax: number;
+    RestingLairLongDelaySpawnMin: number;
+    RestingLairLongDelaySpawnMax: number;
+    ALifeLairsSearchRadius: number;
+    GameTimeOfflineToRerollLairData: number;
+  };
+}>;
