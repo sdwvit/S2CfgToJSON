@@ -1,3 +1,5 @@
+// noinspection JSUnusedGlobalSymbols
+
 export type EAIConstraintType = `EAIConstraintType::${"PrepareForEmission"}`;
 
 export type EAIMovementPose = `EAIMovementPose::${"Stand"}`;
