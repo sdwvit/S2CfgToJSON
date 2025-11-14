@@ -468,7 +468,7 @@ interface IDialogPrototype {
     WithEquipped: boolean;
     GlobalVariablePrototypeSID: string;
     ChangeValueMode: EChangeValueMode;
-    VariableValue: number;
+    VariableValue: any;
     ConsumablePrototypeSID: Param;
   }[];
   DialogMemberName: string;
@@ -1482,7 +1482,7 @@ export type QuestNodePrototype = GetStructType<{
   PinWeights: number[];
   GlobalVariablePrototypeSID: string;
   ChangeValueMode: EChangeValueMode;
-  VariableValue: boolean;
+  VariableValue: any;
   AIThreatState: number;
   Activate: boolean;
   ForceDespawn: boolean;
@@ -2490,7 +2490,7 @@ export type Condition = GetStructType<{
   Money: number | Param;
   GlobalVariablePrototypeSID: string;
   ChangeValueMode: EChangeValueMode;
-  VariableValue: number;
+  VariableValue: any;
   Rank: ERank;
   Faction: string;
   Relationships: ERelationLevel;
