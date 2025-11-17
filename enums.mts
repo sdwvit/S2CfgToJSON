@@ -1686,6 +1686,9 @@ export type ERequiredSquadMembers = `ERequiredSquadMembers::${
 
 export type ESaveType = `ESaveType::${"Auto" | "Manual" | "Quest" | "Quick"}`;
 
+export type ESaveSubType =
+  `ESaveSubType::${"Auto" | "Manual" | "Quest" | "Quick"}`;
+
 export type EScenarioBranch = `EScenarioBranch::${
   | "Noon"
   | "Skif"

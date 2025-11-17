@@ -28,7 +28,6 @@ import {
   EAgentType,
   EAgentArchetype,
   EEmotionalFaceMasks,
-  EAimAssistPresetType,
   EEffectType,
   EDuplicateResolveType,
   EBeneficial,
@@ -109,6 +108,8 @@ import {
   EModifyAbilitySequenceQuestNodeMode,
   EHealingType,
   ELairType,
+  EAimAssistPresetType,
+  ESaveSubType,
 } from "./enums.mts";
 
 import { Struct } from "./Struct.mjs";
@@ -530,6 +531,33 @@ export type DifficultyPrototype = GetStructType<{
   AccumulatedDamageReductionIncludesHealedHealth: boolean;
   CorpseSmartLoot: { GeneralNPC: string };
   DefaultAimAssistPresetType: EAimAssistPresetType;
+  TotalSaveLimits: { SubType: ESaveSubType; Limit: number }[];
+  NightVisionGoggles_Cost: number;
+  AllowedSaveTypes: ESaveType[];
+  AutosaveAfterQuests: string[];
+  bShouldDisableCrosshair: boolean;
+  bShouldDisableCompass: boolean;
+  bShouldDisableStashMarkers: boolean;
+  bShouldDisableDeadBodyMarkers: boolean;
+  AdditionalMechanicsEffects: string[];
+  PlayerWeapon_HeadshotMultiplier: number;
+  ShowWarningPopup: boolean;
+  BlockSettings: boolean;
+  AgentCooldownMultipliers: {
+    AgentPrototypeSID: string;
+    CooldownMultipliers: {
+      CooldownTag: string;
+      CooldownMultiplier: number;
+    }[];
+  }[];
+  Weapon_JammingMultiplier: number;
+  PsyPhantomNPCOverrides: {
+    OverrideEffectPrototypeSID: string;
+    PSYDelayBeforeNewSpawnCycleModifier: number;
+    PsyPhantomNPCCountMultiplier: number;
+    bPsyNPCApplyBleeding: boolean;
+    PsyNPCDurabilityDamageMultiplier: number;
+  }[];
 }>;
 
 export type EffectPrototype = GetStructType<{
@@ -2610,7 +2638,7 @@ export type LairPrototype = GetStructType<{
   SID: string;
   Preset: {
     InitialInhabitantFaction: string;
-    IsALifePoint: true;
+    IsALifePoint: boolean;
     PossibleInhabitantFactions: Record<
       Faction,
       {
