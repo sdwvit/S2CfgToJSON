@@ -129,20 +129,6 @@ export type Internal =
   | "toString"
   | "fromString";
 
-export type DeeplyPartial<T> = {
-  [P in keyof T]?: T[P] extends Array<infer U>
-    ? Array<DeeplyPartial<U>>
-    : T[P] extends ReadonlyArray<infer U>
-      ? ReadonlyArray<DeeplyPartial<U>>
-      : T[P] extends object
-        ? DeeplyPartial<T[P]>
-        : T[P];
-};
-
-export type DeeplyPartialStruct<T> = DeeplyPartial<
-  T extends Struct ? Exclude<T, Internal> : T
->;
-
 export interface DefaultEntries {
   rawName?: string;
   refurl?: string;
