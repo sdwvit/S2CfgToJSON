@@ -2091,3 +2091,8 @@ export type Factions =
   | "KorshunovBoss_Faction"
   | "StrelokBoss_Faction"
   | "FaustBoss_Faction";
+
+export type EObjBoolParams = `EObjBoolParams::${
+  | "IsOffsetAimingEnabled"
+  | "IsNightVisionEnabled"
+  | "IsDetectorInHands"}`;

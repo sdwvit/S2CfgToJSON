@@ -158,19 +158,26 @@ export type WeaponGeneralSetupPrototype = GetStructType<{
   WeaponType: EWeaponType;
   WeaponDurabilityCurve: string;
   AimingTime: number;
+  OffsetAimingTime: number;
   LeanAimingTime: number;
+  LeanAimingRestoreTime: number;
   AimingFOVModifier: number;
+  OffsetAimingFOVModifier: number;
   AimingMovementSpeedModifier: number;
   AimVFXSocketMinAlpha: number;
   AimingCurve: string;
+  AimingWeaponFOVCurve: string;
+  OffsetAimingWeaponFOVCurve: string;
   AimingEffects: { Effects: string[]; PlayerOnlyEffects: string[] };
+  OffsetAimingConditionSID: string;
+  ToggleOffsetAimingConditionSID: string;
   BoltActionState: EBoltActionWeaponState;
-  AmmoPerShot: string;
+  AmmoPerShot: number;
   ShootingAnimationNumberToSkip: number;
   FireInterval: number;
-  FireIntervalModifiers: number[];
+  FireIntervalModifiers: string[];
   RecoilInterval: number;
-  FireTypes: EFireType[];
+  FireTypes: string[];
   FireQueueCount: number;
   DefaultFireType: EFireType;
   CameraRecoilPatternPath: string;
@@ -190,10 +197,17 @@ export type WeaponGeneralSetupPrototype = GetStructType<{
       };
       AimModifiers: {
         AimModifier: number;
-        AimCrouchModifier: string;
-        AimFullCrouchModifier: string;
+        AimCrouchModifier: number;
+        AimFullCrouchModifier: number;
       };
-      MovementSpeedModifiers: { MovementSpeedModifier: number };
+      OffsetAimModifiers: {
+        OffsetAimModifier: number;
+        OffsetAimCrouchModifier: number;
+        OffsetAimFullCrouchModifier: number;
+      };
+      MovementSpeedModifiers: {
+        MovementSpeedModifier: number;
+      };
       HealthPointsModifiers: {
         HealthPointsModifier: number;
         HealthPercentThreshold: number;
@@ -215,16 +229,21 @@ export type WeaponGeneralSetupPrototype = GetStructType<{
     FirstShotDispersionRadius: number;
     ShootingStateParams: {
       AimModifiers: {
-        AimModifier: string;
-        AimCrouchModifier: string;
-        AimFullCrouchModifier: string;
+        AimModifier: number;
+        AimCrouchModifier: number;
+        AimFullCrouchModifier: number;
+      };
+      OffsetAimModifiers: {
+        OffsetAimModifier: number;
+        OffsetAimCrouchModifier: number;
+        OffsetAimFullCrouchModifier: number;
       };
       MovementSpeedModifiers: { MovementSpeedModifier: number };
       HipModifiers: {
         HipModifier: number;
         HipJumpModifier: number;
-        HipCrouchModifier: string;
-        HipFullCrouchModifier: string;
+        HipCrouchModifier: number;
+        HipFullCrouchModifier: number;
       };
       RadiusNormalizationModifiers: {
         RadiusNormalizationDelay: number;
@@ -297,6 +316,8 @@ export type WeaponGeneralSetupPrototype = GetStructType<{
   ItemTypeSwitchValue: string;
   WeaponInWorldUnloadSound: string;
   AimingSound: string;
+  OffsetAimingOffSound: string;
+  OffsetAimingOnSound: string;
   SilencerRTPCParameter: string;
   FireIntervalRTPCParameter: string;
   MechModulatorRTPCParameter: string;
