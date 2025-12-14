@@ -1152,7 +1152,7 @@ export type EMarkerType = `EMarkerType::${
   | "Bed"
   | "Guide"
   | "Hub"
-  | "Location"
+  | "Location3Axis"
   | "Medic"
   | "None"
   | "PlayerStorage"
@@ -2096,3 +2096,5 @@ export type EObjBoolParams = `EObjBoolParams::${
   | "IsOffsetAimingEnabled"
   | "IsNightVisionEnabled"
   | "IsDetectorInHands"}`;
+
+export type ECombatTactics = `ECombatTactics::${"Attack" | "None"}`;
