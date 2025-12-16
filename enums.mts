@@ -76,7 +76,7 @@ export type EAimAssistWeightType = `EAimAssistWeightType::${
   | "Angle"
   | "DistanceFromApex"}`;
 
-export type EAmmoCaliber = `EAmmoCaliber::${
+export type Caliber =
   | "A012"
   | "A045"
   | "A545"
@@ -91,7 +91,9 @@ export type EAmmoCaliber = `EAmmoCaliber::${
   | "AHEDP"
   | "APG7V"
   | "AVOG"
-  | "None"}`;
+  | "None";
+
+export type EAmmoCaliber = `EAmmoCaliber::${Caliber}`;
 
 export type EAmmoType = `EAmmoType::${
   | "ArmorPiercing"
@@ -1608,6 +1610,7 @@ export type ERadiationPreset = `ERadiationPreset::${
   | "Strong"
   | "Topaz"}`;
 
+export type Rank = "Newbie" | "Experienced" | "Veteran" | "Master";
 type Newbie = "ERank::Newbie";
 type Experienced = "ERank::Experienced";
 type Veteran = "ERank::Veteran";
@@ -2098,3 +2101,9 @@ export type EObjBoolParams = `EObjBoolParams::${
   | "IsDetectorInHands"}`;
 
 export type ECombatTactics = `ECombatTactics::${"Attack" | "None"}`;
+
+export type EAgentRankMask = `EAgentRankMask::${
+  | "Experienced"
+  | "Veteran"
+  | "Master"
+  | "All"}`;
