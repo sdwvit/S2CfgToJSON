@@ -311,6 +311,7 @@ struct.end`;
       const b = a.clone() as TradePrototype;
 
       expect(a === b).toBe(false);
+      expect(a.TradeGenerators === b.TradeGenerators).toBe(false);
       expect(a.toString()).toBe(b.toString());
     });
   });

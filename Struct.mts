@@ -114,10 +114,15 @@ export class Struct {
   }
 
   clone() {
-    const isRoot = this.__internal__.isRoot;
-    this.__internal__.isRoot = true;
-    const newInstance = Struct.fromString(this.toString())[0] as this;
-    this.__internal__.isRoot = isRoot;
+    const newInstance = new Struct() as typeof this;
+    newInstance.__internal__ = new Refs(this.__internal__);
+    this.forEach(([k, v]) => {
+      if (v instanceof Struct) {
+        newInstance[k] = v.clone();
+      } else {
+        newInstance[k] = v;
+      }
+    });
     return newInstance;
   }
 
