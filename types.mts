@@ -3842,3 +3842,32 @@ export type RSQ00_Rewar = GetStructType<{
   };
   SID: string;
 }>;
+
+export type NPCPrototype = GetStructType<{
+  SID: string;
+  HelloDialogChain: string;
+  ByeDialogChain: string;
+  DefeatTopicDialogChain: string;
+  DefeatCommentDialogChain: string;
+  CallPlayerCommentDialogChain: string;
+  ResumeCommentDialogChain: string;
+  BusyCommentDialogChain: string;
+  TradeTopicDialogChain: string;
+  UpgradeTopicDialogChain: string;
+  TravelTopicDialogChain: string;
+  FastTravelPrototypeSID: string;
+  NPCType: ENPCType;
+  NPCMarker: string;
+  UpdateMarkerOnMap: boolean;
+  Money: number;
+  Upgrades: { UpgradePrototypeSID: string; Enabled: boolean }[];
+  Skills: string[];
+  UseGeneratedName: boolean;
+  NameTextKey: string;
+  ThreshHoldItemCondition: number;
+  VoiceUA: string;
+  VoiceEN: string;
+  QuestNPC: boolean;
+  BuyCoefficient: number;
+  SellCoefficient: number;
+}>;
