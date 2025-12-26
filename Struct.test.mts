@@ -148,7 +148,7 @@ struct.end`;
          ReputationThreshold = -500
          RefreshTime = 1h
          PossibleItems : struct.begin
-            [0] : struct.begin
+            [*] : struct.begin
                ItemPrototypeSID = DutyArmor_3_U1
                Weight = 1
                MinDurability = 1
