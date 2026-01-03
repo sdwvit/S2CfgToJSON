@@ -53,7 +53,7 @@ BasePhantomAttack : struct.begin {refkey=BaseAttackAbility}
 struct.end
 `;
 const parsed = Struct.fromString(configText)[0];
-console.log(parsed.entries.TriggeredCooldowns);
+console.log(parsed.TriggeredCooldowns);
 ```
 
 ---
