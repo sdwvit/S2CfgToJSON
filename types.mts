@@ -3871,3 +3871,38 @@ export type NPCPrototype = GetStructType<{
   BuyCoefficient: number;
   SellCoefficient: number;
 }>;
+
+export type ExplosionPrototypes = GetStructType<{
+  SID: string;
+  Radius: number;
+  DamagePlayer: number;
+  DamageNPC: number;
+  DamageArmorPlayer: number;
+  DamageArmorNPC: number;
+  DamageDestructible: number;
+  ArmorPenetrationPlayer: number;
+  ArmorPenetrationNPC: number;
+  ImpulseRadius: number;
+  ImpulsePower: number;
+  ForceFeedbackRadius: number;
+  ImpulseDamageCurve: string;
+  ExplosionDamageCurve: string;
+  ExplosionAkSFX: string;
+  ExplosionDefectAkSFX: string;
+  ExplosionNiagaraSystemVFX: string;
+  ExplosionUnderwaterNiagaraSystemVFX: string;
+  ExplosionInAirNiagaraSystemVFX: string;
+  ExplosionDefectNiagaraSystemVFX: string;
+  ExplosionWaterDepthRTPC: string;
+  ImpactPhysicalMaterialPrototypeSID: string;
+  ExplosionParticleTraceSize: number;
+  ConcussionRadius: number;
+  DamageSource: EDamageSource;
+  ConcussionEffects: string[];
+  NPCConcussionEffects: string[];
+  PhysicalMaterialEffects: {
+    PhysicalMaterialType: EPhysicalMaterialType;
+    EffectSIDs: string[];
+  }[];
+  DefaultEffectSIDs: string[];
+}>;
