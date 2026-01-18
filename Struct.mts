@@ -1,6 +1,44 @@
 export * from "./types.mts";
 export * from "./enums.mts";
-import { DefaultEntries, GetStructType, Internal } from "./types.mts";
+
+export type Internal =
+  | "__internal__"
+  | "fork"
+  | "removeNode"
+  | "addNode"
+  | "clone"
+  | "entries"
+  | "forEach"
+  | "filter"
+  | "map"
+  | "fromJson"
+  | "toJson"
+  | "toString"
+  | "fromString";
+
+export interface DefaultEntries {
+  bpatch?: boolean;
+  bskipref?: boolean;
+  isArray?: boolean;
+  isRoot?: boolean;
+  rawName?: string;
+  refkey?: string | number;
+  refurl?: string;
+  useAsterisk?: boolean;
+}
+
+export type GetStructType<In> =
+  In extends Array<any>
+    ? Struct & { [key: `${number}`]: GetStructType<In[typeof key]> }
+    : In extends Record<any, any>
+      ? Struct & { [key in keyof In]: GetStructType<In[key]> }
+      : In extends string
+        ? In
+        : In extends number
+          ? number
+          : In extends boolean
+            ? boolean
+            : In;
 
 const TAB = "   ";
 const WILDCARD = "_wildcard";
@@ -345,7 +383,8 @@ export function createDynamicClassInstance<T extends Struct = Struct>(
   rawName: string,
   index?: number,
 ): T {
-  const name = parseStructName(rawName) || `UnnamedStruct${index}`;
+  const parsedName = parseStructName(rawName) || `UnnamedStruct${index}`;
+  const name = makeSafeClassName(parsedName);
   return new (new Function(
     "parent",
     "Refs",
@@ -490,6 +529,62 @@ function parseStructName(name: string): string {
     .replace(/^\d+/, "_")
     .replace(/_+/g, "_")
     .replace(/^_+/, "");
+}
+
+const RESERVED_IDENTIFIERS = new Set([
+  "break",
+  "case",
+  "catch",
+  "class",
+  "const",
+  "continue",
+  "debugger",
+  "default",
+  "delete",
+  "do",
+  "else",
+  "export",
+  "extends",
+  "finally",
+  "for",
+  "function",
+  "if",
+  "import",
+  "in",
+  "instanceof",
+  "new",
+  "return",
+  "super",
+  "switch",
+  "this",
+  "throw",
+  "try",
+  "typeof",
+  "var",
+  "void",
+  "while",
+  "with",
+  "yield",
+  "enum",
+  "await",
+  "implements",
+  "package",
+  "protected",
+  "static",
+  "interface",
+  "private",
+  "public",
+  "let",
+]);
+
+function makeSafeClassName(name: string): string {
+  if (
+    !/^[A-Za-z_$][A-Za-z0-9_$]*$/.test(name) ||
+    RESERVED_IDENTIFIERS.has(name)
+  ) {
+    return `_${name}`;
+  }
+  return name;
 }
 
 function maybeMinifyKey(key: string, minify: boolean) {

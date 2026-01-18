@@ -1,5 +1,18 @@
 // noinspection JSUnusedGlobalSymbols
 
+import {
+  Caliber,
+  Experienced,
+  Master,
+  Newbie,
+  Permutations3,
+  Veteran,
+} from "./utility-types.mts";
+
+export type PanningRule = `PanningRule::${
+  | "PanningRule_Headphones"
+  | "PanningRule_Speakers"}`;
+
 export type EAIConstraintType = `EAIConstraintType::${"PrepareForEmission"}`;
 
 export type EAIMovementPose = `EAIMovementPose::${"Stand"}`;
@@ -75,23 +88,6 @@ export type EAimAssistPresetType = `EAimAssistPresetType::${
 export type EAimAssistWeightType = `EAimAssistWeightType::${
   | "Angle"
   | "DistanceFromApex"}`;
-
-export type Caliber =
-  | "A012"
-  | "A045"
-  | "A545"
-  | "A556"
-  | "A762"
-  | "A762NATO"
-  | "A762Sniper"
-  | "A918"
-  | "A919"
-  | "A939"
-  | "AGA"
-  | "AHEDP"
-  | "APG7V"
-  | "AVOG"
-  | "None";
 
 export type EAmmoCaliber = `EAmmoCaliber::${Caliber}`;
 
@@ -1610,25 +1606,6 @@ export type ERadiationPreset = `ERadiationPreset::${
   | "Strong"
   | "Topaz"}`;
 
-export type Rank = "Newbie" | "Experienced" | "Veteran" | "Master";
-type Newbie = "ERank::Newbie";
-type Experienced = "ERank::Experienced";
-type Veteran = "ERank::Veteran";
-type Master = "ERank::Master";
-type Permutations2<A, B> = A extends string
-  ? B extends string
-    ? A | B | `${A}, ${B}`
-    : A
-  : never;
-
-type Permutations3<A, B, C> = A extends string
-  ? B extends string
-    ? C extends string
-      ? Permutations2<A, B> | Permutations2<B, C> | `${A}, ${B}, ${C}`
-      : Permutations2<A, B>
-    : A
-  : never;
-
 export type ERank =
   | Permutations3<Newbie, Experienced, Veteran>
   | Permutations3<Experienced, Veteran, Master>
@@ -1969,10 +1946,6 @@ export type EZombificationType = `EZombificationType::${
   | "AliveHuman"
   | "CorpseHuman"}`;
 
-export type PanningRule = `PanningRule::${
-  | "PanningRule_Headphones"
-  | "PanningRule_Speakers"}`;
-
 export type ESoundEffectSubtype = `ESoundEffectSubtype::${
   | "PlaySoundAttached"
   | "SetParameter"
@@ -1994,106 +1967,6 @@ export type EActionType = `EActionType::${
   | "UseMainItem"
   | "Vault"
   | "ThrowItem"}`;
-
-export type Reactions =
-  | "Enemy"
-  | "Disaffection"
-  | "Neutral"
-  | "Friend"
-  | "Self";
-
-export type Factions =
-  | ""
-  | "Humanoid"
-  | "Player"
-  | "Bandits"
-  | "Monolith"
-  | "FreeStalkers"
-  | "Army"
-  | "Duty"
-  | "Freedom"
-  | "Varta"
-  | "Neutrals"
-  | "Militaries"
-  | "Noon"
-  | "Scientists"
-  | "Mercenaries"
-  | "Flame"
-  | "Law"
-  | "Spark"
-  | "Corpus"
-  | "WildBandits"
-  | "GarmataMilitaries"
-  | "SphereMilitaries"
-  | "NeutralBandits"
-  | "VaranBandits"
-  | "RooseveltBandits"
-  | "ShahBandits"
-  | "LokotBandits"
-  | "DepoBandits"
-  | "DepoVictims"
-  | "DocentBandits"
-  | "VaranStashBandits"
-  | "Diggers"
-  | "KosakBandits"
-  | "AzimutVarta"
-  | "UdavMercenaries"
-  | "SafariHunters"
-  | "AzimuthMilitaries"
-  | "SultanBandits"
-  | "ShevchenkoStalkers"
-  | "VartaLesnichestvo"
-  | "SparkLesnichestvo"
-  | "IkarVarta"
-  | "KabanBandits"
-  | "CrazyGuardians"
-  | "ArenaEnemy"
-  | "ArenaFriend"
-  | "DrozdMilitaries"
-  | "EnemyVarta"
-  | "NeutralMSOP"
-  | "YanovCorpus"
-  | "MoleStalkers"
-  | "Mutant"
-  | "Controller"
-  | "Poltergeist"
-  | "Bloodsucker"
-  | "Zombie"
-  | "Chimera"
-  | "Burer"
-  | "Pseudogiant"
-  | "Anamorph"
-  | "Sinister"
-  | "Pseudobear"
-  | "Snork"
-  | "Pseudodog"
-  | "Boar"
-  | "Flesh"
-  | "Beaver"
-  | "Ratwolf"
-  | "Deer"
-  | "Rat"
-  | "Tushkan"
-  | "Stickman"
-  | "Blinddog"
-  | "Bayun"
-  | "CorpusStorm"
-  | "DocileLabMutants"
-  | "VartaSIRCAA"
-  | "YantarZombie"
-  | "FriendlyBlinddog"
-  | "Lessy"
-  | "AlliedMutants"
-  | "NoahLesya"
-  | "KlenMercenaries"
-  | "SIRCAA_Scientist"
-  | "MALACHITE_Scientist"
-  | "NoonFaustians"
-  | "SQ89_SidorMercs"
-  | "ScarBoss_Faction"
-  | "KorshunovBoss_Faction"
-  | "StrelokBoss_Faction"
-  | "FaustBoss_Faction";
 
 export type EObjBoolParams = `EObjBoolParams::${
   | "IsOffsetAimingEnabled"

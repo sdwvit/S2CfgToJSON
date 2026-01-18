@@ -91,6 +91,14 @@ struct.end`,
         `DynamicClass : struct.begin\n\nstruct.end`,
       );
     });
+
+    test("reserved keyword name", () => {
+      const instance = createDynamicClassInstance("default");
+      instance.__internal__.isRoot = true;
+
+      expect(instance).toBeInstanceOf(Struct);
+      expect(instance.toString()).toBe(`default : struct.begin\n\nstruct.end`);
+    });
   });
 
   describe("fromString()", () => {
