@@ -3,6 +3,7 @@
 import {
   Caliber,
   Experienced,
+  FactionGoalType,
   Master,
   Newbie,
   Permutations3,
@@ -25,10 +26,7 @@ export type EALifeDirectorScenarioTarget = `EALifeDirectorScenarioTarget::${
   | "Player"
   | "TargetEachOther"}`;
 
-export type EALifeFactionGoalType = `EALifeFactionGoalType::${
-  | "Aggressive"
-  | "Defensive"
-  | "Normal"}`;
+export type EALifeFactionGoalType = `EALifeFactionGoalType::${FactionGoalType}`;
 
 export type EAbility = `EAbility::${
   | "AOEAttackPassive"

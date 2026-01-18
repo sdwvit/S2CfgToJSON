@@ -1144,748 +1144,748 @@ export type ItemGeneratorEntry =
       }[];
     };
 
-
-export type GroomCategory = (
+export type GroomCategory =
   | {
-  CategoryName: string;
-  FromHairQualityUseVariationReplacementMap: number;
-  VariationReplacementMap: {
-    From: number;
-    To: number;
-  }[];
-  Variations: (
-    | {
-    AdditionalGrooms: (
-      | {
-      GroomBindingPath: string;
-      GroomPath: string;
-      MaterialPath: string;
-    }
-      | {
-      GroomBindingPath: string;
-      GroomPath: string;
-    }
-      )[];
-    FromHairQualityRenderTextureInsteadOfGroom: number;
-    GroomBindingPath: string;
-    GroomPath: string;
-    GroomSID: string;
-    MaterialPath: string;
-    Materials: (
-      | {
-      CustomData: (
-        | {
-        Distribution: ECustomDataDistribution;
-        MaterialGroup: string;
-        ParameterID: number;
-        Variations: {
-          ParameterValue: number;
-          Weight: number;
-        }[];
-      }
-        | {
-        Distribution: ECustomDataDistribution;
-        MaterialGroup: string;
-        Variations: {
-          MaterialInstanceParameters: {
-            ParameterName: string;
-            TexturePath: string;
-          }[];
-          Weight: number;
-        }[];
-      }
-        )[];
-      MaterialGroup: string;
-      MaterialSlot: number;
-    }
-      | {
-      MaterialGroup: string;
-      MaterialSlot: number;
-      Variations: {
-        MaterialPath: string;
-        VariationIndex: number;
-        Weight: number;
+      CategoryName: string;
+      FromHairQualityUseVariationReplacementMap: number;
+      VariationReplacementMap: {
+        From: number;
+        To: number;
       }[];
-    }
-      )[];
-    VariationIndex: number;
-    Weight: number;
-  }
-    | {
-    AdditionalGrooms: (
-      | {
-      GroomBindingPath: string;
-      GroomPath: string;
-      Materials: {
-        MaterialGroup: string;
-        MaterialSlot: number;
-        Variations: {
-          MaterialPath: string;
-          VariationIndex: number;
-          Weight: number;
-        }[];
-      }[];
-    }
-      | {
-      GroomBindingPath: string;
-      GroomPath: string;
-    }
-      )[];
-    GroomBindingPath: string;
-    GroomPath: string;
-    GroomSID: string;
-    Materials: (
-      | {
-      CustomData: (
-        | {
-        Distribution: ECustomDataDistribution;
-        MaterialGroup: string;
-        ParameterID: number;
-        Variations: {
-          ParameterValue: number;
-          Weight: number;
-        }[];
-      }
-        | {
-        Distribution: ECustomDataDistribution;
-        MaterialGroup: string;
-        Variations: {
-          MaterialInstanceParameters: {
-            ParameterName: string;
-            TexturePath: string;
-          }[];
-          Weight: number;
-        }[];
-      }
-        )[];
-      MaterialGroup: string;
-      MaterialSlot: number;
-    }
-      | {
-      MaterialGroup: string;
-      MaterialSlot: number;
-      Variations: {
-        MaterialPath: string;
-        VariationIndex: number;
-        Weight: number;
-      }[];
-    }
-      )[];
-    VariationIndex: number;
-    Weight: number;
-  }
-    | {
-    AdditionalGrooms: {
-      GroomBindingPath: string;
-      GroomPath: string;
-      Materials: {
-        MaterialGroup: string;
-        MaterialSlot: number;
-        Variations: {
-          MaterialPath: string;
-          VariationIndex: number;
-          Weight: number;
-        }[];
-      }[];
-    }[];
-    FromHairQualityRenderTextureInsteadOfGroom: number;
-    GroomBindingPath: string;
-    GroomPath: string;
-    GroomSID: string;
-    Materials: (
-      | {
-      CustomData: (
-        | {
-        Distribution: ECustomDataDistribution;
-        MaterialGroup: string;
-        ParameterID: number;
-        Variations: {
-          ParameterValue: number;
-          Weight: number;
-        }[];
-      }
-        | {
-        Distribution: ECustomDataDistribution;
-        MaterialGroup: string;
-        Variations: {
-          MaterialInstanceParameters: {
-            ParameterName: string;
-            TexturePath: string;
-          }[];
-          Weight: number;
-        }[];
-      }
-        )[];
-      MaterialGroup: string;
-      MaterialSlot: number;
-    }
-      | {
-      MaterialGroup: string;
-      MaterialSlot: number;
-      Variations: {
-        MaterialPath: string;
-        VariationIndex: number;
-        Weight: number;
-      }[];
-    }
-      )[];
-    VariationIndex: number;
-    Weight: number;
-  }
-    | {
-    AdditionalGrooms: {
-      GroomBindingPath: string;
-      GroomPath: string;
-      Materials: {
-        MaterialGroup: string;
-        MaterialSlot: number;
-        Variations: {
-          MaterialPath: string;
-          VariationIndex: number;
-          Weight: number;
-        }[];
-      }[];
-    }[];
-    GroomBindingPath: string;
-    GroomPath: string;
-    GroomSID: string;
-    Materials: (
-      | {
-      CustomData: (
-        | {
-        Distribution: ECustomDataDistribution;
-        MaterialGroup: string;
-        ParameterID: number;
-        Variations: {
-          ParameterValue: number;
-          Weight: number;
-        }[];
-      }
-        | {
-        Distribution: ECustomDataDistribution;
-        MaterialGroup: string;
-        Variations: {
-          MaterialInstanceParameters: {
-            ParameterName: string;
-            TexturePath: string;
-          }[];
-          Weight: number;
-        }[];
-      }
-        )[];
-      MaterialGroup: string;
-      MaterialSlot: number;
-    }
-      | {
-      MaterialGroup: string;
-      MaterialSlot: number;
-      Variations: {
-        MaterialPath: string;
-        VariationIndex: number;
-        Weight: number;
-      }[];
-    }
-      )[];
-    VariationIndex: number;
-    Weight: number;
-  }
-    | {
-    FromHairQualityRenderTextureInsteadOfGroom: number;
-    GroomBindingPath: string;
-    GroomPath: string;
-    GroomSID: string;
-    Materials: (
-      | {
-      CustomData: (
-        | {
-        Distribution: ECustomDataDistribution;
-        MaterialGroup: string;
-        ParameterID: number;
-        Variations: {
-          ParameterValue: number;
-          Weight: number;
-        }[];
-      }
-        | {
-        Distribution: ECustomDataDistribution;
-        MaterialGroup: string;
-        Variations: {
-          MaterialInstanceParameters: {
-            ParameterName: string;
-            TexturePath: string;
-          }[];
-          Weight: number;
-        }[];
-      }
-        )[];
-      MaterialGroup: string;
-      MaterialSlot: number;
-    }
-      | {
-      MaterialGroup: string;
-      MaterialSlot: number;
-      Variations: {
-        MaterialPath: string;
-        VariationIndex: number;
-        Weight: number;
-      }[];
-    }
-      )[];
-    VariationIndex: number;
-    Weight: number;
-  }
-    )[];
-}
-  | {
-  CategoryName: string;
-  Variations: (
-    | {
-    AdditionalGrooms: {
-      GroomBindingPath: string;
-      GroomPath: string;
-      MaterialPath: string;
-      Materials: {
-        MaterialGroup: string;
-        MaterialSlot: number;
-        Variations: {
-          MaterialPath: string;
-          Weight: number;
-        }[];
-      }[];
-    }[];
-    GroomBindingPath: string;
-    GroomPath: string;
-    GroomSID: string;
-    MaterialPath: string;
-    Materials: {
-      CustomData: (
-        | {
-        Distribution: ECustomDataDistribution;
-        MaterialGroup: string;
-        ParameterID: number;
-        Variations: {
-          ParameterValue: number;
-          Weight: number;
-        }[];
-      }
-        | {
-        Distribution: ECustomDataDistribution;
-        MaterialGroup: string;
-        Variations: {
-          MaterialInstanceParameters: {
-            ParameterName: string;
-            TexturePath: string;
-          }[];
-          Weight: number;
-        }[];
-      }
-        )[];
-      MaterialGroup: string;
-      MaterialSlot: number;
-      Variations: {
-        MaterialPath: string;
-        VariationIndex: number;
-        Weight: number;
-      }[];
-    }[];
-    VariationIndex: number;
-    Weight: number;
-  }
-    | {
-    AdditionalGrooms: {
-      GroomBindingPath: string;
-      GroomPath: string;
-      Materials: {
-        MaterialGroup: string;
-        MaterialSlot: number;
-        Variations: {
-          MaterialPath: string;
-          Weight: number;
-        }[];
-      }[];
-    }[];
-    CustomData: {
-      ShortHair: {
-        Distribution: ECustomDataDistribution;
-        MaterialGroup: string;
-        Variations: {
-          MaterialInstanceParameters: {
-            ParameterName: string;
-            TexturePath: string;
-          }[];
-          Weight: number;
-        }[];
-      };
-    };
-    GroomBindingPath: string;
-    GroomPath: string;
-    GroomSID: string;
-    MaterialPath: string;
-    Materials: {
-      CustomData: {
-        ShortHair: {
-          Distribution: ECustomDataDistribution;
-          MaterialGroup: string;
-          Variations: {
-            MaterialInstanceParameters: {
-              ParameterName: string;
-              TexturePath: string;
-            }[];
-            Weight: number;
-          }[];
-        };
-      };
-      MaterialGroup: string;
-      MaterialSlot: number;
-      Variations: {
-        MaterialPath: string;
-        VariationIndex: number;
-        Weight: number;
-      }[];
-    }[];
-    VariationIndex: number;
-    Weight: number;
-  }
-    | {
-    AdditionalGrooms: {
-      GroomBindingPath: string;
-      GroomPath: string;
-      Materials: {
-        MaterialGroup: string;
-        MaterialSlot: number;
-        Variations: {
-          MaterialPath: string;
-          Weight: number;
-        }[];
-      }[];
-    }[];
-    GroomBindingPath: string;
-    GroomPath: string;
-    GroomSID: string;
-    MaterialPath: string;
-    Materials: {
-      CustomData: {
-        ShortHair: {
-          Distribution: ECustomDataDistribution;
-          MaterialGroup: string;
-          Variations: {
-            MaterialInstanceParameters: {
-              ParameterName: string;
-              TexturePath: string;
-            }[];
-            Weight: number;
-          }[];
-        };
-      };
-      MaterialGroup: string;
-      MaterialSlot: number;
-      Variations: {
-        MaterialPath: string;
-        VariationIndex: number;
-        Weight: number;
-      }[];
-    }[];
-    VariationIndex: number;
-    Weight: number;
-  }
-    | {
-    AdditionalGrooms: {
-      GroomBindingPath: string;
-      GroomPath: string;
-      Materials: {
-        MaterialGroup: string;
-        MaterialSlot: number;
-        Variations: {
-          MaterialPath: string;
-          Weight: number;
-        }[];
-      }[];
-    }[];
-    GroomBindingPath: string;
-    GroomPath: string;
-    GroomSID: string;
-    Materials: {
-      CustomData: {
-        ShortHair: {
-          Distribution: ECustomDataDistribution;
-          MaterialGroup: string;
-          Variations: {
-            MaterialInstanceParameters: {
-              ParameterName: string;
-              TexturePath: string;
-            }[];
-            Weight: number;
-          }[];
-        };
-      };
-      MaterialGroup: string;
-      MaterialSlot: number;
-      Variations: {
-        MaterialPath: string;
-        Weight: number;
-      }[];
-    }[];
-    VariationIndex: number;
-    Weight: number;
-  }
-    )[];
-}
-  | {
-  CategoryName: string;
-  Variations: (
-    | {
-    AdditionalGrooms: {
-      GroomBindingPath: string;
-      GroomPath: string;
-      MaterialPath: string;
-    }[];
-    GroomBindingPath: string;
-    GroomPath: string;
-    GroomSID: string;
-    MaterialPath: string;
-    Materials: {
-      MaterialGroup: string;
-      MaterialSlot: number;
       Variations: (
         | {
-        MaterialPath: string;
-        VariationIndex: number;
-        Weight: number;
-      }
+            AdditionalGrooms: (
+              | {
+                  GroomBindingPath: string;
+                  GroomPath: string;
+                  MaterialPath: string;
+                }
+              | {
+                  GroomBindingPath: string;
+                  GroomPath: string;
+                }
+            )[];
+            FromHairQualityRenderTextureInsteadOfGroom: number;
+            GroomBindingPath: string;
+            GroomPath: string;
+            GroomSID: string;
+            MaterialPath: string;
+            Materials: (
+              | {
+                  CustomData: (
+                    | {
+                        Distribution: ECustomDataDistribution;
+                        MaterialGroup: string;
+                        ParameterID: number;
+                        Variations: {
+                          ParameterValue: number;
+                          Weight: number;
+                        }[];
+                      }
+                    | {
+                        Distribution: ECustomDataDistribution;
+                        MaterialGroup: string;
+                        Variations: {
+                          MaterialInstanceParameters: {
+                            ParameterName: string;
+                            TexturePath: string;
+                          }[];
+                          Weight: number;
+                        }[];
+                      }
+                  )[];
+                  MaterialGroup: string;
+                  MaterialSlot: number;
+                }
+              | {
+                  MaterialGroup: string;
+                  MaterialSlot: number;
+                  Variations: {
+                    MaterialPath: string;
+                    VariationIndex: number;
+                    Weight: number;
+                  }[];
+                }
+            )[];
+            VariationIndex: number;
+            Weight: number;
+          }
         | {
-        MaterialPath: string;
-        Weight: number;
-      }
-        )[];
-    }[];
-    VariationIndex: number;
-    Weight: number;
-  }
-    | {
-    AdditionalGrooms: {
-      GroomBindingPath: string;
-      GroomPath: string;
-      MaterialPath: string;
-    }[];
-    GroomBindingPath: string;
-    GroomPath: string;
-    GroomSID: string;
-    MaterialPath: string;
-    Weight: number;
-  }
-    )[];
-}
-  | {
-  CategoryName: string;
-  Variations: (
-    | {
-    AdditionalGrooms: {
-      GroomBindingPath: string;
-      GroomPath: string;
-      MaterialPath: string;
-    }[];
-    GroomBindingPath: string;
-    GroomPath: string;
-    GroomSID: string;
-    MaterialPath: string;
-    Materials: {
-      CustomData: {
-        Distribution: ECustomDataDistribution;
-        MaterialGroup: string;
-        ParameterID: number;
-        Variations: {
-          ParameterValue: number;
-          Weight: number;
-        }[];
-      }[];
-      MaterialGroup: string;
-      MaterialSlot: number;
-    }[];
-    Weight: number;
-  }
-    | {
-    GroomBindingPath: string;
-    GroomPath: string;
-    GroomSID: string;
-    MaterialPath: string;
-    Materials: (
-      | {
-      CustomData: {
-        Distribution: ECustomDataDistribution;
-        MaterialGroup: string;
-        ParameterID: number;
-        Variations: {
-          ParameterValue: number;
-          Weight: number;
-        }[];
-      }[];
-      MaterialGroup: string;
-      MaterialSlot: number;
-    }
-      | {
-      MaterialGroup: string;
-      MaterialSlot: number;
-      Variations: {
-        MaterialPath: string;
-        VariationIndex: number;
-        Weight: number;
-      }[];
-    }
+            AdditionalGrooms: (
+              | {
+                  GroomBindingPath: string;
+                  GroomPath: string;
+                  Materials: {
+                    MaterialGroup: string;
+                    MaterialSlot: number;
+                    Variations: {
+                      MaterialPath: string;
+                      VariationIndex: number;
+                      Weight: number;
+                    }[];
+                  }[];
+                }
+              | {
+                  GroomBindingPath: string;
+                  GroomPath: string;
+                }
+            )[];
+            GroomBindingPath: string;
+            GroomPath: string;
+            GroomSID: string;
+            Materials: (
+              | {
+                  CustomData: (
+                    | {
+                        Distribution: ECustomDataDistribution;
+                        MaterialGroup: string;
+                        ParameterID: number;
+                        Variations: {
+                          ParameterValue: number;
+                          Weight: number;
+                        }[];
+                      }
+                    | {
+                        Distribution: ECustomDataDistribution;
+                        MaterialGroup: string;
+                        Variations: {
+                          MaterialInstanceParameters: {
+                            ParameterName: string;
+                            TexturePath: string;
+                          }[];
+                          Weight: number;
+                        }[];
+                      }
+                  )[];
+                  MaterialGroup: string;
+                  MaterialSlot: number;
+                }
+              | {
+                  MaterialGroup: string;
+                  MaterialSlot: number;
+                  Variations: {
+                    MaterialPath: string;
+                    VariationIndex: number;
+                    Weight: number;
+                  }[];
+                }
+            )[];
+            VariationIndex: number;
+            Weight: number;
+          }
+        | {
+            AdditionalGrooms: {
+              GroomBindingPath: string;
+              GroomPath: string;
+              Materials: {
+                MaterialGroup: string;
+                MaterialSlot: number;
+                Variations: {
+                  MaterialPath: string;
+                  VariationIndex: number;
+                  Weight: number;
+                }[];
+              }[];
+            }[];
+            FromHairQualityRenderTextureInsteadOfGroom: number;
+            GroomBindingPath: string;
+            GroomPath: string;
+            GroomSID: string;
+            Materials: (
+              | {
+                  CustomData: (
+                    | {
+                        Distribution: ECustomDataDistribution;
+                        MaterialGroup: string;
+                        ParameterID: number;
+                        Variations: {
+                          ParameterValue: number;
+                          Weight: number;
+                        }[];
+                      }
+                    | {
+                        Distribution: ECustomDataDistribution;
+                        MaterialGroup: string;
+                        Variations: {
+                          MaterialInstanceParameters: {
+                            ParameterName: string;
+                            TexturePath: string;
+                          }[];
+                          Weight: number;
+                        }[];
+                      }
+                  )[];
+                  MaterialGroup: string;
+                  MaterialSlot: number;
+                }
+              | {
+                  MaterialGroup: string;
+                  MaterialSlot: number;
+                  Variations: {
+                    MaterialPath: string;
+                    VariationIndex: number;
+                    Weight: number;
+                  }[];
+                }
+            )[];
+            VariationIndex: number;
+            Weight: number;
+          }
+        | {
+            AdditionalGrooms: {
+              GroomBindingPath: string;
+              GroomPath: string;
+              Materials: {
+                MaterialGroup: string;
+                MaterialSlot: number;
+                Variations: {
+                  MaterialPath: string;
+                  VariationIndex: number;
+                  Weight: number;
+                }[];
+              }[];
+            }[];
+            GroomBindingPath: string;
+            GroomPath: string;
+            GroomSID: string;
+            Materials: (
+              | {
+                  CustomData: (
+                    | {
+                        Distribution: ECustomDataDistribution;
+                        MaterialGroup: string;
+                        ParameterID: number;
+                        Variations: {
+                          ParameterValue: number;
+                          Weight: number;
+                        }[];
+                      }
+                    | {
+                        Distribution: ECustomDataDistribution;
+                        MaterialGroup: string;
+                        Variations: {
+                          MaterialInstanceParameters: {
+                            ParameterName: string;
+                            TexturePath: string;
+                          }[];
+                          Weight: number;
+                        }[];
+                      }
+                  )[];
+                  MaterialGroup: string;
+                  MaterialSlot: number;
+                }
+              | {
+                  MaterialGroup: string;
+                  MaterialSlot: number;
+                  Variations: {
+                    MaterialPath: string;
+                    VariationIndex: number;
+                    Weight: number;
+                  }[];
+                }
+            )[];
+            VariationIndex: number;
+            Weight: number;
+          }
+        | {
+            FromHairQualityRenderTextureInsteadOfGroom: number;
+            GroomBindingPath: string;
+            GroomPath: string;
+            GroomSID: string;
+            Materials: (
+              | {
+                  CustomData: (
+                    | {
+                        Distribution: ECustomDataDistribution;
+                        MaterialGroup: string;
+                        ParameterID: number;
+                        Variations: {
+                          ParameterValue: number;
+                          Weight: number;
+                        }[];
+                      }
+                    | {
+                        Distribution: ECustomDataDistribution;
+                        MaterialGroup: string;
+                        Variations: {
+                          MaterialInstanceParameters: {
+                            ParameterName: string;
+                            TexturePath: string;
+                          }[];
+                          Weight: number;
+                        }[];
+                      }
+                  )[];
+                  MaterialGroup: string;
+                  MaterialSlot: number;
+                }
+              | {
+                  MaterialGroup: string;
+                  MaterialSlot: number;
+                  Variations: {
+                    MaterialPath: string;
+                    VariationIndex: number;
+                    Weight: number;
+                  }[];
+                }
+            )[];
+            VariationIndex: number;
+            Weight: number;
+          }
       )[];
-    Weight: number;
-  }
-    )[];
-}
+    }
   | {
-  CategoryName: string;
-  Variations: (
-    | {
-    AdditionalGrooms: {
-      GroomBindingPath: string;
-      GroomPath: string;
-      MaterialPath: string;
-    }[];
-    bHasCustomData: boolean;
-    GroomBindingPath: string;
-    GroomPath: string;
-    GroomSID: string;
-    MaterialPath: string;
-    Materials: {
-      CustomData: {
-        Distribution: ECustomDataDistribution;
-        MaterialGroup: string;
-        ParameterID: number;
-        Variations: {
-          ParameterValue: number;
-          Weight: number;
-        }[];
-      }[];
-      MaterialGroup: string;
-      MaterialSlot: number;
-      Variations: {
-        MaterialPath: string;
-        VariationIndex: number;
-        Weight: number;
-      }[];
-    }[];
-    VariationIndex: number;
-    Weight: number;
-  }
-    | {
-    AdditionalGrooms: {
-      GroomBindingPath: string;
-      GroomPath: string;
-      Materials: {
-        MaterialGroup: string;
-        MaterialSlot: number;
-        Variations: {
-          MaterialPath: string;
-          VariationIndex: number;
-          Weight: number;
-        }[];
-      }[];
-    }[];
-    GroomBindingPath: string;
-    GroomPath: string;
-    GroomSID: string;
-    MaterialPath: string;
-    Materials: (
-      | {
-      CustomData: {
-        Distribution: ECustomDataDistribution;
-        MaterialGroup: string;
-        ParameterID: number;
-        Variations: {
-          ParameterValue: number;
-          Weight: number;
-        }[];
-      }[];
-      MaterialGroup: string;
-      MaterialSlot: number;
-    }
-      | {
-      MaterialGroup: string;
-      MaterialSlot: number;
-      Variations: {
-        MaterialPath: string;
-        VariationIndex: number;
-        Weight: number;
-      }[];
-    }
+      CategoryName: string;
+      Variations: (
+        | {
+            AdditionalGrooms: {
+              GroomBindingPath: string;
+              GroomPath: string;
+              MaterialPath: string;
+              Materials: {
+                MaterialGroup: string;
+                MaterialSlot: number;
+                Variations: {
+                  MaterialPath: string;
+                  Weight: number;
+                }[];
+              }[];
+            }[];
+            GroomBindingPath: string;
+            GroomPath: string;
+            GroomSID: string;
+            MaterialPath: string;
+            Materials: {
+              CustomData: (
+                | {
+                    Distribution: ECustomDataDistribution;
+                    MaterialGroup: string;
+                    ParameterID: number;
+                    Variations: {
+                      ParameterValue: number;
+                      Weight: number;
+                    }[];
+                  }
+                | {
+                    Distribution: ECustomDataDistribution;
+                    MaterialGroup: string;
+                    Variations: {
+                      MaterialInstanceParameters: {
+                        ParameterName: string;
+                        TexturePath: string;
+                      }[];
+                      Weight: number;
+                    }[];
+                  }
+              )[];
+              MaterialGroup: string;
+              MaterialSlot: number;
+              Variations: {
+                MaterialPath: string;
+                VariationIndex: number;
+                Weight: number;
+              }[];
+            }[];
+            VariationIndex: number;
+            Weight: number;
+          }
+        | {
+            AdditionalGrooms: {
+              GroomBindingPath: string;
+              GroomPath: string;
+              Materials: {
+                MaterialGroup: string;
+                MaterialSlot: number;
+                Variations: {
+                  MaterialPath: string;
+                  Weight: number;
+                }[];
+              }[];
+            }[];
+            CustomData: {
+              ShortHair: {
+                Distribution: ECustomDataDistribution;
+                MaterialGroup: string;
+                Variations: {
+                  MaterialInstanceParameters: {
+                    ParameterName: string;
+                    TexturePath: string;
+                  }[];
+                  Weight: number;
+                }[];
+              };
+            };
+            GroomBindingPath: string;
+            GroomPath: string;
+            GroomSID: string;
+            MaterialPath: string;
+            Materials: {
+              CustomData: {
+                ShortHair: {
+                  Distribution: ECustomDataDistribution;
+                  MaterialGroup: string;
+                  Variations: {
+                    MaterialInstanceParameters: {
+                      ParameterName: string;
+                      TexturePath: string;
+                    }[];
+                    Weight: number;
+                  }[];
+                };
+              };
+              MaterialGroup: string;
+              MaterialSlot: number;
+              Variations: {
+                MaterialPath: string;
+                VariationIndex: number;
+                Weight: number;
+              }[];
+            }[];
+            VariationIndex: number;
+            Weight: number;
+          }
+        | {
+            AdditionalGrooms: {
+              GroomBindingPath: string;
+              GroomPath: string;
+              Materials: {
+                MaterialGroup: string;
+                MaterialSlot: number;
+                Variations: {
+                  MaterialPath: string;
+                  Weight: number;
+                }[];
+              }[];
+            }[];
+            GroomBindingPath: string;
+            GroomPath: string;
+            GroomSID: string;
+            MaterialPath: string;
+            Materials: {
+              CustomData: {
+                ShortHair: {
+                  Distribution: ECustomDataDistribution;
+                  MaterialGroup: string;
+                  Variations: {
+                    MaterialInstanceParameters: {
+                      ParameterName: string;
+                      TexturePath: string;
+                    }[];
+                    Weight: number;
+                  }[];
+                };
+              };
+              MaterialGroup: string;
+              MaterialSlot: number;
+              Variations: {
+                MaterialPath: string;
+                VariationIndex: number;
+                Weight: number;
+              }[];
+            }[];
+            VariationIndex: number;
+            Weight: number;
+          }
+        | {
+            AdditionalGrooms: {
+              GroomBindingPath: string;
+              GroomPath: string;
+              Materials: {
+                MaterialGroup: string;
+                MaterialSlot: number;
+                Variations: {
+                  MaterialPath: string;
+                  Weight: number;
+                }[];
+              }[];
+            }[];
+            GroomBindingPath: string;
+            GroomPath: string;
+            GroomSID: string;
+            Materials: {
+              CustomData: {
+                ShortHair: {
+                  Distribution: ECustomDataDistribution;
+                  MaterialGroup: string;
+                  Variations: {
+                    MaterialInstanceParameters: {
+                      ParameterName: string;
+                      TexturePath: string;
+                    }[];
+                    Weight: number;
+                  }[];
+                };
+              };
+              MaterialGroup: string;
+              MaterialSlot: number;
+              Variations: {
+                MaterialPath: string;
+                Weight: number;
+              }[];
+            }[];
+            VariationIndex: number;
+            Weight: number;
+          }
       )[];
-    VariationIndex: number;
-    Weight: number;
-  }
-    | {
-    AdditionalGrooms: {
-      GroomBindingPath: string;
-      GroomPath: string;
-      Materials: {
-        MaterialGroup: string;
-        MaterialSlot: number;
-        Variations: {
-          MaterialPath: string;
-          VariationIndex: number;
-          Weight: number;
-        }[];
-      }[];
-    }[];
-    GroomBindingPath: string;
-    GroomPath: string;
-    GroomSID: string;
-    Materials: (
-      | {
-      CustomData: {
-        Distribution: ECustomDataDistribution;
-        MaterialGroup: string;
-        ParameterID: number;
-        Variations: {
-          ParameterValue: number;
-          Weight: number;
-        }[];
-      }[];
-      MaterialGroup: string;
-      MaterialSlot: number;
     }
-      | {
-      MaterialGroup: string;
-      MaterialSlot: number;
-      Variations: {
-        MaterialPath: string;
-        VariationIndex: number;
-        Weight: number;
-      }[];
-    }
-      )[];
-    VariationIndex: number;
-    Weight: number;
-  }
-    )[];
-}
   | {
-  CategoryName: string;
-  Variations: (
-    | {
-    GroomBindingPath: string;
-    GroomPath: string;
-    GroomSID: string;
-    Materials: {
-      MaterialGroup: string;
-      MaterialSlot: number;
-      Variations: {
-        MaterialPath: string;
-        VariationIndex: number;
-        Weight: number;
-      }[];
-    }[];
-    Weight: number;
-  }
-    | {
-    GroomBindingPath: string;
-    GroomPath: string;
-    GroomSID: string;
-    Weight: number;
-  }
-    )[];
-}
-  )
+      CategoryName: string;
+      Variations: (
+        | {
+            AdditionalGrooms: {
+              GroomBindingPath: string;
+              GroomPath: string;
+              MaterialPath: string;
+            }[];
+            GroomBindingPath: string;
+            GroomPath: string;
+            GroomSID: string;
+            MaterialPath: string;
+            Materials: {
+              MaterialGroup: string;
+              MaterialSlot: number;
+              Variations: (
+                | {
+                    MaterialPath: string;
+                    VariationIndex: number;
+                    Weight: number;
+                  }
+                | {
+                    MaterialPath: string;
+                    Weight: number;
+                  }
+              )[];
+            }[];
+            VariationIndex: number;
+            Weight: number;
+          }
+        | {
+            AdditionalGrooms: {
+              GroomBindingPath: string;
+              GroomPath: string;
+              MaterialPath: string;
+            }[];
+            GroomBindingPath: string;
+            GroomPath: string;
+            GroomSID: string;
+            MaterialPath: string;
+            Weight: number;
+          }
+      )[];
+    }
+  | {
+      CategoryName: string;
+      Variations: (
+        | {
+            AdditionalGrooms: {
+              GroomBindingPath: string;
+              GroomPath: string;
+              MaterialPath: string;
+            }[];
+            GroomBindingPath: string;
+            GroomPath: string;
+            GroomSID: string;
+            MaterialPath: string;
+            Materials: {
+              CustomData: {
+                Distribution: ECustomDataDistribution;
+                MaterialGroup: string;
+                ParameterID: number;
+                Variations: {
+                  ParameterValue: number;
+                  Weight: number;
+                }[];
+              }[];
+              MaterialGroup: string;
+              MaterialSlot: number;
+            }[];
+            Weight: number;
+          }
+        | {
+            GroomBindingPath: string;
+            GroomPath: string;
+            GroomSID: string;
+            MaterialPath: string;
+            Materials: (
+              | {
+                  CustomData: {
+                    Distribution: ECustomDataDistribution;
+                    MaterialGroup: string;
+                    ParameterID: number;
+                    Variations: {
+                      ParameterValue: number;
+                      Weight: number;
+                    }[];
+                  }[];
+                  MaterialGroup: string;
+                  MaterialSlot: number;
+                }
+              | {
+                  MaterialGroup: string;
+                  MaterialSlot: number;
+                  Variations: {
+                    MaterialPath: string;
+                    VariationIndex: number;
+                    Weight: number;
+                  }[];
+                }
+            )[];
+            Weight: number;
+          }
+      )[];
+    }
+  | {
+      CategoryName: string;
+      Variations: (
+        | {
+            AdditionalGrooms: {
+              GroomBindingPath: string;
+              GroomPath: string;
+              MaterialPath: string;
+            }[];
+            bHasCustomData: boolean;
+            GroomBindingPath: string;
+            GroomPath: string;
+            GroomSID: string;
+            MaterialPath: string;
+            Materials: {
+              CustomData: {
+                Distribution: ECustomDataDistribution;
+                MaterialGroup: string;
+                ParameterID: number;
+                Variations: {
+                  ParameterValue: number;
+                  Weight: number;
+                }[];
+              }[];
+              MaterialGroup: string;
+              MaterialSlot: number;
+              Variations: {
+                MaterialPath: string;
+                VariationIndex: number;
+                Weight: number;
+              }[];
+            }[];
+            VariationIndex: number;
+            Weight: number;
+          }
+        | {
+            AdditionalGrooms: {
+              GroomBindingPath: string;
+              GroomPath: string;
+              Materials: {
+                MaterialGroup: string;
+                MaterialSlot: number;
+                Variations: {
+                  MaterialPath: string;
+                  VariationIndex: number;
+                  Weight: number;
+                }[];
+              }[];
+            }[];
+            GroomBindingPath: string;
+            GroomPath: string;
+            GroomSID: string;
+            MaterialPath: string;
+            Materials: (
+              | {
+                  CustomData: {
+                    Distribution: ECustomDataDistribution;
+                    MaterialGroup: string;
+                    ParameterID: number;
+                    Variations: {
+                      ParameterValue: number;
+                      Weight: number;
+                    }[];
+                  }[];
+                  MaterialGroup: string;
+                  MaterialSlot: number;
+                }
+              | {
+                  MaterialGroup: string;
+                  MaterialSlot: number;
+                  Variations: {
+                    MaterialPath: string;
+                    VariationIndex: number;
+                    Weight: number;
+                  }[];
+                }
+            )[];
+            VariationIndex: number;
+            Weight: number;
+          }
+        | {
+            AdditionalGrooms: {
+              GroomBindingPath: string;
+              GroomPath: string;
+              Materials: {
+                MaterialGroup: string;
+                MaterialSlot: number;
+                Variations: {
+                  MaterialPath: string;
+                  VariationIndex: number;
+                  Weight: number;
+                }[];
+              }[];
+            }[];
+            GroomBindingPath: string;
+            GroomPath: string;
+            GroomSID: string;
+            Materials: (
+              | {
+                  CustomData: {
+                    Distribution: ECustomDataDistribution;
+                    MaterialGroup: string;
+                    ParameterID: number;
+                    Variations: {
+                      ParameterValue: number;
+                      Weight: number;
+                    }[];
+                  }[];
+                  MaterialGroup: string;
+                  MaterialSlot: number;
+                }
+              | {
+                  MaterialGroup: string;
+                  MaterialSlot: number;
+                  Variations: {
+                    MaterialPath: string;
+                    VariationIndex: number;
+                    Weight: number;
+                  }[];
+                }
+            )[];
+            VariationIndex: number;
+            Weight: number;
+          }
+      )[];
+    }
+  | {
+      CategoryName: string;
+      Variations: (
+        | {
+            GroomBindingPath: string;
+            GroomPath: string;
+            GroomSID: string;
+            Materials: {
+              MaterialGroup: string;
+              MaterialSlot: number;
+              Variations: {
+                MaterialPath: string;
+                VariationIndex: number;
+                Weight: number;
+              }[];
+            }[];
+            Weight: number;
+          }
+        | {
+            GroomBindingPath: string;
+            GroomPath: string;
+            GroomSID: string;
+            Weight: number;
+          }
+      )[];
+    };
+
+export type FactionGoalType = "Aggressive" | "Defensive" | "Normal";
