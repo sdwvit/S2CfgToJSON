@@ -50,10 +50,8 @@ import {
   EConnectionLineState,
   EConsumableType,
   EContextualActionBodyPart,
-  EContextualActionEffectType,
   EContextualActionNeeds,
   EContextualActionNodeType,
-  EContextualActionPreconditionType,
   EContextualAgentType,
   ECrosshairType,
   ECustomDataDistribution,
@@ -147,7 +145,6 @@ import {
   ERegion,
   ERelationChangingEvent,
   ERelationLevel,
-  ERepetitions,
   ERequiredSquadMembers,
   ESaveSubType,
   ESaveType,
@@ -181,10 +178,10 @@ import {
   EWeightStatus,
   EZombificationType,
 } from "./enums.mts";
+
 import {
   Ability,
   MeshAttachment,
-  Condition,
   Faction,
   Rank,
   Reaction,
@@ -200,7 +197,10 @@ import {
   GroomCategory,
   FactionGoalType,
   VecRotTemp,
+  Conditions,
+  ContextualAction,
 } from "./utility-types.mts";
+
 import { GetStructType } from "./Struct.mts";
 
 export type AbilityPrototype = GetStructType<{
@@ -617,7 +617,6 @@ export type ALifeDirectorScenarioPrototype = GetStructType<{
       PostSpawnDirectorTimeoutMax: number;
       PostSpawnDirectorTimeoutMin: number;
       ScenarioSIDs: Record<string, { ScenarioWeight: number }>;
-
       SID: string;
       SpawnDelayMax: number;
       SpawnDelayMin: number;
@@ -626,7 +625,6 @@ export type ALifeDirectorScenarioPrototype = GetStructType<{
       PostSpawnDirectorTimeoutMax: number;
       PostSpawnDirectorTimeoutMin: number;
       ScenarioSIDs: Record<string, { ScenarioWeight: number }>;
-
       SID: string;
       SpawnDelayMax: number;
       SpawnDelayMin: number;
@@ -635,7 +633,6 @@ export type ALifeDirectorScenarioPrototype = GetStructType<{
       PostSpawnDirectorTimeoutMax: number;
       PostSpawnDirectorTimeoutMin: number;
       ScenarioSIDs: Record<string, { ScenarioWeight: number }>;
-
       SID: string;
       SpawnDelayMax: number;
       SpawnDelayMin: number;
@@ -644,7 +641,6 @@ export type ALifeDirectorScenarioPrototype = GetStructType<{
       PostSpawnDirectorTimeoutMax: number;
       PostSpawnDirectorTimeoutMin: number;
       ScenarioSIDs: Record<string, { ScenarioWeight: number }>;
-
       SID: string;
       SpawnDelayMax: number;
       SpawnDelayMin: number;
@@ -653,7 +649,6 @@ export type ALifeDirectorScenarioPrototype = GetStructType<{
       PostSpawnDirectorTimeoutMax: number;
       PostSpawnDirectorTimeoutMin: number;
       ScenarioSIDs: Record<string, { ScenarioWeight: number }>;
-
       SID: string;
       SpawnDelayMax: number;
       SpawnDelayMin: number;
@@ -662,7 +657,6 @@ export type ALifeDirectorScenarioPrototype = GetStructType<{
       PostSpawnDirectorTimeoutMax: number;
       PostSpawnDirectorTimeoutMin: number;
       ScenarioSIDs: Record<string, { ScenarioWeight: number }>;
-
       SID: string;
       SpawnDelayMax: number;
       SpawnDelayMin: number;
@@ -1221,14 +1215,7 @@ export type AttachMeshPrototype = GetStructType<{
     SkeletonPath: string;
   }[];
   AnimPath: string;
-  bHasClothSimulation: boolean;
-  bHasExoskeleton: boolean;
   BodyMeshType: EBodyMeshType;
-  bReceiveAttachedDecals: boolean;
-  bReceiveDecals: boolean;
-  bRenderCustomDepthPass: boolean;
-  bShouldUseParentBound: boolean;
-  bUseCustomLODSync: boolean;
   ComponentTags: string[];
   FaceBlockingBlendMaskPrototypeSID: string;
   GroomBlockingMappingPrototypeSID: string;
@@ -1242,268 +1229,176 @@ export type AttachMeshPrototype = GetStructType<{
     LODSectionIndex: number;
     MaterialPostfix: string;
   }[];
-  Materials: (
-    | {
-        CustomData: {
-          Chevron_index: {
-            Distribution: ECustomDataDistribution;
-            MaterialGroup: string;
-            ParameterID: number;
-            Variations: {
-              ParameterValue: number;
-              Weight: number;
-            }[];
-          };
-          Damage: {
-            Distribution: ECustomDataDistribution;
-            MaterialGroup: string;
-            Variations: {
-              MaterialInstanceParameters: {
-                ParameterName: string;
-                TexturePath: string;
-              }[];
-              Weight: number;
-            }[];
-          };
-          DamageIndex_01: {
-            Distribution: ECustomDataDistribution;
-            MaterialGroup: string;
-            ParameterID: number;
-            Variations: {
-              ParameterValue: number;
-              Weight: number;
-            }[];
-          };
-          DamageIndex_02: {
-            Distribution: ECustomDataDistribution;
-            MaterialGroup: string;
-            ParameterID: number;
-            Variations: {
-              ParameterValue: number;
-              Weight: number;
-            }[];
-          };
-          DamagePoss_01: {
-            Distribution: ECustomDataDistribution;
-            MaterialGroup: string;
-            ParameterID: number;
-            VariationCount: number;
-          };
-          DamagePoss_02: {
-            Distribution: ECustomDataDistribution;
-            MaterialGroup: string;
-            ParameterID: number;
-            VariationCount: number;
-          };
-          DamageRotation_Index_01: {
-            Distribution: ECustomDataDistribution;
-            MaterialGroup: string;
-            ParameterID: number;
-            VariationCount: number;
-          };
-          DamageRotation_Index_02: {
-            Distribution: ECustomDataDistribution;
-            MaterialGroup: string;
-            ParameterID: number;
-            VariationCount: number;
-          };
-          DamageScale_Index_01: {
-            Distribution: ECustomDataDistribution;
-            MaterialGroup: string;
-            ParameterID: number;
-            VariationCount: number;
-          };
-          DamageScale_Index_02: {
-            Distribution: ECustomDataDistribution;
-            MaterialGroup: string;
-            ParameterID: number;
-            Variations: {
-              ParameterValue: number;
-              Weight: number;
-            }[];
-          };
-          DefectIntensity_Index: {
-            Distribution: ECustomDataDistribution;
-            MaterialGroup: string;
-            ParameterID: number;
-            VariationCount: number;
-          };
-          Defects: {
-            Distribution: ECustomDataDistribution;
-            MaterialGroup: string;
-            Variations: {
-              MaterialInstanceParameters: {
-                ParameterName: string;
-                TexturePath: string;
-              }[];
-              Weight: number;
-            }[];
-          };
-          Dirt: {
-            Distribution: ECustomDataDistribution;
-            MaterialGroup: string;
-            Variations: {
-              MaterialInstanceParameters: {
-                ParameterName: string;
-                TexturePath: string;
-              }[];
-              Weight: number;
-            }[];
-          };
-          Dirt_Intensity: {
-            Distribution: ECustomDataDistribution;
-            MaterialGroup: string;
-            ParameterID: number;
-            VariationCount: number;
-            Variations: {
-              ParameterValue: number;
-              Weight: number;
-            }[];
-          };
-          FrecklesDensity_Index: {
-            Distribution: ECustomDataDistribution;
-            MaterialGroup: string;
-            ParameterID: number;
-            Variations: {
-              ParameterValue: number;
-              Weight: number;
-            }[];
-          };
-          Normal_Intensity: {
-            Distribution: ECustomDataDistribution;
-            MaterialGroup: string;
-            ParameterID: number;
-            VariationCount: number;
-          };
-          SkinTone_Index: {
-            Distribution: ECustomDataDistribution;
-            MaterialGroup: string;
-            ParameterID: number;
-            VariationCount: number;
-            Variations: {
-              ParameterValue: number;
-              Weight: number;
-            }[];
-          };
-        };
+  Materials: {
+    CustomData: {
+      Chevron_index: {
+        Distribution: ECustomDataDistribution;
         MaterialGroup: string;
-        MaterialSlot: number;
-        Variations: (
-          | {
-              MaterialPath: string;
-              VariationIndex: number;
-              Weight: number;
-            }
-          | {
-              MaterialPath: string;
-              Weight: number;
-            }
-        )[];
-      }
-    | {
-        CustomData: {
-          Chevron_index: {
-            Distribution: ECustomDataDistribution;
-            MaterialGroup: string;
-            ParameterID: number;
-            Variations: {
-              ParameterValue: number;
-              Weight: number;
-            }[];
-          };
-          Dirt_Intensity: {
-            Distribution: ECustomDataDistribution;
-            MaterialGroup: string;
-            ParameterID: number;
-            VariationCount: number;
-          };
-          Normal_Intensity: {
-            Distribution: ECustomDataDistribution;
-            MaterialGroup: string;
-            ParameterID: number;
-            VariationCount: number;
-          };
-          SkinTone_Index: {
-            Distribution: ECustomDataDistribution;
-            MaterialGroup: string;
-            ParameterID: number;
-            VariationCount: number;
-          };
-        };
-        MaterialGroup: string;
-        MaterialSlot: number;
-        Variations: (
-          | {
-              MaterialPath: string;
-              VariationIndex: number;
-              Weight: number;
-            }
-          | {
-              MaterialPath: string;
-              Weight: number;
-            }
-        )[];
-      }
-    | {
-        CustomData: {
-          Teeth: {
-            Distribution: ECustomDataDistribution;
-            MaterialGroup: string;
-            ParameterID: number;
-            Variations: {
-              ParameterValue: number;
-              VariationIndex: number;
-              Weight: number;
-            }[];
-          };
-          TeethColor: {
-            Distribution: ECustomDataDistribution;
-            MaterialGroup: string;
-            ParameterID: number;
-            Variations: {
-              ParameterValue: number;
-              Weight: number;
-            }[];
-          };
-        };
-        MaterialGroup: string;
-        MaterialSlot: number;
-        Variations: (
-          | {
-              MaterialPath: string;
-              VariationIndex: number;
-              Weight: number;
-            }
-          | {
-              MaterialPath: string;
-              Weight: number;
-            }
-        )[];
-      }
-    | {
-        MaterialGroup: string;
-        MaterialSlot: number;
-        Variations: (
-          | {
-              MaterialPath: string;
-              VariationIndex: number;
-              Weight: number;
-            }
-          | {
-              MaterialPath: string;
-              Weight: number;
-            }
-        )[];
-      }
-    | {
-        MaterialGroup: string;
-        MaterialSlot: number;
+        ParameterID: number;
         Variations: {
-          MaterialPath: string;
+          ParameterValue: number;
           Weight: number;
         }[];
-      }
-  )[];
+      };
+      Damage: {
+        Distribution: ECustomDataDistribution;
+        MaterialGroup: string;
+        Variations: {
+          MaterialInstanceParameters: {
+            ParameterName: string;
+            TexturePath: string;
+          }[];
+          Weight: number;
+        }[];
+      };
+      DamageIndex_01: {
+        Distribution: ECustomDataDistribution;
+        MaterialGroup: string;
+        ParameterID: number;
+        Variations: {
+          ParameterValue: number;
+          Weight: number;
+        }[];
+      };
+      DamageIndex_02: {
+        Distribution: ECustomDataDistribution;
+        MaterialGroup: string;
+        ParameterID: number;
+        Variations: {
+          ParameterValue: number;
+          Weight: number;
+        }[];
+      };
+      DamagePoss_01: {
+        Distribution: ECustomDataDistribution;
+        MaterialGroup: string;
+        ParameterID: number;
+        VariationCount: number;
+      };
+      DamagePoss_02: {
+        Distribution: ECustomDataDistribution;
+        MaterialGroup: string;
+        ParameterID: number;
+        VariationCount: number;
+      };
+      DamageRotation_Index_01: {
+        Distribution: ECustomDataDistribution;
+        MaterialGroup: string;
+        ParameterID: number;
+        VariationCount: number;
+      };
+      DamageRotation_Index_02: {
+        Distribution: ECustomDataDistribution;
+        MaterialGroup: string;
+        ParameterID: number;
+        VariationCount: number;
+      };
+      DamageScale_Index_01: {
+        Distribution: ECustomDataDistribution;
+        MaterialGroup: string;
+        ParameterID: number;
+        VariationCount: number;
+      };
+      DamageScale_Index_02: {
+        Distribution: ECustomDataDistribution;
+        MaterialGroup: string;
+        ParameterID: number;
+        Variations: {
+          ParameterValue: number;
+          Weight: number;
+        }[];
+      };
+      DefectIntensity_Index: {
+        Distribution: ECustomDataDistribution;
+        MaterialGroup: string;
+        ParameterID: number;
+        VariationCount: number;
+      };
+      Defects: {
+        Distribution: ECustomDataDistribution;
+        MaterialGroup: string;
+        Variations: {
+          MaterialInstanceParameters: {
+            ParameterName: string;
+            TexturePath: string;
+          }[];
+          Weight: number;
+        }[];
+      };
+      Dirt: {
+        Distribution: ECustomDataDistribution;
+        MaterialGroup: string;
+        Variations: {
+          MaterialInstanceParameters: {
+            ParameterName: string;
+            TexturePath: string;
+          }[];
+          Weight: number;
+        }[];
+      };
+      Dirt_Intensity: {
+        Distribution: ECustomDataDistribution;
+        MaterialGroup: string;
+        ParameterID: number;
+        VariationCount: number;
+        Variations: {
+          ParameterValue: number;
+          Weight: number;
+        }[];
+      };
+      FrecklesDensity_Index: {
+        Distribution: ECustomDataDistribution;
+        MaterialGroup: string;
+        ParameterID: number;
+        Variations: {
+          ParameterValue: number;
+          Weight: number;
+        }[];
+      };
+      Normal_Intensity: {
+        Distribution: ECustomDataDistribution;
+        MaterialGroup: string;
+        ParameterID: number;
+        VariationCount: number;
+      };
+      SkinTone_Index: {
+        Distribution: ECustomDataDistribution;
+        MaterialGroup: string;
+        ParameterID: number;
+        VariationCount: number;
+        Variations: {
+          ParameterValue: number;
+          Weight: number;
+        }[];
+      };
+      Teeth: {
+        Distribution: ECustomDataDistribution;
+        MaterialGroup: string;
+        ParameterID: number;
+        Variations: {
+          ParameterValue: number;
+          VariationIndex: number;
+          Weight: number;
+        }[];
+      };
+      TeethColor: {
+        Distribution: ECustomDataDistribution;
+        MaterialGroup: string;
+        ParameterID: number;
+        Variations: {
+          ParameterValue: number;
+          Weight: number;
+        }[];
+      };
+    };
+    MaterialGroup: string;
+    MaterialSlot: number;
+    Variations: {
+      MaterialPath: string;
+      VariationIndex: number;
+      Weight: number;
+    }[];
+  }[];
   MeshPath: string;
   MeshType: EMeshSubType;
   OffsetX: number;
@@ -1513,15 +1408,22 @@ export type AttachMeshPrototype = GetStructType<{
   RotationPitch: number;
   RotationRoll: number;
   RotationYaw: number;
+  SID: string;
   ScaleX: number;
   ScaleY: number;
   ScaleZ: number;
   ShadowMeshPath: string;
-  SID: string;
   SkeletonPath: string;
   SocketName: string;
   SyncOption: string;
   VoiceModulatorSID: string;
+  bHasClothSimulation: boolean;
+  bHasExoskeleton: boolean;
+  bReceiveAttachedDecals: boolean;
+  bReceiveDecals: boolean;
+  bRenderCustomDepthPass: boolean;
+  bShouldUseParentBound: boolean;
+  bUseCustomLODSync: boolean;
 }>;
 
 export type AttachPrototype = GetStructType<{
@@ -1856,54 +1758,33 @@ export type CombatSynchronizationPrototype = GetStructType<{
   CombatEnteringUncheckedTags: string[];
   DifficultySID: string;
   Experienced: {
-    FilterGroups: (
-      | {
-          AllowedTags: string[];
-          CooldownMax: number;
-          CooldownMin: number;
-          MaxScore: number;
-        }
-      | {
-          AllowedTags: string[];
-          MaxScore: number;
-        }
-    )[];
+    FilterGroups: {
+      AllowedTags: string[];
+      CooldownMin: number;
+      MaxScore: number;
+    }[];
     SynchronizationPrimitives: {
       Score: number;
       TokenTag: string;
     }[];
   };
   Master: {
-    FilterGroups: (
-      | {
-          AllowedTags: string[];
-          CooldownMax: number;
-          CooldownMin: number;
-          MaxScore: number;
-        }
-      | {
-          AllowedTags: string[];
-          MaxScore: number;
-        }
-    )[];
+    FilterGroups: {
+      AllowedTags: string[];
+      CooldownMax: number;
+      MaxScore: number;
+    }[];
     SynchronizationPrimitives: {
       Score: number;
       TokenTag: string;
     }[];
   };
   Newbie: {
-    FilterGroups: (
-      | {
-          AllowedTags: string[];
-          CooldownMax: number;
-          CooldownMin: number;
-          MaxScore: number;
-        }
-      | {
-          AllowedTags: string[];
-          MaxScore: number;
-        }
-    )[];
+    FilterGroups: {
+      AllowedTags: string[];
+      CooldownMax: number;
+      MaxScore: number;
+    }[];
     SynchronizationPrimitives: {
       Score: number;
       TokenTag: string;
@@ -1911,18 +1792,11 @@ export type CombatSynchronizationPrototype = GetStructType<{
   };
   SID: string;
   Veteran: {
-    FilterGroups: (
-      | {
-          AllowedTags: string[];
-          CooldownMax: number;
-          CooldownMin: number;
-          MaxScore: number;
-        }
-      | {
-          AllowedTags: string[];
-          MaxScore: number;
-        }
-    )[];
+    FilterGroups: {
+      AllowedTags: string[];
+      CooldownMax: number;
+      MaxScore: number;
+    }[];
     SynchronizationPrimitives: {
       Score: number;
       TokenTag: string;
@@ -2034,4908 +1908,7 @@ export type ContextualActionDialogSettingsPrototype = GetStructType<{
 export type ContextualActionNodePrototype = GetStructType<{
   Effects: string;
   Enter: string;
-  Execute: {
-    AnimationData: {
-      MontagePath: string;
-      MontageSection: string;
-    }[];
-    CanInteractWithPlayer: boolean;
-    ConditionalSelectorNodes: (
-      | {
-          AnimationData: {
-            MontagePath: string;
-            MontageSection: string;
-          }[];
-          CanInteractWithPlayer: boolean;
-          Effects: {
-            ChangeValuePerSelector: number;
-            ContextualActionNeed: EContextualActionNeeds;
-            Type: EContextualActionEffectType;
-          }[];
-          Interrupt: {
-            AnimationData: {
-              MontagePath: string;
-              MontageSection: string;
-            }[];
-            CanInteractWithPlayer: boolean;
-            Effects: string;
-            IsValidForQuestDialog: boolean;
-            NodeType: EContextualActionNodeType;
-            Preconditions: string;
-            ShouldDisableDialogAnimations: boolean;
-            ShouldPlayerCrouchDuringDialog: boolean;
-          };
-          IsValidForQuestDialog: boolean;
-          Need: EContextualActionNeeds;
-          NodeType: EContextualActionNodeType;
-          Preconditions: string;
-          RandomSelectorNodes: (
-            | {
-                AnimationData: {
-                  MontagePath: string;
-                  MontageSection: string;
-                }[];
-                CanInteractWithPlayer: boolean;
-                Effects: string;
-                Interrupt: {
-                  AnimationData: {
-                    MontagePath: string;
-                    MontageSection: string;
-                  }[];
-                  CanInteractWithPlayer: boolean;
-                  Effects: string;
-                  IsValidForQuestDialog: boolean;
-                  NodeType: EContextualActionNodeType;
-                  Preconditions: string;
-                  ShouldDisableDialogAnimations: boolean;
-                  ShouldPlayerCrouchDuringDialog: boolean;
-                };
-                IsValidForQuestDialog: boolean;
-                NodeType: EContextualActionNodeType;
-                Preconditions: string;
-                RandomSelectorNodes: (
-                  | {
-                      AnimationData: {
-                        MontagePath: string;
-                        MontageSection: string;
-                      }[];
-                      CanInteractWithPlayer: boolean;
-                      Effects: string;
-                      IsValidForQuestDialog: boolean;
-                      NodeType: EContextualActionNodeType;
-                      Preconditions: string;
-                      RandomSelectorNodes: {
-                        Effects: string;
-                        Interrupt: {
-                          AnimationData: {
-                            MontagePath: string;
-                            MontageSection: string;
-                          }[];
-                          CanInteractWithPlayer: boolean;
-                          Effects: string;
-                          IsValidForQuestDialog: boolean;
-                          NodeType: EContextualActionNodeType;
-                          Preconditions: string;
-                          ShouldDisableDialogAnimations: boolean;
-                          ShouldPlayerCrouchDuringDialog: boolean;
-                        };
-                        NodeType: EContextualActionNodeType;
-                        Preconditions: string;
-                        SequentialSelectorNodes: (
-                          | {
-                              AnimationData: {
-                                MontagePath: string;
-                                MontageSection: string;
-                              }[];
-                              CanInteractWithPlayer: boolean;
-                              Effects: string;
-                              IsValidForQuestDialog: boolean;
-                              NodeType: EContextualActionNodeType;
-                              Preconditions: string;
-                              ShouldDisableDialogAnimations: boolean;
-                              ShouldPlayerCrouchDuringDialog: boolean;
-                            }
-                          | {
-                              Effects: string;
-                              NodeType: EContextualActionNodeType;
-                              Preconditions: string;
-                              RandomSelectorNodes: {
-                                AnimationData: {
-                                  MontagePath: string;
-                                  MontageSection: string;
-                                }[];
-                                CanInteractWithPlayer: boolean;
-                                Effects: string;
-                                IsValidForQuestDialog: boolean;
-                                NodeType: EContextualActionNodeType;
-                                Preconditions: string;
-                                ShouldDisableDialogAnimations: boolean;
-                                ShouldPlayerCrouchDuringDialog: boolean;
-                              }[];
-                              Repetitions: ERepetitions;
-                              RepetitionsCount: number;
-                              Weights: {
-                                Weight: number;
-                              }[];
-                            }
-                        )[];
-                      }[];
-                      Repetitions: ERepetitions;
-                      RepetitionsCount: number;
-                      ShouldDisableDialogAnimations: boolean;
-                      ShouldPlayerCrouchDuringDialog: boolean;
-                      Weights: {
-                        Weight: number;
-                      }[];
-                    }
-                  | {
-                      AnimationData: {
-                        MontagePath: string;
-                        MontageSection: string;
-                      }[];
-                      CanInteractWithPlayer: boolean;
-                      Effects: string;
-                      IsValidForQuestDialog: boolean;
-                      NodeType: EContextualActionNodeType;
-                      Preconditions: string;
-                      RandomSelectorNodes: {
-                        AnimationData: {
-                          MontagePath: string;
-                          MontageSection: string;
-                        }[];
-                        CanInteractWithPlayer: boolean;
-                        Effects: string;
-                        IsValidForQuestDialog: boolean;
-                        NodeType: EContextualActionNodeType;
-                        Preconditions: string;
-                        ShouldDisableDialogAnimations: boolean;
-                        ShouldPlayerCrouchDuringDialog: boolean;
-                      }[];
-                      Repetitions: ERepetitions;
-                      RepetitionsCount: number;
-                      ShouldDisableDialogAnimations: boolean;
-                      ShouldPlayerCrouchDuringDialog: boolean;
-                      Weights: {
-                        Weight: number;
-                      }[];
-                    }
-                  | {
-                      AnimationData: {
-                        MontagePath: string;
-                        MontageSection: string;
-                      }[];
-                      CanInteractWithPlayer: boolean;
-                      Effects: string;
-                      IsValidForQuestDialog: boolean;
-                      NodeType: EContextualActionNodeType;
-                      Preconditions: string;
-                      ShouldDisableDialogAnimations: boolean;
-                      ShouldPlayerCrouchDuringDialog: boolean;
-                    }
-                  | {
-                      Effects: string;
-                      NodeType: EContextualActionNodeType;
-                      Preconditions: string;
-                      RandomSelectorNodes: {
-                        AnimationData: {
-                          MontagePath: string;
-                          MontageSection: string;
-                        }[];
-                        CanInteractWithPlayer: boolean;
-                        Effects: string;
-                        IsValidForQuestDialog: boolean;
-                        NodeType: EContextualActionNodeType;
-                        Preconditions: string;
-                        ShouldDisableDialogAnimations: boolean;
-                        ShouldPlayerCrouchDuringDialog: boolean;
-                      }[];
-                      Repetitions: ERepetitions;
-                      RepetitionsCount: number;
-                      Weights: {
-                        Weight: number;
-                      }[];
-                    }
-                  | {
-                      Effects: string;
-                      NodeType: EContextualActionNodeType;
-                      Preconditions: {
-                        BodyParts: EContextualActionBodyPart[];
-                        Type: EContextualActionPreconditionType;
-                      }[];
-                      RandomSelectorNodes: {
-                        AnimationData: {
-                          MontagePath: string;
-                          MontageSection: string;
-                        }[];
-                        CanInteractWithPlayer: boolean;
-                        Effects: string;
-                        IsValidForQuestDialog: boolean;
-                        NodeType: EContextualActionNodeType;
-                        Preconditions: string;
-                        ShouldDisableDialogAnimations: boolean;
-                        ShouldPlayerCrouchDuringDialog: boolean;
-                      }[];
-                      Repetitions: ERepetitions;
-                      RepetitionsCount: number;
-                      Weights: {
-                        Weight: number;
-                      }[];
-                    }
-                )[];
-                Repetitions: ERepetitions;
-                RepetitionsCount: number;
-                SequentialSelectorNodes: (
-                  | {
-                      AnimationData: {
-                        MontagePath: string;
-                        MontageSection: string;
-                      }[];
-                      CanInteractWithPlayer: boolean;
-                      Effects: string;
-                      IsValidForQuestDialog: boolean;
-                      NodeType: EContextualActionNodeType;
-                      Preconditions: string;
-                      RandomSelectorNodes: (
-                        | {
-                            AkAudioEvent: string[];
-                            AnimationData: {
-                              MontagePath: string;
-                              MontageSection: string;
-                            }[];
-                            CanInteractWithPlayer: boolean;
-                            Effects: string;
-                            IsValidForQuestDialog: boolean;
-                            NodeType: EContextualActionNodeType;
-                            Preconditions: string;
-                            SequentialSelectorNodes: (
-                              | {
-                                  AnimationData: {
-                                    MontagePath: string;
-                                    MontageSection: string;
-                                  }[];
-                                  CanInteractWithPlayer: boolean;
-                                  Effects: string;
-                                  IsValidForQuestDialog: boolean;
-                                  NodeType: EContextualActionNodeType;
-                                  Preconditions: string;
-                                  RandomSelectorNodes: {
-                                    Effects: string;
-                                    NodeType: EContextualActionNodeType;
-                                    Preconditions: string;
-                                    RandomSelectorNodes: {
-                                      Effects: string;
-                                      NodeType: EContextualActionNodeType;
-                                      Preconditions: string;
-                                      RandomSelectorNodes: {
-                                        AnimationData: {
-                                          MontagePath: string;
-                                          MontageSection: string;
-                                        }[];
-                                        CanInteractWithPlayer: boolean;
-                                        Effects: string;
-                                        IsValidForQuestDialog: boolean;
-                                        NodeType: EContextualActionNodeType;
-                                        Preconditions: string;
-                                        ShouldDisableDialogAnimations: boolean;
-                                        ShouldPlayerCrouchDuringDialog: boolean;
-                                      }[];
-                                      Repetitions: ERepetitions;
-                                      RepetitionsCount: number;
-                                      Weights: {
-                                        Weight: number;
-                                      }[];
-                                    }[];
-                                    Repetitions: ERepetitions;
-                                    RepetitionsCount: number;
-                                    Weights: {
-                                      Weight: number;
-                                    }[];
-                                  }[];
-                                  Repetitions: ERepetitions;
-                                  RepetitionsCount: number;
-                                  ShouldDisableDialogAnimations: boolean;
-                                  ShouldPlayerCrouchDuringDialog: boolean;
-                                  Weights: {
-                                    Weight: number;
-                                  }[];
-                                }
-                              | {
-                                  AnimationData: {
-                                    MontagePath: string;
-                                    MontageSection: string;
-                                  }[];
-                                  CanInteractWithPlayer: boolean;
-                                  Effects: string;
-                                  IsValidForQuestDialog: boolean;
-                                  NodeType: EContextualActionNodeType;
-                                  Preconditions: string;
-                                  ShouldDisableDialogAnimations: boolean;
-                                  ShouldPlayerCrouchDuringDialog: boolean;
-                                }
-                            )[];
-                            ShouldDisableDialogAnimations: boolean;
-                            ShouldPlayerCrouchDuringDialog: boolean;
-                          }
-                        | {
-                            AnimationData: {
-                              MontagePath: string;
-                              MontageSection: string;
-                            }[];
-                            CanInteractWithPlayer: boolean;
-                            Effects: string;
-                            Interrupt: {
-                              AnimationData: {
-                                MontagePath: string;
-                                MontageSection: string;
-                              }[];
-                              CanInteractWithPlayer: boolean;
-                              Effects: string;
-                              IsValidForQuestDialog: boolean;
-                              NodeType: EContextualActionNodeType;
-                              Preconditions: string;
-                              ShouldDisableDialogAnimations: boolean;
-                              ShouldPlayerCrouchDuringDialog: boolean;
-                            };
-                            IsValidForQuestDialog: boolean;
-                            NodeType: EContextualActionNodeType;
-                            Preconditions: string;
-                            RandomSelectorNodes: {
-                              AnimationData: {
-                                MontagePath: string;
-                                MontageSection: string;
-                              }[];
-                              CanInteractWithPlayer: boolean;
-                              Effects: string;
-                              IsValidForQuestDialog: boolean;
-                              NodeType: EContextualActionNodeType;
-                              Preconditions: string;
-                              ShouldDisableDialogAnimations: boolean;
-                              ShouldPlayerCrouchDuringDialog: boolean;
-                            }[];
-                            Repetitions: ERepetitions;
-                            RepetitionsCount: number;
-                            SequentialSelectorNodes: {
-                              AnimationData: {
-                                MontagePath: string;
-                                MontageSection: string;
-                              }[];
-                              CanInteractWithPlayer: boolean;
-                              Effects: string;
-                              IsValidForQuestDialog: boolean;
-                              NodeType: EContextualActionNodeType;
-                              Preconditions: string;
-                              RandomSelectorNodes: {
-                                Effects: string;
-                                NodeType: EContextualActionNodeType;
-                                Preconditions: string;
-                                RandomSelectorNodes: {
-                                  AnimationData: {
-                                    MontagePath: string;
-                                    MontageSection: string;
-                                  }[];
-                                  CanInteractWithPlayer: boolean;
-                                  Effects: string;
-                                  IsValidForQuestDialog: boolean;
-                                  NodeType: EContextualActionNodeType;
-                                  Preconditions: string;
-                                  ShouldDisableDialogAnimations: boolean;
-                                  ShouldPlayerCrouchDuringDialog: boolean;
-                                }[];
-                                Repetitions: ERepetitions;
-                                RepetitionsCount: number;
-                                Weights: {
-                                  Weight: number;
-                                }[];
-                              }[];
-                              Repetitions: ERepetitions;
-                              RepetitionsCount: number;
-                              ShouldDisableDialogAnimations: boolean;
-                              ShouldPlayerCrouchDuringDialog: boolean;
-                              Weights: {
-                                Weight: number;
-                              }[];
-                            }[];
-                            ShouldDisableDialogAnimations: boolean;
-                            ShouldPlayerCrouchDuringDialog: boolean;
-                            Weights: {
-                              Weight: number;
-                            }[];
-                          }
-                        | {
-                            AnimationData: {
-                              MontagePath: string;
-                              MontageSection: string;
-                            }[];
-                            CanInteractWithPlayer: boolean;
-                            Effects: string;
-                            IsValidForQuestDialog: boolean;
-                            NodeType: EContextualActionNodeType;
-                            Preconditions: string;
-                            SequentialSelectorNodes: {
-                              AnimationData: {
-                                MontagePath: string;
-                                MontageSection: string;
-                              }[];
-                              CanInteractWithPlayer: boolean;
-                              Effects: string;
-                              IsValidForQuestDialog: boolean;
-                              NodeType: EContextualActionNodeType;
-                              Preconditions: string;
-                              ShouldDisableDialogAnimations: boolean;
-                              ShouldPlayerCrouchDuringDialog: boolean;
-                            }[];
-                            ShouldDisableDialogAnimations: boolean;
-                            ShouldPlayerCrouchDuringDialog: boolean;
-                          }
-                        | {
-                            AnimationData: {
-                              MontagePath: string;
-                              MontageSection: string;
-                            }[];
-                            CanInteractWithPlayer: boolean;
-                            Effects: string;
-                            IsValidForQuestDialog: boolean;
-                            NodeType: EContextualActionNodeType;
-                            Preconditions: string;
-                            ShouldDisableDialogAnimations: boolean;
-                            ShouldPlayerCrouchDuringDialog: boolean;
-                          }
-                      )[];
-                      Repetitions: ERepetitions;
-                      RepetitionsCount: number;
-                      ShouldDisableDialogAnimations: boolean;
-                      ShouldPlayerCrouchDuringDialog: boolean;
-                      Weights: {
-                        Weight: number;
-                      }[];
-                    }
-                  | {
-                      AnimationData: {
-                        MontagePath: string;
-                        MontageSection: string;
-                      }[];
-                      CanInteractWithPlayer: boolean;
-                      Effects: string;
-                      IsValidForQuestDialog: boolean;
-                      NodeType: EContextualActionNodeType;
-                      Preconditions: string;
-                      RandomSelectorNodes: {
-                        AnimationData: {
-                          MontagePath: string;
-                          MontageSection: string;
-                        }[];
-                        CanInteractWithPlayer: boolean;
-                        Effects: string;
-                        IsValidForQuestDialog: boolean;
-                        NodeType: EContextualActionNodeType;
-                        Preconditions: string;
-                        ShouldDisableDialogAnimations: boolean;
-                        ShouldPlayerCrouchDuringDialog: boolean;
-                      }[];
-                      Repetitions: ERepetitions;
-                      RepetitionsCount: number;
-                      ShouldDisableDialogAnimations: boolean;
-                      ShouldPlayerCrouchDuringDialog: boolean;
-                      Weights: {
-                        Weight: number;
-                      }[];
-                    }
-                  | {
-                      AnimationData: {
-                        MontagePath: string;
-                        MontageSection: string;
-                      }[];
-                      CanInteractWithPlayer: boolean;
-                      Effects: string;
-                      IsValidForQuestDialog: boolean;
-                      NodeType: EContextualActionNodeType;
-                      Preconditions: string;
-                      RandomSelectorNodes: {
-                        AnimationData: {
-                          MontagePath: string;
-                          MontageSection: string;
-                        }[];
-                        Effects: string;
-                        IsValidForQuestDialog: boolean;
-                        NodeType: EContextualActionNodeType;
-                        Preconditions: string;
-                        ShouldDisableDialogAnimations: boolean;
-                      }[];
-                      Repetitions: ERepetitions;
-                      RepetitionsCount: number;
-                      ShouldDisableDialogAnimations: boolean;
-                      ShouldPlayerCrouchDuringDialog: boolean;
-                      Weights: {
-                        Weight: number;
-                      }[];
-                    }
-                  | {
-                      AnimationData: {
-                        MontagePath: string;
-                        MontageSection: string;
-                      }[];
-                      CanInteractWithPlayer: boolean;
-                      Effects: string;
-                      IsValidForQuestDialog: boolean;
-                      NodeType: EContextualActionNodeType;
-                      Preconditions: string;
-                      ShouldDisableDialogAnimations: boolean;
-                      ShouldPlayerCrouchDuringDialog: boolean;
-                    }
-                )[];
-                ShouldDisableDialogAnimations: boolean;
-                ShouldPlayerCrouchDuringDialog: boolean;
-                Weights: {
-                  Weight: number;
-                }[];
-              }
-            | {
-                AnimationData: {
-                  MontagePath: string;
-                  MontageSection: string;
-                }[];
-                CanInteractWithPlayer: boolean;
-                Effects: string;
-                Interrupt: {
-                  AnimationData: {
-                    MontagePath: string;
-                    MontageSection: string;
-                  }[];
-                  CanInteractWithPlayer: boolean;
-                  Effects: string;
-                  IsValidForQuestDialog: boolean;
-                  NodeType: EContextualActionNodeType;
-                  Preconditions: string;
-                  ShouldDisableDialogAnimations: boolean;
-                  ShouldPlayerCrouchDuringDialog: boolean;
-                };
-                IsValidForQuestDialog: boolean;
-                NodeType: EContextualActionNodeType;
-                Preconditions: string;
-                RandomSelectorNodes: (
-                  | {
-                      AnimationData: {
-                        MontagePath: string;
-                        MontageSection: string;
-                      }[];
-                      CanInteractWithPlayer: boolean;
-                      Effects: string;
-                      IsValidForQuestDialog: boolean;
-                      NodeType: EContextualActionNodeType;
-                      Preconditions: string;
-                      SequentialSelectorNodes: (
-                        | {
-                            AnimationData: {
-                              MontagePath: string;
-                              MontageSection: string;
-                            }[];
-                            CanInteractWithPlayer: boolean;
-                            Effects: string;
-                            IsValidForQuestDialog: boolean;
-                            NodeType: EContextualActionNodeType;
-                            Preconditions: string;
-                            ShouldDisableDialogAnimations: boolean;
-                            ShouldPlayerCrouchDuringDialog: boolean;
-                          }
-                        | {
-                            Effects: string;
-                            NodeType: EContextualActionNodeType;
-                            Preconditions: string;
-                            RandomSelectorNodes: {
-                              AnimationData: {
-                                MontagePath: string;
-                                MontageSection: string;
-                              }[];
-                              CanInteractWithPlayer: boolean;
-                              Effects: string;
-                              IsValidForQuestDialog: boolean;
-                              NodeType: EContextualActionNodeType;
-                              Preconditions: string;
-                              ShouldDisableDialogAnimations: boolean;
-                              ShouldPlayerCrouchDuringDialog: boolean;
-                            }[];
-                            Repetitions: ERepetitions;
-                            RepetitionsCount: number;
-                            Weights: {
-                              Weight: number;
-                            }[];
-                          }
-                      )[];
-                      ShouldDisableDialogAnimations: boolean;
-                      ShouldPlayerCrouchDuringDialog: boolean;
-                    }
-                  | {
-                      AnimationData: {
-                        MontagePath: string;
-                        MontageSection: string;
-                      }[];
-                      CanInteractWithPlayer: boolean;
-                      Effects: string;
-                      IsValidForQuestDialog: boolean;
-                      NodeType: EContextualActionNodeType;
-                      Preconditions: string;
-                      ShouldDisableDialogAnimations: boolean;
-                      ShouldPlayerCrouchDuringDialog: boolean;
-                    }
-                )[];
-                Repetitions: ERepetitions;
-                RepetitionsCount: number;
-                SequentialSelectorNodes: (
-                  | {
-                      AnimationData: {
-                        MontagePath: string;
-                        MontageSection: string;
-                      }[];
-                      CanInteractWithPlayer: boolean;
-                      Effects: string;
-                      IsValidForQuestDialog: boolean;
-                      NodeType: EContextualActionNodeType;
-                      Preconditions: string;
-                      RandomSelectorNodes: (
-                        | {
-                            AnimationData: {
-                              MontagePath: string;
-                              MontageSection: string;
-                            }[];
-                            CanInteractWithPlayer: boolean;
-                            Effects: string;
-                            IsValidForQuestDialog: boolean;
-                            NodeType: EContextualActionNodeType;
-                            Preconditions: string;
-                            SequentialSelectorNodes: {
-                              Effects: string;
-                              NodeType: EContextualActionNodeType;
-                              Preconditions: string;
-                              RandomSelectorNodes: {
-                                Effects: string;
-                                NodeType: EContextualActionNodeType;
-                                Preconditions: string;
-                                RandomSelectorNodes: {
-                                  AnimationData: {
-                                    MontagePath: string;
-                                    MontageSection: string;
-                                  }[];
-                                  CanInteractWithPlayer: boolean;
-                                  Effects: string;
-                                  IsValidForQuestDialog: boolean;
-                                  NodeType: EContextualActionNodeType;
-                                  Preconditions: string;
-                                  ShouldDisableDialogAnimations: boolean;
-                                  ShouldPlayerCrouchDuringDialog: boolean;
-                                }[];
-                                Repetitions: ERepetitions;
-                                RepetitionsCount: number;
-                                Weights: {
-                                  Weight: number;
-                                }[];
-                              }[];
-                              Repetitions: ERepetitions;
-                              RepetitionsCount: number;
-                              Weights: {
-                                Weight: number;
-                              }[];
-                            }[];
-                            ShouldDisableDialogAnimations: boolean;
-                            ShouldPlayerCrouchDuringDialog: boolean;
-                          }
-                        | {
-                            AnimationData: {
-                              MontagePath: string;
-                              MontageSection: string;
-                            }[];
-                            CanInteractWithPlayer: boolean;
-                            Effects: string;
-                            IsValidForQuestDialog: boolean;
-                            NodeType: EContextualActionNodeType;
-                            Preconditions: string;
-                            ShouldDisableDialogAnimations: boolean;
-                            ShouldPlayerCrouchDuringDialog: boolean;
-                          }
-                      )[];
-                      Repetitions: ERepetitions;
-                      RepetitionsCount: number;
-                      ShouldDisableDialogAnimations: boolean;
-                      ShouldPlayerCrouchDuringDialog: boolean;
-                      Weights: {
-                        Weight: number;
-                      }[];
-                    }
-                  | {
-                      AnimationData: {
-                        MontagePath: string;
-                        MontageSection: string;
-                      }[];
-                      CanInteractWithPlayer: boolean;
-                      Effects: string;
-                      IsValidForQuestDialog: boolean;
-                      NodeType: EContextualActionNodeType;
-                      Preconditions: string;
-                      ShouldDisableDialogAnimations: boolean;
-                      ShouldPlayerCrouchDuringDialog: boolean;
-                    }
-                )[];
-                ShouldDisableDialogAnimations: boolean;
-                ShouldPlayerCrouchDuringDialog: boolean;
-                Weights: {
-                  Weight: number;
-                }[];
-              }
-            | {
-                AnimationData: {
-                  MontagePath: string;
-                  MontageSection: string;
-                }[];
-                CanInteractWithPlayer: boolean;
-                Effects: string;
-                Interrupt: {
-                  AnimationData: {
-                    MontagePath: string;
-                    MontageSection: string;
-                  }[];
-                  CanInteractWithPlayer: boolean;
-                  Effects: string;
-                  IsValidForQuestDialog: boolean;
-                  NodeType: EContextualActionNodeType;
-                  Preconditions: string;
-                  ShouldDisableDialogAnimations: boolean;
-                  ShouldPlayerCrouchDuringDialog: boolean;
-                };
-                IsValidForQuestDialog: boolean;
-                NodeType: EContextualActionNodeType;
-                Preconditions: {
-                  GlobalVariableName: string;
-                  ShouldBeTrue: boolean;
-                  Type: EContextualActionPreconditionType;
-                }[];
-                RandomSelectorNodes: (
-                  | {
-                      AnimationData: {
-                        MontagePath: string;
-                        MontageSection: string;
-                      }[];
-                      CanInteractWithPlayer: boolean;
-                      Effects: string;
-                      Interrupt: {
-                        AnimationData: {
-                          MontagePath: string;
-                          MontageSection: string;
-                        }[];
-                        CanInteractWithPlayer: boolean;
-                        Effects: string;
-                        IsValidForQuestDialog: boolean;
-                        NodeType: EContextualActionNodeType;
-                        Preconditions: string;
-                        ShouldDisableDialogAnimations: boolean;
-                        ShouldPlayerCrouchDuringDialog: boolean;
-                      };
-                      IsValidForQuestDialog: boolean;
-                      NodeType: EContextualActionNodeType;
-                      Preconditions: string;
-                      SequentialSelectorNodes: (
-                        | {
-                            AnimationData: {
-                              MontagePath: string;
-                              MontageSection: string;
-                            }[];
-                            CanInteractWithPlayer: boolean;
-                            Effects: string;
-                            IsValidForQuestDialog: boolean;
-                            NodeType: EContextualActionNodeType;
-                            Preconditions: string;
-                            RandomSelectorNodes: {
-                              AnimationData: {
-                                MontagePath: string;
-                                MontageSection: string;
-                              }[];
-                              CanInteractWithPlayer: boolean;
-                              Effects: string;
-                              IsValidForQuestDialog: boolean;
-                              NodeType: EContextualActionNodeType;
-                              Preconditions: string;
-                              ShouldDisableDialogAnimations: boolean;
-                              ShouldPlayerCrouchDuringDialog: boolean;
-                            }[];
-                            Repetitions: ERepetitions;
-                            RepetitionsCount: number;
-                            ShouldDisableDialogAnimations: boolean;
-                            ShouldPlayerCrouchDuringDialog: boolean;
-                            Weights: {
-                              Weight: number;
-                            }[];
-                          }
-                        | {
-                            AnimationData: {
-                              MontagePath: string;
-                              MontageSection: string;
-                            }[];
-                            CanInteractWithPlayer: boolean;
-                            Effects: string;
-                            IsValidForQuestDialog: boolean;
-                            NodeType: EContextualActionNodeType;
-                            Preconditions: string;
-                            ShouldDisableDialogAnimations: boolean;
-                            ShouldPlayerCrouchDuringDialog: boolean;
-                          }
-                        | {
-                            Effects: string;
-                            NodeType: EContextualActionNodeType;
-                            Preconditions: string;
-                            RandomSelectorNodes: {
-                              AnimationData: {
-                                MontagePath: string;
-                                MontageSection: string;
-                              }[];
-                              CanInteractWithPlayer: boolean;
-                              Effects: string;
-                              IsValidForQuestDialog: boolean;
-                              NodeType: EContextualActionNodeType;
-                              Preconditions: string;
-                              ShouldDisableDialogAnimations: boolean;
-                              ShouldPlayerCrouchDuringDialog: boolean;
-                            }[];
-                            Repetitions: ERepetitions;
-                            RepetitionsCount: number;
-                            Weights: {
-                              Weight: number;
-                            }[];
-                          }
-                      )[];
-                      ShouldDisableDialogAnimations: boolean;
-                      ShouldPlayerCrouchDuringDialog: boolean;
-                    }
-                  | {
-                      AnimationData: {
-                        MontagePath: string;
-                        MontageSection: string;
-                      }[];
-                      CanInteractWithPlayer: boolean;
-                      Effects: string;
-                      IsValidForQuestDialog: boolean;
-                      NodeType: EContextualActionNodeType;
-                      Preconditions: string;
-                      SequentialSelectorNodes: (
-                        | {
-                            AnimationData: {
-                              MontagePath: string;
-                              MontageSection: string;
-                            }[];
-                            CanInteractWithPlayer: boolean;
-                            Effects: string;
-                            IsValidForQuestDialog: boolean;
-                            NodeType: EContextualActionNodeType;
-                            Preconditions: string;
-                            ShouldDisableDialogAnimations: boolean;
-                            ShouldPlayerCrouchDuringDialog: boolean;
-                          }
-                        | {
-                            Effects: string;
-                            NodeType: EContextualActionNodeType;
-                            Preconditions: string;
-                            RandomSelectorNodes: {
-                              AnimationData: {
-                                MontagePath: string;
-                                MontageSection: string;
-                              }[];
-                              CanInteractWithPlayer: boolean;
-                              Effects: string;
-                              IsValidForQuestDialog: boolean;
-                              NodeType: EContextualActionNodeType;
-                              Preconditions: string;
-                              ShouldDisableDialogAnimations: boolean;
-                              ShouldPlayerCrouchDuringDialog: boolean;
-                            }[];
-                            Repetitions: ERepetitions;
-                            RepetitionsCount: number;
-                            Weights: {
-                              Weight: number;
-                            }[];
-                          }
-                      )[];
-                      ShouldDisableDialogAnimations: boolean;
-                      ShouldPlayerCrouchDuringDialog: boolean;
-                    }
-                  | {
-                      AnimationData: {
-                        MontagePath: string;
-                        MontageSection: string;
-                      }[];
-                      CanInteractWithPlayer: boolean;
-                      Effects: string;
-                      IsValidForQuestDialog: boolean;
-                      NodeType: EContextualActionNodeType;
-                      Preconditions: string;
-                      ShouldDisableDialogAnimations: boolean;
-                      ShouldPlayerCrouchDuringDialog: boolean;
-                    }
-                )[];
-                Repetitions: ERepetitions;
-                RepetitionsCount: number;
-                SequentialSelectorNodes: (
-                  | {
-                      AnimationData: {
-                        MontagePath: string;
-                        MontageSection: string;
-                      }[];
-                      CanInteractWithPlayer: boolean;
-                      Effects: string;
-                      IsValidForQuestDialog: boolean;
-                      NodeType: EContextualActionNodeType;
-                      Preconditions: string;
-                      RandomSelectorNodes: (
-                        | {
-                            AnimationData: {
-                              MontagePath: string;
-                              MontageSection: string;
-                            }[];
-                            CanInteractWithPlayer: boolean;
-                            Effects: string;
-                            Interrupt: {
-                              AnimationData: {
-                                MontagePath: string;
-                                MontageSection: string;
-                              }[];
-                              CanInteractWithPlayer: boolean;
-                              Effects: string;
-                              IsValidForQuestDialog: boolean;
-                              NodeType: EContextualActionNodeType;
-                              Preconditions: string;
-                              ShouldDisableDialogAnimations: boolean;
-                              ShouldPlayerCrouchDuringDialog: boolean;
-                            };
-                            IsValidForQuestDialog: boolean;
-                            NodeType: EContextualActionNodeType;
-                            Preconditions: string;
-                            ShouldDisableDialogAnimations: boolean;
-                            ShouldPlayerCrouchDuringDialog: boolean;
-                          }
-                        | {
-                            AnimationData: {
-                              MontagePath: string;
-                              MontageSection: string;
-                            }[];
-                            CanInteractWithPlayer: boolean;
-                            Effects: string;
-                            IsValidForQuestDialog: boolean;
-                            NodeType: EContextualActionNodeType;
-                            Preconditions: string;
-                            ShouldDisableDialogAnimations: boolean;
-                            ShouldPlayerCrouchDuringDialog: boolean;
-                          }
-                      )[];
-                      Repetitions: ERepetitions;
-                      RepetitionsCount: number;
-                      SequentialSelectorNodes: {
-                        AnimationData: {
-                          MontagePath: string;
-                          MontageSection: string;
-                        }[];
-                        CanInteractWithPlayer: boolean;
-                        Effects: string;
-                        IsValidForQuestDialog: boolean;
-                        NodeType: EContextualActionNodeType;
-                        Preconditions: string;
-                        ShouldDisableDialogAnimations: boolean;
-                        ShouldPlayerCrouchDuringDialog: boolean;
-                      }[];
-                      ShouldDisableDialogAnimations: boolean;
-                      ShouldPlayerCrouchDuringDialog: boolean;
-                      Weights: {
-                        Weight: number;
-                      }[];
-                    }
-                  | {
-                      AnimationData: {
-                        MontagePath: string;
-                        MontageSection: string;
-                      }[];
-                      CanInteractWithPlayer: boolean;
-                      Effects: string;
-                      IsValidForQuestDialog: boolean;
-                      NodeType: EContextualActionNodeType;
-                      Preconditions: string;
-                      ShouldDisableDialogAnimations: boolean;
-                      ShouldPlayerCrouchDuringDialog: boolean;
-                    }
-                  | {
-                      Effects: string;
-                      NodeType: EContextualActionNodeType;
-                      Preconditions: string;
-                      RandomSelectorNodes: {
-                        AnimationData: {
-                          MontagePath: string;
-                          MontageSection: string;
-                        }[];
-                        CanInteractWithPlayer: boolean;
-                        Effects: string;
-                        IsValidForQuestDialog: boolean;
-                        NodeType: EContextualActionNodeType;
-                        Preconditions: string;
-                        ShouldDisableDialogAnimations: boolean;
-                        ShouldPlayerCrouchDuringDialog: boolean;
-                      }[];
-                      Repetitions: ERepetitions;
-                      RepetitionsCount: number;
-                      Weights: {
-                        Weight: number;
-                      }[];
-                    }
-                )[];
-                ShouldDisableDialogAnimations: boolean;
-                ShouldPlayerCrouchDuringDialog: boolean;
-                Weights: {
-                  Weight: number;
-                }[];
-              }
-            | {
-                AnimationData: {
-                  MontagePath: string;
-                  MontageSection: string;
-                }[];
-                CanInteractWithPlayer: boolean;
-                Effects: string;
-                IsValidForQuestDialog: boolean;
-                NodeType: EContextualActionNodeType;
-                Preconditions: string;
-                RandomSelectorNodes: (
-                  | {
-                      AnimationData: {
-                        MontagePath: string;
-                        MontageSection: string;
-                      }[];
-                      CanInteractWithPlayer: boolean;
-                      Effects: string;
-                      IsValidForQuestDialog: boolean;
-                      NodeType: EContextualActionNodeType;
-                      Preconditions: string;
-                      SequentialSelectorNodes: (
-                        | {
-                            AnimationData: {
-                              MontagePath: string;
-                              MontageSection: string;
-                            }[];
-                            CanInteractWithPlayer: boolean;
-                            Effects: string;
-                            IsValidForQuestDialog: boolean;
-                            NodeType: EContextualActionNodeType;
-                            Preconditions: string;
-                            RandomSelectorNodes: {
-                              AnimationData: {
-                                MontagePath: string;
-                                MontageSection: string;
-                              }[];
-                              CanInteractWithPlayer: boolean;
-                              Effects: string;
-                              IsValidForQuestDialog: boolean;
-                              NodeType: EContextualActionNodeType;
-                              Preconditions: string;
-                              ShouldDisableDialogAnimations: boolean;
-                              ShouldPlayerCrouchDuringDialog: boolean;
-                            }[];
-                            Repetitions: ERepetitions;
-                            RepetitionsCount: number;
-                            ShouldDisableDialogAnimations: boolean;
-                            ShouldPlayerCrouchDuringDialog: boolean;
-                            Weights: {
-                              Weight: number;
-                            }[];
-                          }
-                        | {
-                            AnimationData: {
-                              MontagePath: string;
-                              MontageSection: string;
-                            }[];
-                            CanInteractWithPlayer: boolean;
-                            Effects: string;
-                            IsValidForQuestDialog: boolean;
-                            NodeType: EContextualActionNodeType;
-                            Preconditions: string;
-                            ShouldDisableDialogAnimations: boolean;
-                            ShouldPlayerCrouchDuringDialog: boolean;
-                          }
-                      )[];
-                      ShouldDisableDialogAnimations: boolean;
-                      ShouldPlayerCrouchDuringDialog: boolean;
-                    }
-                  | {
-                      Effects: string;
-                      NodeType: EContextualActionNodeType;
-                      Preconditions: string;
-                      SequentialSelectorNodes: (
-                        | {
-                            AnimationData: {
-                              MontagePath: string;
-                              MontageSection: string;
-                            }[];
-                            CanInteractWithPlayer: boolean;
-                            Effects: string;
-                            IsValidForQuestDialog: boolean;
-                            NodeType: EContextualActionNodeType;
-                            Preconditions: string;
-                            ShouldDisableDialogAnimations: boolean;
-                            ShouldPlayerCrouchDuringDialog: boolean;
-                          }
-                        | {
-                            Effects: string;
-                            NodeType: EContextualActionNodeType;
-                            Preconditions: string;
-                            RandomSelectorNodes: {
-                              AnimationData: {
-                                MontagePath: string;
-                                MontageSection: string;
-                              }[];
-                              CanInteractWithPlayer: boolean;
-                              Effects: string;
-                              IsValidForQuestDialog: boolean;
-                              NodeType: EContextualActionNodeType;
-                              Preconditions: string;
-                              ShouldDisableDialogAnimations: boolean;
-                              ShouldPlayerCrouchDuringDialog: boolean;
-                            }[];
-                            Repetitions: ERepetitions;
-                            RepetitionsCount: number;
-                            Weights: {
-                              Weight: number;
-                            }[];
-                          }
-                      )[];
-                    }
-                )[];
-                Repetitions: ERepetitions;
-                RepetitionsCount: number;
-                SequentialSelectorNodes: (
-                  | {
-                      AnimationData: {
-                        MontagePath: string;
-                        MontageSection: string;
-                      }[];
-                      CanInteractWithPlayer: boolean;
-                      Effects: string;
-                      IsValidForQuestDialog: boolean;
-                      NodeType: EContextualActionNodeType;
-                      Preconditions: string;
-                      RandomSelectorNodes: {
-                        AnimationData: {
-                          MontagePath: string;
-                          MontageSection: string;
-                        }[];
-                        CanInteractWithPlayer: boolean;
-                        Effects: string;
-                        IsValidForQuestDialog: boolean;
-                        NodeType: EContextualActionNodeType;
-                        Preconditions: string;
-                        ShouldDisableDialogAnimations: boolean;
-                        ShouldPlayerCrouchDuringDialog: boolean;
-                      }[];
-                      Repetitions: ERepetitions;
-                      RepetitionsCount: number;
-                      ShouldDisableDialogAnimations: boolean;
-                      ShouldPlayerCrouchDuringDialog: boolean;
-                      Weights: {
-                        Weight: number;
-                      }[];
-                    }
-                  | {
-                      AnimationData: {
-                        MontagePath: string;
-                        MontageSection: string;
-                      }[];
-                      CanInteractWithPlayer: boolean;
-                      Effects: string;
-                      IsValidForQuestDialog: boolean;
-                      NodeType: EContextualActionNodeType;
-                      Preconditions: string;
-                      ShouldDisableDialogAnimations: boolean;
-                      ShouldPlayerCrouchDuringDialog: boolean;
-                    }
-                )[];
-                ShouldDisableDialogAnimations: boolean;
-                ShouldPlayerCrouchDuringDialog: boolean;
-                Weights: {
-                  Weight: number;
-                }[];
-              }
-            | {
-                AnimationData: {
-                  MontagePath: string;
-                  MontageSection: string;
-                }[];
-                CanInteractWithPlayer: boolean;
-                Effects: string;
-                IsValidForQuestDialog: boolean;
-                NodeType: EContextualActionNodeType;
-                Preconditions: string;
-                RandomSelectorNodes: {
-                  AnimationData: {
-                    MontagePath: string;
-                    MontageSection: string;
-                  }[];
-                  CanInteractWithPlayer: boolean;
-                  Effects: string;
-                  IsValidForQuestDialog: boolean;
-                  NodeType: EContextualActionNodeType;
-                  Preconditions: string;
-                  ShouldDisableDialogAnimations: boolean;
-                  ShouldPlayerCrouchDuringDialog: boolean;
-                }[];
-                Repetitions: ERepetitions;
-                RepetitionsCount: number;
-                SequentialSelectorNodes: (
-                  | {
-                      AnimationData: {
-                        MontagePath: string;
-                        MontageSection: string;
-                      }[];
-                      CanInteractWithPlayer: boolean;
-                      Effects: string;
-                      IsValidForQuestDialog: boolean;
-                      NodeType: EContextualActionNodeType;
-                      Preconditions: string;
-                      ShouldDisableDialogAnimations: boolean;
-                      ShouldPlayerCrouchDuringDialog: boolean;
-                    }
-                  | {
-                      Effects: string;
-                      NodeType: EContextualActionNodeType;
-                      Preconditions: string;
-                      RandomSelectorNodes: {
-                        AnimationData: {
-                          MontagePath: string;
-                          MontageSection: string;
-                        }[];
-                        CanInteractWithPlayer: boolean;
-                        Effects: string;
-                        IsValidForQuestDialog: boolean;
-                        NodeType: EContextualActionNodeType;
-                        Preconditions: string;
-                        ShouldDisableDialogAnimations: boolean;
-                        ShouldPlayerCrouchDuringDialog: boolean;
-                      }[];
-                      Repetitions: ERepetitions;
-                      RepetitionsCount: number;
-                      Weights: {
-                        Weight: number;
-                      }[];
-                    }
-                )[];
-                ShouldDisableDialogAnimations: boolean;
-                ShouldPlayerCrouchDuringDialog: boolean;
-                Weights: {
-                  Weight: number;
-                }[];
-              }
-            | {
-                AnimationData: {
-                  MontagePath: string;
-                  MontageSection: string;
-                }[];
-                CanInteractWithPlayer: boolean;
-                Effects: string;
-                IsValidForQuestDialog: boolean;
-                NodeType: EContextualActionNodeType;
-                Preconditions: string;
-                RandomSelectorNodes: {
-                  AnimationData: {
-                    MontagePath: string;
-                    MontageSection: string;
-                  }[];
-                  CanInteractWithPlayer: boolean;
-                  Effects: string;
-                  IsValidForQuestDialog: boolean;
-                  NodeType: EContextualActionNodeType;
-                  Preconditions: string;
-                  ShouldDisableDialogAnimations: boolean;
-                  ShouldPlayerCrouchDuringDialog: boolean;
-                }[];
-                Repetitions: ERepetitions;
-                RepetitionsCount: number;
-                ShouldDisableDialogAnimations: boolean;
-                ShouldPlayerCrouchDuringDialog: boolean;
-                Weights: {
-                  Weight: number;
-                }[];
-              }
-            | {
-                AnimationData: {
-                  MontagePath: string;
-                  MontageSection: string;
-                }[];
-                CanInteractWithPlayer: boolean;
-                Effects: string;
-                IsValidForQuestDialog: boolean;
-                NodeType: EContextualActionNodeType;
-                Preconditions: string;
-                ShouldDisableDialogAnimations: boolean;
-                ShouldPlayerCrouchDuringDialog: boolean;
-              }
-            | {
-                AnimationData: {
-                  MontagePath: string;
-                  MontageSection: string;
-                }[];
-                CanInteractWithPlayer: boolean;
-                Effects: string;
-                IsValidForQuestDialog: boolean;
-                NodeType: EContextualActionNodeType;
-                Preconditions: {
-                  BodyParts: EContextualActionBodyPart[];
-                  Type: EContextualActionPreconditionType;
-                }[];
-                RandomSelectorNodes: {
-                  AnimationData: {
-                    MontagePath: string;
-                    MontageSection: string;
-                  }[];
-                  CanInteractWithPlayer: boolean;
-                  Effects: string;
-                  IsValidForQuestDialog: boolean;
-                  NodeType: EContextualActionNodeType;
-                  Preconditions: string;
-                  ShouldDisableDialogAnimations: boolean;
-                  ShouldPlayerCrouchDuringDialog: boolean;
-                }[];
-                Repetitions: ERepetitions;
-                RepetitionsCount: number;
-                ShouldDisableDialogAnimations: boolean;
-                ShouldPlayerCrouchDuringDialog: boolean;
-                Weights: {
-                  Weight: number;
-                }[];
-              }
-          )[];
-          Repetitions: ERepetitions;
-          RepetitionsCount: number;
-          SequentialSelectorNodes: (
-            | {
-                AnimationData: {
-                  MontagePath: string;
-                  MontageSection: string;
-                }[];
-                CanInteractWithPlayer: boolean;
-                Effects: string;
-                IsValidForQuestDialog: boolean;
-                NodeType: EContextualActionNodeType;
-                Preconditions: string;
-                RandomSelectorNodes: {
-                  AnimationData: {
-                    MontagePath: string;
-                    MontageSection: string;
-                  }[];
-                  CanInteractWithPlayer: boolean;
-                  Effects: string;
-                  IsValidForQuestDialog: boolean;
-                  NodeType: EContextualActionNodeType;
-                  Preconditions: string;
-                  ShouldDisableDialogAnimations: boolean;
-                  ShouldPlayerCrouchDuringDialog: boolean;
-                }[];
-                Repetitions: ERepetitions;
-                RepetitionsCount: number;
-                ShouldDisableDialogAnimations: boolean;
-                ShouldPlayerCrouchDuringDialog: boolean;
-                Weights: {
-                  Weight: number;
-                }[];
-              }
-            | {
-                AnimationData: {
-                  MontagePath: string;
-                  MontageSection: string;
-                }[];
-                CanInteractWithPlayer: boolean;
-                Effects: string;
-                IsValidForQuestDialog: boolean;
-                NodeType: EContextualActionNodeType;
-                Preconditions: string;
-                RandomSelectorNodes: {
-                  Effects: string;
-                  NodeType: EContextualActionNodeType;
-                  Preconditions: string;
-                  SequentialSelectorNodes: {
-                    AnimationData: {
-                      MontagePath: string;
-                      MontageSection: string;
-                    }[];
-                    Effects: string;
-                    IsValidForQuestDialog: boolean;
-                    NodeType: EContextualActionNodeType;
-                    Preconditions: string;
-                    ShouldDisableDialogAnimations: boolean;
-                  }[];
-                }[];
-                Repetitions: ERepetitions;
-                RepetitionsCount: number;
-                ShouldDisableDialogAnimations: boolean;
-                ShouldPlayerCrouchDuringDialog: boolean;
-                Weights: {
-                  Weight: number;
-                }[];
-              }
-            | {
-                AnimationData: {
-                  MontagePath: string;
-                  MontageSection: string;
-                }[];
-                Effects: string;
-                IsValidForQuestDialog: boolean;
-                NodeType: EContextualActionNodeType;
-                Preconditions: string;
-                RandomSelectorNodes: (
-                  | {
-                      AnimationData: {
-                        MontagePath: string;
-                        MontageSection: string;
-                      }[];
-                      CanInteractWithPlayer: boolean;
-                      Effects: string;
-                      Interrupt: {
-                        AnimationData: {
-                          MontagePath: string;
-                          MontageSection: string;
-                        }[];
-                        CanInteractWithPlayer: boolean;
-                        Effects: string;
-                        IsValidForQuestDialog: boolean;
-                        NodeType: EContextualActionNodeType;
-                        Preconditions: string;
-                        ShouldDisableDialogAnimations: boolean;
-                        ShouldPlayerCrouchDuringDialog: boolean;
-                      };
-                      IsValidForQuestDialog: boolean;
-                      NodeType: EContextualActionNodeType;
-                      Preconditions: string;
-                      RandomSelectorNodes: (
-                        | {
-                            AnimationData: {
-                              MontagePath: string;
-                              MontageSection: string;
-                            }[];
-                            CanInteractWithPlayer: boolean;
-                            Effects: string;
-                            IsValidForQuestDialog: boolean;
-                            NodeType: EContextualActionNodeType;
-                            Preconditions: string;
-                            RandomSelectorNodes: {
-                              AnimationData: {
-                                MontagePath: string;
-                                MontageSection: string;
-                              }[];
-                              CanInteractWithPlayer: boolean;
-                              Effects: string;
-                              IsValidForQuestDialog: boolean;
-                              NodeType: EContextualActionNodeType;
-                              Preconditions: string;
-                              ShouldDisableDialogAnimations: boolean;
-                              ShouldPlayerCrouchDuringDialog: boolean;
-                            }[];
-                            Repetitions: ERepetitions;
-                            RepetitionsCount: number;
-                            ShouldDisableDialogAnimations: boolean;
-                            ShouldPlayerCrouchDuringDialog: boolean;
-                            Weights: {
-                              Weight: number;
-                            }[];
-                          }
-                        | {
-                            AnimationData: {
-                              MontagePath: string;
-                              MontageSection: string;
-                            }[];
-                            CanInteractWithPlayer: boolean;
-                            Effects: string;
-                            IsValidForQuestDialog: boolean;
-                            NodeType: EContextualActionNodeType;
-                            Preconditions: string;
-                            ShouldDisableDialogAnimations: boolean;
-                            ShouldPlayerCrouchDuringDialog: boolean;
-                          }
-                      )[];
-                      Repetitions: ERepetitions;
-                      RepetitionsCount: number;
-                      SequentialSelectorNodes: (
-                        | {
-                            AnimationData: {
-                              MontagePath: string;
-                              MontageSection: string;
-                            }[];
-                            CanInteractWithPlayer: boolean;
-                            Effects: string;
-                            IsValidForQuestDialog: boolean;
-                            NodeType: EContextualActionNodeType;
-                            Preconditions: string;
-                            RandomSelectorNodes: {
-                              Effects: string;
-                              NodeType: EContextualActionNodeType;
-                              Preconditions: string;
-                              RandomSelectorNodes: {
-                                AnimationData: {
-                                  MontagePath: string;
-                                  MontageSection: string;
-                                }[];
-                                CanInteractWithPlayer: boolean;
-                                Effects: string;
-                                IsValidForQuestDialog: boolean;
-                                NodeType: EContextualActionNodeType;
-                                Preconditions: string;
-                                ShouldDisableDialogAnimations: boolean;
-                                ShouldPlayerCrouchDuringDialog: boolean;
-                              }[];
-                              Repetitions: ERepetitions;
-                              RepetitionsCount: number;
-                              Weights: {
-                                Weight: number;
-                              }[];
-                            }[];
-                            Repetitions: ERepetitions;
-                            RepetitionsCount: number;
-                            ShouldDisableDialogAnimations: boolean;
-                            ShouldPlayerCrouchDuringDialog: boolean;
-                            Weights: {
-                              Weight: number;
-                            }[];
-                          }
-                        | {
-                            AnimationData: {
-                              MontagePath: string;
-                              MontageSection: string;
-                            }[];
-                            CanInteractWithPlayer: boolean;
-                            Effects: string;
-                            IsValidForQuestDialog: boolean;
-                            NodeType: EContextualActionNodeType;
-                            Preconditions: string;
-                            ShouldDisableDialogAnimations: boolean;
-                            ShouldPlayerCrouchDuringDialog: boolean;
-                          }
-                        | {
-                            Effects: string;
-                            NodeType: EContextualActionNodeType;
-                            Preconditions: string;
-                            RandomSelectorNodes: (
-                              | {
-                                  AnimationData: {
-                                    MontagePath: string;
-                                    MontageSection: string;
-                                  }[];
-                                  CanInteractWithPlayer: boolean;
-                                  Effects: string;
-                                  IsValidForQuestDialog: boolean;
-                                  NodeType: EContextualActionNodeType;
-                                  Preconditions: string;
-                                  RandomSelectorNodes: {
-                                    AnimationData: {
-                                      MontagePath: string;
-                                      MontageSection: string;
-                                    }[];
-                                    CanInteractWithPlayer: boolean;
-                                    Effects: string;
-                                    IsValidForQuestDialog: boolean;
-                                    NodeType: EContextualActionNodeType;
-                                    Preconditions: string;
-                                    ShouldDisableDialogAnimations: boolean;
-                                    ShouldPlayerCrouchDuringDialog: boolean;
-                                  }[];
-                                  Repetitions: ERepetitions;
-                                  RepetitionsCount: number;
-                                  ShouldDisableDialogAnimations: boolean;
-                                  ShouldPlayerCrouchDuringDialog: boolean;
-                                  Weights: {
-                                    Weight: number;
-                                  }[];
-                                }
-                              | {
-                                  Effects: string;
-                                  NodeType: EContextualActionNodeType;
-                                  Preconditions: string;
-                                  RandomSelectorNodes: {
-                                    AnimationData: {
-                                      MontagePath: string;
-                                      MontageSection: string;
-                                    }[];
-                                    CanInteractWithPlayer: boolean;
-                                    Effects: string;
-                                    IsValidForQuestDialog: boolean;
-                                    NodeType: EContextualActionNodeType;
-                                    Preconditions: string;
-                                    ShouldDisableDialogAnimations: boolean;
-                                    ShouldPlayerCrouchDuringDialog: boolean;
-                                  }[];
-                                  Repetitions: ERepetitions;
-                                  RepetitionsCount: number;
-                                  Weights: {
-                                    Weight: number;
-                                  }[];
-                                }
-                            )[];
-                            Repetitions: ERepetitions;
-                            RepetitionsCount: number;
-                            Weights: {
-                              Weight: number;
-                            }[];
-                          }
-                      )[];
-                      ShouldDisableDialogAnimations: boolean;
-                      ShouldPlayerCrouchDuringDialog: boolean;
-                      Weights: {
-                        Weight: number;
-                      }[];
-                    }
-                  | {
-                      AnimationData: {
-                        MontagePath: string;
-                        MontageSection: string;
-                      }[];
-                      CanInteractWithPlayer: boolean;
-                      Effects: string;
-                      Interrupt: {
-                        AnimationData: {
-                          MontagePath: string;
-                          MontageSection: string;
-                        }[];
-                        CanInteractWithPlayer: boolean;
-                        Effects: string;
-                        IsValidForQuestDialog: boolean;
-                        NodeType: EContextualActionNodeType;
-                        Preconditions: string;
-                        ShouldDisableDialogAnimations: boolean;
-                        ShouldPlayerCrouchDuringDialog: boolean;
-                      };
-                      IsValidForQuestDialog: boolean;
-                      NodeType: EContextualActionNodeType;
-                      Preconditions: string;
-                      RandomSelectorNodes: {
-                        Effects: string;
-                        NodeType: EContextualActionNodeType;
-                        Preconditions: string;
-                        RandomSelectorNodes: {
-                          AnimationData: {
-                            MontagePath: string;
-                            MontageSection: string;
-                          }[];
-                          CanInteractWithPlayer: boolean;
-                          Effects: string;
-                          IsValidForQuestDialog: boolean;
-                          NodeType: EContextualActionNodeType;
-                          Preconditions: string;
-                          ShouldDisableDialogAnimations: boolean;
-                          ShouldPlayerCrouchDuringDialog: boolean;
-                        }[];
-                        Repetitions: ERepetitions;
-                        RepetitionsCount: number;
-                        Weights: {
-                          Weight: number;
-                        }[];
-                      }[];
-                      Repetitions: ERepetitions;
-                      RepetitionsCount: number;
-                      SequentialSelectorNodes: (
-                        | {
-                            AnimationData: {
-                              MontagePath: string;
-                              MontageSection: string;
-                            }[];
-                            CanInteractWithPlayer: boolean;
-                            Effects: string;
-                            IsValidForQuestDialog: boolean;
-                            NodeType: EContextualActionNodeType;
-                            Preconditions: string;
-                            ShouldDisableDialogAnimations: boolean;
-                            ShouldPlayerCrouchDuringDialog: boolean;
-                          }
-                        | {
-                            Effects: string;
-                            NodeType: EContextualActionNodeType;
-                            Preconditions: string;
-                            RandomSelectorNodes: {
-                              AnimationData: {
-                                MontagePath: string;
-                                MontageSection: string;
-                              }[];
-                              CanInteractWithPlayer: boolean;
-                              Effects: string;
-                              IsValidForQuestDialog: boolean;
-                              NodeType: EContextualActionNodeType;
-                              Preconditions: string;
-                              ShouldDisableDialogAnimations: boolean;
-                              ShouldPlayerCrouchDuringDialog: boolean;
-                            }[];
-                            Repetitions: ERepetitions;
-                            RepetitionsCount: number;
-                            Weights: {
-                              Weight: number;
-                            }[];
-                          }
-                      )[];
-                      ShouldDisableDialogAnimations: boolean;
-                      ShouldPlayerCrouchDuringDialog: boolean;
-                      Weights: {
-                        Weight: number;
-                      }[];
-                    }
-                  | {
-                      AnimationData: {
-                        MontagePath: string;
-                        MontageSection: string;
-                      }[];
-                      CanInteractWithPlayer: boolean;
-                      Effects: string;
-                      Interrupt: {
-                        AnimationData: {
-                          MontagePath: string;
-                          MontageSection: string;
-                        }[];
-                        CanInteractWithPlayer: boolean;
-                        Effects: string;
-                        IsValidForQuestDialog: boolean;
-                        NodeType: EContextualActionNodeType;
-                        Preconditions: string;
-                        ShouldDisableDialogAnimations: boolean;
-                        ShouldPlayerCrouchDuringDialog: boolean;
-                      };
-                      IsValidForQuestDialog: boolean;
-                      NodeType: EContextualActionNodeType;
-                      Preconditions: string;
-                      RandomSelectorNodes: {
-                        Effects: string;
-                        NodeType: EContextualActionNodeType;
-                        Preconditions: string;
-                        RandomSelectorNodes: {
-                          AnimationData: {
-                            MontagePath: string;
-                            MontageSection: string;
-                          }[];
-                          CanInteractWithPlayer: boolean;
-                          Effects: string;
-                          IsValidForQuestDialog: boolean;
-                          NodeType: EContextualActionNodeType;
-                          Preconditions: string;
-                          ShouldDisableDialogAnimations: boolean;
-                          ShouldPlayerCrouchDuringDialog: boolean;
-                        }[];
-                        Repetitions: ERepetitions;
-                        RepetitionsCount: number;
-                        Weights: {
-                          Weight: number;
-                        }[];
-                      }[];
-                      Repetitions: ERepetitions;
-                      RepetitionsCount: number;
-                      ShouldDisableDialogAnimations: boolean;
-                      ShouldPlayerCrouchDuringDialog: boolean;
-                      Weights: {
-                        Weight: number;
-                      }[];
-                    }
-                  | {
-                      AnimationData: {
-                        MontagePath: string;
-                        MontageSection: string;
-                      }[];
-                      CanInteractWithPlayer: boolean;
-                      Effects: string;
-                      IsValidForQuestDialog: boolean;
-                      NodeType: EContextualActionNodeType;
-                      Preconditions: string;
-                      ShouldDisableDialogAnimations: boolean;
-                      ShouldPlayerCrouchDuringDialog: boolean;
-                    }
-                  | {
-                      AnimationData: {
-                        MontagePath: string;
-                        MontageSection: string;
-                      }[];
-                      Effects: string;
-                      NodeType: EContextualActionNodeType;
-                      Preconditions: string;
-                    }
-                )[];
-                Repetitions: ERepetitions;
-                RepetitionsCount: number;
-                ShouldDisableDialogAnimations: boolean;
-                Weights: {
-                  Weight: number;
-                }[];
-              }
-            | {
-                AnimationData: {
-                  MontagePath: string;
-                  MontageSection: string;
-                }[];
-                Effects: string;
-                IsValidForQuestDialog: boolean;
-                NodeType: EContextualActionNodeType;
-                Preconditions: string;
-                ShouldDisableDialogAnimations: boolean;
-              }
-          )[];
-          ShouldDisableDialogAnimations: boolean;
-          ShouldPlayerCrouchDuringDialog: boolean;
-          Weights: {
-            Weight: number;
-          }[];
-        }
-      | {
-          Effects: {
-            ChangeValuePerSelector: number;
-            ContextualActionNeed: EContextualActionNeeds;
-            Type: EContextualActionEffectType;
-          }[];
-          Need: EContextualActionNeeds;
-          NodeType: EContextualActionNodeType;
-          Preconditions: string;
-          RandomSelectorNodes: {
-            Effects: string;
-            NodeType: EContextualActionNodeType;
-            Preconditions: {
-              ItemPrototypeSID: string;
-              Type: EContextualActionPreconditionType;
-            }[];
-            SequentialSelectorNodes: (
-              | {
-                  AnimationData: {
-                    MontagePath: string;
-                    MontageSection: string;
-                  }[];
-                  CanInteractWithPlayer: boolean;
-                  Effects: string;
-                  IsValidForQuestDialog: boolean;
-                  NodeType: EContextualActionNodeType;
-                  Preconditions: string;
-                  ShouldDisableDialogAnimations: boolean;
-                  ShouldPlayerCrouchDuringDialog: boolean;
-                }
-              | {
-                  Effects: string;
-                  NodeType: EContextualActionNodeType;
-                  Preconditions: string;
-                  RandomSelectorNodes: {
-                    AnimationData: {
-                      MontagePath: string;
-                      MontageSection: string;
-                    }[];
-                    CanInteractWithPlayer: boolean;
-                    Effects: string;
-                    IsValidForQuestDialog: boolean;
-                    NodeType: EContextualActionNodeType;
-                    Preconditions: string;
-                    ShouldDisableDialogAnimations: boolean;
-                    ShouldPlayerCrouchDuringDialog: boolean;
-                  }[];
-                  Repetitions: ERepetitions;
-                  RepetitionsCount: number;
-                  Weights: {
-                    Weight: number;
-                  }[];
-                }
-            )[];
-          }[];
-          Repetitions: ERepetitions;
-          RepetitionsCount: number;
-          Weights: {
-            Weight: number;
-          }[];
-        }
-      | {
-          Effects: {
-            ChangeValuePerSelector: number;
-            ContextualActionNeed: EContextualActionNeeds;
-            Type: EContextualActionEffectType;
-          }[];
-          Need: EContextualActionNeeds;
-          NodeType: EContextualActionNodeType;
-          Preconditions: {
-            BodyParts: EContextualActionBodyPart[];
-            IsTargetWeather: boolean;
-            ShouldBeActive: boolean;
-            Type: EContextualActionPreconditionType;
-            Weather: EWeather[];
-          }[];
-          RandomSelectorNodes: (
-            | {
-                Effects: string;
-                NodeType: EContextualActionNodeType;
-                Preconditions: string;
-                RandomSelectorNodes: (
-                  | {
-                      Effects: string;
-                      Interrupt: {
-                        AnimationData: {
-                          MontagePath: string;
-                          MontageSection: string;
-                        }[];
-                        CanInteractWithPlayer: boolean;
-                        Effects: string;
-                        IsValidForQuestDialog: boolean;
-                        NodeType: EContextualActionNodeType;
-                        Preconditions: string;
-                        ShouldDisableDialogAnimations: boolean;
-                        ShouldPlayerCrouchDuringDialog: boolean;
-                      };
-                      NodeType: EContextualActionNodeType;
-                      Preconditions: string;
-                      SequentialSelectorNodes: (
-                        | {
-                            AnimationData: {
-                              MontagePath: string;
-                              MontageSection: string;
-                            }[];
-                            CanInteractWithPlayer: boolean;
-                            Effects: string;
-                            IsValidForQuestDialog: boolean;
-                            NodeType: EContextualActionNodeType;
-                            Preconditions: string;
-                            ShouldDisableDialogAnimations: boolean;
-                            ShouldPlayerCrouchDuringDialog: boolean;
-                          }
-                        | {
-                            Effects: string;
-                            NodeType: EContextualActionNodeType;
-                            Preconditions: string;
-                            RandomSelectorNodes: {
-                              AnimationData: {
-                                MontagePath: string;
-                                MontageSection: string;
-                              }[];
-                              CanInteractWithPlayer: boolean;
-                              Effects: string;
-                              IsValidForQuestDialog: boolean;
-                              NodeType: EContextualActionNodeType;
-                              Preconditions: string;
-                              ShouldDisableDialogAnimations: boolean;
-                              ShouldPlayerCrouchDuringDialog: boolean;
-                            }[];
-                            Repetitions: ERepetitions;
-                            RepetitionsCount: number;
-                            Weights: {
-                              Weight: number;
-                            }[];
-                          }
-                      )[];
-                    }
-                  | {
-                      Effects: string;
-                      NodeType: EContextualActionNodeType;
-                      Preconditions: string;
-                      SequentialSelectorNodes: (
-                        | {
-                            AnimationData: {
-                              MontagePath: string;
-                              MontageSection: string;
-                            }[];
-                            CanInteractWithPlayer: boolean;
-                            Effects: string;
-                            IsValidForQuestDialog: boolean;
-                            NodeType: EContextualActionNodeType;
-                            Preconditions: string;
-                            ShouldDisableDialogAnimations: boolean;
-                            ShouldPlayerCrouchDuringDialog: boolean;
-                          }
-                        | {
-                            Effects: string;
-                            NodeType: EContextualActionNodeType;
-                            Preconditions: string;
-                            RandomSelectorNodes: {
-                              AnimationData: {
-                                MontagePath: string;
-                                MontageSection: string;
-                              }[];
-                              CanInteractWithPlayer: boolean;
-                              Effects: string;
-                              IsValidForQuestDialog: boolean;
-                              NodeType: EContextualActionNodeType;
-                              Preconditions: string;
-                              ShouldDisableDialogAnimations: boolean;
-                              ShouldPlayerCrouchDuringDialog: boolean;
-                            }[];
-                            Repetitions: ERepetitions;
-                            RepetitionsCount: number;
-                            Weights: {
-                              Weight: number;
-                            }[];
-                          }
-                      )[];
-                    }
-                )[];
-                Repetitions: ERepetitions;
-                RepetitionsCount: number;
-                SequentialSelectorNodes: (
-                  | {
-                      AnimationData: {
-                        MontagePath: string;
-                        MontageSection: string;
-                      }[];
-                      CanInteractWithPlayer: boolean;
-                      Effects: string;
-                      IsValidForQuestDialog: boolean;
-                      NodeType: EContextualActionNodeType;
-                      Preconditions: string;
-                      ShouldDisableDialogAnimations: boolean;
-                      ShouldPlayerCrouchDuringDialog: boolean;
-                    }
-                  | {
-                      Effects: string;
-                      NodeType: EContextualActionNodeType;
-                      Preconditions: string;
-                      RandomSelectorNodes: {
-                        AnimationData: {
-                          MontagePath: string;
-                          MontageSection: string;
-                        }[];
-                        CanInteractWithPlayer: boolean;
-                        Effects: string;
-                        IsValidForQuestDialog: boolean;
-                        NodeType: EContextualActionNodeType;
-                        Preconditions: string;
-                        ShouldDisableDialogAnimations: boolean;
-                        ShouldPlayerCrouchDuringDialog: boolean;
-                      }[];
-                      Repetitions: ERepetitions;
-                      RepetitionsCount: number;
-                      Weights: {
-                        Weight: number;
-                      }[];
-                    }
-                )[];
-                Weights: {
-                  Weight: number;
-                }[];
-              }
-            | {
-                Effects: string;
-                NodeType: EContextualActionNodeType;
-                Preconditions: {
-                  RequireMinRank: ERank;
-                  Type: EContextualActionPreconditionType;
-                }[];
-                RandomSelectorNodes: (
-                  | {
-                      Effects: string;
-                      Interrupt: {
-                        AnimationData: {
-                          MontagePath: string;
-                          MontageSection: string;
-                        }[];
-                        CanInteractWithPlayer: boolean;
-                        Effects: string;
-                        IsValidForQuestDialog: boolean;
-                        NodeType: EContextualActionNodeType;
-                        Preconditions: string;
-                        ShouldDisableDialogAnimations: boolean;
-                        ShouldPlayerCrouchDuringDialog: boolean;
-                      };
-                      NodeType: EContextualActionNodeType;
-                      Preconditions: string;
-                      SequentialSelectorNodes: (
-                        | {
-                            AnimationData: {
-                              MontagePath: string;
-                              MontageSection: string;
-                            }[];
-                            CanInteractWithPlayer: boolean;
-                            Effects: string;
-                            IsValidForQuestDialog: boolean;
-                            NodeType: EContextualActionNodeType;
-                            Preconditions: string;
-                            ShouldDisableDialogAnimations: boolean;
-                            ShouldPlayerCrouchDuringDialog: boolean;
-                          }
-                        | {
-                            Effects: string;
-                            NodeType: EContextualActionNodeType;
-                            Preconditions: string;
-                            RandomSelectorNodes: {
-                              AnimationData: {
-                                MontagePath: string;
-                                MontageSection: string;
-                              }[];
-                              CanInteractWithPlayer: boolean;
-                              Effects: string;
-                              IsValidForQuestDialog: boolean;
-                              NodeType: EContextualActionNodeType;
-                              Preconditions: string;
-                              ShouldDisableDialogAnimations: boolean;
-                              ShouldPlayerCrouchDuringDialog: boolean;
-                            }[];
-                            Repetitions: ERepetitions;
-                            RepetitionsCount: number;
-                            Weights: {
-                              Weight: number;
-                            }[];
-                          }
-                      )[];
-                    }
-                  | {
-                      Effects: string;
-                      NodeType: EContextualActionNodeType;
-                      Preconditions: string;
-                      SequentialSelectorNodes: (
-                        | {
-                            AnimationData: {
-                              MontagePath: string;
-                              MontageSection: string;
-                            }[];
-                            CanInteractWithPlayer: boolean;
-                            Effects: string;
-                            IsValidForQuestDialog: boolean;
-                            NodeType: EContextualActionNodeType;
-                            Preconditions: string;
-                            ShouldDisableDialogAnimations: boolean;
-                            ShouldPlayerCrouchDuringDialog: boolean;
-                          }
-                        | {
-                            Effects: string;
-                            NodeType: EContextualActionNodeType;
-                            Preconditions: string;
-                            RandomSelectorNodes: {
-                              AnimationData: {
-                                MontagePath: string;
-                                MontageSection: string;
-                              }[];
-                              CanInteractWithPlayer: boolean;
-                              Effects: string;
-                              IsValidForQuestDialog: boolean;
-                              NodeType: EContextualActionNodeType;
-                              Preconditions: string;
-                              ShouldDisableDialogAnimations: boolean;
-                              ShouldPlayerCrouchDuringDialog: boolean;
-                            }[];
-                            Repetitions: ERepetitions;
-                            RepetitionsCount: number;
-                            Weights: {
-                              Weight: number;
-                            }[];
-                          }
-                      )[];
-                    }
-                )[];
-                Repetitions: ERepetitions;
-                RepetitionsCount: number;
-                SequentialSelectorNodes: (
-                  | {
-                      AnimationData: {
-                        MontagePath: string;
-                        MontageSection: string;
-                      }[];
-                      CanInteractWithPlayer: boolean;
-                      Effects: string;
-                      IsValidForQuestDialog: boolean;
-                      NodeType: EContextualActionNodeType;
-                      Preconditions: string;
-                      ShouldDisableDialogAnimations: boolean;
-                      ShouldPlayerCrouchDuringDialog: boolean;
-                    }
-                  | {
-                      Effects: string;
-                      NodeType: EContextualActionNodeType;
-                      Preconditions: string;
-                      RandomSelectorNodes: {
-                        AnimationData: {
-                          MontagePath: string;
-                          MontageSection: string;
-                        }[];
-                        CanInteractWithPlayer: boolean;
-                        Effects: string;
-                        IsValidForQuestDialog: boolean;
-                        NodeType: EContextualActionNodeType;
-                        Preconditions: string;
-                        ShouldDisableDialogAnimations: boolean;
-                        ShouldPlayerCrouchDuringDialog: boolean;
-                      }[];
-                      Repetitions: ERepetitions;
-                      RepetitionsCount: number;
-                      Weights: {
-                        Weight: number;
-                      }[];
-                    }
-                )[];
-                Weights: {
-                  Weight: number;
-                }[];
-              }
-          )[];
-          Repetitions: ERepetitions;
-          RepetitionsCount: number;
-          SequentialSelectorNodes: (
-            | {
-                AnimationData: {
-                  MontagePath: string;
-                  MontageSection: string;
-                }[];
-                CanInteractWithPlayer: boolean;
-                Effects: string;
-                IsValidForQuestDialog: boolean;
-                NodeType: EContextualActionNodeType;
-                Preconditions: string;
-                ShouldDisableDialogAnimations: boolean;
-                ShouldPlayerCrouchDuringDialog: boolean;
-              }
-            | {
-                Effects: string;
-                NodeType: EContextualActionNodeType;
-                Preconditions: string;
-                RandomSelectorNodes: (
-                  | {
-                      AnimationData: {
-                        MontagePath: string;
-                        MontageSection: string;
-                      }[];
-                      CanInteractWithPlayer: boolean;
-                      Effects: string;
-                      IsValidForQuestDialog: boolean;
-                      NodeType: EContextualActionNodeType;
-                      Preconditions: string;
-                      SequentialSelectorNodes: {
-                        Effects: string;
-                        NodeType: EContextualActionNodeType;
-                        Preconditions: string;
-                        RandomSelectorNodes: {
-                          Effects: string;
-                          NodeType: EContextualActionNodeType;
-                          Preconditions: string;
-                          RandomSelectorNodes: {
-                            AnimationData: {
-                              MontagePath: string;
-                              MontageSection: string;
-                            }[];
-                            CanInteractWithPlayer: boolean;
-                            Effects: string;
-                            IsValidForQuestDialog: boolean;
-                            NodeType: EContextualActionNodeType;
-                            Preconditions: string;
-                            ShouldDisableDialogAnimations: boolean;
-                            ShouldPlayerCrouchDuringDialog: boolean;
-                          }[];
-                          Repetitions: ERepetitions;
-                          RepetitionsCount: number;
-                          Weights: {
-                            Weight: number;
-                          }[];
-                        }[];
-                        Repetitions: ERepetitions;
-                        RepetitionsCount: number;
-                        Weights: {
-                          Weight: number;
-                        }[];
-                      }[];
-                      ShouldDisableDialogAnimations: boolean;
-                      ShouldPlayerCrouchDuringDialog: boolean;
-                    }
-                  | {
-                      AnimationData: {
-                        MontagePath: string;
-                        MontageSection: string;
-                      }[];
-                      CanInteractWithPlayer: boolean;
-                      Effects: string;
-                      IsValidForQuestDialog: boolean;
-                      NodeType: EContextualActionNodeType;
-                      Preconditions: string;
-                      ShouldDisableDialogAnimations: boolean;
-                      ShouldPlayerCrouchDuringDialog: boolean;
-                    }
-                )[];
-                Repetitions: ERepetitions;
-                RepetitionsCount: number;
-                Weights: {
-                  Weight: number;
-                }[];
-              }
-          )[];
-          Weights: {
-            Weight: number;
-          }[];
-        }
-      | {
-          Effects: {
-            ChangeValuePerSelector: number;
-            ContextualActionNeed: EContextualActionNeeds;
-            Type: EContextualActionEffectType;
-          }[];
-          Need: EContextualActionNeeds;
-          NodeType: EContextualActionNodeType;
-          Preconditions: {
-            BodyParts: EContextualActionBodyPart[];
-            Type: EContextualActionPreconditionType;
-          }[];
-          RandomSelectorNodes: (
-            | {
-                AnimationData: {
-                  MontagePath: string;
-                  MontageSection: string;
-                }[];
-                CanInteractWithPlayer: boolean;
-                Effects: string;
-                Interrupt: {
-                  AnimationData: {
-                    MontagePath: string;
-                    MontageSection: string;
-                  }[];
-                  CanInteractWithPlayer: boolean;
-                  Effects: string;
-                  IsValidForQuestDialog: boolean;
-                  NodeType: EContextualActionNodeType;
-                  Preconditions: string;
-                  ShouldDisableDialogAnimations: boolean;
-                  ShouldPlayerCrouchDuringDialog: boolean;
-                };
-                IsValidForQuestDialog: boolean;
-                NodeType: EContextualActionNodeType;
-                Preconditions: string;
-                SequentialSelectorNodes: (
-                  | {
-                      AnimationData: {
-                        MontagePath: string;
-                        MontageSection: string;
-                      }[];
-                      CanInteractWithPlayer: boolean;
-                      Effects: string;
-                      IsValidForQuestDialog: boolean;
-                      NodeType: EContextualActionNodeType;
-                      Preconditions: string;
-                      RandomSelectorNodes: {
-                        AnimationData: {
-                          MontagePath: string;
-                          MontageSection: string;
-                        }[];
-                        CanInteractWithPlayer: boolean;
-                        Effects: string;
-                        IsValidForQuestDialog: boolean;
-                        NodeType: EContextualActionNodeType;
-                        Preconditions: string;
-                        ShouldDisableDialogAnimations: boolean;
-                        ShouldPlayerCrouchDuringDialog: boolean;
-                      }[];
-                      Repetitions: ERepetitions;
-                      RepetitionsCount: number;
-                      ShouldDisableDialogAnimations: boolean;
-                      ShouldPlayerCrouchDuringDialog: boolean;
-                      Weights: {
-                        Weight: number;
-                      }[];
-                    }
-                  | {
-                      AnimationData: {
-                        MontagePath: string;
-                        MontageSection: string;
-                      }[];
-                      CanInteractWithPlayer: boolean;
-                      Effects: string;
-                      IsValidForQuestDialog: boolean;
-                      NodeType: EContextualActionNodeType;
-                      Preconditions: string;
-                      RandomSelectorNodes: {
-                        Effects: string;
-                        NodeType: EContextualActionNodeType;
-                        Preconditions: string;
-                        SequentialSelectorNodes: {
-                          Effects: string;
-                          NodeType: EContextualActionNodeType;
-                          Preconditions: string;
-                          RandomSelectorNodes: {
-                            Effects: string;
-                            NodeType: EContextualActionNodeType;
-                            Preconditions: string;
-                            RandomSelectorNodes: {
-                              AnimationData: {
-                                MontagePath: string;
-                                MontageSection: string;
-                              }[];
-                              CanInteractWithPlayer: boolean;
-                              Effects: string;
-                              IsValidForQuestDialog: boolean;
-                              NodeType: EContextualActionNodeType;
-                              Preconditions: string;
-                              ShouldDisableDialogAnimations: boolean;
-                              ShouldPlayerCrouchDuringDialog: boolean;
-                            }[];
-                            Repetitions: ERepetitions;
-                            RepetitionsCount: number;
-                            Weights: {
-                              Weight: number;
-                            }[];
-                          }[];
-                          Repetitions: ERepetitions;
-                          RepetitionsCount: number;
-                          Weights: {
-                            Weight: number;
-                          }[];
-                        }[];
-                      }[];
-                      Repetitions: ERepetitions;
-                      RepetitionsCount: number;
-                      ShouldDisableDialogAnimations: boolean;
-                      ShouldPlayerCrouchDuringDialog: boolean;
-                      Weights: {
-                        Weight: number;
-                      }[];
-                    }
-                  | {
-                      AnimationData: {
-                        MontagePath: string;
-                        MontageSection: string;
-                      }[];
-                      CanInteractWithPlayer: boolean;
-                      Effects: string;
-                      IsValidForQuestDialog: boolean;
-                      NodeType: EContextualActionNodeType;
-                      Preconditions: string;
-                      ShouldDisableDialogAnimations: boolean;
-                      ShouldPlayerCrouchDuringDialog: boolean;
-                    }
-                )[];
-                ShouldDisableDialogAnimations: boolean;
-                ShouldPlayerCrouchDuringDialog: boolean;
-              }
-            | {
-                Effects: string;
-                NodeType: EContextualActionNodeType;
-                Preconditions: string;
-                SequentialSelectorNodes: (
-                  | {
-                      AnimationData: {
-                        MontagePath: string;
-                        MontageSection: string;
-                      }[];
-                      CanInteractWithPlayer: boolean;
-                      Effects: string;
-                      IsValidForQuestDialog: boolean;
-                      NodeType: EContextualActionNodeType;
-                      Preconditions: string;
-                      ShouldDisableDialogAnimations: boolean;
-                      ShouldPlayerCrouchDuringDialog: boolean;
-                    }
-                  | {
-                      Effects: string;
-                      NodeType: EContextualActionNodeType;
-                      Preconditions: string;
-                      RandomSelectorNodes: (
-                        | {
-                            AnimationData: {
-                              MontagePath: string;
-                              MontageSection: string;
-                            }[];
-                            CanInteractWithPlayer: boolean;
-                            Effects: string;
-                            IsValidForQuestDialog: boolean;
-                            NodeType: EContextualActionNodeType;
-                            Preconditions: string;
-                            SequentialSelectorNodes: {
-                              Effects: string;
-                              NodeType: EContextualActionNodeType;
-                              Preconditions: string;
-                              RandomSelectorNodes: {
-                                Effects: string;
-                                NodeType: EContextualActionNodeType;
-                                Preconditions: string;
-                                RandomSelectorNodes: {
-                                  AnimationData: {
-                                    MontagePath: string;
-                                    MontageSection: string;
-                                  }[];
-                                  CanInteractWithPlayer: boolean;
-                                  Effects: string;
-                                  IsValidForQuestDialog: boolean;
-                                  NodeType: EContextualActionNodeType;
-                                  Preconditions: string;
-                                  ShouldDisableDialogAnimations: boolean;
-                                  ShouldPlayerCrouchDuringDialog: boolean;
-                                }[];
-                                Repetitions: ERepetitions;
-                                RepetitionsCount: number;
-                                Weights: {
-                                  Weight: number;
-                                }[];
-                              }[];
-                              Repetitions: ERepetitions;
-                              RepetitionsCount: number;
-                              Weights: {
-                                Weight: number;
-                              }[];
-                            }[];
-                            ShouldDisableDialogAnimations: boolean;
-                            ShouldPlayerCrouchDuringDialog: boolean;
-                          }
-                        | {
-                            AnimationData: {
-                              MontagePath: string;
-                              MontageSection: string;
-                            }[];
-                            CanInteractWithPlayer: boolean;
-                            Effects: string;
-                            IsValidForQuestDialog: boolean;
-                            NodeType: EContextualActionNodeType;
-                            Preconditions: string;
-                            ShouldDisableDialogAnimations: boolean;
-                            ShouldPlayerCrouchDuringDialog: boolean;
-                          }
-                      )[];
-                      Repetitions: ERepetitions;
-                      RepetitionsCount: number;
-                      Weights: {
-                        Weight: number;
-                      }[];
-                    }
-                )[];
-              }
-            | {
-                Effects: string;
-                NodeType: EContextualActionNodeType;
-                Preconditions: string;
-                SequentialSelectorNodes: (
-                  | {
-                      AnimationData: {
-                        MontagePath: string;
-                        MontageSection: string;
-                      }[];
-                      CanInteractWithPlayer: boolean;
-                      Effects: string;
-                      IsValidForQuestDialog: boolean;
-                      NodeType: EContextualActionNodeType;
-                      Preconditions: string;
-                      ShouldDisableDialogAnimations: boolean;
-                      ShouldPlayerCrouchDuringDialog: boolean;
-                    }
-                  | {
-                      Effects: string;
-                      NodeType: EContextualActionNodeType;
-                      Preconditions: string;
-                      RandomSelectorNodes: {
-                        AnimationData: {
-                          MontagePath: string;
-                          MontageSection: string;
-                        }[];
-                        CanInteractWithPlayer: boolean;
-                        Effects: string;
-                        IsValidForQuestDialog: boolean;
-                        NodeType: EContextualActionNodeType;
-                        Preconditions: string;
-                        ShouldDisableDialogAnimations: boolean;
-                        ShouldPlayerCrouchDuringDialog: boolean;
-                      }[];
-                      Repetitions: ERepetitions;
-                      RepetitionsCount: number;
-                      Weights: {
-                        Weight: number;
-                      }[];
-                    }
-                )[];
-              }
-          )[];
-          Repetitions: ERepetitions;
-          RepetitionsCount: number;
-          SequentialSelectorNodes: (
-            | {
-                AnimationData: {
-                  MontagePath: string;
-                  MontageSection: string;
-                }[];
-                CanInteractWithPlayer: boolean;
-                Effects: string;
-                IsValidForQuestDialog: boolean;
-                NodeType: EContextualActionNodeType;
-                Preconditions: string;
-                RandomSelectorNodes: (
-                  | {
-                      AnimationData: {
-                        MontagePath: string;
-                        MontageSection: string;
-                      }[];
-                      CanInteractWithPlayer: boolean;
-                      Effects: string;
-                      Interrupt: {
-                        AnimationData: {
-                          MontagePath: string;
-                          MontageSection: string;
-                        }[];
-                        CanInteractWithPlayer: boolean;
-                        Effects: string;
-                        IsValidForQuestDialog: boolean;
-                        NodeType: EContextualActionNodeType;
-                        Preconditions: string;
-                        ShouldDisableDialogAnimations: boolean;
-                        ShouldPlayerCrouchDuringDialog: boolean;
-                      };
-                      IsValidForQuestDialog: boolean;
-                      NodeType: EContextualActionNodeType;
-                      Preconditions: string;
-                      SequentialSelectorNodes: (
-                        | {
-                            AnimationData: {
-                              MontagePath: string;
-                              MontageSection: string;
-                            }[];
-                            CanInteractWithPlayer: boolean;
-                            Effects: string;
-                            IsValidForQuestDialog: boolean;
-                            NodeType: EContextualActionNodeType;
-                            Preconditions: string;
-                            RandomSelectorNodes: (
-                              | {
-                                  AnimationData: {
-                                    MontagePath: string;
-                                    MontageSection: string;
-                                  }[];
-                                  CanInteractWithPlayer: boolean;
-                                  Effects: string;
-                                  IsValidForQuestDialog: boolean;
-                                  NodeType: EContextualActionNodeType;
-                                  Preconditions: string;
-                                  RandomSelectorNodes: {
-                                    AnimationData: {
-                                      MontagePath: string;
-                                      MontageSection: string;
-                                    }[];
-                                    CanInteractWithPlayer: boolean;
-                                    Effects: string;
-                                    IsValidForQuestDialog: boolean;
-                                    NodeType: EContextualActionNodeType;
-                                    Preconditions: string;
-                                    ShouldDisableDialogAnimations: boolean;
-                                    ShouldPlayerCrouchDuringDialog: boolean;
-                                  }[];
-                                  Repetitions: ERepetitions;
-                                  RepetitionsCount: number;
-                                  ShouldDisableDialogAnimations: boolean;
-                                  ShouldPlayerCrouchDuringDialog: boolean;
-                                  Weights: {
-                                    Weight: number;
-                                  }[];
-                                }
-                              | {
-                                  Effects: string;
-                                  NodeType: EContextualActionNodeType;
-                                  Preconditions: string;
-                                  RandomSelectorNodes: {
-                                    AnimationData: {
-                                      MontagePath: string;
-                                      MontageSection: string;
-                                    }[];
-                                    CanInteractWithPlayer: boolean;
-                                    Effects: string;
-                                    IsValidForQuestDialog: boolean;
-                                    NodeType: EContextualActionNodeType;
-                                    Preconditions: string;
-                                    ShouldDisableDialogAnimations: boolean;
-                                    ShouldPlayerCrouchDuringDialog: boolean;
-                                  }[];
-                                  Repetitions: ERepetitions;
-                                  RepetitionsCount: number;
-                                  Weights: {
-                                    Weight: number;
-                                  }[];
-                                }
-                            )[];
-                            Repetitions: ERepetitions;
-                            RepetitionsCount: number;
-                            ShouldDisableDialogAnimations: boolean;
-                            ShouldPlayerCrouchDuringDialog: boolean;
-                            Weights: {
-                              Weight: number;
-                            }[];
-                          }
-                        | {
-                            Effects: string;
-                            NodeType: EContextualActionNodeType;
-                            Preconditions: string;
-                            RandomSelectorNodes: {
-                              Effects: string;
-                              NodeType: EContextualActionNodeType;
-                              Preconditions: string;
-                              RandomSelectorNodes: {
-                                AnimationData: {
-                                  MontagePath: string;
-                                  MontageSection: string;
-                                }[];
-                                CanInteractWithPlayer: boolean;
-                                Effects: string;
-                                IsValidForQuestDialog: boolean;
-                                NodeType: EContextualActionNodeType;
-                                Preconditions: string;
-                                ShouldDisableDialogAnimations: boolean;
-                                ShouldPlayerCrouchDuringDialog: boolean;
-                              }[];
-                              Repetitions: ERepetitions;
-                              RepetitionsCount: number;
-                              Weights: {
-                                Weight: number;
-                              }[];
-                            }[];
-                            Repetitions: ERepetitions;
-                            RepetitionsCount: number;
-                            Weights: {
-                              Weight: number;
-                            }[];
-                          }
-                      )[];
-                      ShouldDisableDialogAnimations: boolean;
-                      ShouldPlayerCrouchDuringDialog: boolean;
-                    }
-                  | {
-                      AnimationData: {
-                        MontagePath: string;
-                        MontageSection: string;
-                      }[];
-                      Effects: string;
-                      NodeType: EContextualActionNodeType;
-                      Preconditions: string;
-                    }
-                )[];
-                Repetitions: ERepetitions;
-                RepetitionsCount: number;
-                ShouldDisableDialogAnimations: boolean;
-                ShouldPlayerCrouchDuringDialog: boolean;
-                Weights: {
-                  Weight: number;
-                }[];
-              }
-            | {
-                AnimationData: {
-                  MontagePath: string;
-                  MontageSection: string;
-                }[];
-                CanInteractWithPlayer: boolean;
-                Effects: string;
-                IsValidForQuestDialog: boolean;
-                NodeType: EContextualActionNodeType;
-                Preconditions: string;
-                ShouldDisableDialogAnimations: boolean;
-                ShouldPlayerCrouchDuringDialog: boolean;
-              }
-          )[];
-          Weights: {
-            Weight: number;
-          }[];
-        }
-      | {
-          Effects: {
-            ChangeValuePerSelector: number;
-            ContextualActionNeed: EContextualActionNeeds;
-            Type: EContextualActionEffectType;
-          }[];
-          Need: EContextualActionNeeds;
-          NodeType: EContextualActionNodeType;
-          Preconditions: {
-            BodyParts: EContextualActionBodyPart[];
-            Type: EContextualActionPreconditionType;
-          }[];
-          RandomSelectorNodes: (
-            | {
-                AnimationData: {
-                  MontagePath: string;
-                  MontageSection: string;
-                }[];
-                CanInteractWithPlayer: boolean;
-                Effects: string;
-                IsValidForQuestDialog: boolean;
-                NodeType: EContextualActionNodeType;
-                Preconditions: string;
-                RandomSelectorNodes: (
-                  | {
-                      Effects: string;
-                      Interrupt: {
-                        AnimationData: {
-                          MontagePath: string;
-                          MontageSection: string;
-                        }[];
-                        CanInteractWithPlayer: boolean;
-                        Effects: string;
-                        IsValidForQuestDialog: boolean;
-                        NodeType: EContextualActionNodeType;
-                        Preconditions: string;
-                        ShouldDisableDialogAnimations: boolean;
-                        ShouldPlayerCrouchDuringDialog: boolean;
-                      };
-                      NodeType: EContextualActionNodeType;
-                      Preconditions: string;
-                      SequentialSelectorNodes: (
-                        | {
-                            AnimationData: {
-                              MontagePath: string;
-                              MontageSection: string;
-                            }[];
-                            CanInteractWithPlayer: boolean;
-                            Effects: string;
-                            IsValidForQuestDialog: boolean;
-                            NodeType: EContextualActionNodeType;
-                            Preconditions: string;
-                            ShouldDisableDialogAnimations: boolean;
-                            ShouldPlayerCrouchDuringDialog: boolean;
-                          }
-                        | {
-                            Effects: string;
-                            NodeType: EContextualActionNodeType;
-                            Preconditions: string;
-                            RandomSelectorNodes: {
-                              AnimationData: {
-                                MontagePath: string;
-                                MontageSection: string;
-                              }[];
-                              CanInteractWithPlayer: boolean;
-                              Effects: string;
-                              IsValidForQuestDialog: boolean;
-                              NodeType: EContextualActionNodeType;
-                              Preconditions: string;
-                              ShouldDisableDialogAnimations: boolean;
-                              ShouldPlayerCrouchDuringDialog: boolean;
-                            }[];
-                            Repetitions: ERepetitions;
-                            RepetitionsCount: number;
-                            Weights: {
-                              Weight: number;
-                            }[];
-                          }
-                      )[];
-                    }
-                  | {
-                      Effects: string;
-                      NodeType: EContextualActionNodeType;
-                      Preconditions: string;
-                      SequentialSelectorNodes: (
-                        | {
-                            AnimationData: {
-                              MontagePath: string;
-                              MontageSection: string;
-                            }[];
-                            CanInteractWithPlayer: boolean;
-                            Effects: string;
-                            IsValidForQuestDialog: boolean;
-                            NodeType: EContextualActionNodeType;
-                            Preconditions: string;
-                            ShouldDisableDialogAnimations: boolean;
-                            ShouldPlayerCrouchDuringDialog: boolean;
-                          }
-                        | {
-                            Effects: string;
-                            NodeType: EContextualActionNodeType;
-                            Preconditions: string;
-                            RandomSelectorNodes: (
-                              | {
-                                  AnimationData: {
-                                    MontagePath: string;
-                                    MontageSection: string;
-                                  }[];
-                                  CanInteractWithPlayer: boolean;
-                                  Effects: string;
-                                  IsValidForQuestDialog: boolean;
-                                  NodeType: EContextualActionNodeType;
-                                  Preconditions: string;
-                                  ShouldDisableDialogAnimations: boolean;
-                                  ShouldPlayerCrouchDuringDialog: boolean;
-                                }
-                              | {
-                                  Effects: string;
-                                  NodeType: EContextualActionNodeType;
-                                  Preconditions: string;
-                                  SequentialSelectorNodes: (
-                                    | {
-                                        AnimationData: {
-                                          MontagePath: string;
-                                          MontageSection: string;
-                                        }[];
-                                        CanInteractWithPlayer: boolean;
-                                        Effects: string;
-                                        IsValidForQuestDialog: boolean;
-                                        NodeType: EContextualActionNodeType;
-                                        Preconditions: string;
-                                        ShouldDisableDialogAnimations: boolean;
-                                        ShouldPlayerCrouchDuringDialog: boolean;
-                                      }
-                                    | {
-                                        Effects: string;
-                                        NodeType: EContextualActionNodeType;
-                                        Preconditions: string;
-                                        RandomSelectorNodes: {
-                                          AnimationData: {
-                                            MontagePath: string;
-                                            MontageSection: string;
-                                          }[];
-                                          CanInteractWithPlayer: boolean;
-                                          Effects: string;
-                                          IsValidForQuestDialog: boolean;
-                                          NodeType: EContextualActionNodeType;
-                                          Preconditions: string;
-                                          ShouldDisableDialogAnimations: boolean;
-                                          ShouldPlayerCrouchDuringDialog: boolean;
-                                        }[];
-                                        Repetitions: ERepetitions;
-                                        RepetitionsCount: number;
-                                        Weights: {
-                                          Weight: number;
-                                        }[];
-                                      }
-                                  )[];
-                                }
-                            )[];
-                            Repetitions: ERepetitions;
-                            RepetitionsCount: number;
-                            Weights: {
-                              Weight: number;
-                            }[];
-                          }
-                        | {
-                            Effects: string;
-                            NodeType: EContextualActionNodeType;
-                            Preconditions: string;
-                            RandomSelectorNodes: {
-                              AnimationData: {
-                                MontagePath: string;
-                                MontageSection: string;
-                              }[];
-                              CanInteractWithPlayer: boolean;
-                              Effects: string;
-                              IsValidForQuestDialog: boolean;
-                              NodeType: EContextualActionNodeType;
-                              Preconditions: string;
-                              ShouldDisableDialogAnimations: boolean;
-                              ShouldPlayerCrouchDuringDialog: boolean;
-                            }[];
-                            Repetitions: ERepetitions;
-                            RepetitionsCount: number;
-                            Weights: {
-                              Weight: number;
-                            }[];
-                          }
-                      )[];
-                    }
-                )[];
-                Repetitions: ERepetitions;
-                RepetitionsCount: number;
-                SequentialSelectorNodes: (
-                  | {
-                      AnimationData: {
-                        MontagePath: string;
-                        MontageSection: string;
-                      }[];
-                      CanInteractWithPlayer: boolean;
-                      Effects: string;
-                      IsValidForQuestDialog: boolean;
-                      NodeType: EContextualActionNodeType;
-                      Preconditions: string;
-                      RandomSelectorNodes: {
-                        AnimationData: {
-                          MontagePath: string;
-                          MontageSection: string;
-                        }[];
-                        CanInteractWithPlayer: boolean;
-                        Effects: string;
-                        IsValidForQuestDialog: boolean;
-                        NodeType: EContextualActionNodeType;
-                        Preconditions: string;
-                        SequentialSelectorNodes: (
-                          | {
-                              AnimationData: {
-                                MontagePath: string;
-                                MontageSection: string;
-                              }[];
-                              CanInteractWithPlayer: boolean;
-                              Effects: string;
-                              IsValidForQuestDialog: boolean;
-                              NodeType: EContextualActionNodeType;
-                              Preconditions: string;
-                              ShouldDisableDialogAnimations: boolean;
-                              ShouldPlayerCrouchDuringDialog: boolean;
-                            }
-                          | {
-                              Effects: string;
-                              NodeType: EContextualActionNodeType;
-                              Preconditions: string;
-                              RandomSelectorNodes: {
-                                AnimationData: {
-                                  MontagePath: string;
-                                  MontageSection: string;
-                                }[];
-                                CanInteractWithPlayer: boolean;
-                                Effects: string;
-                                IsValidForQuestDialog: boolean;
-                                NodeType: EContextualActionNodeType;
-                                Preconditions: string;
-                                ShouldDisableDialogAnimations: boolean;
-                                ShouldPlayerCrouchDuringDialog: boolean;
-                              }[];
-                              Repetitions: ERepetitions;
-                              RepetitionsCount: number;
-                              Weights: {
-                                Weight: number;
-                              }[];
-                            }
-                        )[];
-                        ShouldDisableDialogAnimations: boolean;
-                        ShouldPlayerCrouchDuringDialog: boolean;
-                      }[];
-                      Repetitions: ERepetitions;
-                      RepetitionsCount: number;
-                      ShouldDisableDialogAnimations: boolean;
-                      ShouldPlayerCrouchDuringDialog: boolean;
-                      Weights: {
-                        Weight: number;
-                      }[];
-                    }
-                  | {
-                      AnimationData: {
-                        MontagePath: string;
-                        MontageSection: string;
-                      }[];
-                      CanInteractWithPlayer: boolean;
-                      Effects: string;
-                      IsValidForQuestDialog: boolean;
-                      NodeType: EContextualActionNodeType;
-                      Preconditions: string;
-                      ShouldDisableDialogAnimations: boolean;
-                      ShouldPlayerCrouchDuringDialog: boolean;
-                    }
-                  | {
-                      Effects: string;
-                      NodeType: EContextualActionNodeType;
-                      Preconditions: string;
-                      RandomSelectorNodes: {
-                        AnimationData: {
-                          MontagePath: string;
-                          MontageSection: string;
-                        }[];
-                        CanInteractWithPlayer: boolean;
-                        Effects: string;
-                        IsValidForQuestDialog: boolean;
-                        NodeType: EContextualActionNodeType;
-                        Preconditions: string;
-                        ShouldDisableDialogAnimations: boolean;
-                        ShouldPlayerCrouchDuringDialog: boolean;
-                      }[];
-                      Repetitions: ERepetitions;
-                      RepetitionsCount: number;
-                      Weights: {
-                        Weight: number;
-                      }[];
-                    }
-                )[];
-                ShouldDisableDialogAnimations: boolean;
-                ShouldPlayerCrouchDuringDialog: boolean;
-                Weights: {
-                  Weight: number;
-                }[];
-              }
-            | {
-                AnimationData: {
-                  MontagePath: string;
-                  MontageSection: string;
-                }[];
-                CanInteractWithPlayer: boolean;
-                Effects: string;
-                IsValidForQuestDialog: boolean;
-                NodeType: EContextualActionNodeType;
-                Preconditions: string;
-                RandomSelectorNodes: (
-                  | {
-                      Effects: string;
-                      Interrupt: {
-                        AnimationData: {
-                          MontagePath: string;
-                          MontageSection: string;
-                        }[];
-                        CanInteractWithPlayer: boolean;
-                        Effects: string;
-                        IsValidForQuestDialog: boolean;
-                        NodeType: EContextualActionNodeType;
-                        Preconditions: string;
-                        ShouldDisableDialogAnimations: boolean;
-                        ShouldPlayerCrouchDuringDialog: boolean;
-                      };
-                      NodeType: EContextualActionNodeType;
-                      Preconditions: string;
-                      SequentialSelectorNodes: (
-                        | {
-                            AnimationData: {
-                              MontagePath: string;
-                              MontageSection: string;
-                            }[];
-                            CanInteractWithPlayer: boolean;
-                            Effects: string;
-                            IsValidForQuestDialog: boolean;
-                            NodeType: EContextualActionNodeType;
-                            Preconditions: string;
-                            ShouldDisableDialogAnimations: boolean;
-                            ShouldPlayerCrouchDuringDialog: boolean;
-                          }
-                        | {
-                            Effects: string;
-                            NodeType: EContextualActionNodeType;
-                            Preconditions: string;
-                            RandomSelectorNodes: {
-                              AnimationData: {
-                                MontagePath: string;
-                                MontageSection: string;
-                              }[];
-                              CanInteractWithPlayer: boolean;
-                              Effects: string;
-                              IsValidForQuestDialog: boolean;
-                              NodeType: EContextualActionNodeType;
-                              Preconditions: string;
-                              ShouldDisableDialogAnimations: boolean;
-                              ShouldPlayerCrouchDuringDialog: boolean;
-                            }[];
-                            Repetitions: ERepetitions;
-                            RepetitionsCount: number;
-                            Weights: {
-                              Weight: number;
-                            }[];
-                          }
-                      )[];
-                    }
-                  | {
-                      Effects: string;
-                      NodeType: EContextualActionNodeType;
-                      Preconditions: string;
-                      SequentialSelectorNodes: (
-                        | {
-                            AnimationData: {
-                              MontagePath: string;
-                              MontageSection: string;
-                            }[];
-                            CanInteractWithPlayer: boolean;
-                            Effects: string;
-                            IsValidForQuestDialog: boolean;
-                            NodeType: EContextualActionNodeType;
-                            Preconditions: string;
-                            ShouldDisableDialogAnimations: boolean;
-                            ShouldPlayerCrouchDuringDialog: boolean;
-                          }
-                        | {
-                            Effects: string;
-                            NodeType: EContextualActionNodeType;
-                            Preconditions: string;
-                            RandomSelectorNodes: {
-                              AnimationData: {
-                                MontagePath: string;
-                                MontageSection: string;
-                              }[];
-                              CanInteractWithPlayer: boolean;
-                              Effects: string;
-                              IsValidForQuestDialog: boolean;
-                              NodeType: EContextualActionNodeType;
-                              Preconditions: string;
-                              ShouldDisableDialogAnimations: boolean;
-                              ShouldPlayerCrouchDuringDialog: boolean;
-                            }[];
-                            Repetitions: ERepetitions;
-                            RepetitionsCount: number;
-                            Weights: {
-                              Weight: number;
-                            }[];
-                          }
-                      )[];
-                    }
-                )[];
-                Repetitions: ERepetitions;
-                RepetitionsCount: number;
-                SequentialSelectorNodes: (
-                  | {
-                      AnimationData: {
-                        MontagePath: string;
-                        MontageSection: string;
-                      }[];
-                      CanInteractWithPlayer: boolean;
-                      Effects: string;
-                      IsValidForQuestDialog: boolean;
-                      NodeType: EContextualActionNodeType;
-                      Preconditions: string;
-                      ShouldDisableDialogAnimations: boolean;
-                      ShouldPlayerCrouchDuringDialog: boolean;
-                    }
-                  | {
-                      Effects: string;
-                      NodeType: EContextualActionNodeType;
-                      Preconditions: string;
-                      RandomSelectorNodes: {
-                        AnimationData: {
-                          MontagePath: string;
-                          MontageSection: string;
-                        }[];
-                        CanInteractWithPlayer: boolean;
-                        Effects: string;
-                        IsValidForQuestDialog: boolean;
-                        NodeType: EContextualActionNodeType;
-                        Preconditions: string;
-                        ShouldDisableDialogAnimations: boolean;
-                        ShouldPlayerCrouchDuringDialog: boolean;
-                      }[];
-                      Repetitions: ERepetitions;
-                      RepetitionsCount: number;
-                      Weights: {
-                        Weight: number;
-                      }[];
-                    }
-                )[];
-                ShouldDisableDialogAnimations: boolean;
-                ShouldPlayerCrouchDuringDialog: boolean;
-                Weights: {
-                  Weight: number;
-                }[];
-              }
-            | {
-                AnimationData: {
-                  MontagePath: string;
-                  MontageSection: string;
-                }[];
-                CanInteractWithPlayer: boolean;
-                Effects: string;
-                IsValidForQuestDialog: boolean;
-                NodeType: EContextualActionNodeType;
-                Preconditions: string;
-                SequentialSelectorNodes: (
-                  | {
-                      AnimationData: {
-                        MontagePath: string;
-                        MontageSection: string;
-                      }[];
-                      CanInteractWithPlayer: boolean;
-                      Effects: string;
-                      IsValidForQuestDialog: boolean;
-                      NodeType: EContextualActionNodeType;
-                      Preconditions: string;
-                      ShouldDisableDialogAnimations: boolean;
-                      ShouldPlayerCrouchDuringDialog: boolean;
-                    }
-                  | {
-                      Effects: string;
-                      NodeType: EContextualActionNodeType;
-                      Preconditions: string;
-                      RandomSelectorNodes: {
-                        AnimationData: {
-                          MontagePath: string;
-                          MontageSection: string;
-                        }[];
-                        CanInteractWithPlayer: boolean;
-                        Effects: string;
-                        IsValidForQuestDialog: boolean;
-                        NodeType: EContextualActionNodeType;
-                        Preconditions: string;
-                        ShouldDisableDialogAnimations: boolean;
-                        ShouldPlayerCrouchDuringDialog: boolean;
-                      }[];
-                      Repetitions: ERepetitions;
-                      RepetitionsCount: number;
-                      Weights: {
-                        Weight: number;
-                      }[];
-                    }
-                )[];
-                ShouldDisableDialogAnimations: boolean;
-                ShouldPlayerCrouchDuringDialog: boolean;
-              }
-            | {
-                AnimationData: {
-                  MontagePath: string;
-                  MontageSection: string;
-                }[];
-                CanInteractWithPlayer: boolean;
-                Effects: string;
-                IsValidForQuestDialog: boolean;
-                NodeType: EContextualActionNodeType;
-                Preconditions: string;
-                ShouldDisableDialogAnimations: boolean;
-                ShouldPlayerCrouchDuringDialog: boolean;
-              }
-          )[];
-          Repetitions: ERepetitions;
-          RepetitionsCount: number;
-          SequentialSelectorNodes: (
-            | {
-                AnimationData: {
-                  MontagePath: string;
-                  MontageSection: string;
-                }[];
-                CanInteractWithPlayer: boolean;
-                Effects: string;
-                IsValidForQuestDialog: boolean;
-                NodeType: EContextualActionNodeType;
-                Preconditions: string;
-                ShouldDisableDialogAnimations: boolean;
-                ShouldPlayerCrouchDuringDialog: boolean;
-              }
-            | {
-                Effects: string;
-                NodeType: EContextualActionNodeType;
-                Preconditions: string;
-                RandomSelectorNodes: {
-                  AnimationData: {
-                    MontagePath: string;
-                    MontageSection: string;
-                  }[];
-                  CanInteractWithPlayer: boolean;
-                  Effects: string;
-                  Interrupt: {
-                    AnimationData: {
-                      MontagePath: string;
-                      MontageSection: string;
-                    }[];
-                    CanInteractWithPlayer: boolean;
-                    Effects: string;
-                    IsValidForQuestDialog: boolean;
-                    NodeType: EContextualActionNodeType;
-                    Preconditions: string;
-                    ShouldDisableDialogAnimations: boolean;
-                    ShouldPlayerCrouchDuringDialog: boolean;
-                  };
-                  IsValidForQuestDialog: boolean;
-                  NodeType: EContextualActionNodeType;
-                  Preconditions: string;
-                  ShouldDisableDialogAnimations: boolean;
-                  ShouldPlayerCrouchDuringDialog: boolean;
-                }[];
-                Repetitions: ERepetitions;
-                RepetitionsCount: number;
-                Weights: {
-                  Weight: number;
-                }[];
-              }
-          )[];
-          Weights: {
-            Weight: number;
-          }[];
-        }
-      | {
-          Effects: {
-            ChangeValuePerSelector: number;
-            ContextualActionNeed: EContextualActionNeeds;
-            Type: EContextualActionEffectType;
-          }[];
-          Need: EContextualActionNeeds;
-          NodeType: EContextualActionNodeType;
-          Preconditions: {
-            BodyParts: EContextualActionBodyPart[];
-            Type: EContextualActionPreconditionType;
-          }[];
-          RandomSelectorNodes: (
-            | {
-                AnimationData: {
-                  MontagePath: string;
-                  MontageSection: string;
-                }[];
-                CanInteractWithPlayer: boolean;
-                Effects: string;
-                IsValidForQuestDialog: boolean;
-                NodeType: EContextualActionNodeType;
-                Preconditions: string;
-                SequentialSelectorNodes: (
-                  | {
-                      AnimationData: {
-                        MontagePath: string;
-                        MontageSection: string;
-                      }[];
-                      CanInteractWithPlayer: boolean;
-                      Effects: string;
-                      IsValidForQuestDialog: boolean;
-                      NodeType: EContextualActionNodeType;
-                      Preconditions: string;
-                      ShouldDisableDialogAnimations: boolean;
-                      ShouldPlayerCrouchDuringDialog: boolean;
-                    }
-                  | {
-                      Effects: string;
-                      NodeType: EContextualActionNodeType;
-                      Preconditions: string;
-                      RandomSelectorNodes: {
-                        AnimationData: {
-                          MontagePath: string;
-                          MontageSection: string;
-                        }[];
-                        CanInteractWithPlayer: boolean;
-                        Effects: string;
-                        IsValidForQuestDialog: boolean;
-                        NodeType: EContextualActionNodeType;
-                        Preconditions: string;
-                        ShouldDisableDialogAnimations: boolean;
-                        ShouldPlayerCrouchDuringDialog: boolean;
-                      }[];
-                      Repetitions: ERepetitions;
-                      RepetitionsCount: number;
-                      Weights: {
-                        Weight: number;
-                      }[];
-                    }
-                )[];
-                ShouldDisableDialogAnimations: boolean;
-                ShouldPlayerCrouchDuringDialog: boolean;
-              }
-            | {
-                Effects: string;
-                NodeType: EContextualActionNodeType;
-                Preconditions: string;
-                RandomSelectorNodes: (
-                  | {
-                      Effects: string;
-                      Interrupt: {
-                        AnimationData: {
-                          MontagePath: string;
-                          MontageSection: string;
-                        }[];
-                        CanInteractWithPlayer: boolean;
-                        Effects: string;
-                        IsValidForQuestDialog: boolean;
-                        NodeType: EContextualActionNodeType;
-                        Preconditions: string;
-                        ShouldDisableDialogAnimations: boolean;
-                        ShouldPlayerCrouchDuringDialog: boolean;
-                      };
-                      NodeType: EContextualActionNodeType;
-                      Preconditions: string;
-                      SequentialSelectorNodes: (
-                        | {
-                            AnimationData: {
-                              MontagePath: string;
-                              MontageSection: string;
-                            }[];
-                            CanInteractWithPlayer: boolean;
-                            Effects: string;
-                            IsValidForQuestDialog: boolean;
-                            NodeType: EContextualActionNodeType;
-                            Preconditions: string;
-                            ShouldDisableDialogAnimations: boolean;
-                            ShouldPlayerCrouchDuringDialog: boolean;
-                          }
-                        | {
-                            Effects: string;
-                            NodeType: EContextualActionNodeType;
-                            Preconditions: string;
-                            RandomSelectorNodes: {
-                              AnimationData: {
-                                MontagePath: string;
-                                MontageSection: string;
-                              }[];
-                              CanInteractWithPlayer: boolean;
-                              Effects: string;
-                              IsValidForQuestDialog: boolean;
-                              NodeType: EContextualActionNodeType;
-                              Preconditions: string;
-                              ShouldDisableDialogAnimations: boolean;
-                              ShouldPlayerCrouchDuringDialog: boolean;
-                            }[];
-                            Repetitions: ERepetitions;
-                            RepetitionsCount: number;
-                            Weights: {
-                              Weight: number;
-                            }[];
-                          }
-                      )[];
-                    }
-                  | {
-                      Effects: string;
-                      NodeType: EContextualActionNodeType;
-                      Preconditions: string;
-                      SequentialSelectorNodes: (
-                        | {
-                            AnimationData: {
-                              MontagePath: string;
-                              MontageSection: string;
-                            }[];
-                            CanInteractWithPlayer: boolean;
-                            Effects: string;
-                            IsValidForQuestDialog: boolean;
-                            NodeType: EContextualActionNodeType;
-                            Preconditions: string;
-                            ShouldDisableDialogAnimations: boolean;
-                            ShouldPlayerCrouchDuringDialog: boolean;
-                          }
-                        | {
-                            Effects: string;
-                            NodeType: EContextualActionNodeType;
-                            Preconditions: string;
-                            RandomSelectorNodes: {
-                              AnimationData: {
-                                MontagePath: string;
-                                MontageSection: string;
-                              }[];
-                              CanInteractWithPlayer: boolean;
-                              Effects: string;
-                              IsValidForQuestDialog: boolean;
-                              NodeType: EContextualActionNodeType;
-                              Preconditions: string;
-                              ShouldDisableDialogAnimations: boolean;
-                              ShouldPlayerCrouchDuringDialog: boolean;
-                            }[];
-                            Repetitions: ERepetitions;
-                            RepetitionsCount: number;
-                            Weights: {
-                              Weight: number;
-                            }[];
-                          }
-                      )[];
-                    }
-                )[];
-                Repetitions: ERepetitions;
-                RepetitionsCount: number;
-                SequentialSelectorNodes: (
-                  | {
-                      AnimationData: {
-                        MontagePath: string;
-                        MontageSection: string;
-                      }[];
-                      CanInteractWithPlayer: boolean;
-                      Effects: string;
-                      IsValidForQuestDialog: boolean;
-                      NodeType: EContextualActionNodeType;
-                      Preconditions: string;
-                      RandomSelectorNodes: (
-                        | {
-                            AnimationData: {
-                              MontagePath: string;
-                              MontageSection: string;
-                            }[];
-                            CanInteractWithPlayer: boolean;
-                            Effects: string;
-                            IsValidForQuestDialog: boolean;
-                            NodeType: EContextualActionNodeType;
-                            Preconditions: string;
-                            ShouldDisableDialogAnimations: boolean;
-                            ShouldPlayerCrouchDuringDialog: boolean;
-                          }
-                        | {
-                            Effects: string;
-                            NodeType: EContextualActionNodeType;
-                            Preconditions: string;
-                            SequentialSelectorNodes: (
-                              | {
-                                  AnimationData: {
-                                    MontagePath: string;
-                                    MontageSection: string;
-                                  }[];
-                                  CanInteractWithPlayer: boolean;
-                                  Effects: string;
-                                  IsValidForQuestDialog: boolean;
-                                  NodeType: EContextualActionNodeType;
-                                  Preconditions: string;
-                                  RandomSelectorNodes: {
-                                    Effects: string;
-                                    NodeType: EContextualActionNodeType;
-                                    Preconditions: string;
-                                    RandomSelectorNodes: {
-                                      AnimationData: {
-                                        MontagePath: string;
-                                        MontageSection: string;
-                                      }[];
-                                      CanInteractWithPlayer: boolean;
-                                      Effects: string;
-                                      IsValidForQuestDialog: boolean;
-                                      NodeType: EContextualActionNodeType;
-                                      Preconditions: string;
-                                      ShouldDisableDialogAnimations: boolean;
-                                      ShouldPlayerCrouchDuringDialog: boolean;
-                                    }[];
-                                    Repetitions: ERepetitions;
-                                    RepetitionsCount: number;
-                                    Weights: {
-                                      Weight: number;
-                                    }[];
-                                  }[];
-                                  Repetitions: ERepetitions;
-                                  RepetitionsCount: number;
-                                  ShouldDisableDialogAnimations: boolean;
-                                  ShouldPlayerCrouchDuringDialog: boolean;
-                                  Weights: {
-                                    Weight: number;
-                                  }[];
-                                }
-                              | {
-                                  AnimationData: {
-                                    MontagePath: string;
-                                    MontageSection: string;
-                                  }[];
-                                  CanInteractWithPlayer: boolean;
-                                  Effects: string;
-                                  IsValidForQuestDialog: boolean;
-                                  NodeType: EContextualActionNodeType;
-                                  Preconditions: string;
-                                  ShouldDisableDialogAnimations: boolean;
-                                  ShouldPlayerCrouchDuringDialog: boolean;
-                                }
-                              | {
-                                  Effects: string;
-                                  NodeType: EContextualActionNodeType;
-                                  Preconditions: string;
-                                  RandomSelectorNodes: (
-                                    | {
-                                        AnimationData: {
-                                          MontagePath: string;
-                                          MontageSection: string;
-                                        }[];
-                                        CanInteractWithPlayer: boolean;
-                                        Effects: string;
-                                        IsValidForQuestDialog: boolean;
-                                        NodeType: EContextualActionNodeType;
-                                        Preconditions: string;
-                                        RandomSelectorNodes: {
-                                          AnimationData: {
-                                            MontagePath: string;
-                                            MontageSection: string;
-                                          }[];
-                                          CanInteractWithPlayer: boolean;
-                                          Effects: string;
-                                          IsValidForQuestDialog: boolean;
-                                          NodeType: EContextualActionNodeType;
-                                          Preconditions: string;
-                                          ShouldDisableDialogAnimations: boolean;
-                                          ShouldPlayerCrouchDuringDialog: boolean;
-                                        }[];
-                                        Repetitions: ERepetitions;
-                                        RepetitionsCount: number;
-                                        ShouldDisableDialogAnimations: boolean;
-                                        ShouldPlayerCrouchDuringDialog: boolean;
-                                        Weights: {
-                                          Weight: number;
-                                        }[];
-                                      }
-                                    | {
-                                        AnimationData: {
-                                          MontagePath: string;
-                                          MontageSection: string;
-                                        }[];
-                                        CanInteractWithPlayer: boolean;
-                                        Effects: string;
-                                        IsValidForQuestDialog: boolean;
-                                        NodeType: EContextualActionNodeType;
-                                        Preconditions: string;
-                                        ShouldDisableDialogAnimations: boolean;
-                                        ShouldPlayerCrouchDuringDialog: boolean;
-                                      }
-                                  )[];
-                                  Repetitions: ERepetitions;
-                                  RepetitionsCount: number;
-                                  Weights: {
-                                    Weight: number;
-                                  }[];
-                                }
-                            )[];
-                          }
-                      )[];
-                      Repetitions: ERepetitions;
-                      RepetitionsCount: number;
-                      ShouldDisableDialogAnimations: boolean;
-                      ShouldPlayerCrouchDuringDialog: boolean;
-                      Weights: {
-                        Weight: number;
-                      }[];
-                    }
-                  | {
-                      AnimationData: {
-                        MontagePath: string;
-                        MontageSection: string;
-                      }[];
-                      CanInteractWithPlayer: boolean;
-                      Effects: string;
-                      IsValidForQuestDialog: boolean;
-                      NodeType: EContextualActionNodeType;
-                      Preconditions: string;
-                      RandomSelectorNodes: {
-                        AnimationData: {
-                          MontagePath: string;
-                          MontageSection: string;
-                        }[];
-                        CanInteractWithPlayer: boolean;
-                        Effects: string;
-                        IsValidForQuestDialog: boolean;
-                        NodeType: EContextualActionNodeType;
-                        Preconditions: string;
-                        ShouldDisableDialogAnimations: boolean;
-                        ShouldPlayerCrouchDuringDialog: boolean;
-                      }[];
-                      Repetitions: ERepetitions;
-                      RepetitionsCount: number;
-                      ShouldDisableDialogAnimations: boolean;
-                      ShouldPlayerCrouchDuringDialog: boolean;
-                      Weights: {
-                        Weight: number;
-                      }[];
-                    }
-                  | {
-                      AnimationData: {
-                        MontagePath: string;
-                        MontageSection: string;
-                      }[];
-                      CanInteractWithPlayer: boolean;
-                      Effects: string;
-                      IsValidForQuestDialog: boolean;
-                      NodeType: EContextualActionNodeType;
-                      Preconditions: string;
-                      ShouldDisableDialogAnimations: boolean;
-                      ShouldPlayerCrouchDuringDialog: boolean;
-                    }
-                )[];
-                Weights: {
-                  Weight: number;
-                }[];
-              }
-            | {
-                Effects: string;
-                NodeType: EContextualActionNodeType;
-                Preconditions: string;
-                RandomSelectorNodes: (
-                  | {
-                      Effects: string;
-                      Interrupt: {
-                        AnimationData: {
-                          MontagePath: string;
-                          MontageSection: string;
-                        }[];
-                        CanInteractWithPlayer: boolean;
-                        Effects: string;
-                        IsValidForQuestDialog: boolean;
-                        NodeType: EContextualActionNodeType;
-                        Preconditions: string;
-                        ShouldDisableDialogAnimations: boolean;
-                        ShouldPlayerCrouchDuringDialog: boolean;
-                      };
-                      NodeType: EContextualActionNodeType;
-                      Preconditions: string;
-                      SequentialSelectorNodes: (
-                        | {
-                            AnimationData: {
-                              MontagePath: string;
-                              MontageSection: string;
-                            }[];
-                            CanInteractWithPlayer: boolean;
-                            Effects: string;
-                            IsValidForQuestDialog: boolean;
-                            NodeType: EContextualActionNodeType;
-                            Preconditions: string;
-                            ShouldDisableDialogAnimations: boolean;
-                            ShouldPlayerCrouchDuringDialog: boolean;
-                          }
-                        | {
-                            Effects: string;
-                            NodeType: EContextualActionNodeType;
-                            Preconditions: string;
-                            RandomSelectorNodes: {
-                              AnimationData: {
-                                MontagePath: string;
-                                MontageSection: string;
-                              }[];
-                              CanInteractWithPlayer: boolean;
-                              Effects: string;
-                              IsValidForQuestDialog: boolean;
-                              NodeType: EContextualActionNodeType;
-                              Preconditions: string;
-                              ShouldDisableDialogAnimations: boolean;
-                              ShouldPlayerCrouchDuringDialog: boolean;
-                            }[];
-                            Repetitions: ERepetitions;
-                            RepetitionsCount: number;
-                            Weights: {
-                              Weight: number;
-                            }[];
-                          }
-                      )[];
-                    }
-                  | {
-                      Effects: string;
-                      NodeType: EContextualActionNodeType;
-                      Preconditions: string;
-                      SequentialSelectorNodes: (
-                        | {
-                            AnimationData: {
-                              MontagePath: string;
-                              MontageSection: string;
-                            }[];
-                            CanInteractWithPlayer: boolean;
-                            Effects: string;
-                            IsValidForQuestDialog: boolean;
-                            NodeType: EContextualActionNodeType;
-                            Preconditions: string;
-                            ShouldDisableDialogAnimations: boolean;
-                            ShouldPlayerCrouchDuringDialog: boolean;
-                          }
-                        | {
-                            Effects: string;
-                            NodeType: EContextualActionNodeType;
-                            Preconditions: string;
-                            RandomSelectorNodes: {
-                              AnimationData: {
-                                MontagePath: string;
-                                MontageSection: string;
-                              }[];
-                              CanInteractWithPlayer: boolean;
-                              Effects: string;
-                              IsValidForQuestDialog: boolean;
-                              NodeType: EContextualActionNodeType;
-                              Preconditions: string;
-                              ShouldDisableDialogAnimations: boolean;
-                              ShouldPlayerCrouchDuringDialog: boolean;
-                            }[];
-                            Repetitions: ERepetitions;
-                            RepetitionsCount: number;
-                            Weights: {
-                              Weight: number;
-                            }[];
-                          }
-                      )[];
-                    }
-                )[];
-                Repetitions: ERepetitions;
-                RepetitionsCount: number;
-                SequentialSelectorNodes: (
-                  | {
-                      AnimationData: {
-                        MontagePath: string;
-                        MontageSection: string;
-                      }[];
-                      CanInteractWithPlayer: boolean;
-                      Effects: string;
-                      IsValidForQuestDialog: boolean;
-                      NodeType: EContextualActionNodeType;
-                      Preconditions: string;
-                      RandomSelectorNodes: {
-                        AnimationData: {
-                          MontagePath: string;
-                          MontageSection: string;
-                        }[];
-                        CanInteractWithPlayer: boolean;
-                        Effects: string;
-                        IsValidForQuestDialog: boolean;
-                        NodeType: EContextualActionNodeType;
-                        Preconditions: string;
-                        ShouldDisableDialogAnimations: boolean;
-                        ShouldPlayerCrouchDuringDialog: boolean;
-                      }[];
-                      Repetitions: ERepetitions;
-                      RepetitionsCount: number;
-                      ShouldDisableDialogAnimations: boolean;
-                      ShouldPlayerCrouchDuringDialog: boolean;
-                      Weights: {
-                        Weight: number;
-                      }[];
-                    }
-                  | {
-                      AnimationData: {
-                        MontagePath: string;
-                        MontageSection: string;
-                      }[];
-                      CanInteractWithPlayer: boolean;
-                      Effects: string;
-                      IsValidForQuestDialog: boolean;
-                      NodeType: EContextualActionNodeType;
-                      Preconditions: string;
-                      RandomSelectorNodes: {
-                        Effects: string;
-                        NodeType: EContextualActionNodeType;
-                        Preconditions: string;
-                        SequentialSelectorNodes: {
-                          Effects: string;
-                          NodeType: EContextualActionNodeType;
-                          Preconditions: string;
-                          RandomSelectorNodes: {
-                            Effects: string;
-                            NodeType: EContextualActionNodeType;
-                            Preconditions: string;
-                            RandomSelectorNodes: {
-                              AnimationData: {
-                                MontagePath: string;
-                                MontageSection: string;
-                              }[];
-                              CanInteractWithPlayer: boolean;
-                              Effects: string;
-                              IsValidForQuestDialog: boolean;
-                              NodeType: EContextualActionNodeType;
-                              Preconditions: string;
-                              ShouldDisableDialogAnimations: boolean;
-                              ShouldPlayerCrouchDuringDialog: boolean;
-                            }[];
-                            Repetitions: ERepetitions;
-                            RepetitionsCount: number;
-                            Weights: {
-                              Weight: number;
-                            }[];
-                          }[];
-                          Repetitions: ERepetitions;
-                          RepetitionsCount: number;
-                          Weights: {
-                            Weight: number;
-                          }[];
-                        }[];
-                      }[];
-                      Repetitions: ERepetitions;
-                      RepetitionsCount: number;
-                      ShouldDisableDialogAnimations: boolean;
-                      ShouldPlayerCrouchDuringDialog: boolean;
-                      Weights: {
-                        Weight: number;
-                      }[];
-                    }
-                  | {
-                      AnimationData: {
-                        MontagePath: string;
-                        MontageSection: string;
-                      }[];
-                      CanInteractWithPlayer: boolean;
-                      Effects: string;
-                      IsValidForQuestDialog: boolean;
-                      NodeType: EContextualActionNodeType;
-                      Preconditions: string;
-                      ShouldDisableDialogAnimations: boolean;
-                      ShouldPlayerCrouchDuringDialog: boolean;
-                    }
-                )[];
-                Weights: {
-                  Weight: number;
-                }[];
-              }
-            | {
-                Effects: string;
-                NodeType: EContextualActionNodeType;
-                Preconditions: string;
-                SequentialSelectorNodes: (
-                  | {
-                      AnimationData: {
-                        MontagePath: string;
-                        MontageSection: string;
-                      }[];
-                      CanInteractWithPlayer: boolean;
-                      Effects: string;
-                      IsValidForQuestDialog: boolean;
-                      NodeType: EContextualActionNodeType;
-                      Preconditions: string;
-                      ShouldDisableDialogAnimations: boolean;
-                      ShouldPlayerCrouchDuringDialog: boolean;
-                    }
-                  | {
-                      Effects: string;
-                      NodeType: EContextualActionNodeType;
-                      Preconditions: string;
-                      RandomSelectorNodes: (
-                        | {
-                            AnimationData: {
-                              MontagePath: string;
-                              MontageSection: string;
-                            }[];
-                            CanInteractWithPlayer: boolean;
-                            Effects: string;
-                            IsValidForQuestDialog: boolean;
-                            NodeType: EContextualActionNodeType;
-                            Preconditions: string;
-                            SequentialSelectorNodes: {
-                              Effects: string;
-                              NodeType: EContextualActionNodeType;
-                              Preconditions: string;
-                              RandomSelectorNodes: {
-                                Effects: string;
-                                NodeType: EContextualActionNodeType;
-                                Preconditions: string;
-                                RandomSelectorNodes: {
-                                  AnimationData: {
-                                    MontagePath: string;
-                                    MontageSection: string;
-                                  }[];
-                                  CanInteractWithPlayer: boolean;
-                                  Effects: string;
-                                  IsValidForQuestDialog: boolean;
-                                  NodeType: EContextualActionNodeType;
-                                  Preconditions: string;
-                                  ShouldDisableDialogAnimations: boolean;
-                                  ShouldPlayerCrouchDuringDialog: boolean;
-                                }[];
-                                Repetitions: ERepetitions;
-                                RepetitionsCount: number;
-                                Weights: {
-                                  Weight: number;
-                                }[];
-                              }[];
-                              Repetitions: ERepetitions;
-                              RepetitionsCount: number;
-                              Weights: {
-                                Weight: number;
-                              }[];
-                            }[];
-                            ShouldDisableDialogAnimations: boolean;
-                            ShouldPlayerCrouchDuringDialog: boolean;
-                          }
-                        | {
-                            AnimationData: {
-                              MontagePath: string;
-                              MontageSection: string;
-                            }[];
-                            CanInteractWithPlayer: boolean;
-                            Effects: string;
-                            IsValidForQuestDialog: boolean;
-                            NodeType: EContextualActionNodeType;
-                            Preconditions: string;
-                            ShouldDisableDialogAnimations: boolean;
-                            ShouldPlayerCrouchDuringDialog: boolean;
-                          }
-                      )[];
-                      Repetitions: ERepetitions;
-                      RepetitionsCount: number;
-                      Weights: {
-                        Weight: number;
-                      }[];
-                    }
-                )[];
-              }
-          )[];
-          Repetitions: ERepetitions;
-          RepetitionsCount: number;
-          SequentialSelectorNodes: (
-            | {
-                AnimationData: {
-                  MontagePath: string;
-                  MontageSection: string;
-                }[];
-                CanInteractWithPlayer: boolean;
-                Effects: string;
-                IsValidForQuestDialog: boolean;
-                NodeType: EContextualActionNodeType;
-                Preconditions: string;
-                ShouldDisableDialogAnimations: boolean;
-                ShouldPlayerCrouchDuringDialog: boolean;
-              }
-            | {
-                Effects: string;
-                NodeType: EContextualActionNodeType;
-                Preconditions: string;
-                RandomSelectorNodes: (
-                  | {
-                      AnimationData: {
-                        MontagePath: string;
-                        MontageSection: string;
-                      }[];
-                      CanInteractWithPlayer: boolean;
-                      Effects: string;
-                      IsValidForQuestDialog: boolean;
-                      NodeType: EContextualActionNodeType;
-                      Preconditions: string;
-                      SequentialSelectorNodes: (
-                        | {
-                            Effects: string;
-                            NodeType: EContextualActionNodeType;
-                            Preconditions: string;
-                            RandomSelectorNodes: {
-                              AnimationData: {
-                                MontagePath: string;
-                                MontageSection: string;
-                              }[];
-                              CanInteractWithPlayer: boolean;
-                              Effects: string;
-                              IsValidForQuestDialog: boolean;
-                              NodeType: EContextualActionNodeType;
-                              Preconditions: string;
-                              ShouldDisableDialogAnimations: boolean;
-                              ShouldPlayerCrouchDuringDialog: boolean;
-                            }[];
-                            Repetitions: ERepetitions;
-                            RepetitionsCount: number;
-                            Weights: {
-                              Weight: number;
-                            }[];
-                          }
-                        | {
-                            Effects: string;
-                            NodeType: EContextualActionNodeType;
-                            Preconditions: string;
-                            RandomSelectorNodes: {
-                              Effects: string;
-                              NodeType: EContextualActionNodeType;
-                              Preconditions: string;
-                              RandomSelectorNodes: {
-                                AnimationData: {
-                                  MontagePath: string;
-                                  MontageSection: string;
-                                }[];
-                                CanInteractWithPlayer: boolean;
-                                Effects: string;
-                                IsValidForQuestDialog: boolean;
-                                NodeType: EContextualActionNodeType;
-                                Preconditions: string;
-                                ShouldDisableDialogAnimations: boolean;
-                                ShouldPlayerCrouchDuringDialog: boolean;
-                              }[];
-                              Repetitions: ERepetitions;
-                              RepetitionsCount: number;
-                              Weights: {
-                                Weight: number;
-                              }[];
-                            }[];
-                            Repetitions: ERepetitions;
-                            RepetitionsCount: number;
-                            Weights: {
-                              Weight: number;
-                            }[];
-                          }
-                      )[];
-                      ShouldDisableDialogAnimations: boolean;
-                      ShouldPlayerCrouchDuringDialog: boolean;
-                    }
-                  | {
-                      AnimationData: {
-                        MontagePath: string;
-                        MontageSection: string;
-                      }[];
-                      CanInteractWithPlayer: boolean;
-                      Effects: string;
-                      IsValidForQuestDialog: boolean;
-                      NodeType: EContextualActionNodeType;
-                      Preconditions: string;
-                      ShouldDisableDialogAnimations: boolean;
-                      ShouldPlayerCrouchDuringDialog: boolean;
-                    }
-                )[];
-                Repetitions: ERepetitions;
-                RepetitionsCount: number;
-                Weights: {
-                  Weight: number;
-                }[];
-              }
-          )[];
-          Weights: {
-            Weight: number;
-          }[];
-        }
-      | {
-          Effects: {
-            ChangeValuePerSelector: number;
-            ContextualActionNeed: EContextualActionNeeds;
-            Type: EContextualActionEffectType;
-          }[];
-          Need: EContextualActionNeeds;
-          NodeType: EContextualActionNodeType;
-          Preconditions: {
-            IsTargetWeather: boolean;
-            ShouldBeActive: boolean;
-            Type: EContextualActionPreconditionType;
-            Weather: EWeather[];
-          }[];
-          RandomSelectorNodes: (
-            | {
-                Effects: string;
-                Interrupt: {
-                  AnimationData: {
-                    MontagePath: string;
-                    MontageSection: string;
-                  }[];
-                  CanInteractWithPlayer: boolean;
-                  Effects: string;
-                  IsValidForQuestDialog: boolean;
-                  NodeType: EContextualActionNodeType;
-                  Preconditions: string;
-                  ShouldDisableDialogAnimations: boolean;
-                  ShouldPlayerCrouchDuringDialog: boolean;
-                };
-                NodeType: EContextualActionNodeType;
-                Preconditions: string;
-                SequentialSelectorNodes: (
-                  | {
-                      AnimationData: {
-                        MontagePath: string;
-                        MontageSection: string;
-                      }[];
-                      CanInteractWithPlayer: boolean;
-                      Effects: string;
-                      IsValidForQuestDialog: boolean;
-                      NodeType: EContextualActionNodeType;
-                      Preconditions: string;
-                      RandomSelectorNodes: {
-                        AnimationData: {
-                          MontagePath: string;
-                          MontageSection: string;
-                        }[];
-                        CanInteractWithPlayer: boolean;
-                        Effects: string;
-                        IsValidForQuestDialog: boolean;
-                        NodeType: EContextualActionNodeType;
-                        Preconditions: string;
-                        ShouldDisableDialogAnimations: boolean;
-                        ShouldPlayerCrouchDuringDialog: boolean;
-                      }[];
-                      Repetitions: ERepetitions;
-                      RepetitionsCount: number;
-                      ShouldDisableDialogAnimations: boolean;
-                      ShouldPlayerCrouchDuringDialog: boolean;
-                      Weights: {
-                        Weight: number;
-                      }[];
-                    }
-                  | {
-                      AnimationData: {
-                        MontagePath: string;
-                        MontageSection: string;
-                      }[];
-                      CanInteractWithPlayer: boolean;
-                      Effects: string;
-                      IsValidForQuestDialog: boolean;
-                      NodeType: EContextualActionNodeType;
-                      Preconditions: string;
-                      ShouldDisableDialogAnimations: boolean;
-                      ShouldPlayerCrouchDuringDialog: boolean;
-                    }
-                )[];
-              }
-            | {
-                Effects: string;
-                NodeType: EContextualActionNodeType;
-                Preconditions: string;
-                SequentialSelectorNodes: (
-                  | {
-                      AnimationData: {
-                        MontagePath: string;
-                        MontageSection: string;
-                      }[];
-                      CanInteractWithPlayer: boolean;
-                      Effects: string;
-                      IsValidForQuestDialog: boolean;
-                      NodeType: EContextualActionNodeType;
-                      Preconditions: string;
-                      ShouldDisableDialogAnimations: boolean;
-                      ShouldPlayerCrouchDuringDialog: boolean;
-                    }
-                  | {
-                      Effects: string;
-                      NodeType: EContextualActionNodeType;
-                      Preconditions: string;
-                      RandomSelectorNodes: {
-                        AnimationData: {
-                          MontagePath: string;
-                          MontageSection: string;
-                        }[];
-                        CanInteractWithPlayer: boolean;
-                        Effects: string;
-                        IsValidForQuestDialog: boolean;
-                        NodeType: EContextualActionNodeType;
-                        Preconditions: string;
-                        ShouldDisableDialogAnimations: boolean;
-                        ShouldPlayerCrouchDuringDialog: boolean;
-                      }[];
-                      Repetitions: ERepetitions;
-                      RepetitionsCount: number;
-                      Weights: {
-                        Weight: number;
-                      }[];
-                    }
-                )[];
-              }
-          )[];
-          Repetitions: ERepetitions;
-          RepetitionsCount: number;
-          SequentialSelectorNodes: (
-            | {
-                AnimationData: {
-                  MontagePath: string;
-                  MontageSection: string;
-                }[];
-                CanInteractWithPlayer: boolean;
-                Effects: string;
-                IsValidForQuestDialog: boolean;
-                NodeType: EContextualActionNodeType;
-                Preconditions: string;
-                ShouldDisableDialogAnimations: boolean;
-                ShouldPlayerCrouchDuringDialog: boolean;
-              }
-            | {
-                Effects: string;
-                NodeType: EContextualActionNodeType;
-                Preconditions: string;
-                RandomSelectorNodes: (
-                  | {
-                      AnimationData: {
-                        MontagePath: string;
-                        MontageSection: string;
-                      }[];
-                      CanInteractWithPlayer: boolean;
-                      Effects: string;
-                      IsValidForQuestDialog: boolean;
-                      NodeType: EContextualActionNodeType;
-                      Preconditions: string;
-                      SequentialSelectorNodes: {
-                        Effects: string;
-                        NodeType: EContextualActionNodeType;
-                        Preconditions: string;
-                        RandomSelectorNodes: {
-                          Effects: string;
-                          NodeType: EContextualActionNodeType;
-                          Preconditions: string;
-                          RandomSelectorNodes: {
-                            AnimationData: {
-                              MontagePath: string;
-                              MontageSection: string;
-                            }[];
-                            CanInteractWithPlayer: boolean;
-                            Effects: string;
-                            IsValidForQuestDialog: boolean;
-                            NodeType: EContextualActionNodeType;
-                            Preconditions: string;
-                            ShouldDisableDialogAnimations: boolean;
-                            ShouldPlayerCrouchDuringDialog: boolean;
-                          }[];
-                          Repetitions: ERepetitions;
-                          RepetitionsCount: number;
-                          Weights: {
-                            Weight: number;
-                          }[];
-                        }[];
-                        Repetitions: ERepetitions;
-                        RepetitionsCount: number;
-                        Weights: {
-                          Weight: number;
-                        }[];
-                      }[];
-                      ShouldDisableDialogAnimations: boolean;
-                      ShouldPlayerCrouchDuringDialog: boolean;
-                    }
-                  | {
-                      AnimationData: {
-                        MontagePath: string;
-                        MontageSection: string;
-                      }[];
-                      CanInteractWithPlayer: boolean;
-                      Effects: string;
-                      IsValidForQuestDialog: boolean;
-                      NodeType: EContextualActionNodeType;
-                      Preconditions: string;
-                      ShouldDisableDialogAnimations: boolean;
-                      ShouldPlayerCrouchDuringDialog: boolean;
-                    }
-                )[];
-                Repetitions: ERepetitions;
-                RepetitionsCount: number;
-                Weights: {
-                  Weight: number;
-                }[];
-              }
-          )[];
-          Weights: {
-            Weight: number;
-          }[];
-        }
-      | {
-          Effects: {
-            ChangeValuePerSelector: number;
-            ContextualActionNeed: EContextualActionNeeds;
-            Type: EContextualActionEffectType;
-          }[];
-          Need: EContextualActionNeeds;
-          NodeType: EContextualActionNodeType;
-          Preconditions: {
-            IsTargetWeather: boolean;
-            ShouldBeActive: boolean;
-            Type: EContextualActionPreconditionType;
-            Weather: EWeather[];
-          }[];
-          RandomSelectorNodes: (
-            | {
-                Effects: string;
-                NodeType: EContextualActionNodeType;
-                Preconditions: string;
-                SequentialSelectorNodes: (
-                  | {
-                      AnimationData: {
-                        MontagePath: string;
-                        MontageSection: string;
-                      }[];
-                      CanInteractWithPlayer: boolean;
-                      Effects: string;
-                      IsValidForQuestDialog: boolean;
-                      NodeType: EContextualActionNodeType;
-                      Preconditions: string;
-                      ShouldDisableDialogAnimations: boolean;
-                      ShouldPlayerCrouchDuringDialog: boolean;
-                    }
-                  | {
-                      Effects: string;
-                      NodeType: EContextualActionNodeType;
-                      Preconditions: string;
-                      RandomSelectorNodes: {
-                        AnimationData: {
-                          MontagePath: string;
-                          MontageSection: string;
-                        }[];
-                        CanInteractWithPlayer: boolean;
-                        Effects: string;
-                        IsValidForQuestDialog: boolean;
-                        NodeType: EContextualActionNodeType;
-                        Preconditions: string;
-                        ShouldDisableDialogAnimations: boolean;
-                        ShouldPlayerCrouchDuringDialog: boolean;
-                      }[];
-                      Repetitions: ERepetitions;
-                      RepetitionsCount: number;
-                      Weights: {
-                        Weight: number;
-                      }[];
-                    }
-                )[];
-              }
-            | {
-                Effects: string;
-                NodeType: EContextualActionNodeType;
-                Preconditions: {
-                  ItemPrototypeSID: string;
-                  Type: EContextualActionPreconditionType;
-                }[];
-                SequentialSelectorNodes: (
-                  | {
-                      AnimationData: {
-                        MontagePath: string;
-                        MontageSection: string;
-                      }[];
-                      CanInteractWithPlayer: boolean;
-                      Effects: string;
-                      IsValidForQuestDialog: boolean;
-                      NodeType: EContextualActionNodeType;
-                      Preconditions: string;
-                      ShouldDisableDialogAnimations: boolean;
-                      ShouldPlayerCrouchDuringDialog: boolean;
-                    }
-                  | {
-                      Effects: string;
-                      NodeType: EContextualActionNodeType;
-                      Preconditions: string;
-                      RandomSelectorNodes: {
-                        AnimationData: {
-                          MontagePath: string;
-                          MontageSection: string;
-                        }[];
-                        CanInteractWithPlayer: boolean;
-                        Effects: string;
-                        IsValidForQuestDialog: boolean;
-                        NodeType: EContextualActionNodeType;
-                        Preconditions: string;
-                        ShouldDisableDialogAnimations: boolean;
-                        ShouldPlayerCrouchDuringDialog: boolean;
-                      }[];
-                      Repetitions: ERepetitions;
-                      RepetitionsCount: number;
-                      Weights: {
-                        Weight: number;
-                      }[];
-                    }
-                )[];
-              }
-          )[];
-          Repetitions: ERepetitions;
-          RepetitionsCount: number;
-          SequentialSelectorNodes: (
-            | {
-                AnimationData: {
-                  MontagePath: string;
-                  MontageSection: string;
-                }[];
-                CanInteractWithPlayer: boolean;
-                Effects: string;
-                IsValidForQuestDialog: boolean;
-                NodeType: EContextualActionNodeType;
-                Preconditions: string;
-                ShouldDisableDialogAnimations: boolean;
-                ShouldPlayerCrouchDuringDialog: boolean;
-              }
-            | {
-                Effects: string;
-                NodeType: EContextualActionNodeType;
-                Preconditions: string;
-                RandomSelectorNodes: (
-                  | {
-                      Effects: string;
-                      NodeType: EContextualActionNodeType;
-                      Preconditions: string;
-                      RandomSelectorNodes: {
-                        AnimationData: {
-                          MontagePath: string;
-                          MontageSection: string;
-                        }[];
-                        CanInteractWithPlayer: boolean;
-                        Effects: string;
-                        IsValidForQuestDialog: boolean;
-                        NodeType: EContextualActionNodeType;
-                        Preconditions: string;
-                        ShouldDisableDialogAnimations: boolean;
-                        ShouldPlayerCrouchDuringDialog: boolean;
-                      }[];
-                      Repetitions: ERepetitions;
-                      RepetitionsCount: number;
-                      Weights: {
-                        Weight: number;
-                      }[];
-                    }
-                  | {
-                      Effects: string;
-                      NodeType: EContextualActionNodeType;
-                      Preconditions: string;
-                      SequentialSelectorNodes: (
-                        | {
-                            AkAudioEvent: string[];
-                            AnimationData: {
-                              MontagePath: string;
-                              MontageSection: string;
-                            }[];
-                            Effects: string;
-                            IsValidForQuestDialog: boolean;
-                            NodeType: EContextualActionNodeType;
-                            Preconditions: string;
-                          }
-                        | {
-                            AnimationData: {
-                              MontagePath: string;
-                              MontageSection: string;
-                            }[];
-                            CanInteractWithPlayer: boolean;
-                            Effects: string;
-                            IsValidForQuestDialog: boolean;
-                            NodeType: EContextualActionNodeType;
-                            Preconditions: string;
-                            ShouldDisableDialogAnimations: boolean;
-                            ShouldPlayerCrouchDuringDialog: boolean;
-                          }
-                      )[];
-                    }
-                )[];
-                Repetitions: ERepetitions;
-                RepetitionsCount: number;
-                Weights: {
-                  Weight: number;
-                }[];
-              }
-          )[];
-          Weights: {
-            Weight: number;
-          }[];
-        }
-      | {
-          Effects: {
-            ChangeValuePerSelector: number;
-            ContextualActionNeed: EContextualActionNeeds;
-            Type: EContextualActionEffectType;
-          }[];
-          Need: EContextualActionNeeds;
-          NodeType: EContextualActionNodeType;
-          Preconditions: {
-            IsTargetWeather: boolean;
-            ShouldBeActive: boolean;
-            Type: EContextualActionPreconditionType;
-            Weather: EWeather[];
-          }[];
-          RandomSelectorNodes: (
-            | {
-                Effects: string;
-                NodeType: EContextualActionNodeType;
-                Preconditions: string;
-                SequentialSelectorNodes: (
-                  | {
-                      AnimationData: {
-                        MontagePath: string;
-                        MontageSection: string;
-                      }[];
-                      CanInteractWithPlayer: boolean;
-                      Effects: string;
-                      IsValidForQuestDialog: boolean;
-                      NodeType: EContextualActionNodeType;
-                      Preconditions: string;
-                      ShouldDisableDialogAnimations: boolean;
-                      ShouldPlayerCrouchDuringDialog: boolean;
-                    }
-                  | {
-                      Effects: string;
-                      NodeType: EContextualActionNodeType;
-                      Preconditions: string;
-                      RandomSelectorNodes: {
-                        AnimationData: {
-                          MontagePath: string;
-                          MontageSection: string;
-                        }[];
-                        CanInteractWithPlayer: boolean;
-                        Effects: string;
-                        IsValidForQuestDialog: boolean;
-                        NodeType: EContextualActionNodeType;
-                        Preconditions: string;
-                        ShouldDisableDialogAnimations: boolean;
-                        ShouldPlayerCrouchDuringDialog: boolean;
-                      }[];
-                      Repetitions: ERepetitions;
-                      RepetitionsCount: number;
-                      Weights: {
-                        Weight: number;
-                      }[];
-                    }
-                )[];
-              }
-            | {
-                Effects: string;
-                NodeType: EContextualActionNodeType;
-                Preconditions: {
-                  ItemPrototypeSID: string;
-                  Type: EContextualActionPreconditionType;
-                }[];
-                SequentialSelectorNodes: (
-                  | {
-                      AnimationData: {
-                        MontagePath: string;
-                        MontageSection: string;
-                      }[];
-                      CanInteractWithPlayer: boolean;
-                      Effects: string;
-                      IsValidForQuestDialog: boolean;
-                      NodeType: EContextualActionNodeType;
-                      Preconditions: string;
-                      ShouldDisableDialogAnimations: boolean;
-                      ShouldPlayerCrouchDuringDialog: boolean;
-                    }
-                  | {
-                      Effects: string;
-                      NodeType: EContextualActionNodeType;
-                      Preconditions: string;
-                      RandomSelectorNodes: {
-                        AnimationData: {
-                          MontagePath: string;
-                          MontageSection: string;
-                        }[];
-                        CanInteractWithPlayer: boolean;
-                        Effects: string;
-                        IsValidForQuestDialog: boolean;
-                        NodeType: EContextualActionNodeType;
-                        Preconditions: string;
-                        ShouldDisableDialogAnimations: boolean;
-                        ShouldPlayerCrouchDuringDialog: boolean;
-                      }[];
-                      Repetitions: ERepetitions;
-                      RepetitionsCount: number;
-                      Weights: {
-                        Weight: number;
-                      }[];
-                    }
-                )[];
-              }
-          )[];
-          Repetitions: ERepetitions;
-          RepetitionsCount: number;
-          Weights: {
-            Weight: number;
-          }[];
-        }
-    )[];
-    Effects: string;
-    Interrupt: {
-      AnimationData: {
-        MontagePath: string;
-        MontageSection: string;
-      }[];
-      CanInteractWithPlayer: boolean;
-      Effects: string;
-      IsValidForQuestDialog: boolean;
-      NodeType: EContextualActionNodeType;
-      Preconditions: string;
-      ShouldDisableDialogAnimations: boolean;
-      ShouldPlayerCrouchDuringDialog: boolean;
-    };
-    IsValidForQuestDialog: boolean;
-    NodeType: EContextualActionNodeType;
-    Preconditions: string;
-    RandomSelectorNodes: (
-      | {
-          AnimationData: {
-            MontagePath: string;
-            MontageSection: string;
-          }[];
-          CanInteractWithPlayer: boolean;
-          Effects: string;
-          Interrupt: {
-            AnimationData: {
-              MontagePath: string;
-              MontageSection: string;
-            }[];
-            CanInteractWithPlayer: boolean;
-            Effects: string;
-            IsValidForQuestDialog: boolean;
-            NodeType: EContextualActionNodeType;
-            Preconditions: string;
-            ShouldDisableDialogAnimations: boolean;
-            ShouldPlayerCrouchDuringDialog: boolean;
-          };
-          IsValidForQuestDialog: boolean;
-          NodeType: EContextualActionNodeType;
-          Preconditions: string;
-          ShouldDisableDialogAnimations: boolean;
-          ShouldPlayerCrouchDuringDialog: boolean;
-        }
-      | {
-          AnimationData: {
-            MontagePath: string;
-            MontageSection: string;
-          }[];
-          CanInteractWithPlayer: boolean;
-          Effects: string;
-          IsValidForQuestDialog: boolean;
-          NodeType: EContextualActionNodeType;
-          Preconditions: string;
-          ShouldDisableDialogAnimations: boolean;
-          ShouldPlayerCrouchDuringDialog: boolean;
-        }
-    )[];
-    Repetitions: ERepetitions;
-    RepetitionsCount: number;
-    SequentialSelectorNodes: (
-      | {
-          AnimationData: {
-            MontagePath: string;
-            MontageSection: string;
-          }[];
-          CanInteractWithPlayer: boolean;
-          ConditionalSelectorNodes: (
-            | {
-                Effects: {
-                  ChangeValuePerSelector: number;
-                  ContextualActionNeed: EContextualActionNeeds;
-                  Type: EContextualActionEffectType;
-                }[];
-                Need: EContextualActionNeeds;
-                NodeType: EContextualActionNodeType;
-                Preconditions: string;
-                RandomSelectorNodes: {
-                  AnimationData: {
-                    MontagePath: string;
-                    MontageSection: string;
-                  }[];
-                  CanInteractWithPlayer: boolean;
-                  Effects: string;
-                  IsValidForQuestDialog: boolean;
-                  NodeType: EContextualActionNodeType;
-                  Preconditions: string;
-                  ShouldDisableDialogAnimations: boolean;
-                  ShouldPlayerCrouchDuringDialog: boolean;
-                }[];
-                Repetitions: ERepetitions;
-                RepetitionsCount: number;
-                Weights: {
-                  Weight: number;
-                }[];
-              }
-            | {
-                Effects: {
-                  ChangeValuePerSelector: number;
-                  ContextualActionNeed: EContextualActionNeeds;
-                  Type: EContextualActionEffectType;
-                }[];
-                Need: EContextualActionNeeds;
-                NodeType: EContextualActionNodeType;
-                Preconditions: string;
-                SequentialSelectorNodes: (
-                  | {
-                      AnimationData: {
-                        MontagePath: string;
-                        MontageSection: string;
-                      }[];
-                      CanInteractWithPlayer: boolean;
-                      Effects: string;
-                      IsValidForQuestDialog: boolean;
-                      NodeType: EContextualActionNodeType;
-                      Preconditions: string;
-                      ShouldDisableDialogAnimations: boolean;
-                      ShouldPlayerCrouchDuringDialog: boolean;
-                    }
-                  | {
-                      Effects: string;
-                      NodeType: EContextualActionNodeType;
-                      Preconditions: string;
-                      RandomSelectorNodes: {
-                        AnimationData: {
-                          MontagePath: string;
-                          MontageSection: string;
-                        }[];
-                        CanInteractWithPlayer: boolean;
-                        Effects: string;
-                        IsValidForQuestDialog: boolean;
-                        NodeType: EContextualActionNodeType;
-                        Preconditions: string;
-                        ShouldDisableDialogAnimations: boolean;
-                        ShouldPlayerCrouchDuringDialog: boolean;
-                      }[];
-                      Repetitions: ERepetitions;
-                      RepetitionsCount: number;
-                      Weights: {
-                        Weight: number;
-                      }[];
-                    }
-                )[];
-              }
-            | {
-                Effects: {
-                  ChangeValuePerSelector: number;
-                  ContextualActionNeed: EContextualActionNeeds;
-                  Type: EContextualActionEffectType;
-                }[];
-                Need: EContextualActionNeeds;
-                NodeType: EContextualActionNodeType;
-                Preconditions: {
-                  IsTargetWeather: boolean;
-                  ShouldBeActive: boolean;
-                  Type: EContextualActionPreconditionType;
-                  Weather: EWeather[];
-                }[];
-                RandomSelectorNodes: {
-                  Effects: string;
-                  NodeType: EContextualActionNodeType;
-                  Preconditions: string;
-                  SequentialSelectorNodes: (
-                    | {
-                        AnimationData: {
-                          MontagePath: string;
-                          MontageSection: string;
-                        }[];
-                        CanInteractWithPlayer: boolean;
-                        Effects: string;
-                        IsValidForQuestDialog: boolean;
-                        NodeType: EContextualActionNodeType;
-                        Preconditions: string;
-                        ShouldDisableDialogAnimations: boolean;
-                        ShouldPlayerCrouchDuringDialog: boolean;
-                      }
-                    | {
-                        Effects: string;
-                        NodeType: EContextualActionNodeType;
-                        Preconditions: string;
-                        RandomSelectorNodes: {
-                          AnimationData: {
-                            MontagePath: string;
-                            MontageSection: string;
-                          }[];
-                          CanInteractWithPlayer: boolean;
-                          Effects: string;
-                          IsValidForQuestDialog: boolean;
-                          NodeType: EContextualActionNodeType;
-                          Preconditions: string;
-                          ShouldDisableDialogAnimations: boolean;
-                          ShouldPlayerCrouchDuringDialog: boolean;
-                        }[];
-                        Repetitions: ERepetitions;
-                        RepetitionsCount: number;
-                        Weights: {
-                          Weight: number;
-                        }[];
-                      }
-                  )[];
-                }[];
-                Repetitions: ERepetitions;
-                RepetitionsCount: number;
-                Weights: {
-                  Weight: number;
-                }[];
-              }
-          )[];
-          Effects: string;
-          IsValidForQuestDialog: boolean;
-          NodeType: EContextualActionNodeType;
-          Preconditions: string;
-          RandomSelectorNodes: {
-            AnimationData: {
-              MontagePath: string;
-              MontageSection: string;
-            }[];
-            CanInteractWithPlayer: boolean;
-            Effects: string;
-            IsValidForQuestDialog: boolean;
-            NodeType: EContextualActionNodeType;
-            Preconditions: string;
-            ShouldDisableDialogAnimations: boolean;
-            ShouldPlayerCrouchDuringDialog: boolean;
-          }[];
-          Repetitions: ERepetitions;
-          RepetitionsCount: number;
-          ShouldDisableDialogAnimations: boolean;
-          ShouldPlayerCrouchDuringDialog: boolean;
-          Weights: {
-            Weight: number;
-          }[];
-        }
-      | {
-          AnimationData: {
-            MontagePath: string;
-            MontageSection: string;
-          }[];
-          CanInteractWithPlayer: boolean;
-          Effects: string;
-          IsValidForQuestDialog: boolean;
-          NodeType: EContextualActionNodeType;
-          Preconditions: string;
-          ShouldDisableDialogAnimations: boolean;
-          ShouldPlayerCrouchDuringDialog: boolean;
-        }
-    )[];
-    ShouldDisableDialogAnimations: boolean;
-    ShouldPlayerCrouchDuringDialog: boolean;
-    Weights: {
-      Weight: number;
-    }[];
-  };
+  Execute: ContextualAction;
   Exit: string;
   Interrupt: string;
   NodePrototypeVersion: number;
@@ -7074,21 +2047,16 @@ export type DestructibleObjectPrototype = GetStructType<{
   ObjectPhaseSettings: {
     DamageDestroyThreshold: number;
     DamageIgnoranceThreshold: number;
-    DestructibleActions: (
-      | {
-          ActionCompletionDelay: number;
-          ActionType: EDestructionActionType;
-          AssetOptions: string;
-        }
-      | {
-          ActionCompletionDelay: number;
-          ActionType: EDestructionActionType;
-          AssetOptions: {
+    DestructibleActions: {
+      ActionCompletionDelay: number;
+      ActionType: EDestructionActionType;
+      AssetOptions:
+        | string
+        | {
             AssetPath: string;
             AssetWeight: number;
           }[];
-        }
-    )[];
+    }[];
     IgnoredDamageTypes: EDamageType[];
   }[];
   OriginalMesh: string;
@@ -7197,42 +2165,28 @@ export type DialogPrototype = GetStructType<{
   BlendExpForEaseInOut: number;
   BrokenGameDataFilter: EBrokenGameDataFilter;
   CanBeInterrupted: boolean;
-  Conditions: Condition[];
+  Conditions: Conditions;
   DialogActionParam: string;
   DialogActions: string;
-  DialogAnswerActions: (
-    | {
-        ChangeValueMode: EChangeValueMode;
-        ConsumablePrototypeSID: {
-          VariableType: EGlobalVariableType;
-          VariableValue: string;
-        };
-        DialogAction: EDialogAction;
-        DialogActionParam: {
-          VariableType: EGlobalVariableType;
-          VariableValue: number;
-        };
-        GlobalVariablePrototypeSID: string;
-        ItemsCount: {
-          VariableType: EGlobalVariableType;
-          VariableValue: number;
-        };
-        VariableValue: number;
-        WithEquipped: boolean;
-      }
-    | {
-        DialogAction: EDialogAction;
-        DialogActionParam: {
-          VariableType: EGlobalVariableType;
-          VariableValue: string;
-        };
-        ItemsCount: {
-          VariableType: EGlobalVariableType;
-          VariableValue: number;
-        };
-        WithEquipped: boolean;
-      }
-  )[];
+  DialogAnswerActions: {
+    ChangeValueMode: EChangeValueMode;
+    ConsumablePrototypeSID: {
+      VariableType: EGlobalVariableType;
+      VariableValue: string;
+    };
+    DialogAction: EDialogAction;
+    DialogActionParam: {
+      VariableType: EGlobalVariableType;
+      VariableValue: number;
+    };
+    GlobalVariablePrototypeSID: string;
+    ItemsCount: {
+      VariableType: EGlobalVariableType;
+      VariableValue: number;
+    };
+    VariableValue: number;
+    WithEquipped: boolean;
+  }[];
   DialogChainPrototypeSID: string;
   DialogMemberIndex: number;
   DialogMemberName: string;
@@ -7254,7 +2208,7 @@ export type DialogPrototype = GetStructType<{
   NextDialogOptions: {
     AnswerTo: number;
     AvailableFromStart: boolean;
-    Conditions: Condition[];
+    Conditions: Conditions;
     ExcludeBy: string;
     IncludeBy: string;
     MainReply: boolean;
@@ -7275,7 +2229,7 @@ export type DialogPrototype = GetStructType<{
   SpeechDuration: number;
   TargetLocation: string;
   Text: string;
-  TopicAvailabilityConditions: Condition[];
+  TopicAvailabilityConditions: Conditions;
   Unskippable: boolean;
   VisibleOnFailedCondition: boolean;
   VoiceModulatorPrototypeID: string;
@@ -8100,81 +3054,31 @@ export type FlashlightPrototype = GetStructType<{
   PathToOuterRadiusCurve: string;
   RadiusChangeSpeed: number;
   SID: string;
-  SocketNamesMeshes: (
-    | {
-        AdditionalMeshes: string;
-        MeshOffsetParams: {
-          OffsetRotator: Rot;
-          OffsetVector: Vec3;
-        };
-        MeshPath: string;
-        RelatedMeshes: {
-          RelatedMeshAsset: string;
-        };
-        SocketName: string;
-        SpotlightOffsetParams: {
-          OffsetRotator: Rot;
-          OffsetVector: Vec3;
-          SocketName: string;
-        };
-      }
-    | {
-        AdditionalMeshes: {
+  SocketNamesMeshes: {
+    AdditionalMeshes:
+      | string
+      | {
           MeshPath: string;
           OffsetRotator: Rot;
           OffsetVector: Vec3;
         }[];
-        MeshOffsetParams: {
-          OffsetRotator: Rot;
-          OffsetVector: Vec3;
-        };
-        MeshPath: string;
-        RelatedMeshes: string[];
-        SocketName: string;
-        SpotlightOffsetParams: {
-          OffsetRotator: Rot;
-          OffsetVector: Vec3;
-          SocketName: string;
-        };
-      }
-    | {
-        AdditionalMeshes: {
-          MeshPath: string;
-          OffsetRotator: Rot;
-          OffsetVector: Vec3;
-        }[];
-        MeshOffsetParams: {
-          OffsetRotator: Rot;
-          OffsetVector: Vec3;
-        };
-        MeshPath: string;
-        RelatedMeshes: {
+    MeshOffsetParams: {
+      OffsetRotator: Rot;
+      OffsetVector: Vec3;
+    };
+    MeshPath: string;
+    RelatedMeshes:
+      | {
           RelatedMeshAsset: string;
-        };
-        SocketName: string;
-        SpotlightOffsetParams: {
-          OffsetRotator: Rot;
-          OffsetVector: Vec3;
-          SocketName: string;
-        };
-      }
-    | {
-        MeshOffsetParams: {
-          OffsetRotator: Rot;
-          OffsetVector: Vec3;
-        };
-        MeshPath: string;
-        RelatedMeshes: {
-          RelatedMeshAsset: string;
-        };
-        SocketName: string;
-        SpotlightOffsetParams: {
-          OffsetRotator: Rot;
-          OffsetVector: Vec3;
-          SocketName: string;
-        };
-      }
-  )[];
+        }
+      | string[];
+    SocketName: string;
+    SpotlightOffsetParams: {
+      OffsetRotator: Rot;
+      OffsetVector: Vec3;
+      SocketName: string;
+    };
+  }[];
 }>;
 
 export type FloatProviderPrototype = GetStructType<{
@@ -8526,91 +3430,20 @@ export type HearingSensorPrototype = GetStructType<{
 }>;
 
 export type ImpactPhysicalMaterialPrototype = GetStructType<{
-  ImpactPhysicalMaterialsResources: (
-    | {
-        AdditionalRoll: number;
-        bRandomizeRoll: boolean;
-        ImpactParticle: string;
-        ImpactParticleSize: number;
-        ImpactSurfaceDecals: string[];
-        ImpactSurfaceDecalSize: Vec3;
-        MaterialCoefficient: number;
-        PhysicalMaterialType: EPhysicalMaterialType;
-      }
-    | {
-        ImpactParticle: string;
-        ImpactParticleSize: number;
-        ImpactSurfaceDecals: string[];
-        ImpactSurfaceDecalSize: Vec3;
-        MaterialCoefficient: number;
-        PhysicalMaterialType: EPhysicalMaterialType;
-      }
-    | {
-        ImpactParticle: string;
-        ImpactParticleSize: number;
-        ImpactSurfaceDecals: {
-          "0": string;
-          "1": string;
-          "2": string;
-          "3": string;
-          "4": string;
-        };
-        ImpactSurfaceDecalSize: Vec3;
-        MaterialCoefficient: number;
-        PhysicalMaterialType: EPhysicalMaterialType;
-      }
-    | {
-        ImpactParticle: string;
-        ImpactParticleSize: number;
-        ImpactSurfaceDecals: {
-          "0": string;
-          "1": string;
-          "2": string;
-        };
-        ImpactSurfaceDecalSize: Vec3;
-        MaterialCoefficient: number;
-        PhysicalMaterialType: EPhysicalMaterialType;
-      }
-    | {
-        ImpactParticle: string;
-        ImpactParticleSize: number;
-        ImpactSurfaceDecals: {};
-        ImpactSurfaceDecalSize: Vec3;
-        MaterialCoefficient: number;
-        PhysicalMaterialType: EPhysicalMaterialType;
-      }
-    | {
-        ImpactParticle: string;
-        ImpactSurfaceDecals: {};
-        ImpactSurfaceDecalSize: Vec3;
-        MaterialCoefficient: number;
-        PhysicalMaterialType: EPhysicalMaterialType;
-      }
-    | {
-        bRandomizeRoll: boolean;
-        ImpactParticle: string;
-        ImpactParticleSize: number;
-        ImpactSurfaceDecals: string[];
-        ImpactSurfaceDecalSize: Vec3;
-        MaterialCoefficient: number;
-        PhysicalMaterialType: EPhysicalMaterialType;
-      }
-    | {
-        bRandomizeRoll: boolean;
-        ImpactParticle: string;
-        ImpactParticleSize: number;
-        ImpactSurfaceDecals: {
-          "0": string;
-          "1": string;
-          "2": string;
-          "3": string;
-          "4": string;
-        };
-        ImpactSurfaceDecalSize: Vec3;
-        MaterialCoefficient: number;
-        PhysicalMaterialType: EPhysicalMaterialType;
-      }
-  )[];
+  ImpactPhysicalMaterialsResources: {
+    AdditionalRoll: number;
+    ImpactParticle: string;
+
+    ImpactParticleSize: number;
+
+    ImpactSurfaceDecalSize: Vec3;
+    ImpactSurfaceDecals: string[];
+
+    MaterialCoefficient: number;
+
+    PhysicalMaterialType: EPhysicalMaterialType;
+    bRandomizeRoll: boolean;
+  }[];
   SID: string;
 }>;
 
@@ -8863,182 +3696,110 @@ export type LR_MeshGeneratorPrototype = GetStructType<{
     Damage: {
       Distribution: ECustomDataDistribution;
       MaterialGroup: string;
-      Variations: (
-        | {
-            VariationIndex: number;
-            Weight: number;
-          }
-        | {
-            bBlockedInVisualizer: boolean;
-            VariationIndex: number;
-            Weight: number;
-          }
-      )[];
+      Variations: {
+        VariationIndex: number;
+        Weight: number;
+        bBlockedInVisualizer: boolean;
+      }[];
     };
     DamageIndex_01: {
       Distribution: ECustomDataDistribution;
       MaterialGroup: string;
-      Variations: (
-        | {
-            VariationIndex: number;
-            Weight: number;
-          }
-        | {
-            bBlockedInVisualizer: boolean;
-            VariationIndex: number;
-            Weight: number;
-          }
-      )[];
+      Variations: {
+        VariationIndex: number;
+        Weight: number;
+        bBlockedInVisualizer: boolean;
+      }[];
     };
     DamageIndex_02: {
       Distribution: ECustomDataDistribution;
       MaterialGroup: string;
-      Variations: (
-        | {
-            VariationIndex: number;
-            Weight: number;
-          }
-        | {
-            bBlockedInVisualizer: boolean;
-            VariationIndex: number;
-            Weight: number;
-          }
-      )[];
+      Variations: {
+        VariationIndex: number;
+        Weight: number;
+        bBlockedInVisualizer: boolean;
+      }[];
     };
     DamagePoss_01: {
       Distribution: ECustomDataDistribution;
       MaterialGroup: string;
-      Variations: (
-        | {
-            VariationIndex: number;
-            Weight: number;
-          }
-        | {
-            bBlockedInVisualizer: boolean;
-            VariationIndex: number;
-            Weight: number;
-          }
-      )[];
+      Variations: {
+        VariationIndex: number;
+        Weight: number;
+        bBlockedInVisualizer: boolean;
+      }[];
     };
     DamagePoss_02: {
       Distribution: ECustomDataDistribution;
       MaterialGroup: string;
-      Variations: (
-        | {
-            VariationIndex: number;
-            Weight: number;
-          }
-        | {
-            bBlockedInVisualizer: boolean;
-            VariationIndex: number;
-            Weight: number;
-          }
-      )[];
+      Variations: {
+        VariationIndex: number;
+        Weight: number;
+        bBlockedInVisualizer: boolean;
+      }[];
     };
     DamageRotation_Index_01: {
       Distribution: ECustomDataDistribution;
       MaterialGroup: string;
-      Variations: (
-        | {
-            VariationIndex: number;
-            Weight: number;
-          }
-        | {
-            bBlockedInVisualizer: boolean;
-            VariationIndex: number;
-            Weight: number;
-          }
-      )[];
+      Variations: {
+        VariationIndex: number;
+        Weight: number;
+        bBlockedInVisualizer: boolean;
+      }[];
     };
     DamageRotation_Index_02: {
       Distribution: ECustomDataDistribution;
       MaterialGroup: string;
-      Variations: (
-        | {
-            VariationIndex: number;
-            Weight: number;
-          }
-        | {
-            bBlockedInVisualizer: boolean;
-            VariationIndex: number;
-            Weight: number;
-          }
-      )[];
+      Variations: {
+        VariationIndex: number;
+        Weight: number;
+        bBlockedInVisualizer: boolean;
+      }[];
     };
     DamageScale_Index_01: {
       Distribution: ECustomDataDistribution;
       MaterialGroup: string;
-      Variations: (
-        | {
-            VariationIndex: number;
-            Weight: number;
-          }
-        | {
-            bBlockedInVisualizer: boolean;
-            VariationIndex: number;
-            Weight: number;
-          }
-      )[];
+      Variations: {
+        VariationIndex: number;
+        Weight: number;
+        bBlockedInVisualizer: boolean;
+      }[];
     };
     DamageScale_Index_02: {
       Distribution: ECustomDataDistribution;
       MaterialGroup: string;
-      Variations: (
-        | {
-            VariationIndex: number;
-            Weight: number;
-          }
-        | {
-            bBlockedInVisualizer: boolean;
-            VariationIndex: number;
-            Weight: number;
-          }
-      )[];
+      Variations: {
+        VariationIndex: number;
+        Weight: number;
+        bBlockedInVisualizer: boolean;
+      }[];
     };
     DefectIntensity_Index: {
       Distribution: ECustomDataDistribution;
       MaterialGroup: string;
-      Variations: (
-        | {
-            VariationIndex: number;
-            Weight: number;
-          }
-        | {
-            bBlockedInVisualizer: boolean;
-            VariationIndex: number;
-            Weight: number;
-          }
-      )[];
+      Variations: {
+        VariationIndex: number;
+        Weight: number;
+        bBlockedInVisualizer: boolean;
+      }[];
     };
     Defects: {
       Distribution: ECustomDataDistribution;
       MaterialGroup: string;
-      Variations: (
-        | {
-            VariationIndex: number;
-            Weight: number;
-          }
-        | {
-            bBlockedInVisualizer: boolean;
-            VariationIndex: number;
-            Weight: number;
-          }
-      )[];
+      Variations: {
+        VariationIndex: number;
+        Weight: number;
+        bBlockedInVisualizer: boolean;
+      }[];
     };
     Dirt: {
       Distribution: ECustomDataDistribution;
       MaterialGroup: string;
-      Variations: (
-        | {
-            VariationIndex: number;
-            Weight: number;
-          }
-        | {
-            bBlockedInVisualizer: boolean;
-            VariationIndex: number;
-            Weight: number;
-          }
-      )[];
+      Variations: {
+        VariationIndex: number;
+        Weight: number;
+        bBlockedInVisualizer: boolean;
+      }[];
     };
     Dirt_Intensity: {
       Distribution: ECustomDataDistribution;
@@ -9060,17 +3821,11 @@ export type LR_MeshGeneratorPrototype = GetStructType<{
     TeethColor: {
       Distribution: ECustomDataDistribution;
       MaterialGroup: string;
-      Variations: (
-        | {
-            VariationIndex: number;
-            Weight: number;
-          }
-        | {
-            bBlockedInVisualizer: boolean;
-            VariationIndex: number;
-            Weight: number;
-          }
-      )[];
+      Variations: {
+        VariationIndex: number;
+        Weight: number;
+        bBlockedInVisualizer: boolean;
+      }[];
     };
   };
   Groom: {
@@ -9184,182 +3939,111 @@ export type MeshGeneratorPrototype = GetStructType<{
     Damage: {
       Distribution: ECustomDataDistribution;
       MaterialGroup: string;
-      Variations: (
-        | {
-            VariationIndex: number;
-            Weight: number;
-          }
-        | {
-            bBlockedInVisualizer: boolean;
-            VariationIndex: number;
-            Weight: number;
-          }
-      )[];
+      Variations: {
+        VariationIndex: number;
+        Weight: number;
+        bBlockedInVisualizer: boolean;
+      }[];
     };
     DamageIndex_01: {
       Distribution: ECustomDataDistribution;
       MaterialGroup: string;
-      Variations: (
-        | {
-            VariationIndex: number;
-            Weight: number;
-          }
-        | {
-            bBlockedInVisualizer: boolean;
-            VariationIndex: number;
-            Weight: number;
-          }
-      )[];
+      Variations: {
+        VariationIndex: number;
+        Weight: number;
+        bBlockedInVisualizer: boolean;
+      }[];
     };
     DamageIndex_02: {
       Distribution: ECustomDataDistribution;
       MaterialGroup: string;
-      Variations: (
-        | {
-            VariationIndex: number;
-            Weight: number;
-          }
-        | {
-            bBlockedInVisualizer: boolean;
-            VariationIndex: number;
-            Weight: number;
-          }
-      )[];
+      Variations: {
+        VariationIndex: number;
+        Weight: number;
+        bBlockedInVisualizer: boolean;
+      }[];
     };
     DamagePoss_01: {
       Distribution: ECustomDataDistribution;
       MaterialGroup: string;
-      Variations: (
-        | {
-            VariationIndex: number;
-            Weight: number;
-          }
-        | {
-            bBlockedInVisualizer: boolean;
-            VariationIndex: number;
-            Weight: number;
-          }
-      )[];
+      Variations: {
+        VariationIndex: number;
+        Weight: number;
+        bBlockedInVisualizer: boolean;
+      }[];
     };
     DamagePoss_02: {
       Distribution: ECustomDataDistribution;
       MaterialGroup: string;
-      Variations: (
-        | {
-            VariationIndex: number;
-            Weight: number;
-          }
-        | {
-            bBlockedInVisualizer: boolean;
-            VariationIndex: number;
-            Weight: number;
-          }
-      )[];
+      Variations: {
+        VariationIndex: number;
+        Weight: number;
+        bBlockedInVisualizer: boolean;
+      }[];
     };
     DamageRotation_Index_01: {
       Distribution: ECustomDataDistribution;
       MaterialGroup: string;
-      Variations: (
-        | {
-            VariationIndex: number;
-            Weight: number;
-          }
-        | {
-            bBlockedInVisualizer: boolean;
-            VariationIndex: number;
-            Weight: number;
-          }
-      )[];
+      Variations: {
+        VariationIndex: number;
+        Weight: number;
+        bBlockedInVisualizer: boolean;
+      }[];
     };
     DamageRotation_Index_02: {
       Distribution: ECustomDataDistribution;
       MaterialGroup: string;
-      Variations: (
-        | {
-            VariationIndex: number;
-            Weight: number;
-          }
-        | {
-            bBlockedInVisualizer: boolean;
-            VariationIndex: number;
-            Weight: number;
-          }
-      )[];
+      Variations: {
+        VariationIndex: number;
+        Weight: number;
+        bBlockedInVisualizer: boolean;
+      }[];
     };
     DamageScale_Index_01: {
       Distribution: ECustomDataDistribution;
       MaterialGroup: string;
-      Variations: (
-        | {
-            VariationIndex: number;
-            Weight: number;
-          }
-        | {
-            bBlockedInVisualizer: boolean;
-            VariationIndex: number;
-            Weight: number;
-          }
-      )[];
+      Variations: {
+        VariationIndex: number;
+        Weight: number;
+        bBlockedInVisualizer: boolean;
+      }[];
     };
     DamageScale_Index_02: {
       Distribution: ECustomDataDistribution;
       MaterialGroup: string;
-      Variations: (
-        | {
-            VariationIndex: number;
-            Weight: number;
-          }
-        | {
-            bBlockedInVisualizer: boolean;
-            VariationIndex: number;
-            Weight: number;
-          }
-      )[];
+      Variations: {
+        VariationIndex: number;
+        Weight: number;
+        bBlockedInVisualizer: boolean;
+      }[];
     };
     DefectIntensity_Index: {
       Distribution: ECustomDataDistribution;
       MaterialGroup: string;
-      Variations: (
-        | {
-            VariationIndex: number;
-            Weight: number;
-          }
-        | {
-            bBlockedInVisualizer: boolean;
-            VariationIndex: number;
-            Weight: number;
-          }
-      )[];
+      Variations: {
+        VariationIndex: number;
+        Weight: number;
+        bBlockedInVisualizer: boolean;
+      }[];
     };
     Defects: {
       Distribution: ECustomDataDistribution;
       MaterialGroup: string;
-      Variations: (
-        | {
-            VariationIndex: number;
-            Weight: number;
-          }
-        | {
-            bBlockedInVisualizer: boolean;
-            VariationIndex: number;
-            Weight: number;
-          }
-      )[];
+      Variations: {
+        VariationIndex: number;
+        Weight: number;
+        bBlockedInVisualizer: boolean;
+      }[];
     };
     Dirt: {
       Distribution: ECustomDataDistribution;
       MaterialGroup: string;
-      Variations: (
-        | {
-            VariationIndex: number;
-            Weight: number;
-          }
-        | {
-            bBlockedInVisualizer: boolean;
-            VariationIndex: number;
-            Weight: number;
-          }
-      )[];
+      Variations: {
+        VariationIndex: number;
+
+        Weight: number;
+        bBlockedInVisualizer: boolean;
+      }[];
     };
     Dirt_Intensity: {
       Distribution: ECustomDataDistribution;
@@ -9381,17 +4065,11 @@ export type MeshGeneratorPrototype = GetStructType<{
     TeethColor: {
       Distribution: ECustomDataDistribution;
       MaterialGroup: string;
-      Variations: (
-        | {
-            VariationIndex: number;
-            Weight: number;
-          }
-        | {
-            bBlockedInVisualizer: boolean;
-            VariationIndex: number;
-            Weight: number;
-          }
-      )[];
+      Variations: {
+        VariationIndex: number;
+        Weight: number;
+        bBlockedInVisualizer: boolean;
+      }[];
     };
   };
   Groom: {
@@ -9475,33 +4153,14 @@ export type MoneyPrototype = GetStructType<{
 export type MovementFXPrototype = GetStructType<{
   BackFootSoundEvent: string;
   DashVFXPath: string;
-  FootstepFX: (
-    | (
-        | {
-            BackFootDecal: string;
-            FrontFootDecal: string;
-            ImpactParticle: string;
-            ImpactParticleRunSprint: string;
-            ImpactSurfaceDecalSize: Vec3;
-            PhysicalMaterialType: EPhysicalMaterialType;
-          }
-        | {
-            FrontFootDecal: string;
-            ImpactParticle: string;
-            ImpactParticleRunSprint: string;
-            ImpactSurfaceDecalSize: Vec3;
-            PhysicalMaterialType: EPhysicalMaterialType;
-          }
-      )[]
-    | {
-        BackFootDecal: string;
-        FrontFootDecal: string;
-        ImpactParticle: string;
-        ImpactParticleRunSprint: string;
-        ImpactSurfaceDecalSize: Vec3;
-        PhysicalMaterialType: EPhysicalMaterialType;
-      }[]
-  )[];
+  FootstepFX: {
+    BackFootDecal: string;
+    FrontFootDecal: string;
+    ImpactParticle: string;
+    ImpactParticleRunSprint: string;
+    ImpactSurfaceDecalSize: Vec3;
+    PhysicalMaterialType: EPhysicalMaterialType;
+  }[][];
   FrontFootSoundEvent: string;
   ID: number;
   InteractLadderMetal: string;
@@ -9641,18 +4300,6 @@ export type NPCNeedsPresetPrototype = GetStructType<{
           MinSquadSize: number;
         };
       }
-    | {
-        IdentificationTag: string;
-        OnCompleted: {
-          NeedTag: string;
-          SatisfactionAmount: number;
-        }[];
-        ResolverFactory: string;
-        ReuniteWithLairResolverFactory: {
-          MaxSquadSize: number;
-          MinSquadSize: number;
-        };
-      }
   )[];
   SID: string;
 }>;
@@ -9668,34 +4315,22 @@ export type NPCNightVisionSetupPrototype = GetStructType<{
     PointLightOffsetVector: Vec3;
   }[];
   SID: string;
-  SocketNamesMeshes: (
-    | {
-        HelmetAttachmentMesh: string;
-        HelmetAttachmentOffsetRotator: Rot;
-        HelmetAttachmentOffsetVector: Vec3;
-        MeshOffsetParams: {
-          MeshPath: string;
-          OffsetRotator: Rot;
-          OffsetVector: Vec3;
-        }[];
-        RelatedMeshes: string[];
-        SocketName: string;
-      }
-    | {
-        HelmetAttachmentMesh: string;
-        HelmetAttachmentOffsetRotator: Rot;
-        HelmetAttachmentOffsetVector: Vec3;
-        MeshOffsetParams: {
-          MeshPath: string;
-          OffsetRotator: Rot;
-          OffsetVector: Vec3;
-        }[];
-        RelatedMeshes: {
+  SocketNamesMeshes: {
+    HelmetAttachmentMesh: string;
+    HelmetAttachmentOffsetRotator: Rot;
+    HelmetAttachmentOffsetVector: Vec3;
+    MeshOffsetParams: {
+      MeshPath: string;
+      OffsetRotator: Rot;
+      OffsetVector: Vec3;
+    }[];
+    RelatedMeshes:
+      | string[]
+      | {
           RelatedMeshAsset: string;
         };
-        SocketName: string;
-      }
-  )[];
+    SocketName: string;
+  }[];
   SpotlightBrightnessOverride: number;
 }>;
 
@@ -9967,42 +4602,25 @@ export type ObjHoldBreathParamsPrototype = GetStructType<{
   HoldBreathMaxStamina: number;
   HoldBreathRegenPerSecond: string;
   HoldBreathStaminaThreshold: number;
-  PostHoldBreathParameters: (
-    | {
-        EffectPrototypeSIDs: string[];
-        Threshold: number;
-      }
-    | {
-        Threshold: number;
-      }
-  )[];
+  PostHoldBreathParameters: {
+    EffectPrototypeSIDs: string[];
+    Threshold: number;
+  }[];
   SID: string;
 }>;
 
 export type ObjOnHitParamsPrototype = GetStructType<{
-  DamageTypeEffects: (
-    | {
-        DamageType: EDamageType;
-        Effects: {
-          AccumulationTime: number;
-          EffectSID: string;
-          MaxDamage: number;
-          MaxEffectValueModifier: number;
-          MinDamage: number;
-          MinEffectValueModifier: number;
-        }[];
-      }
-    | {
-        DamageType: EDamageType;
-        Effects: {
-          EffectSID: string;
-          MaxDamage: number;
-          MaxEffectValueModifier: number;
-          MinDamage: number;
-          MinEffectValueModifier: number;
-        }[];
-      }
-  )[];
+  DamageTypeEffects: {
+    DamageType: EDamageType;
+    Effects: {
+      AccumulationTime: number;
+      EffectSID: string;
+      MaxDamage: number;
+      MaxEffectValueModifier: number;
+      MinDamage: number;
+      MinEffectValueModifier: number;
+    }[];
+  }[];
   DirectionalDamageEffects: {
     EffectSID: string;
     MaxDamage: number;
@@ -10014,6 +4632,19 @@ export type ObjOnHitParamsPrototype = GetStructType<{
 }>;
 
 export type ObjPrototype = GetStructType<{
+  AIVisionTargetParams: {
+    FriendlyTracePoints: {
+      BaseScorePerSecond: number;
+      BoneName: string;
+      Label: string;
+    }[];
+    TracePoints: {
+      BaseScorePerSecond: number;
+      BoneName: string;
+      Label: string;
+      RelativeLocation: Vec3;
+    }[];
+  };
   Abilities: Record<
     Ability,
     {
@@ -10042,19 +4673,6 @@ export type ObjPrototype = GetStructType<{
   };
   AgentType: EAgentType;
   AimAssistParamsSID: string;
-  AIVisionTargetParams: {
-    FriendlyTracePoints: {
-      BaseScorePerSecond: number;
-      BoneName: string;
-      Label: string;
-    }[];
-    TracePoints: {
-      BaseScorePerSecond: number;
-      BoneName: string;
-      Label: string;
-      RelativeLocation: Vec3;
-    }[];
-  };
   Anim: EObjAnim;
   AnomalyDetectorPrototypeSID: string;
   AnomalyRestrictionsIgnoreChance: number;
@@ -10243,16 +4861,10 @@ export type ObjPrototype = GetStructType<{
   };
   DeathHitImpulseMultiplier: number;
   DeathVelocityImpulseMultiplier: number;
-  DisableMovementWeightThreshold: (
-    | {
-        BlockingMovement: EStateTag[];
-        WeightStatus: EWeightStatus;
-      }
-    | {
-        BlockingMovement: {};
-        WeightStatus: EWeightStatus;
-      }
-  )[];
+  DisableMovementWeightThreshold: {
+    BlockingMovement: EStateTag[];
+    WeightStatus: EWeightStatus;
+  }[];
   DoorTransitionSettings: {
     Default: {
       Animation: string;
@@ -10359,8 +4971,8 @@ export type ObjPrototype = GetStructType<{
     MinlookAtTime: number;
     PerformGreetingBark: boolean;
   };
-  Icon: string;
   ID: number;
+  Icon: string;
   IgnoreDamageType: EIgnoreDamageType;
   IgnoreEmission: boolean;
   IgnoreWoundedRestriction: boolean;
@@ -10461,6 +5073,26 @@ export type ObjPrototype = GetStructType<{
   MeshGeneratorPrototypeSID: string;
   MinDialogInteractDistance: number;
   MinReactionTimeToExplosion: number;
+  MoveToEnemyActionData: {
+    BackStabSyncTag: string;
+    BecomeVisibleDistance: number;
+    Cooldown_MaxAttacksFinished: number;
+    Cooldown_MaxDuration: number;
+    Cooldown_TargetReached: number;
+    EndPathAcceprableDistance: number;
+    EndPathAcceptableDistance: number;
+    MaxActionDuration: number;
+    MaxAttacksFinished: number;
+    MaxOutOfNavmeshDistance: number;
+    MaxPotentialJumpHeight: number;
+    MovementType: EMovementBehaviour;
+    MoveToEnemySyncTag: string;
+    PathBuilderVelocities: {
+      AngularVelocity: number;
+      LinearVelocity: number;
+    }[];
+    PotentialHitPointMaxHeightDiff: number;
+  };
   MovementParams: {
     AimLookUpCoef: number;
     AimSpeedCoef: number;
@@ -10499,26 +5131,6 @@ export type ObjPrototype = GetStructType<{
   };
   MovementSensorSID: string;
   MovementVFXPrototypeSID: string;
-  MoveToEnemyActionData: {
-    BackStabSyncTag: string;
-    BecomeVisibleDistance: number;
-    Cooldown_MaxAttacksFinished: number;
-    Cooldown_MaxDuration: number;
-    Cooldown_TargetReached: number;
-    EndPathAcceprableDistance: number;
-    EndPathAcceptableDistance: number;
-    MaxActionDuration: number;
-    MaxAttacksFinished: number;
-    MaxOutOfNavmeshDistance: number;
-    MaxPotentialJumpHeight: number;
-    MovementType: EMovementBehaviour;
-    MoveToEnemySyncTag: string;
-    PathBuilderVelocities: {
-      AngularVelocity: number;
-      LinearVelocity: number;
-    }[];
-    PotentialHitPointMaxHeightDiff: number;
-  };
   MusicManagerCombatScore: number;
   MutantAmbushParameters: {
     AdditionalVisibilityTraceBones: string[];
@@ -10559,10 +5171,9 @@ export type ObjPrototype = GetStructType<{
     InterruptEscapeDelay: number;
     SquadLostFractionToEscape: string;
   };
-  NeedsPresetSID: string;
-  npc_size: number;
   NPCPrototypeSID: string;
   NPCType: ENPCType;
+  NeedsPresetSID: string;
   OfflineCombatWeight: number;
   OnHitParamsSID: string;
   PathFailedContextualAction: string;
@@ -10660,6 +5271,7 @@ export type ObjPrototype = GetStructType<{
     StartAttackMinAngleToEnemyDirection: number;
     StartAttackMinDistance: number;
   };
+  SID: string;
   SearchpointDetectorPrototypeSID: string;
   SequentialAbilities: string[];
   SequentialAbilitiesActionData: {
@@ -10705,7 +5317,6 @@ export type ObjPrototype = GetStructType<{
   ShouldHideUnequippedPrimaryWeapon: boolean;
   ShouldRenderTextureInsteadOfGroom: boolean;
   ShouldTriggerAnomalies: boolean;
-  SID: string;
   SideJumpActionData: {
     Cooldown: number;
     DamageAccumulatedToActivate: number;
@@ -10726,9 +5337,9 @@ export type ObjPrototype = GetStructType<{
     Bone: EObjSkeletalMeshTraceBone;
     BoneName: string;
   }[];
+  SleepParamsSID: string;
   SleepinessActivationDistance: number;
   SleepinessDeactivationDistance: number;
-  SleepParamsSID: string;
   SpaceRestrictorTag: string;
   SpawnPhantomParams: {
     DelayBeforeMovement: number;
@@ -10830,6 +5441,7 @@ export type ObjPrototype = GetStructType<{
   Type: EObjType;
   UnkillableByALife: boolean;
   UseGroomReplacement: boolean;
+  VFXSize: number;
   VaultingParams: {
     AboveObstaclesCheckHeight: number;
     DepthTraceRadiusModifier: number;
@@ -10857,7 +5469,6 @@ export type ObjPrototype = GetStructType<{
     WindowBackTraceHeightModifier: number;
     WindowBackTraceRadiusModifier: number;
   };
-  VFXSize: number;
   VisionScannerPrototypeSID: string;
   VitalParams: {
     DegenBleeding: number;
@@ -10906,19 +5517,12 @@ export type ObjPrototype = GetStructType<{
     }[];
     StepVFXMaxBodyWaterImmersionDepth: number;
     WaterDepthRTPC: string;
-    WaterImmersionLevels: (
-      | {
-          Effects: string[];
-          LevelSoundSwitch: string;
-          MinDepthThreshold: number;
-          WaterLevel: EWaterImmersionLevel;
-        }
-      | {
-          LevelSoundSwitch: string;
-          MinDepthThreshold: number;
-          WaterLevel: EWaterImmersionLevel;
-        }
-    )[];
+    WaterImmersionLevels: {
+      Effects: string[];
+      LevelSoundSwitch: string;
+      MinDepthThreshold: number;
+      WaterLevel: EWaterImmersionLevel;
+    }[];
   };
   WeatherParamsSID: string;
   WeightParamsSID: string;
@@ -10941,6 +5545,7 @@ export type ObjPrototype = GetStructType<{
   ZombieHearingSensorPrototypeSID: string;
   ZombieLayingIdleTime: number;
   ZombieVisionScannerPrototypeSID: string;
+  npc_size: number;
 }>;
 
 export type ObjSleepParamsPrototype = GetStructType<{
@@ -10983,33 +5588,16 @@ export type OffsetAimingBoolProviderPrototype = GetStructType<{
 
 export type PackOfItemsGroupPrototype = GetStructType<{
   ID: number;
-  PackOfItemsSettings: (
-    | {
-        Items: (
-          | {
-              ItemPrototypeSID: string;
-              MinDurability: number;
-              Weight: number;
-            }
-          | {
-              ItemPrototypeSID: string;
-              Weight: number;
-            }
-        )[];
-        MaxDurability: number;
-        MinDurability: number;
-        PlayerRank: ERank;
-      }
-    | {
-        Items: {
-          ItemPrototypeSID: string;
-          Weight: number;
-        }[];
-        MaxDurability: number;
-        MinDurability: number;
-        PlayerRank: ERank;
-      }
-  )[];
+  PackOfItemsSettings: {
+    Items: {
+      ItemPrototypeSID: string;
+      MinDurability: number;
+      Weight: number;
+    }[];
+    MaxDurability: number;
+    MinDurability: number;
+    PlayerRank: ERank;
+  }[];
   SID: string;
 }>;
 
@@ -11029,26 +5617,13 @@ export type PDATutorialPrototype = GetStructType<{
   ExclusiveGamepadType: string;
   Id: number;
   Images: string[];
-  InputMappings: (
-    | {
-        GamepadInputAction: string;
-        InputAction: string;
-        InputMappingContext: EMappingContext;
-        PCInputMappingNames: string[];
-        ShouldAnimate: boolean;
-      }
-    | {
-        InputAction: string;
-        InputMappingContext: EMappingContext;
-        PCInputMappingNames: string[];
-        ShouldAnimate: boolean;
-      }
-    | {
-        InputAction: string;
-        InputMappingContext: EMappingContext;
-        ShouldAnimate: boolean;
-      }
-  )[];
+  InputMappings: {
+    GamepadInputAction: string;
+    InputAction: string;
+    InputMappingContext: EMappingContext;
+    PCInputMappingNames: string[];
+    ShouldAnimate: boolean;
+  }[];
   ItemSIDs: string[];
   MasterDifficultyEquivalentSid: string;
   RelevantPDANoteTutorial: string;
@@ -11126,26 +5701,21 @@ export type PlayerWeaponAttributesPrototype = GetStructType<{
   AnimBlueprint: string;
   DefaultWeaponSettingsSID: string;
   DisplayBP: string;
-  ParticlesBasedOnHeating: (
-    | {
-        PostShooting: {
-          MinHeatingValueToAppear: number;
-          PFXPath: string;
-          SocketName: string;
-        };
-        Shooting: {
-          MinHeatingValueToAppear: number;
-          PFXPath: string;
-          SocketName: string;
-        };
-        VFXGroupName: string;
-      }
-    | {
-        VFXGroupName: string;
-      }
-  )[];
-  ShellShutterSocketName: string;
+  ParticlesBasedOnHeating: {
+    PostShooting: {
+      MinHeatingValueToAppear: number;
+      PFXPath: string;
+      SocketName: string;
+    };
+    Shooting: {
+      MinHeatingValueToAppear: number;
+      PFXPath: string;
+      SocketName: string;
+    };
+    VFXGroupName: string;
+  }[];
   SID: string;
+  ShellShutterSocketName: string;
 }>;
 
 export type PlayerWeaponSettingsPrototype = GetStructType<{
@@ -11425,71 +5995,17 @@ export type QuestItemPrototype = GetStructType<{
 }>;
 
 export type QuestMeshGeneratorPrototype = GetStructType<{
-  Attachments: (
-    | {
-        Attaches: {
-          BlockingBodyMeshes: string[];
-          BlockingGroomSIDs: string[];
-          BlockingSlots: string[];
-          BodyMeshSID: string;
-          Weight: number;
-        }[];
-        SlotName: string;
-      }
-    | {
-        Attaches: {
-          BlockingBodyMeshes: string[];
-          BlockingGrooms: string[];
-          BlockingGroomSIDs: string[];
-          BlockingSlots: string[];
-          BodyMeshSID: string;
-          Weight: number;
-        }[];
-        SlotName: string;
-      }
-    | {
-        Attaches: {
-          BlockingBodyMeshes: string[];
-          BlockingGrooms: string[];
-          BlockingGroomSIDs: string[];
-          BodyMeshSID: string;
-          Weight: number;
-        }[];
-        SlotName: string;
-      }
-    | {
-        Attaches: {
-          BlockingBodyMeshes: string[];
-          BlockingSlots: string[];
-          BodyMeshSID: string;
-          Weight: number;
-        }[];
-        SlotName: string;
-      }
-    | {
-        Attaches: {
-          BlockingBodyMeshes: string[];
-          BodyMeshSID: string;
-          Weight: number;
-        }[];
-        SlotName: string;
-      }
-    | {
-        Attaches: {
-          BlockingSlots: string[];
-          BodyMeshSID: string;
-          Weight: number;
-        }[];
-        SlotName: string;
-      }
-    | {
-        Attaches: {
-          BodyMeshSID: string;
-          Weight: number;
-        }[];
-        SlotName: string;
-      }
-  )[];
+  Attachments: {
+    Attaches: {
+      BlockingBodyMeshes: string[];
+      BlockingGroomSIDs: string[];
+      BlockingGrooms: string[];
+      BlockingSlots: string[];
+      BodyMeshSID: string;
+      Weight: number;
+    }[];
+    SlotName: string;
+  }[];
   CustomData: {
     MaterialGroup: string;
     Variations: {
@@ -11543,7 +6059,7 @@ export type QuestNodePrototype = GetStructType<{
   ChangeValueMode: EChangeValueMode;
   CircleRadius: number;
   CollisionChannel: number;
-  Conditions: Condition[];
+  Conditions: Conditions;
   ConsoleCommand: string;
   ContaineredQuestPrototypeSID: string;
   ContextualActionLookAtPlayerRange: number;
@@ -11921,16 +6437,11 @@ export type QuestObjPrototype = GetStructType<{
     RegenFP: number;
     RegenHP: number;
     RegenSleepDesirePoint: number;
-    StaminaDisableThresholds: (
-      | {
-          RegenerationDelay: number;
-          StateTags: EStateTag[];
-          Threshold: number;
-        }
-      | {
-          RegenerationDelay: number;
-        }
-    )[];
+    StaminaDisableThresholds: {
+      RegenerationDelay: number;
+      StateTags: EStateTag[];
+      Threshold: number;
+    }[];
   };
 }>;
 
@@ -12014,62 +6525,47 @@ export type RestrictorsPrototype = GetStructType<{
 export type SmartCoverPrototype = GetStructType<{
   SID: string;
   WeaponTypes: {
-    EnterCoverOffsets: (
-      | {
-          PerCoverTypeOffsets: string;
-          SmartCoverType: ESmartCoverType;
-        }
-      | {
-          PerCoverTypeOffsets: {
+    EnterCoverOffsets: {
+      PerCoverTypeOffsets:
+        | string
+        | {
             EnterCoverOffsetVector: string;
             EnterSide: EAvailableCoverActionsSide;
             EnterTypes: EAvailableCoverEnterTypes;
           }[];
-          SmartCoverType: ESmartCoverType;
-        }
-    )[];
-    LookFromCoverOffsets: (
-      | {
-          PerCoverTypeOffsets: string;
-          SmartCoverType: ESmartCoverType;
-        }
-      | {
-          PerCoverTypeOffsets: {
+      SmartCoverType: ESmartCoverType;
+    }[];
+    LookFromCoverOffsets: {
+      PerCoverTypeOffsets:
+        | string
+        | {
             ActionSide: EAvailableCoverActionsSide;
             HeadOffset: string;
             LookOutSide: EAvailableCoverActionsSide;
             RootOffset: string;
             WeaponOffset: string;
           }[];
-          SmartCoverType: ESmartCoverType;
-        }
-    )[];
+      SmartCoverType: ESmartCoverType;
+    }[];
     WeaponType: EWeaponType;
   }[];
 }>;
 
 export type SpawnActorPrototype = GetStructType<{
-  ActiveLair: boolean;
   ALifeLairsSearchRadius: number;
   ALifeScenariosGroupSID: string;
-  AllowedUserRestriction: string;
+  ActiveLair: boolean;
   AllowFactions: string;
   AllowNightVisionForQuestNPC: boolean;
   AllowSpawnInShelter: boolean;
   AllowSpawnOnIsolatedNavMesh: boolean;
+  AllowedUserRestriction: string;
   AmmoCount: number;
   AnomaliesPresets: string[][];
-  AttachmentSID: string;
   AttachReferences: string;
+  AttachmentSID: string;
   AvrAgentDiameter: number;
-  bDisableTickForWeatherController: boolean;
-  bForceCodePhysicsDisabled: boolean;
-  bForceWeather: boolean;
-  bRandomChancesForSeparateItems: boolean;
-  bRestrictorVolumeEnabled: boolean;
   BubbleInitialLocation: Vec3;
-  bUseCustomLocation: boolean;
-  bWakeUpOnStart: boolean;
   CanAttack: boolean;
   CanBeCaptured: boolean;
   CanBeWounded: boolean;
@@ -12090,6 +6586,7 @@ export type SpawnActorPrototype = GetStructType<{
   ContextualActionSID: string;
   CorpsePrototypeSID: string;
   CorpseStashSID: string;
+  DLC: string;
   DamageMultiplier: number;
   DataLayers: string[];
   DeadPose: string;
@@ -12097,13 +6594,11 @@ export type SpawnActorPrototype = GetStructType<{
   DisableCollision: boolean;
   DisableDespawn: boolean;
   DisableDrag: boolean;
-
   DisableLoot: boolean;
   DisablePhysics: boolean;
   DisablePhysicsAndCollision: boolean;
   DisableRagdollForQuestProtection: boolean;
   DisableSpawnAndStrafeInThisAnomaly: boolean;
-  DLC: string;
   Durability: number;
   EffectPrototypeSIDs: string[];
   ElectroBakedData: {
@@ -12136,57 +6631,42 @@ export type SpawnActorPrototype = GetStructType<{
   HubOwnerGuid: string;
   ID: number;
   IgnoreCollisionActors: string;
-  InfiniteRespawn: boolean;
-  InitialInhabitantFaction: string;
   InLocationRotation: {
     Rotation: Rot;
     Vector: Vec3;
   }[][];
+  InfiniteRespawn: boolean;
+  InitialInhabitantFaction: string;
   IsALifePoint: boolean;
   IsLootedOnDifficulties: string;
   ItemGeneratorSettings: string;
-  Items: (
-    | {
-        ChanceToSpawn: number;
-        DisablePhysicsAndCollision: boolean;
-        MaxAmount: number;
-        MinAmount: number;
-        PrototypeSID: string;
-      }
-    | {
-        ChanceToSpawn: number;
-        MaxAmount: number;
-        MinAmount: number;
-        PrototypeSID: string;
-      }
-  )[];
   ItemSID: string;
+  Items: {
+    ChanceToSpawn: number;
+    DisablePhysicsAndCollision: boolean;
+    MaxAmount: number;
+    MinAmount: number;
+    PrototypeSID: string;
+  }[];
   KillRestrictedFactions: boolean;
   LairPreferredSpawnType: ELairPreferredSpawnType;
   LairPrototypeSID: string;
   LairType: ELairType;
   LevelName: string;
   LightningBallLiveBoxExtent: Vec3;
-  LightningBallNavigationPoints: (
-    | {
-        LightningBallLocation: Vec3[];
-        LightningBallNeighborLocations: number[];
-        LightningBallPatrolPoint: boolean;
-      }
-    | {
-        LightningBallLocation: Vec3[];
-        LightningBallNeighborLocations: string;
-        LightningBallPatrolPoint: boolean;
-      }
-  )[];
+  LightningBallNavigationPoints: {
+    LightningBallLocation: Vec3[];
+    LightningBallNeighborLocations: number[];
+    LightningBallPatrolPoint: boolean;
+  }[];
   LightningBallPathUsage: boolean;
   LocationSID: string;
   LockReceivers: string[];
   MainInfoTopicOwner: string;
   MarkerSID: string;
-  MaximumCount: number;
   MaxRespawnCount: number;
   MaxSpawnRank: ERank;
+  MaximumCount: number;
   Mesh: string;
   MeshPath: string;
   MinPatrolNeed: number;
@@ -12201,37 +6681,26 @@ export type SpawnActorPrototype = GetStructType<{
   OverrideFaction: string;
   OverrideRank: boolean;
   OwningFaction: string;
+  PSYControllerArtifactItemSID: string;
+  PSYControllerArtifactLocation: Vec3;
   PackOfItemsPrototypeSID: string;
-  Path: (
-    | {
-        Location: string;
-        MovementType: EMovementBehaviour;
-      }
-    | {
-        Location: string;
-      }
-  )[];
-  PatrolPoints: (
-    | {
-        bIsEndPoint: boolean;
-        ContextualActionSearchRadius: number;
-        Location: string;
-        PatrolPointLinks: string;
-        StayTimeMax: number;
-        StayTimeMin: number;
-      }
-    | {
-        bIsEndPoint: boolean;
-        ContextualActionSearchRadius: number;
-        Location: string;
-        PatrolPointLinks: {
+  Path: {
+    Location: string;
+    MovementType: EMovementBehaviour;
+  }[];
+  PatrolPoints: {
+    ContextualActionSearchRadius: number;
+    Location: string;
+    PatrolPointLinks:
+      | string
+      | {
           DestinationPointIndex: number;
           Weight: number;
         }[];
-        StayTimeMax: number;
-        StayTimeMin: number;
-      }
-  )[];
+    StayTimeMax: number;
+    StayTimeMin: number;
+    bIsEndPoint: boolean;
+  }[];
   PillowAnomalyBiomeType: EPillowAnomalyBiomeType;
   PlaceholderActorGuid: string;
   PlaceholderMapPath: string;
@@ -12264,8 +6733,6 @@ export type SpawnActorPrototype = GetStructType<{
   PostProcessRadiationIntensity: number;
   PresetIndex: number;
   Priority: number;
-  PSYControllerArtifactItemSID: string;
-  PSYControllerArtifactLocation: Vec3;
   PsyNPCType: EPsyNPCType;
   RadiationCycleSpeedPostEffectSID: string;
   RadiationPerSecondValue: number;
@@ -12280,6 +6747,7 @@ export type SpawnActorPrototype = GetStructType<{
   RotatorAnglePitch: number;
   RotatorAngleRoll: number;
   RotatorAngleYaw: number;
+  SID: string;
   ScaleX: number;
   ScaleY: number;
   ScaleZ: number;
@@ -12287,7 +6755,6 @@ export type SpawnActorPrototype = GetStructType<{
   ShouldTraceOnOverlap: boolean;
   ShowOnCompass: boolean;
   ShowOnMap: boolean;
-  SID: string;
   SignalReceivers: {
     DestroyReceiver: {
       Guid: string;
@@ -12300,15 +6767,15 @@ export type SpawnActorPrototype = GetStructType<{
     };
   };
   SimplifiedOverlap: boolean;
+  SpawnInRadius: number;
+  SpawnOnStart: boolean;
+  SpawnType: ESpawnType;
   SpawnedGenericMembers: {
     SpawnedSquadMembersCount: number;
     SpawnedPrototypeSID: SID;
   }[];
   SpawnedPrototypeSID: string;
   SpawnedSquadMembersCount: number;
-  SpawnInRadius: number;
-  SpawnOnStart: boolean;
-  SpawnType: ESpawnType;
   SquadMembersQuestSIDs: string[];
   StartPresetID: number;
   StartWaitTime: number;
@@ -12321,6 +6788,7 @@ export type SpawnActorPrototype = GetStructType<{
   UnlockReceivers: string[];
   UpgradeSID: string;
   VolumeDailySchedulePresetSID: string;
+  VolumeSID: string;
   Volumes: {
     NumOfContextualActions: number;
     RestrictorVolume: string;
@@ -12328,11 +6796,17 @@ export type SpawnActorPrototype = GetStructType<{
     SpaceRestrictorOffset: number;
     Volume: string;
   }[];
-  VolumeSID: string;
   VolumetricCoverRestrictions: {
     bEnabled: boolean;
     Volumes: string;
   };
+  bDisableTickForWeatherController: boolean;
+  bForceCodePhysicsDisabled: boolean;
+  bForceWeather: boolean;
+  bRandomChancesForSeparateItems: boolean;
+  bRestrictorVolumeEnabled: boolean;
+  bUseCustomLocation: boolean;
+  bWakeUpOnStart: boolean;
 }>;
 
 export type SQ95_GlobalVariablePrototype = GetStructType<{
@@ -12343,289 +6817,93 @@ export type SQ95_GlobalVariablePrototype = GetStructType<{
 
 export type StashPrototype = GetStructType<{
   CustomIconPath: string;
-  ItemGenerators: (
-    | {
-        Rank: ERank;
-        SmartLootParams: {
-          AttachParams: {
-            MaxPrice: number;
-          }[];
-          ConsumablesParams: {
-            Items: {
-              ItemPrototypeSID: string;
-              MaxCount: number;
-              MinCount: number;
-              Weight: number;
-            }[];
-            ItemSetCount: number;
-            MaxSpawnChance: number;
-            MinSpawnChance: number;
-          }[];
-          GrenadesParams: {
-            Items: (
-              | {
-                  Chance: number;
-                  ItemPrototypeSID: string;
-                  MaxCount: number;
-                  MinCount: number;
-                  Weight: number;
-                }
-              | {
-                  ItemPrototypeSID: string;
-                  MaxCount: number;
-                  MinCount: number;
-                  Weight: number;
-                }
-            )[];
-            ItemSetCount: number;
-            MaxSpawnChance: number;
-            MinSpawnChance: number;
-          }[];
-          HealthParams: {
-            Curve: string;
-            Items: {
-              Chance: number;
-              ItemPrototypeSID: string;
-              MaxCount: number;
-              MinCount: number;
-            }[];
-            MaxSpawnChance: number;
-            MinSpawnChance: number;
-          }[];
-          PistolWeaponParams: {
-            Items: {
-              ItemPrototypeSID: string;
-              MaxCount: number;
-              MinCount: number;
-              Weight: number;
-            }[];
-            MainWeaponAmmoCount: number;
-            MaxSpawnChance: number;
-            MinSpawnChance: number;
-            PriorityCaliber: EAmmoCaliber;
-          }[];
-          PrimaryWeaponParams: (
-            | {
-                Items: (
-                  | {
-                      Chance: number;
-                      ItemPrototypeSID: string;
-                      MaxCount: number;
-                      MinCount: number;
-                      Weight: number;
-                    }
-                  | {
-                      ItemPrototypeSID: string;
-                      MaxCount: number;
-                      MinCount: number;
-                      Weight: number;
-                    }
-                )[];
-                MainWeaponAmmoCount: number;
-                MaxSpawnChance: number;
-                MinSpawnChance: number;
-                PriorityCaliber: EAmmoCaliber;
-              }
-            | {
-                Items: {
-                  ItemPrototypeSID: string;
-                  MaxCount: number;
-                  MinCount: number;
-                  Weight: number;
-                }[];
-                MainWeaponAmmoCount: number;
-                MaxSpawnChance: number;
-                MinSpawnChance: number;
-                PriorityCaliber: EAmmoCaliber;
-              }
-          )[];
-          SecondaryWeaponParams: (
-            | {
-                Items: (
-                  | {
-                      Chance: number;
-                      ItemPrototypeSID: string;
-                      MaxCount: number;
-                      MinCount: number;
-                      Weight: number;
-                    }
-                  | {
-                      ItemPrototypeSID: string;
-                      MaxCount: number;
-                      MinCount: number;
-                      Weight: number;
-                    }
-                )[];
-                MainWeaponAmmoCount: number;
-                MaxSpawnChance: number;
-                MinSpawnChance: number;
-                PriorityCaliber: EAmmoCaliber;
-              }
-            | {
-                Items: {
-                  ItemPrototypeSID: string;
-                  MaxCount: number;
-                  MinCount: number;
-                  Weight: number;
-                }[];
-                MainWeaponAmmoCount: number;
-                MaxSpawnChance: number;
-                MinSpawnChance: number;
-                PriorityCaliber: EAmmoCaliber;
-              }
-          )[];
-        };
-      }
-    | {
-        Rank: ERank;
-        SmartLootParams: {
-          ConsumablesParams: (
-            | {
-                Items: (
-                  | {
-                      Chance: number;
-                      ItemPrototypeSID: string;
-                      MaxCount: number;
-                      MinCount: number;
-                      Weight: number;
-                    }
-                  | {
-                      Chance: number;
-                      ItemPrototypeSID: string;
-                      MaxCount: number;
-                      MinCount: number;
-                    }
-                )[];
-                ItemSetCount: number;
-                MaxSpawnChance: number;
-                MinSpawnChance: number;
-              }
-            | {
-                Items: {
-                  Chance: number;
-                  ItemPrototypeSID: string;
-                  MaxCount: number;
-                  MinCount: number;
-                  Weight: number;
-                }[];
-                ItemSetCount: number;
-                MaxSpawnChance: number;
-                MinSpawnChance: number;
-              }
-          )[];
-          PistolWeaponParams: {
-            Items: {
-              ItemPrototypeSID: string;
-              MaxCount: number;
-              MinCount: number;
-              Weight: number;
-            }[];
-            MainWeaponAmmoCount: number;
-            MaxSpawnChance: number;
-            MinSpawnChance: number;
-            PriorityCaliber: EAmmoCaliber;
-          }[];
-          PrimaryWeaponParams: {
-            Items: {
-              ItemPrototypeSID: string;
-              MaxCount: number;
-              MinCount: number;
-              Weight: number;
-            }[];
-            MainWeaponAmmoCount: number;
-            MaxSpawnChance: number;
-            MinSpawnChance: number;
-            PriorityCaliber: EAmmoCaliber;
-          }[];
-          SecondaryWeaponParams: {
-            Items: {
-              ItemPrototypeSID: string;
-              MaxCount: number;
-              MinCount: number;
-              Weight: number;
-            }[];
-            MainWeaponAmmoCount: number;
-            MaxSpawnChance: number;
-            MinSpawnChance: number;
-            PriorityCaliber: EAmmoCaliber;
-          }[];
-        };
-      }
-    | {
-        Rank: ERank;
-        SmartLootParams: {
-          ConsumablesParams: (
-            | {
-                Items: (
-                  | {
-                      Chance: number;
-                      ItemPrototypeSID: string;
-                      MaxCount: number;
-                      MinCount: number;
-                      Weight: number;
-                    }
-                  | {
-                      Chance: number;
-                      ItemPrototypeSID: string;
-                      MaxCount: number;
-                      MinCount: number;
-                    }
-                )[];
-                ItemSetCount: number;
-                MaxSpawnChance: number;
-                MinSpawnChance: number;
-              }
-            | {
-                Items: {
-                  ItemPrototypeSID: string;
-                  MaxCount: number;
-                  MinCount: number;
-                  Weight: number;
-                }[];
-                ItemSetCount: number;
-                MaxSpawnChance: number;
-                MinSpawnChance: number;
-              }
-          )[];
-          PistolWeaponParams: {
-            Items: {
-              ItemPrototypeSID: string;
-              MaxCount: number;
-              MinCount: number;
-              Weight: number;
-            }[];
-            MainWeaponAmmoCount: number;
-            MaxSpawnChance: number;
-            MinSpawnChance: number;
-            PriorityCaliber: EAmmoCaliber;
-          }[];
-          PrimaryWeaponParams: {
-            Items: {
-              ItemPrototypeSID: string;
-              MaxCount: number;
-              MinCount: number;
-              Weight: number;
-            }[];
-            MainWeaponAmmoCount: number;
-            MaxSpawnChance: number;
-            MinSpawnChance: number;
-            PriorityCaliber: EAmmoCaliber;
-          }[];
-          SecondaryWeaponParams: {
-            Items: {
-              ItemPrototypeSID: string;
-              MaxCount: number;
-              MinCount: number;
-              Weight: number;
-            }[];
-            MainWeaponAmmoCount: number;
-            MaxSpawnChance: number;
-            MinSpawnChance: number;
-            PriorityCaliber: EAmmoCaliber;
-          }[];
-        };
-      }
-  )[];
+  ItemGenerators: {
+    Rank: ERank;
+    SmartLootParams: {
+      AttachParams: {
+        MaxPrice: number;
+      }[];
+      ConsumablesParams: {
+        ItemSetCount: number;
+        Items: {
+          Chance: number;
+          ItemPrototypeSID: string;
+          MaxCount: number;
+          MinCount: number;
+          Weight: number;
+        }[];
+        MaxSpawnChance: number;
+        MinSpawnChance: number;
+      }[];
+      GrenadesParams: {
+        ItemSetCount: number;
+        Items: {
+          Chance: number;
+          ItemPrototypeSID: string;
+          MaxCount: number;
+          MinCount: number;
+          Weight: number;
+        }[];
+        MaxSpawnChance: number;
+        MinSpawnChance: number;
+      }[];
+      HealthParams: {
+        Curve: string;
+        Items: {
+          Chance: number;
+          ItemPrototypeSID: string;
+          MaxCount: number;
+          MinCount: number;
+        }[];
+        MaxSpawnChance: number;
+        MinSpawnChance: number;
+      }[];
+
+      PistolWeaponParams: {
+        Items: {
+          ItemPrototypeSID: string;
+          MaxCount: number;
+
+          MinCount: number;
+
+          Weight: number;
+        }[];
+        MainWeaponAmmoCount: number;
+
+        MaxSpawnChance: number;
+        MinSpawnChance: number;
+
+        PriorityCaliber: EAmmoCaliber;
+      }[];
+
+      PrimaryWeaponParams: {
+        Items: {
+          Chance: number;
+          ItemPrototypeSID: string;
+          MaxCount: number;
+          MinCount: number;
+          Weight: number;
+        }[];
+        MainWeaponAmmoCount: number;
+        MaxSpawnChance: number;
+        MinSpawnChance: number;
+        PriorityCaliber: EAmmoCaliber;
+      }[];
+      SecondaryWeaponParams: {
+        Items: {
+          Chance: number;
+          ItemPrototypeSID: string;
+          MaxCount: number;
+          MinCount: number;
+          Weight: number;
+        }[];
+        MainWeaponAmmoCount: number;
+        MaxSpawnChance: number;
+        MinSpawnChance: number;
+        PriorityCaliber: EAmmoCaliber;
+      }[];
+    };
+  }[];
   SID: string;
 }>;
 
@@ -12670,28 +6948,13 @@ export type ThreatPrototype = GetStructType<{
   ReachedThrealLevelSpeechCommands: {};
   ShowThreatIndicator: boolean;
   SID: string;
-  ThreatParams: (
-    | {
-        ConfidenceDropToZeroTimeSeconds: number;
-        RelationLevels: ERelationLevel[];
-        SoundType: ESoundEventType;
-        ThreatValue: number;
-        Type: EThreatType;
-      }
-    | {
-        ConfidenceDropToZeroTimeSeconds: number;
-        RelationLevels: ERelationLevel[];
-        ThreatValue: number;
-        Type: EThreatType;
-      }
-    | {
-        ConfidenceDropToZeroTimeSeconds: number;
-        RelationLevels: {};
-        SoundType: ESoundEventType;
-        ThreatValue: number;
-        Type: EThreatType;
-      }
-  )[];
+  ThreatParams: {
+    ConfidenceDropToZeroTimeSeconds: number;
+    RelationLevels: ERelationLevel[];
+    SoundType: ESoundEventType;
+    ThreatValue: number;
+    Type: EThreatType;
+  }[];
 }>;
 
 export type TradePrototype = GetStructType<{
@@ -12707,23 +6970,15 @@ export type TradePrototype = GetStructType<{
     Modifier: number;
   }[];
   SID: string;
-  TradeGenerators: (
-    | {
-        ArmorSellMinDurability: number;
-        BuyLimitations: EItemType[];
-        BuyModifier: number;
-        ConditionSID: string;
-        ItemGeneratorPrototypeSID: string;
-        SellModifier: number;
-        WeaponSellMinDurability: number;
-      }
-    | {
-        BuyModifier: number;
-        ConditionSID: string;
-        ItemGeneratorPrototypeSID: string;
-        SellModifier: number;
-      }
-  )[];
+  TradeGenerators: {
+    ArmorSellMinDurability: number;
+    BuyLimitations: EItemType[];
+    BuyModifier: number;
+    ConditionSID: string;
+    ItemGeneratorPrototypeSID: string;
+    SellModifier: number;
+    WeaponSellMinDurability: number;
+  }[];
   TradeTimeLength: number;
   TradeTimeStart: number;
 }>;
@@ -13027,6 +7282,8 @@ export type WeaponFloatProviderPrototype = GetStructType<{
 export type WeaponGeneralSetupPrototype = GetStructType<{
   AdditionalBulletsAfterReloadingCount: number;
   AimGamepadAimAssistPresetSID: string;
+  AimMouseAimAssistPresetSID: string;
+  AimVFXSocketMinAlpha: number;
   AimingCurve: string;
   AimingEffects: {
     Effects: string[];
@@ -13037,8 +7294,6 @@ export type WeaponGeneralSetupPrototype = GetStructType<{
   AimingSound: string;
   AimingTime: number;
   AimingWeaponFOVCurve: string;
-  AimMouseAimAssistPresetSID: string;
-  AimVFXSocketMinAlpha: number;
   AmmoCaliber: EAmmoCaliber;
   AmmoPerShot: string;
   AmmoTypeProjectiles: {
@@ -13046,125 +7301,30 @@ export type WeaponGeneralSetupPrototype = GetStructType<{
     ProjectilePrototypeSID: string;
   }[];
   BoltActionState: EBoltActionWeaponState;
-  bSpawnShell: boolean;
   BulletMeshPath: string;
   BulletsSockets: string[];
   CameraRecoilPatternBlendCurve: string;
   CameraRecoilPatternPath: string;
-  CompatibleAttachments: (
-    | {
-        AdditionalMeshes: {
-          MeshPrototypeSID: string;
-          Socket: string;
-        }[];
-        AdditionalPlankMeshPrototypeSID: string;
-        AdditionalPlankSocket: string;
-        AimMuzzleVFXSocket: string;
-        AimShellShutterVFXSocket: string;
-        AttachPrototypeSID: string;
-        BlockingUpgradeIds: string[];
-        BlockingUpgradeIDs: string;
-        IconPoX: number;
-        IconPosY: number;
-        MeshPrototypeSID: string;
-        Muzzle: string;
-        RequiredUpgradeIDs: string[];
-        Socket: string;
-        WeaponSpecificIcon: string;
-      }
-    | {
-        AdditionalMeshes: {
-          MeshPrototypeSID: string;
-          Socket: string;
-        }[];
-        AimMuzzleVFXSocket: string;
-        AimShellShutterVFXSocket: string;
-        AttachPrototypeSID: string;
-        IconPoX: number;
-        IconPosY: number;
-        MeshPrototypeSID: string;
-        Muzzle: string;
-        RequiredUpgradeIDs: string[];
-        Socket: string;
-        WeaponSpecificIcon: string;
-      }
-    | {
-        AdditionalMeshes: {
-          MeshPrototypeSID: string;
-          Socket: string;
-        }[];
-        AimMuzzleVFXSocket: string;
-        AimShellShutterVFXSocket: string;
-        AttachPrototypeSID: string;
-        IconPoX: number;
-        IconPosY: number;
-        Muzzle: string;
-        RequiredUpgradeIDs: string[];
-        Socket: string;
-        WeaponSpecificIcon: string;
-      }
-    | {
-        AdditionalMeshes: {
-          MeshPrototypeSID: string;
-          Socket: string;
-        }[];
-        AttachPrototypeSID: string;
-        IconPoX: number;
-        IconPosY: number;
-        MeshPrototypeSID: string;
-        Muzzle: string;
-        RequiredUpgradeIDs: string[];
-        Socket: string;
-        WeaponSpecificIcon: string;
-      }
-    | {
-        AdditionalMeshes: {
-          MeshPrototypeSID: string;
-          Socket: string;
-        }[];
-        AttachPrototypeSID: string;
-        IconPoX: number;
-        IconPosY: number;
-        Muzzle: string;
-        RequiredUpgradeIDs: string[];
-        Socket: string;
-        WeaponSpecificIcon: string;
-      }
-    | {
-        AdditionalMeshes: {
-          MeshPrototypeSID: string;
-          Socket: string;
-        }[];
-        AttachPrototypeSID: string;
-        IconPoX: number;
-        IconPosY: number;
-        RequiredUpgradeIDs: string[];
-        Socket: string;
-        WeaponSpecificIcon: string;
-      }
-    | {
-        AttachPrototypeSID: string;
-        IconPoX: number;
-        IconPosY: number;
-        Muzzle: string;
-        Socket: string;
-        WeaponSpecificIcon: string;
-      }
-    | {
-        AttachPrototypeSID: string;
-        IconPoX: number;
-        IconPosY: number;
-        RequiredUpgradeIDs: string[];
-        Socket: string;
-        WeaponSpecificIcon: string;
-      }
-    | {
-        AttachPrototypeSID: string;
-        IconPoX: number;
-        IconPosY: number;
-        Socket: string;
-      }
-  )[];
+  CompatibleAttachments: {
+    AdditionalMeshes: {
+      MeshPrototypeSID: string;
+      Socket: string;
+    }[];
+    AdditionalPlankMeshPrototypeSID: string;
+    AdditionalPlankSocket: string;
+    AimMuzzleVFXSocket: string;
+    AimShellShutterVFXSocket: string;
+    AttachPrototypeSID: string;
+    BlockingUpgradeIDs: string;
+    BlockingUpgradeIds: string[];
+    IconPoX: number;
+    IconPosY: number;
+    MeshPrototypeSID: string;
+    Muzzle: string;
+    RequiredUpgradeIDs: string[];
+    Socket: string;
+    WeaponSpecificIcon: string;
+  }[];
   CooldownTime: number;
   CrosshairType: ECrosshairType;
   DefaultEjectMagazineSocketName: string;
@@ -13298,12 +7458,12 @@ export type WeaponGeneralSetupPrototype = GetStructType<{
     };
   };
   ReloadTypes: EAnimationReloadTypes[];
+  SID: string;
   ShootCameraShakePrototypeSID: string;
   ShootingAnimationNumberToSkip: number;
   ShouldOverrideCooldownAfterShots: boolean;
   ShowCrosshair: boolean;
   ShowEquipmentTime: number;
-  SID: string;
   SilencerRTPCParameter: string;
   SingleBulletReloadTimeMultiplier: number;
   SpeedCoef: number;
@@ -13318,45 +7478,28 @@ export type WeaponGeneralSetupPrototype = GetStructType<{
     FullJamTime: number;
     JamChanceCoef: number;
   }[];
-  WeaponReloadTimePerAttachment: (
-    | {
-        AttachPrototypeSID: string;
-        FullReloadTimeMultiplier: number;
-        SingleBulletReloadTimeMultiplier: number;
-        TacticalReloadTimeMultiplier: number;
-        TwinAuxReloadTimeMultiplier: number;
-        TwinReloadTimeMultiplier: number;
-        TwinTacticalAuxReloadTimeMultiplier: number;
-        TwinTacticalReloadTimeMultiplier: number;
-        UnloadTime: number;
-      }
-    | {
-        AttachPrototypeSID: string;
-        FullReloadTimeMultiplier: number;
-        TacticalReloadTimeMultiplier: number;
-        TwinAuxReloadTimeMultiplier: number;
-        TwinReloadTimeMultiplier: number;
-        TwinTacticalAuxReloadTimeMultiplier: number;
-        TwinTacticalReloadTimeMultiplier: number;
-        UnloadTime: number;
-      }
-  )[];
-  WeaponStaticMeshParts: (
-    | {
-        Materials: {
-          MaterialPath: string;
-          MaterialSlot: number;
-        }[];
-        MeshPath: string;
-        SocketName: string;
-      }
-    | {
-        MeshPath: string;
-        SocketName: string;
-      }
-  )[];
+  WeaponReloadTimePerAttachment: {
+    AttachPrototypeSID: string;
+    FullReloadTimeMultiplier: number;
+    SingleBulletReloadTimeMultiplier: number;
+    TacticalReloadTimeMultiplier: number;
+    TwinAuxReloadTimeMultiplier: number;
+    TwinReloadTimeMultiplier: number;
+    TwinTacticalAuxReloadTimeMultiplier: number;
+    TwinTacticalReloadTimeMultiplier: number;
+    UnloadTime: number;
+  }[];
+  WeaponStaticMeshParts: {
+    Materials: {
+      MaterialPath: string;
+      MaterialSlot: number;
+    }[];
+    MeshPath: string;
+    SocketName: string;
+  }[];
   WeaponType: EWeaponType;
   WeaponTypeSoundSwitch: string;
+  bSpawnShell: boolean;
 }>;
 
 export type WeaponPrototype = GetStructType<{
@@ -13379,6 +7522,7 @@ export type WeaponPrototype = GetStructType<{
   PhysicsInteractionPrototypeSID: string;
   PlayerWeaponAttributes: string;
   PreinstalledUpgrades: string[];
+  SID: string;
   SectionSettings: {
     BottomPosition: number;
     LeftPosition: number;
@@ -13389,7 +7533,6 @@ export type WeaponPrototype = GetStructType<{
     UpgradeLineDirection: ELineDirection;
     UpgradeTargetPartType: EUpgradeTargetPartType;
   }[];
-  SID: string;
   Type: EItemType;
   Weight: number;
 }>;
@@ -13410,290 +7553,175 @@ export type WeatherChainPrototype = GetStructType<{
 export type WeatherPrototype = GetStructType<{
   AltitudeCurveIndex: number;
   SID: string;
-  WeatherParams: (
-    | {
-        AutoExposureBias: number;
-        Bloom: {
-          BloomIntensity: number;
-          BloomThreshold: number;
-        };
-        CloudLuminanceMultiplier: number;
-        Clouds: {
-          CiNAmount: number;
-          CiNContrast: number;
-          CiNDensity: number;
-          CinSubShape: number;
-          CirrusContrast: number;
-          CirrusDecay: number;
-          CirrusDensity: number;
-          CloudSpeed: number;
-          CloudSpeedXY: Vec2;
-          CloudsPhaseShift: number;
-          CloudsTile: number;
-          CNContrast: number;
-          CNDecay: number;
-          CNDensity: number;
-          CNDetailAmount: number;
-          CNDetailContrast: number;
-          CNMaxDensity: number;
-          CNSize: number;
-          Color1: RGBA;
-          Color2: RGBA;
-          GlobalDensity: number;
-          StratusAmount: number;
-          StratusContrast: number;
-          StratusDetailAmount: number;
-          StratusDetailContrast: number;
-          VolumetricMSContribution: number;
-          VolumetricMSEccentricity: number;
-          VolumetricMSOcclusion: number;
-          VolumetricPhaseBlend: number;
-          VolumetricPhaseG: number;
-          VolumetricPhaseG2: number;
-          VTCloudDetailScale: number;
-          VTCloudScale: number;
-        };
-        ColorGrading: {
-          ColorContrast: Vec4;
-          ColorGain: Vec4;
-          ColorGamma: Vec4;
-          ColorOffset: Vec4;
-          ColorSaturation: Vec4;
-          Highlights: {
-            ColorContrast: Vec4;
-            ColorCorrectionHighlightsMin: number;
-            ColorGain: Vec4;
-            ColorGamma: Vec4;
-            ColorOffset: Vec4;
-            ColorSaturation: Vec4;
-          };
-          Midtones: {
-            ColorContrast: Vec4;
-            ColorGain: Vec4;
-            ColorGamma: Vec4;
-            ColorOffset: Vec4;
-            ColorSaturation: Vec4;
-          };
-          Shadows: {
-            ColorContrast: Vec4;
-            ColorCorrectionShadowsMax: number;
-            ColorGain: Vec4;
-            ColorGamma: Vec4;
-            ColorOffset: Vec4;
-            ColorSaturation: Vec4;
-          };
-        };
-        Film: {
-          FilmBlackClip: number;
-          FilmChannelMixerBlue: RGBA;
-          FilmChannelMixerGreen: RGBA;
-          FilmChannelMixerRed: RGBA;
-          FilmContrast: number;
-          FilmDynamicRange: number;
-          FilmHealAmount: number;
-          FilmSaturation: number;
-          FilmShadowTint: RGBA;
-          FilmShadowTintAmount: number;
-          FilmShadowTintBlend: number;
-          FilmShoulder: number;
-          FilmSlope: number;
-          FilmToe: number;
-          FilmToeAmount: number;
-          FilmWhiteClip: number;
-          FilmWhitePoint: RGBA;
-        };
-        FogDensity: number;
-        FogHeightFalloff: number;
-        FogHeightOffset: number;
-        FogInscatteringColor: RGBA;
-        Moon: {
-          BloomMaxBrightness: number;
-          BloomScale: number;
-          BloomThreshold: number;
-          Intensity: number;
-          Temperature: number;
-          VolumetricScatteringIntensity: number;
-        };
-        MoonPhase: number;
-        MoonScale: Vec3;
-        SecondFogDensity: number;
-        SecondFogHeightFalloff: number;
-        SkyAtmosphere: {
-          AerialPespectiveViewDistanceScale: number;
-          HeightFogContribution: number;
-          MieAbsorption: RGBA;
-          MieAbsorptionScale: number;
-          MieAnisotropy: number;
-          MieExponentialDistribution: number;
-          MieScattering: RGBA;
-          MieScatteringScale: number;
-          MultiScatteringFactor: number;
-          OtherAbsorption: RGBA;
-          OtherAbsorptionScale: number;
-          RayleighExponentialDistribution: number;
-          RayleighScattering: RGBA;
-          RayleighScatteringScale: number;
-          SkyLuminanceFactor: RGBA;
-        };
-        SkyLight: {
-          Intensity: number;
-          MinOcclusion: number;
-          OcclusionExponent: number;
-          VolumetricScatteringIntensity: number;
-        };
-        SoundCue: string;
-        Sun: {
-          BloomMaxBrightness: number;
-          BloomScale: number;
-          BloomThreshold: number;
-          Intensity: number;
-          Temperature: number;
-          VolumetricScatteringIntensity: number;
-        };
-        SunMoonDiskLuminanceMultiplier: number;
-        Time: number;
-        VolumetricFogAlbedo: RGBA;
-        VolumetricFogEmissive: RGBA;
-        VolumetricFogExtinctionScale: number;
-      }
-    | {
-        AutoExposureBias: number;
-        Bloom: {
-          BloomIntensity: number;
-          BloomThreshold: number;
-        };
-        CloudLuminanceMultiplier: number;
-        Clouds: {
-          CiNAmount: number;
-          CiNContrast: number;
-          CiNDensity: number;
-          CinSubShape: number;
-          CirrusContrast: number;
-          CirrusDecay: number;
-          CirrusDensity: number;
-          CloudSpeed: number;
-          CloudSpeedXY: Vec2;
-          CloudsPhaseShift: number;
-          CloudsTile: number;
-          CNContrast: number;
-          CNDecay: number;
-          CNDensity: number;
-          CNDetailAmount: number;
-          CNDetailContrast: number;
-          CNMaxDensity: number;
-          CNSize: number;
-          Color1: RGBA;
-          Color2: RGBA;
-          GlobalDensity: number;
-          StratusAmount: number;
-          StratusContrast: number;
-          StratusDetailAmount: number;
-          StratusDetailContrast: number;
-          VolumetricMSContribution: number;
-          VolumetricMSEccentricity: number;
-          VolumetricMSOcclusion: number;
-          VolumetricPhaseBlend: number;
-          VolumetricPhaseG: number;
-          VolumetricPhaseG2: number;
-          VTCloudDetailScale: number;
-          VTCloudScale: number;
-        };
-        ColorGrading: {
-          ColorContrast: Vec4;
-          ColorGain: Vec4;
-          ColorGamma: Vec4;
-          ColorOffset: Vec4;
-          ColorSaturation: Vec4;
-          Highlights: {
-            ColorContrast: Vec4;
-            ColorCorrectionHighlightsMin: number;
-            ColorGain: Vec4;
-            ColorGamma: Vec4;
-            ColorOffset: Vec4;
-            ColorSaturation: Vec4;
-          };
-          Midtones: {
-            ColorContrast: Vec4;
-            ColorGain: Vec4;
-            ColorGamma: Vec4;
-            ColorOffset: Vec4;
-            ColorSaturation: Vec4;
-          };
-          Shadows: {
-            ColorContrast: Vec4;
-            ColorCorrectionShadowsMax: number;
-            ColorGain: Vec4;
-            ColorGamma: Vec4;
-            ColorOffset: Vec4;
-            ColorSaturation: Vec4;
-          };
-        };
-        Film: {
-          FilmBlackClip: number;
-          FilmChannelMixerBlue: RGBA;
-          FilmChannelMixerGreen: RGBA;
-          FilmChannelMixerRed: RGBA;
-          FilmContrast: number;
-          FilmDynamicRange: number;
-          FilmHealAmount: number;
-          FilmSaturation: number;
-          FilmShadowTint: RGBA;
-          FilmShadowTintAmount: number;
-          FilmShadowTintBlend: number;
-          FilmShoulder: number;
-          FilmSlope: number;
-          FilmToe: number;
-          FilmToeAmount: number;
-          FilmWhiteClip: number;
-          FilmWhitePoint: RGBA;
-        };
-        FogDensity: number;
-        FogHeightFalloff: number;
-        FogHeightOffset: number;
-        FogInscatteringColor: RGBA;
-        MoonPhase: number;
-        MoonScale: Vec3;
-        SecondFogDensity: number;
-        SecondFogHeightFalloff: number;
-        SkyAtmosphere: {
-          AerialPespectiveViewDistanceScale: number;
-          HeightFogContribution: number;
-          MieAbsorption: RGBA;
-          MieAbsorptionScale: number;
-          MieAnisotropy: number;
-          MieExponentialDistribution: number;
-          MieScattering: RGBA;
-          MieScatteringScale: number;
-          MultiScatteringFactor: number;
-          OtherAbsorption: RGBA;
-          OtherAbsorptionScale: number;
-          RayleighExponentialDistribution: number;
-          RayleighScattering: RGBA;
-          RayleighScatteringScale: number;
-          SkyLuminanceFactor: RGBA;
-        };
-        SkyLight: {
-          Intensity: number;
-          MinOcclusion: number;
-          OcclusionExponent: number;
-          VolumetricScatteringIntensity: number;
-        };
-        SoundCue: string;
-        Sun: {
-          BloomMaxBrightness: number;
-          BloomScale: number;
-          BloomThreshold: number;
-          Intensity: number;
-          Temperature: number;
-          VolumetricScatteringIntensity: number;
-        };
-        SunMoonDiskLuminanceMultiplier: number;
-        Time: number;
-        VolumetricFogAlbedo: RGBA;
-        VolumetricFogEmissive: RGBA;
-        VolumetricFogExtinctionScale: number;
-      }
-  )[];
+  WeatherParams: {
+    AutoExposureBias: number;
+    Bloom: {
+      BloomIntensity: number;
+      BloomThreshold: number;
+    };
+    CloudLuminanceMultiplier: number;
+    Clouds: {
+      CNContrast: number;
+
+      CNDecay: number;
+      CNDensity: number;
+
+      CNDetailAmount: number;
+      CNDetailContrast: number;
+
+      CNMaxDensity: number;
+      CNSize: number;
+
+      CiNAmount: number;
+      CiNContrast: number;
+
+      CiNDensity: number;
+      CinSubShape: number;
+
+      CirrusContrast: number;
+      CirrusDecay: number;
+
+      CirrusDensity: number;
+      CloudSpeed: number;
+
+      CloudSpeedXY: Vec2;
+      CloudsPhaseShift: number;
+
+      CloudsTile: number;
+      Color1: RGBA;
+
+      Color2: RGBA;
+      GlobalDensity: number;
+
+      StratusAmount: number;
+      StratusContrast: number;
+
+      StratusDetailAmount: number;
+      StratusDetailContrast: number;
+
+      VTCloudDetailScale: number;
+      VTCloudScale: number;
+
+      VolumetricMSContribution: number;
+      VolumetricMSEccentricity: number;
+
+      VolumetricMSOcclusion: number;
+      VolumetricPhaseBlend: number;
+
+      VolumetricPhaseG: number;
+      VolumetricPhaseG2: number;
+    };
+    ColorGrading: {
+      ColorContrast: Vec4;
+      ColorGain: Vec4;
+      ColorGamma: Vec4;
+      ColorOffset: Vec4;
+      ColorSaturation: Vec4;
+      Highlights: {
+        ColorContrast: Vec4;
+        ColorCorrectionHighlightsMin: number;
+        ColorGain: Vec4;
+        ColorGamma: Vec4;
+        ColorOffset: Vec4;
+        ColorSaturation: Vec4;
+      };
+      Midtones: {
+        ColorContrast: Vec4;
+        ColorGain: Vec4;
+        ColorGamma: Vec4;
+        ColorOffset: Vec4;
+        ColorSaturation: Vec4;
+      };
+      Shadows: {
+        ColorContrast: Vec4;
+        ColorCorrectionShadowsMax: number;
+        ColorGain: Vec4;
+        ColorGamma: Vec4;
+        ColorOffset: Vec4;
+        ColorSaturation: Vec4;
+      };
+    };
+    Film: {
+      FilmBlackClip: number;
+      FilmChannelMixerBlue: RGBA;
+      FilmChannelMixerGreen: RGBA;
+      FilmChannelMixerRed: RGBA;
+      FilmContrast: number;
+      FilmDynamicRange: number;
+      FilmHealAmount: number;
+      FilmSaturation: number;
+      FilmShadowTint: RGBA;
+      FilmShadowTintAmount: number;
+      FilmShadowTintBlend: number;
+      FilmShoulder: number;
+      FilmSlope: number;
+      FilmToe: number;
+      FilmToeAmount: number;
+      FilmWhiteClip: number;
+      FilmWhitePoint: RGBA;
+    };
+    FogDensity: number;
+    FogHeightFalloff: number;
+    FogHeightOffset: number;
+    FogInscatteringColor: RGBA;
+    Moon: {
+      BloomMaxBrightness: number;
+      BloomScale: number;
+      BloomThreshold: number;
+      Intensity: number;
+      Temperature: number;
+      VolumetricScatteringIntensity: number;
+    };
+    MoonPhase: number;
+    MoonScale: Vec3;
+    SecondFogDensity: number;
+    SecondFogHeightFalloff: number;
+    SkyAtmosphere: {
+      AerialPespectiveViewDistanceScale: number;
+
+      HeightFogContribution: number;
+      MieAbsorption: RGBA;
+
+      MieAbsorptionScale: number;
+      MieAnisotropy: number;
+
+      MieExponentialDistribution: number;
+      MieScattering: RGBA;
+
+      MieScatteringScale: number;
+      MultiScatteringFactor: number;
+
+      OtherAbsorption: RGBA;
+      OtherAbsorptionScale: number;
+
+      RayleighExponentialDistribution: number;
+      RayleighScattering: RGBA;
+
+      RayleighScatteringScale: number;
+
+      SkyLuminanceFactor: RGBA;
+    };
+    SkyLight: {
+      Intensity: number;
+      MinOcclusion: number;
+      OcclusionExponent: number;
+      VolumetricScatteringIntensity: number;
+    };
+    SoundCue: string;
+    Sun: {
+      BloomMaxBrightness: number;
+      BloomScale: number;
+      BloomThreshold: number;
+      Intensity: number;
+      Temperature: number;
+      VolumetricScatteringIntensity: number;
+    };
+    SunMoonDiskLuminanceMultiplier: number;
+    Time: number;
+    VolumetricFogAlbedo: RGBA;
+    VolumetricFogEmissive: RGBA;
+    VolumetricFogExtinctionScale: number;
+  }[];
   WeatherTransitions: {
     bIsDirectTransition: boolean;
     BlendChance: number;
@@ -13720,269 +7748,38 @@ export type WeatherSelectionPrototype = GetStructType<
   }
 >;
 
-export type Achievement = GetStructType<{
-  "0": {
+export type Achievement = GetStructType<
+  {
     Goal: number;
     SID: string;
-  };
-  "1": {
-    Goal: number;
-    SID: string;
-  };
-  "10": {
-    Goal: number;
-    SID: string;
-  };
-  "11": {
-    Goal: number;
-    SID: string;
-  };
-  "12": {
-    Goal: number;
-    SID: string;
-  };
-  "13": {
-    Goal: number;
-    SID: string;
-  };
-  "14": {
-    Goal: number;
-    SID: string;
-  };
-  "15": {
-    Goal: number;
-    SID: string;
-  };
-  "16": {
-    Goal: number;
-    SID: string;
-  };
-  "17": {
-    Goal: number;
-    SID: string;
-  };
-  "18": {
-    Goal: number;
-    SID: string;
-  };
-  "19": {
-    Goal: number;
-    SID: string;
-  };
-  "2": {
-    Goal: number;
-    SID: string;
-  };
-  "20": {
-    Goal: number;
-    SID: string;
-  };
-  "21": {
-    Goal: number;
-    SID: string;
-  };
-  "22": {
-    Goal: number;
-    SID: string;
-  };
-  "23": {
-    Goal: number;
-    SID: string;
-  };
-  "24": {
-    Goal: number;
-    SID: string;
-  };
-  "25": {
-    Goal: number;
-    SID: string;
-  };
-  "26": {
-    Goal: number;
-    SID: string;
-  };
-  "27": {
-    Goal: number;
-    SID: string;
-  };
-  "28": {
-    Goal: number;
-    SID: string;
-  };
-  "29": {
-    Goal: number;
-    SID: string;
-  };
-  "3": {
-    Goal: number;
-    SID: string;
-  };
-  "30": {
-    Goal: number;
-    SID: string;
-  };
-  "31": {
-    Goal: number;
-    SID: string;
-  };
-  "32": {
-    Goal: number;
-    SID: string;
-  };
-  "33": {
-    Goal: number;
-    SID: string;
-  };
-  "34": {
-    Goal: number;
-    SID: string;
-  };
-  "35": {
-    Goal: number;
-    SID: string;
-  };
-  "36": {
-    Goal: number;
-    SID: string;
-  };
-  "37": {
-    Goal: number;
-    SID: string;
-  };
-  "38": {
-    Goal: number;
-    SID: string;
-  };
-  "39": {
-    Goal: number;
-    SID: string;
-  };
-  "4": {
-    Goal: number;
-    SID: string;
-  };
-  "40": {
-    Goal: number;
-    SID: string;
-  };
-  "41": {
-    Goal: number;
-    SID: string;
-  };
-  "42": {
-    Goal: number;
-    SID: string;
-  };
-  "43": {
-    Goal: number;
-    SID: string;
-  };
-  "44": {
-    Goal: number;
-    SID: string;
-  };
-  "45": {
-    Goal: number;
-    SID: string;
-  };
-  "46": {
-    Goal: number;
-    SID: string;
-  };
-  "47": {
-    Goal: number;
-    SID: string;
-  };
-  "48": {
-    Goal: number;
-    SID: string;
-  };
-  "49": {
-    Goal: number;
-    SID: string;
-  };
-  "5": {
-    Goal: number;
-    SID: string;
-  };
-  "50": {
-    Goal: number;
-    SID: string;
-  };
-  "51": {
-    Goal: number;
-    SID: string;
-  };
-  "52": {
-    Goal: number;
-    SID: string;
-  };
-  "53": {
-    Goal: number;
-    SID: string;
-  };
-  "54": {
-    Goal: number;
-    SID: string;
-  };
-  "55": {
-    Goal: number;
-    SID: string;
-  };
-  "56": {
-    Goal: number;
-    SID: string;
-  };
-  "57": {
-    Goal: number;
-    SID: string;
-  };
-  "58": {
-    Goal: number;
-    SID: string;
-  };
-  "6": {
-    Goal: number;
-    SID: string;
-  };
-  "7": {
-    Goal: number;
-    SID: string;
-  };
-  "8": {
-    Goal: number;
-    SID: string;
-  };
-  "9": {
-    Goal: number;
-    SID: string;
-  };
-  AcceptableInterval: number;
-  AnomalyPrototypeSID: string;
-  ArmorSIDs: string[];
-  BleedingThreshold: number;
-  Calibers: EAmmoCaliber[];
-  DrunkennessThreshold: number;
-  DrunknessThreshold: number;
-  FoodSet: {
-    SID: string;
-  }[];
-  HeadshotDistance: number;
-  HungerThreshold: number;
-  Items: string[];
-  MarkerTypes: EMarkerType[];
-  MinHeight: number;
-  MinSquadSize: number;
-  MutantSID: string;
-  MutantsSID: string[];
-  NumberOfWeapons: number;
-  PsyThreshold: number;
-  RadiationThreshold: number;
-  RequiredCount: number;
-  SleepinessThreshold: number;
-  TargetSID: string;
-  TimeWindow: number;
-}>;
+  }[] & {
+    AcceptableInterval: number;
+    AnomalyPrototypeSID: string;
+    ArmorSIDs: string[];
+    BleedingThreshold: number;
+    Calibers: EAmmoCaliber[];
+    DrunkennessThreshold: number;
+    DrunknessThreshold: number;
+    FoodSet: {
+      SID: string;
+    }[];
+    HeadshotDistance: number;
+    HungerThreshold: number;
+    Items: string[];
+    MarkerTypes: EMarkerType[];
+    MinHeight: number;
+    MinSquadSize: number;
+    MutantSID: string;
+    MutantsSID: string[];
+    NumberOfWeapons: number;
+    PsyThreshold: number;
+    RadiationThreshold: number;
+    RequiredCount: number;
+    SleepinessThreshold: number;
+    TargetSID: string;
+    TimeWindow: number;
+  }
+>;
 
 export type AIGlobal = GetStructType<{
   ALifeSettings: {
@@ -14372,22 +8169,22 @@ export type CookedMapsList = GetStructType<{
 }>;
 
 export type CoreVariable = GetStructType<{
+  ALifeGridUpdateDelay: number;
+  ALifeGridVisionRadius: number;
   AccumulateNPCToPlayerDamageSeconds: number;
   ActorCrouchHeight: number;
-  AgentsDecalsPoolSize: number;
   AgentSpawnNavMeshQueryDistance: number;
+  AgentsDecalsPoolSize: number;
   AimAlphaParamName: string;
   AimAssistBoneLocationOffset: number;
   AimAssistMaxOverlapsThreshold: number;
   AimAssistMinOverlapsThreshold: number;
   AimAssistSnappingBones: string[];
   AimFOVRestoreTime: number;
-  AimingWeaponDirtCurve: string;
   AimSocketName: string;
+  AimingWeaponDirtCurve: string;
   AirPoltergeistSurfaceMaterial: string;
   AlifeCorpsesHardcap: number;
-  ALifeGridUpdateDelay: number;
-  ALifeGridVisionRadius: number;
   AnomalyAkComponentOffset: number;
   ArmorDeflectDamageCoefHuman: number;
   ArmorDeflectDamageCoefMutant: number;
@@ -14422,16 +8219,12 @@ export type CoreVariable = GetStructType<{
   };
   AutoInteractionDistance: number;
   AutonomicTutorialWidgetClass: string;
+  BP_DeveloperSpectator: string;
   BackgroundBlurViewClass: string;
-  bALifeTick: boolean;
   BaseActorHeight: number;
   BaseLookUpRate: number;
   BaseRepairCostModifier: number;
   BaseTurnRate: number;
-  bAutoEquipArtifacts: boolean;
-  bEnableDisassembleUI: boolean;
-  bEnableHideInformationUI: boolean;
-  bEnableWaterElement: boolean;
   BleedingChanceNonPenetrationMod: number;
   BleedingChanceStackMaxSize: number;
   BleedingPointsNonPenetrationMod: number;
@@ -14451,14 +8244,9 @@ export type CoreVariable = GetStructType<{
     Legs: string[];
     Torso: string[];
   };
-  BP_DeveloperSpectator: string;
   BreadSurfaceMaterial: string;
-  bResetArtifactLuckOnPickup: boolean;
   BrickSurfaceMaterial: string;
   BrokenGlassSurfaceMaterial: string;
-  bShouldSaveDefaultLanguage: boolean;
-  bStartWithLoadedWeapon: boolean;
-  bStartWithMenu: boolean;
   CalmDamageFromPlayerCoef: number;
   CeramicSurfaceMaterial: string;
   ChanceToGetHealOverTimeWhenWounded: string;
@@ -14509,9 +8297,9 @@ export type CoreVariable = GetStructType<{
   CorpseOnlineTime: number;
   CorpseRagdollQuestProtectionCheckTime: number;
   CorpseRagdollQuestProtectionEnableTime: number;
-  CorpsesDecalsPoolSize: number;
   CorpseSeenOnlineTime: number;
   CorpseTimeout: number;
+  CorpsesDecalsPoolSize: number;
   CriticalDamageSoundCooldown: number;
   CriticalEffectStartUI: number;
   CriticalShotDamageSound: string;
@@ -14592,10 +8380,11 @@ export type CoreVariable = GetStructType<{
   EnergeticOveruseParameter: string;
   EveningStartTime: number;
   ExplosionArmorDifferenceCoef: number;
+  FOVDefault: number;
   FactionRelationUpdateDelay: number;
   FadeoutScreenWidgetClass: string;
-  FastbackState: string;
   FastDialogClass: string;
+  FastbackState: string;
   FaustCloneCorpseTimeout: number;
   FaustCloneCountCap: number;
   FinalCreditsWithVideoClass: string;
@@ -14614,11 +8403,10 @@ export type CoreVariable = GetStructType<{
   FleshMetalSurfaceMaterial: string;
   FleshRubberSurfaceMaterial: string;
   FleshSurfaceMaterial: string;
-  FootstepsDecalFadeOutTime: number;
   FootStepsDecalsPoolSize: number;
+  FootstepsDecalFadeOutTime: number;
   ForestGrassSurfaceMaterial: string;
   ForestPineSurfaceMaterial: string;
-  FOVDefault: number;
   FullDynamicRangeState: string;
   GameLoadingScreenStart: string;
   GameLoadingScreenStop: string;
@@ -14641,15 +8429,15 @@ export type CoreVariable = GetStructType<{
   GuitarPlayThreatLoudness: number;
   GuitarPlayWidgetClass: string;
   GuitarSkeletal: string;
+  HPThresholdToKill: number;
+  HUDWidgetClass: string;
   HandlessFOVAimModifier: number;
   HelmetDurabilityParamsCoef: number;
   HoldPreventFromDefaultInteractionPercent: number;
   HpThresholdToHealWound: number;
-  HPThresholdToKill: number;
-  HUDWidgetClass: string;
+  IKTraceDistance: number;
   IdleState: string;
   IdleSwayInterpolationSpeed: number;
-  IKTraceDistance: number;
   ImpactParticleVFXCritName: string;
   ImpactParticleVFXHeadshotName: string;
   ImpactParticleVFXNpcSizeName: string;
@@ -14662,10 +8450,10 @@ export type CoreVariable = GetStructType<{
   InhaleExhaleTimeMin: number;
   InspectArtifactWidgetClass: string;
   InteractDotsWidgetClass: string;
+  InteractWidgetClass: string;
   InteractionDotsInnerConeAngle: number;
   InteractionDotsOuterConeAngle: number;
   InteractionDotsTraceRadius: number;
-  InteractWidgetClass: string;
   InventoryPenaltyLessWeight: number;
   InventorySPDrainCoef: number;
   InventorySPOverweightDrainCoef: number;
@@ -14713,6 +8501,10 @@ export type CoreVariable = GetStructType<{
   LootNPCDeadBodySound: string;
   LowDurabilityThreshold: number;
   LowerRightLocation: Vec2;
+  MPC_Environment: string;
+  MPC_FOV: string;
+  MPC_Foliage: string;
+  MPC_PPM: string;
   MainMenuState: string;
   MainMenuWidgetClass: string;
   MarkerCompassWidgetClass: string;
@@ -14735,8 +8527,8 @@ export type CoreVariable = GetStructType<{
   MeatSurfaceMaterial: string;
   MediumDynamicRangeState: string;
   MediumEffectStartUI: number;
-  MeshesDecalsPoolSize: number;
   MeshSoundPlacerDataTable: string;
+  MeshesDecalsPoolSize: number;
   MetalGridSurfaceMaterial: string;
   MetalSolidSurfaceMaterial: string;
   MetalThinSurfaceMaterial: string;
@@ -14755,10 +8547,6 @@ export type CoreVariable = GetStructType<{
     ArmorScale: EArmorScale;
   }[];
   MovementVFXFootStepDecalLifetime: number;
-  MPC_Environment: string;
-  MPC_Foliage: string;
-  MPC_FOV: string;
-  MPC_PPM: string;
   MusicManagerCombatEnemyAttackActionLifetimeSeconds: number;
   MusicManagerCombatScoreThreshold: number;
   MusicVolumeSlider: string;
@@ -14781,8 +8569,8 @@ export type CoreVariable = GetStructType<{
     UpdateTime: number;
   }[];
   NightStartTime: number;
-  NoiseIndicatorMaxHearingDistance: number;
   NoMusicAmbientState: string;
+  NoiseIndicatorMaxHearingDistance: number;
   ObjPhysicsHitSqareMinVelocity: number;
   ObjPhysicsHitTimeDelay: number;
   ObjRadiationSphereMaxRadius: number;
@@ -14796,6 +8584,8 @@ export type CoreVariable = GetStructType<{
   OpticCutoutRadiusParamName: string;
   OpticCutoutSocketName: string;
   OpticCutoutThresholdParamName: string;
+  PDAAnimationBlueprint: string;
+  PDAClass: string;
   PaperSurfaceMaterial: string;
   ParticleTraceLength: number;
   PathToInputActionAssets: string;
@@ -14803,8 +8593,6 @@ export type CoreVariable = GetStructType<{
   PathToWaterObstructionTestTraceDist: number;
   PauseMenuOff_SFX: string;
   PauseMenuOn_SFX: string;
-  PDAAnimationBlueprint: string;
-  PDAClass: string;
   PermissibleAngleOfRotation: number;
   PersonalRelationUpdateDelay: number;
   PerspectiveThirdPersonRTPC: string;
@@ -14816,6 +8604,8 @@ export type CoreVariable = GetStructType<{
     SID: SID;
   })[];
   PlasticSurfaceMaterial: string;
+  PlayVideoState: string;
+  PlayVideoWidgetClass: string;
   PlayerAudioLogVolumeDecreaseTime: number;
   PlayerBedSleepTime: number;
   PlayerDeathState: string;
@@ -14823,8 +8613,6 @@ export type CoreVariable = GetStructType<{
   PlayerPrototypeSID: string;
   PlayerStartingCoords: Vec3;
   PlayerStartingMoney: number;
-  PlayVideoState: string;
-  PlayVideoWidgetClass: string;
   PopupClass: string;
   PopupViewClass: string;
   PossessedWeaponFireIntervals: {
@@ -14875,25 +8663,16 @@ export type CoreVariable = GetStructType<{
     Value: number;
   }[];
   RadiationPostEffectSID: string;
-  RadiationPresetValues: (
-    | {
-        EffectPrototypeSIDs: string[];
-        GeigerRadiationIntensity: number;
-        PostProcessRadiationIntensity: number;
-        Preset: ERadiationPreset;
-        RadiationPerSecondValue: number;
-        RadioactivityValue: number;
-      }
-    | {
-        GeigerRadiationIntensity: number;
-        PostProcessRadiationIntensity: number;
-        Preset: ERadiationPreset;
-        RadiationPerSecondValue: number;
-        RadioactivityValue: number;
-      }
-  )[];
-  RadioactivityParameter: string;
+  RadiationPresetValues: {
+    EffectPrototypeSIDs: string[];
+    GeigerRadiationIntensity: number;
+    PostProcessRadiationIntensity: number;
+    Preset: ERadiationPreset;
+    RadiationPerSecondValue: number;
+    RadioactivityValue: number;
+  }[];
   RadioRange: number;
+  RadioactivityParameter: string;
   RadiusSearchPlaceToSit: number;
   RadiusSearchTargetToLook: number;
   RadiusWithAmountOfActorWithSimulation: number;
@@ -14982,9 +8761,9 @@ export type CoreVariable = GetStructType<{
   UnkillableNPCWoundedStateResurrectionTime: number;
   UntouchedDespawnItemTime: number;
   UpdatePopupClass: string;
-  UpgradesWidgetClass: string;
   UpgradeTooltipWidgetClass: string;
   UpgradeWidgetClass: string;
+  UpgradesWidgetClass: string;
   UpperLeftLocation: {
     X: number;
     Y: number;
@@ -15046,15 +8825,24 @@ export type CoreVariable = GetStructType<{
     Y: number;
   };
   WoundCausingDamageSourceTypes: EDamageSource[];
-  WoundedHealHoldInteractTime: number;
-  WoundedStateHealthRegen: number;
   WoundHitAreasThresholds: {
     Default: number;
     Head: number;
     Legs: number;
     Torso: number;
   };
+  WoundedHealHoldInteractTime: number;
+  WoundedStateHealthRegen: number;
   ZombieFactionUIDName: string;
+  bALifeTick: boolean;
+  bAutoEquipArtifacts: boolean;
+  bEnableDisassembleUI: boolean;
+  bEnableHideInformationUI: boolean;
+  bEnableWaterElement: boolean;
+  bResetArtifactLuckOnPickup: boolean;
+  bShouldSaveDefaultLanguage: boolean;
+  bStartWithLoadedWeapon: boolean;
+  bStartWithMenu: boolean;
 }>;
 
 export type CoreVariablesCustom = GetStructType<{
@@ -15071,16 +8859,10 @@ export type CoreVariablesCustom = GetStructType<{
 }>;
 
 export type Credit = GetStructType<{
-  Roles: (
-    | {
-        Names: (number | string)[];
-        RoleNameSID: string;
-      }
-    | {
-        Names: string[];
-        RoleNameSID: string;
-      }
-  )[];
+  Roles: {
+    Names: (number | string)[];
+    RoleNameSID: string;
+  }[];
   SectionNameSID: string;
 }>;
 
@@ -15125,27 +8907,16 @@ export type KeyboardLayoutPreset = GetStructType<{
   DialogueOnTheGo: string;
   EditSafeZone: string;
   EULA: string;
-  Exploration: (
-    | {
-        bIsPlayerMappable: boolean;
-        DefaultID: number;
-        InputActionSID: string;
-        Key: string;
-        Modifiers: EPlayerActionInputModifier[];
-        OldKey: string;
-        PlayerMappableOption: string;
-        Triggers: EPlayerActionInputTrigger[];
-      }
-    | {
-        bIsPlayerMappable: boolean;
-        DefaultID: number;
-        InputActionSID: string;
-        Key: string;
-        OldKey: string;
-        PlayerMappableOption: string;
-        Triggers: EPlayerActionInputTrigger[];
-      }
-  )[];
+  Exploration: {
+    DefaultID: number;
+    InputActionSID: string;
+    Key: string;
+    Modifiers: EPlayerActionInputModifier[];
+    OldKey: string;
+    PlayerMappableOption: string;
+    Triggers: EPlayerActionInputTrigger[];
+    bIsPlayerMappable: boolean;
+  }[];
   Grenade: string;
   Guitar: string;
   ImportantChoice: string;
@@ -15160,27 +8931,16 @@ export type KeyboardLayoutPreset = GetStructType<{
   }[];
   Interactivity: string;
   Inventory: string;
-  ItemSelector: (
-    | {
-        bIsPlayerMappable: boolean;
-        DefaultID: number;
-        InputActionSID: string;
-        Key: string;
-        Modifiers: EPlayerActionInputModifier[];
-        OldKey: string;
-        PlayerMappableOption: string;
-        Triggers: EPlayerActionInputTrigger[];
-      }
-    | {
-        bIsPlayerMappable: boolean;
-        DefaultID: number;
-        InputActionSID: string;
-        Key: string;
-        OldKey: string;
-        PlayerMappableOption: string;
-        Triggers: EPlayerActionInputTrigger[];
-      }
-  )[];
+  ItemSelector: {
+    DefaultID: number;
+    InputActionSID: string;
+    Key: string;
+    Modifiers: EPlayerActionInputModifier[];
+    OldKey: string;
+    PlayerMappableOption: string;
+    Triggers: EPlayerActionInputTrigger[];
+    bIsPlayerMappable: boolean;
+  }[];
   Journal: string;
   Knife: string;
   Ladder: string;
@@ -15241,26 +9001,16 @@ export type QuickSaveVariable = GetStructType<{
 }>;
 
 export type ref = GetStructType<
-  (
-    | {
-        AttachID: string;
-        CapsuleNames: string[];
-        DamageBone: EDamageBone;
-        IconPosX: string;
-        IconPosY: string;
-        Muzzle: string;
-        Socket: string;
-        UpgradeRequired: string;
-      }
-    | {
-        AttachID: string;
-        IconPosX: string;
-        IconPosY: string;
-        Muzzle: string;
-        Socket: string;
-        UpgradeRequired: string;
-      }
-  )[]
+  {
+    AttachID: string;
+    CapsuleNames: string[];
+    DamageBone: EDamageBone;
+    IconPosX: string;
+    IconPosY: string;
+    Muzzle: string;
+    Socket: string;
+    UpgradeRequired: string;
+  }[]
 >;
 
 export type SaveLoadVariable = GetStructType<{
@@ -15707,7 +9457,6 @@ export type SingletonConstant = GetStructType<{
   };
   Army: string[];
   Bandits: string[];
-  bDebugLogAssetLoading: boolean;
   CallPlayer: number;
   Chatter: number;
   CloudOpacity: number;
@@ -15817,6 +9566,7 @@ export type SingletonConstant = GetStructType<{
   SunLightMaxBrightness: number;
   TimeZone: number;
   Zombie: string[];
+  bDebugLogAssetLoading: boolean;
 }>;
 
 export type WaterVariable = GetStructType<

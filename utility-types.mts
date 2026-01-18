@@ -2,6 +2,11 @@ import {
   EChangeValueMode,
   EConditionCheckType,
   EConditionComparance,
+  EContextualActionBodyPart,
+  EContextualActionEffectType,
+  EContextualActionNeeds,
+  EContextualActionNodeType,
+  EContextualActionPreconditionType,
   ECustomDataDistribution,
   EGlobalVariableType,
   EItemGenerationCategory,
@@ -12,6 +17,7 @@ import {
   EQuestNodeState,
   ERank,
   ERelationLevel,
+  ERepetitions,
   ERequiredSquadMembers,
   EThreatAwareness,
   ETriggerReact,
@@ -160,639 +166,77 @@ export type Faction =
   | "StrelokBoss_Faction"
   | "FaustBoss_Faction";
 
-export type Condition =
+export type Condition = {
+  AITarget: string;
+  AmmoRequired: number;
+  AnyBody: boolean;
+  BoolValue: boolean;
+  ChangeValueMode: EChangeValueMode;
+  CompletedNodeLauncherNames: string[];
+  ConditionComparance: EConditionComparance;
+  ConditionType: EQuestConditionType;
+  DialogMemberIndex: number;
+  EffectPrototypeSID: string;
+  EmissionPrototypeSID: string;
+  Equipment: EMainHandEquipmentType;
+  Faction: string;
+  GlobalVariablePrototypeSID: string;
+  ItemPrototypeSID: {
+    VariableType: EGlobalVariableType;
+    VariableValue: string;
+  };
+  ItemsCount: {
+    VariableType: EGlobalVariableType;
+    VariableValue: number;
+  };
+  JournalEntity: EJournalEntity;
+  JournalQuestSID: string;
+  JournalQuestStageSID: string;
+  JournalState: EJournalState;
+  LinkedNodePrototypeSID: string;
+  Money: {
+    VariableType: EGlobalVariableType;
+    VariableValue: number;
+  };
+  NodeState: EQuestNodeState;
+  NotePrototypeSID: string;
+  NumericValue: number;
+  PointToLookAt: Vec3;
+  RandomProbability: number;
+  Rank: ERank;
+  ReactType: ETriggerReact;
+  Relationships: ERelationLevel;
+  RequiredSquadMembers: ERequiredSquadMembers;
+  TargetCharacter: string;
+  TargetContextualActionPlaceholder: string;
+  TargetCorpsePlaceholder: string;
+  TargetItemContainer: string;
+  TargetNPC: string;
+  TargetNode: string;
+  TargetPlaceholder: string;
+  TargetPoint: Vec3;
+  ThreatAwareness: EThreatAwareness;
+  Trigger: string;
+  VariableValue: number;
+  Weather: EWeather;
+  WithBodyArmor: boolean;
+  WithEquipped: boolean;
+  WithHeadArmor: boolean;
+  WithInventory: boolean;
+  bTriggersByAnybody: boolean;
+};
+
+export type Conditions = (
+  | EConditionCheckType
   | (
       | EConditionComparance
       | EQuestConditionType
       | number
       | string
-      | {
-          AITarget: string;
-          AmmoRequired: number;
-          AnyBody: boolean;
-          BoolValue: boolean;
-          bTriggersByAnybody: boolean;
-          ChangeValueMode: EChangeValueMode;
-          CompletedNodeLauncherNames: string[];
-          ConditionComparance: EConditionComparance;
-          ConditionType: EQuestConditionType;
-          EffectPrototypeSID: string;
-          EmissionPrototypeSID: string;
-          Equipment: EMainHandEquipmentType;
-          Faction: string;
-          GlobalVariablePrototypeSID: string;
-          ItemPrototypeSID: {
-            VariableType: EGlobalVariableType;
-            VariableValue: string;
-          };
-          ItemsCount: {
-            VariableType: EGlobalVariableType;
-            VariableValue: number;
-          };
-          JournalEntity: EJournalEntity;
-          JournalQuestSID: string;
-          JournalQuestStageSID: string;
-          JournalState: EJournalState;
-          LinkedNodePrototypeSID: string;
-          Money: {
-            VariableType: EGlobalVariableType;
-            VariableValue: number;
-          };
-          NodeState: EQuestNodeState;
-          NotePrototypeSID: string;
-          NumericValue: number;
-          PointToLookAt: { X: number; Y: number; Z: number };
-          Rank: ERank;
-          ReactType: ETriggerReact;
-          Relationships: ERelationLevel;
-          RequiredSquadMembers: ERequiredSquadMembers;
-          TargetCharacter: string;
-          TargetContextualActionPlaceholder: string;
-          TargetCorpsePlaceholder: string;
-          TargetItemContainer: string;
-          TargetNode: string;
-          TargetNPC: string;
-          TargetPlaceholder: string;
-          TargetPoint: { X: number; Y: number; Z: number };
-          ThreatAwareness: EThreatAwareness;
-          Trigger: string;
-          VariableValue: number;
-          WithBodyArmor: boolean;
-          WithEquipped: boolean;
-          WithHeadArmor: boolean;
-          WithInventory: boolean;
-        }
-      | {
-          BoolValue: boolean;
-          bTriggersByAnybody: boolean;
-          ChangeValueMode: EChangeValueMode;
-          CompletedNodeLauncherNames: string[];
-          ConditionComparance: EConditionComparance;
-          ConditionType: EQuestConditionType;
-          EffectPrototypeSID: string;
-          Equipment: EMainHandEquipmentType;
-          Faction: string;
-          GlobalVariablePrototypeSID: string;
-          ItemPrototypeSID: {
-            VariableType: EGlobalVariableType;
-            VariableValue: string;
-          };
-          ItemsCount: {
-            VariableType: EGlobalVariableType;
-            VariableValue: number;
-          };
-          JournalEntity: EJournalEntity;
-          JournalQuestSID: string;
-          JournalQuestStageSID: string;
-          JournalState: EJournalState;
-          LinkedNodePrototypeSID: string;
-          NodeState: EQuestNodeState;
-          NotePrototypeSID: string;
-          NumericValue: number;
-          PointToLookAt: { X: number; Y: number; Z: number };
-          ReactType: ETriggerReact;
-          Relationships: ERelationLevel;
-          RequiredSquadMembers: ERequiredSquadMembers;
-          TargetCharacter: string;
-          TargetContextualActionPlaceholder: string;
-          TargetItemContainer: string;
-          TargetNode: string;
-          TargetNPC: string;
-          TargetPlaceholder: string;
-          TargetPoint: { X: number; Y: number; Z: number };
-          ThreatAwareness: EThreatAwareness;
-          Trigger: string;
-          VariableValue: boolean;
-          WithEquipped: boolean;
-          WithInventory: boolean;
-        }
-      | {
-          CompletedNodeLauncherNames: string[];
-          ConditionComparance: EConditionComparance;
-          ConditionType: EQuestConditionType;
-          EffectPrototypeSID: string;
-          Equipment: EMainHandEquipmentType;
-          Faction: string;
-          ItemPrototypeSID: {
-            VariableType: EGlobalVariableType;
-            VariableValue: string;
-          };
-          ItemsCount: {
-            VariableType: EGlobalVariableType;
-            VariableValue: number;
-          };
-          JournalEntity: EJournalEntity;
-          JournalQuestSID: string;
-          JournalQuestStageSID: string;
-          JournalState: EJournalState;
-          LinkedNodePrototypeSID: string;
-          NodeState: EQuestNodeState;
-          NumericValue: number;
-          Relationships: ERelationLevel;
-          RequiredSquadMembers: ERequiredSquadMembers;
-          TargetCharacter: string;
-          TargetContextualActionPlaceholder: string;
-          TargetItemContainer: string;
-          TargetNode: string;
-          TargetNPC: string;
-          TargetPlaceholder: string;
-          TargetPoint: { X: number; Y: number; Z: number };
-        }
-      | {
-          CompletedNodeLauncherNames: string[];
-          ConditionComparance: EConditionComparance;
-          ConditionType: EQuestConditionType;
-          Equipment: EMainHandEquipmentType;
-          Faction: string;
-          ItemPrototypeSID: {
-            VariableType: EGlobalVariableType;
-            VariableValue: string;
-          };
-          ItemsCount: {
-            VariableType: EGlobalVariableType;
-            VariableValue: number;
-          };
-          LinkedNodePrototypeSID: string;
-          NodeState: EQuestNodeState;
-          NumericValue: number;
-          Relationships: ERelationLevel;
-          RequiredSquadMembers: ERequiredSquadMembers;
-          TargetCharacter: string;
-          TargetContextualActionPlaceholder: string;
-          TargetItemContainer: string;
-          TargetNode: string;
-          TargetNPC: string;
-          TargetPlaceholder: string;
-          TargetPoint: { X: number; Y: number; Z: number };
-        }
-      | {
-          ConditionComparance: EConditionComparance;
-          ConditionType: EQuestConditionType;
-          Faction: string;
-          ItemPrototypeSID: {
-            VariableType: EGlobalVariableType;
-            VariableValue: string;
-          };
-          ItemsCount: {
-            VariableType: EGlobalVariableType;
-            VariableValue: number;
-          };
-          NodeState: EQuestNodeState;
-          NumericValue: number;
-          Relationships: ERelationLevel;
-          RequiredSquadMembers: ERequiredSquadMembers;
-          TargetCharacter: string;
-          TargetItemContainer: string;
-          TargetNode: string;
-          TargetPlaceholder: string;
-          TargetPoint: { X: number; Y: number; Z: number };
-        }
-      | {
-          ConditionComparance: EConditionComparance;
-          ConditionType: EQuestConditionType;
-          Faction: string;
-          ItemPrototypeSID: {
-            VariableType: EGlobalVariableType;
-            VariableValue: string;
-          };
-          ItemsCount: {
-            VariableType: EGlobalVariableType;
-            VariableValue: number;
-          };
-          NumericValue: number;
-          Relationships: ERelationLevel;
-          RequiredSquadMembers: ERequiredSquadMembers;
-          TargetCharacter: string;
-          TargetItemContainer: string;
-          TargetPlaceholder: string;
-          TargetPoint: { X: number; Y: number; Z: number };
-        }
-      | {
-          ConditionComparance: EConditionComparance;
-          ConditionType: EQuestConditionType;
-          Faction: string;
-          ItemPrototypeSID: {
-            VariableType: EGlobalVariableType;
-            VariableValue: string;
-          };
-          ItemsCount: {
-            VariableType: EGlobalVariableType;
-            VariableValue: number;
-          };
-          NumericValue: number;
-          Relationships: ERelationLevel;
-          RequiredSquadMembers: ERequiredSquadMembers;
-          TargetCharacter: string;
-          TargetItemContainer: string;
-          TargetPoint: { X: number; Y: number; Z: number };
-        }
-      | {
-          ConditionComparance: EConditionComparance;
-          ConditionType: EQuestConditionType;
-          Faction: string;
-          Relationships: ERelationLevel;
-          TargetCharacter: string;
-        }
-      | {
-          X: number;
-          Y: number;
-          Z: number;
-        }
-      | {
-          bTriggersByAnybody: boolean;
-          CompletedNodeLauncherNames: string[];
-          ConditionComparance: EConditionComparance;
-          ConditionType: EQuestConditionType;
-          EffectPrototypeSID: string;
-          EmissionPrototypeSID: string;
-          Equipment: EMainHandEquipmentType;
-          Faction: string;
-          ItemPrototypeSID: {
-            VariableType: EGlobalVariableType;
-            VariableValue: string;
-          };
-          ItemsCount: {
-            VariableType: EGlobalVariableType;
-            VariableValue: number;
-          };
-          JournalEntity: EJournalEntity;
-          JournalQuestSID: string;
-          JournalQuestStageSID: string;
-          JournalState: EJournalState;
-          LinkedNodePrototypeSID: string;
-          NodeState: EQuestNodeState;
-          NumericValue: number;
-          ReactType: ETriggerReact;
-          Relationships: ERelationLevel;
-          RequiredSquadMembers: ERequiredSquadMembers;
-          TargetCharacter: string;
-          TargetContextualActionPlaceholder: string;
-          TargetItemContainer: string;
-          TargetNode: string;
-          TargetNPC: string;
-          TargetPlaceholder: string;
-          TargetPoint: { X: number; Y: number; Z: number };
-          Trigger: string;
-          WithEquipped: boolean;
-          WithInventory: boolean;
-        }
+      | Vec3
+      | Condition
     )[]
-  | (
-      | {
-          AnyBody: boolean;
-          bTriggersByAnybody: boolean;
-          ChangeValueMode: EChangeValueMode;
-          CompletedNodeLauncherNames: string[];
-          ConditionComparance: EConditionComparance;
-          ConditionType: EQuestConditionType;
-          EmissionPrototypeSID: string;
-          Faction: string;
-          GlobalVariablePrototypeSID: string;
-          ItemPrototypeSID: {
-            VariableType: EGlobalVariableType;
-            VariableValue: string;
-          };
-          ItemsCount: {
-            VariableType: EGlobalVariableType;
-            VariableValue: number;
-          };
-          JournalEntity: EJournalEntity;
-          JournalQuestSID: string;
-          JournalQuestStageSID: string;
-          JournalState: EJournalState;
-          LinkedNodePrototypeSID: string;
-          NodeState: EQuestNodeState;
-          NumericValue: number;
-          ReactType: ETriggerReact;
-          Relationships: ERelationLevel;
-          RequiredSquadMembers: ERequiredSquadMembers;
-          TargetCharacter: string;
-          TargetContextualActionPlaceholder: string;
-          TargetCorpsePlaceholder: string;
-          TargetItemContainer: string;
-          TargetNode: string;
-          TargetNPC: string;
-          TargetPlaceholder: string;
-          TargetPoint: { X: number; Y: number; Z: number };
-          ThreatAwareness: EThreatAwareness;
-          Trigger: string;
-          VariableValue: boolean;
-          Weather: EWeather;
-          WithEquipped: boolean;
-          WithInventory: boolean;
-        }
-      | {
-          CompletedNodeLauncherNames: string[];
-          ConditionComparance: EConditionComparance;
-          ConditionType: EQuestConditionType;
-          ItemPrototypeSID: {
-            VariableType: EGlobalVariableType;
-            VariableValue: string;
-          };
-          ItemsCount: {
-            VariableType: EGlobalVariableType;
-            VariableValue: number;
-          };
-          JournalEntity: EJournalEntity;
-          JournalQuestSID: string;
-          JournalState: EJournalState;
-          LinkedNodePrototypeSID: string;
-          NodeState: EQuestNodeState;
-          NumericValue: number;
-          RequiredSquadMembers: ERequiredSquadMembers;
-          TargetCharacter: string;
-          TargetContextualActionPlaceholder: string;
-          TargetItemContainer: string;
-          TargetNode: string;
-          TargetNPC: string;
-          WithEquipped: boolean;
-          WithInventory: boolean;
-        }
-      | {
-          ConditionComparance: EConditionComparance;
-          ConditionType: EQuestConditionType;
-          ItemPrototypeSID: {
-            VariableType: EGlobalVariableType;
-            VariableValue: string;
-          };
-          ItemsCount: {
-            VariableType: EGlobalVariableType;
-            VariableValue: number;
-          };
-          JournalEntity: EJournalEntity;
-          JournalQuestSID: string;
-          JournalState: EJournalState;
-          NodeState: EQuestNodeState;
-          NumericValue: number;
-          RequiredSquadMembers: ERequiredSquadMembers;
-          TargetCharacter: string;
-          TargetContextualActionPlaceholder: string;
-          TargetItemContainer: string;
-          TargetNode: string;
-          TargetNPC: string;
-          WithEquipped: boolean;
-          WithInventory: boolean;
-        }
-      | {
-          ConditionComparance: EConditionComparance;
-          ConditionType: EQuestConditionType;
-          ItemPrototypeSID: {
-            VariableType: EGlobalVariableType;
-            VariableValue: string;
-          };
-          ItemsCount: {
-            VariableType: EGlobalVariableType;
-            VariableValue: number;
-          };
-          JournalEntity: EJournalEntity;
-          JournalQuestSID: string;
-          JournalState: EJournalState;
-          RequiredSquadMembers: ERequiredSquadMembers;
-          TargetCharacter: string;
-          TargetContextualActionPlaceholder: string;
-          TargetItemContainer: string;
-          TargetNPC: string;
-        }
-      | {
-          ConditionComparance: EConditionComparance;
-          ConditionType: EQuestConditionType;
-          ItemPrototypeSID: {
-            VariableType: EGlobalVariableType;
-            VariableValue: string;
-          };
-          ItemsCount: {
-            VariableType: EGlobalVariableType;
-            VariableValue: number;
-          };
-          TargetItemContainer: string;
-        }
-    )[]
-  | (
-      | {
-          AnyBody: boolean;
-          bTriggersByAnybody: boolean;
-          ChangeValueMode: EChangeValueMode;
-          CompletedNodeLauncherNames: string[];
-          ConditionComparance: EConditionComparance;
-          ConditionType: EQuestConditionType;
-          EmissionPrototypeSID: string;
-          Faction: string;
-          GlobalVariablePrototypeSID: string;
-          ItemPrototypeSID: {
-            VariableType: EGlobalVariableType;
-            VariableValue: string;
-          };
-          ItemsCount: {
-            VariableType: EGlobalVariableType;
-            VariableValue: number;
-          };
-          JournalEntity: EJournalEntity;
-          JournalQuestSID: string;
-          JournalQuestStageSID: string;
-          JournalState: EJournalState;
-          LinkedNodePrototypeSID: string;
-          NodeState: EQuestNodeState;
-          NumericValue: number;
-          ReactType: ETriggerReact;
-          Relationships: ERelationLevel;
-          RequiredSquadMembers: ERequiredSquadMembers;
-          TargetCharacter: string;
-          TargetContextualActionPlaceholder: string;
-          TargetCorpsePlaceholder: string;
-          TargetItemContainer: string;
-          TargetNode: string;
-          TargetNPC: string;
-          TargetPlaceholder: string;
-          TargetPoint: { X: number; Y: number; Z: number };
-          ThreatAwareness: EThreatAwareness;
-          Trigger: string;
-          VariableValue: number;
-          WithEquipped: boolean;
-          WithInventory: boolean;
-        }
-      | {
-          ConditionComparance: EConditionComparance;
-          ConditionType: EQuestConditionType;
-          NodeState: EQuestNodeState;
-          NumericValue: number;
-          RequiredSquadMembers: ERequiredSquadMembers;
-          TargetCharacter: string;
-          TargetContextualActionPlaceholder: string;
-          TargetNode: string;
-          TargetNPC: string;
-        }
-      | {
-          ConditionComparance: EConditionComparance;
-          ConditionType: EQuestConditionType;
-          TargetContextualActionPlaceholder: string;
-          TargetNPC: string;
-        }
-    )[]
-  | (
-      | {
-          ConditionComparance: EConditionComparance;
-          ConditionType: EQuestConditionType;
-          JournalEntity: EJournalEntity;
-          JournalQuestSID: string;
-          JournalQuestStageSID: string;
-          JournalState: EJournalState;
-        }
-      | {
-          bTriggersByAnybody: boolean;
-          CompletedNodeLauncherNames: string[];
-          ConditionComparance: EConditionComparance;
-          ConditionType: EQuestConditionType;
-          EmissionPrototypeSID: string;
-          Faction: string;
-          ItemPrototypeSID: {
-            VariableType: EGlobalVariableType;
-            VariableValue: string;
-          };
-          ItemsCount: {
-            VariableType: EGlobalVariableType;
-            VariableValue: number;
-          };
-          JournalEntity: EJournalEntity;
-          JournalQuestSID: string;
-          JournalQuestStageSID: string;
-          JournalState: EJournalState;
-          LinkedNodePrototypeSID: string;
-          NodeState: EQuestNodeState;
-          NumericValue: number;
-          ReactType: ETriggerReact;
-          Relationships: ERelationLevel;
-          RequiredSquadMembers: ERequiredSquadMembers;
-          TargetCharacter: string;
-          TargetContextualActionPlaceholder: string;
-          TargetNode: string;
-          TargetNPC: string;
-          TargetPlaceholder: string;
-          TargetPoint: { X: number; Y: number; Z: number };
-          ThreatAwareness: EThreatAwareness;
-          Trigger: string;
-          WithEquipped: boolean;
-          WithInventory: boolean;
-        }
-    )[]
-  | EConditionCheckType
-  | {
-      AITarget: string;
-      BoolValue: boolean;
-      bTriggersByAnybody: boolean;
-      ChangeValueMode: EChangeValueMode;
-      CompletedNodeLauncherNames: string[];
-      ConditionComparance: EConditionComparance;
-      ConditionType: EQuestConditionType;
-      EmissionPrototypeSID: string;
-      Equipment: EMainHandEquipmentType;
-      Faction: string;
-      GlobalVariablePrototypeSID: string;
-      ItemPrototypeSID: {
-        VariableType: EGlobalVariableType;
-        VariableValue: string;
-      };
-      ItemsCount: {
-        VariableType: EGlobalVariableType;
-        VariableValue: number;
-      };
-      JournalEntity: EJournalEntity;
-      JournalQuestSID: string;
-      JournalQuestStageSID: string;
-      JournalState: EJournalState;
-      LinkedNodePrototypeSID: string;
-      NodeState: EQuestNodeState;
-      NotePrototypeSID: string;
-      NumericValue: number;
-      PointToLookAt: { X: number; Y: number; Z: number };
-      Rank: ERank;
-      ReactType: ETriggerReact;
-      Relationships: ERelationLevel;
-      RequiredSquadMembers: ERequiredSquadMembers;
-      TargetCharacter: string;
-      TargetContextualActionPlaceholder: string;
-      TargetItemContainer: string;
-      TargetNode: string;
-      TargetNPC: string;
-      TargetPlaceholder: string;
-      TargetPoint: { X: number; Y: number; Z: number };
-      ThreatAwareness: EThreatAwareness;
-      Trigger: string;
-      VariableValue: number;
-      Weather: EWeather;
-      WithEquipped: boolean;
-      WithInventory: boolean;
-    }[]
-  | {
-      ConditionComparance: EConditionComparance;
-      ConditionType: EQuestConditionType;
-      EmissionPrototypeSID: string;
-      JournalEntity: EJournalEntity;
-      JournalQuestSID: string;
-      JournalQuestStageSID: string;
-      JournalState: EJournalState;
-      NodeState: EQuestNodeState;
-      NumericValue: number;
-      RequiredSquadMembers: ERequiredSquadMembers;
-      TargetCharacter: string;
-      TargetNode: string;
-      TargetPlaceholder: string;
-      TargetPoint: { X: number; Y: number; Z: number };
-    }[]
-  | {
-      ConditionComparance: EConditionComparance;
-      ConditionType: EQuestConditionType;
-      NumericValue: number;
-      RequiredSquadMembers: ERequiredSquadMembers;
-      TargetCharacter: string;
-      TargetPoint: { X: number; Y: number; Z: number };
-      ThreatAwareness: EThreatAwareness;
-    }[]
-  | {
-      bTriggersByAnybody: boolean;
-      ConditionComparance: EConditionComparance;
-      ConditionType: EQuestConditionType;
-      EmissionPrototypeSID: string;
-      Faction: string;
-      JournalEntity: EJournalEntity;
-      JournalQuestSID: string;
-      JournalQuestStageSID: string;
-      JournalState: EJournalState;
-      NodeState: EQuestNodeState;
-      NumericValue: number;
-      ReactType: ETriggerReact;
-      Relationships: ERelationLevel;
-      RequiredSquadMembers: ERequiredSquadMembers;
-      TargetCharacter: string;
-      TargetContextualActionPlaceholder: string;
-      TargetNode: string;
-      TargetNPC: string;
-      TargetPlaceholder: string;
-      TargetPoint: { X: number; Y: number; Z: number };
-      ThreatAwareness: EThreatAwareness;
-      Trigger: string;
-    }[]
-  | {
-      bTriggersByAnybody: boolean;
-      ConditionComparance: EConditionComparance;
-      ConditionType: EQuestConditionType;
-      EmissionPrototypeSID: string;
-      Faction: string;
-      JournalEntity: EJournalEntity;
-      JournalQuestSID: string;
-      JournalQuestStageSID: string;
-      JournalState: EJournalState;
-      NodeState: EQuestNodeState;
-      NumericValue: number;
-      ReactType: ETriggerReact;
-      Relationships: ERelationLevel;
-      RequiredSquadMembers: ERequiredSquadMembers;
-      TargetCharacter: string;
-      TargetNode: string;
-      TargetPlaceholder: string;
-      TargetPoint: { X: number; Y: number; Z: number };
-      ThreatAwareness: EThreatAwareness;
-      Trigger: string;
-    }[];
+)[];
 
 export type Ability =
   | "Human_CombatPSYAttack"
@@ -1057,835 +501,134 @@ export type MeshAttachment =
   | "Faust_Fbe"
   | "Faust_Lhi";
 
-export type ItemGeneratorEntry =
-  | {
-      Category: EItemGenerationCategory;
-      PossibleItems: {
-        Chance: number;
-        ItemPrototypeSID: string;
-        MaxCount: number;
-        MinCount: number;
-      }[];
-    }
-  | {
-      bAllowSameCategoryGeneration: boolean;
-      Category: EItemGenerationCategory;
-      PossibleItems: (
-        | {
-            AmmoMaxCount: number;
-            AmmoMinCount: number;
-            Chance: number;
-            ItemPrototypeSID: string;
-            MaxCount: number;
-            MaxDurability: number;
-            MinCount: number;
-            MinDurability: number;
-            Weight: number;
-          }
-        | {
-            Chance: number;
-            ItemPrototypeSID: string;
-            MaxCount: number;
-            MinCount: number;
-          }
-      )[];
-    }
-  | {
-      bAllowSameCategoryGeneration: boolean;
-      Category: EItemGenerationCategory;
-      PossibleItems: (
-        | {
-            AmmoMaxCount: number;
-            AmmoMinCount: number;
-            bRequireWeapon: boolean;
-            Chance: number;
-            ItemGeneratorPrototypeSID: string;
-            ItemPrototypeSID: string;
-            MaxCount: number;
-            MaxDurability: number;
-            MinCount: number;
-            MinDurability: number;
-            Upgrades: {
-              Chance: number;
-              MaxCount: number;
-              MinCount: number;
-              PossibleItems: string;
-            };
-            Weight: number;
-          }
-        | {
-            AmmoMaxCount: number;
-            AmmoMinCount: number;
-            bRequireWeapon: boolean;
-            Chance: number;
-            ItemGeneratorPrototypeSID: string;
-            ItemPrototypeSID: string;
-            MaxCount: number;
-            MaxDurability: number;
-            MinCount: number;
-            MinDurability: number;
-          }
-        | {
-            Chance: number;
-            ItemPrototypeSID: string;
-            MaxCount: number;
-            MinCount: number;
-          }
-      )[];
-    }
-  | {
-      bAllowSameCategoryGeneration: boolean;
-      Category: EItemGenerationCategory;
-      PossibleItems: {
-        Chance: number;
-        ItemPrototypeSID: string;
-        MaxCount: number;
-        MinCount: number;
-      }[];
+export type ItemGeneratorEntry = {
+  Category: EItemGenerationCategory;
+  bAllowSameCategoryGeneration: boolean;
+  PossibleItems: {
+    AmmoMaxCount: number;
+    AmmoMinCount: number;
+    Chance: number;
+    ItemPrototypeSID: string;
+    MaxCount: number;
+    MaxDurability: number;
+    MinCount: number;
+    MinDurability: number;
+    Weight: number;
+    bRequireWeapon: boolean;
+    ItemGeneratorPrototypeSID: string;
+    Upgrades: {
+      Chance: number;
+      MaxCount: number;
+      MinCount: number;
+      PossibleItems: string;
     };
+  }[];
+};
 
-export type GroomCategory =
-  | {
-      CategoryName: string;
-      FromHairQualityUseVariationReplacementMap: number;
-      VariationReplacementMap: {
-        From: number;
-        To: number;
+export type GroomCategory = {
+  CategoryName: string;
+  FromHairQualityUseVariationReplacementMap: number;
+  VariationReplacementMap: {
+    From: number;
+    To: number;
+  }[];
+  Variations: {
+    AdditionalGrooms: {
+      GroomBindingPath: string;
+      GroomPath: string;
+      MaterialPath: string;
+      Materials: {
+        CustomData: {
+          Distribution: ECustomDataDistribution;
+          MaterialGroup: string;
+          ParameterID: number;
+          ShortHair: {
+            Distribution: ECustomDataDistribution;
+            MaterialGroup: string;
+            Variations: {
+              MaterialInstanceParameters: {
+                ParameterName: string;
+                TexturePath: string;
+              }[];
+              Weight: number;
+            }[];
+          };
+          Variations: {
+            ParameterValue: number;
+            Weight: number;
+          }[];
+        }[];
+        MaterialGroup: string;
+        MaterialSlot: number;
+        Variations: {
+          ParameterValue: number;
+          VariationIndex: number;
+
+          MaterialInstanceParameters: {
+            ParameterName: string;
+            TexturePath: string;
+          }[];
+          MaterialPath: string;
+
+          Weight: number;
+        }[];
       }[];
-      Variations: (
-        | {
-            AdditionalGrooms: (
-              | {
-                  GroomBindingPath: string;
-                  GroomPath: string;
-                  MaterialPath: string;
-                }
-              | {
-                  GroomBindingPath: string;
-                  GroomPath: string;
-                }
-            )[];
-            FromHairQualityRenderTextureInsteadOfGroom: number;
-            GroomBindingPath: string;
-            GroomPath: string;
-            GroomSID: string;
-            MaterialPath: string;
-            Materials: (
-              | {
-                  CustomData: (
-                    | {
-                        Distribution: ECustomDataDistribution;
-                        MaterialGroup: string;
-                        ParameterID: number;
-                        Variations: {
-                          ParameterValue: number;
-                          Weight: number;
-                        }[];
-                      }
-                    | {
-                        Distribution: ECustomDataDistribution;
-                        MaterialGroup: string;
-                        Variations: {
-                          MaterialInstanceParameters: {
-                            ParameterName: string;
-                            TexturePath: string;
-                          }[];
-                          Weight: number;
-                        }[];
-                      }
-                  )[];
-                  MaterialGroup: string;
-                  MaterialSlot: number;
-                }
-              | {
-                  MaterialGroup: string;
-                  MaterialSlot: number;
-                  Variations: {
-                    MaterialPath: string;
-                    VariationIndex: number;
-                    Weight: number;
-                  }[];
-                }
-            )[];
-            VariationIndex: number;
-            Weight: number;
-          }
-        | {
-            AdditionalGrooms: (
-              | {
-                  GroomBindingPath: string;
-                  GroomPath: string;
-                  Materials: {
-                    MaterialGroup: string;
-                    MaterialSlot: number;
-                    Variations: {
-                      MaterialPath: string;
-                      VariationIndex: number;
-                      Weight: number;
-                    }[];
-                  }[];
-                }
-              | {
-                  GroomBindingPath: string;
-                  GroomPath: string;
-                }
-            )[];
-            GroomBindingPath: string;
-            GroomPath: string;
-            GroomSID: string;
-            Materials: (
-              | {
-                  CustomData: (
-                    | {
-                        Distribution: ECustomDataDistribution;
-                        MaterialGroup: string;
-                        ParameterID: number;
-                        Variations: {
-                          ParameterValue: number;
-                          Weight: number;
-                        }[];
-                      }
-                    | {
-                        Distribution: ECustomDataDistribution;
-                        MaterialGroup: string;
-                        Variations: {
-                          MaterialInstanceParameters: {
-                            ParameterName: string;
-                            TexturePath: string;
-                          }[];
-                          Weight: number;
-                        }[];
-                      }
-                  )[];
-                  MaterialGroup: string;
-                  MaterialSlot: number;
-                }
-              | {
-                  MaterialGroup: string;
-                  MaterialSlot: number;
-                  Variations: {
-                    MaterialPath: string;
-                    VariationIndex: number;
-                    Weight: number;
-                  }[];
-                }
-            )[];
-            VariationIndex: number;
-            Weight: number;
-          }
-        | {
-            AdditionalGrooms: {
-              GroomBindingPath: string;
-              GroomPath: string;
-              Materials: {
-                MaterialGroup: string;
-                MaterialSlot: number;
-                Variations: {
-                  MaterialPath: string;
-                  VariationIndex: number;
-                  Weight: number;
-                }[];
-              }[];
-            }[];
-            FromHairQualityRenderTextureInsteadOfGroom: number;
-            GroomBindingPath: string;
-            GroomPath: string;
-            GroomSID: string;
-            Materials: (
-              | {
-                  CustomData: (
-                    | {
-                        Distribution: ECustomDataDistribution;
-                        MaterialGroup: string;
-                        ParameterID: number;
-                        Variations: {
-                          ParameterValue: number;
-                          Weight: number;
-                        }[];
-                      }
-                    | {
-                        Distribution: ECustomDataDistribution;
-                        MaterialGroup: string;
-                        Variations: {
-                          MaterialInstanceParameters: {
-                            ParameterName: string;
-                            TexturePath: string;
-                          }[];
-                          Weight: number;
-                        }[];
-                      }
-                  )[];
-                  MaterialGroup: string;
-                  MaterialSlot: number;
-                }
-              | {
-                  MaterialGroup: string;
-                  MaterialSlot: number;
-                  Variations: {
-                    MaterialPath: string;
-                    VariationIndex: number;
-                    Weight: number;
-                  }[];
-                }
-            )[];
-            VariationIndex: number;
-            Weight: number;
-          }
-        | {
-            AdditionalGrooms: {
-              GroomBindingPath: string;
-              GroomPath: string;
-              Materials: {
-                MaterialGroup: string;
-                MaterialSlot: number;
-                Variations: {
-                  MaterialPath: string;
-                  VariationIndex: number;
-                  Weight: number;
-                }[];
-              }[];
-            }[];
-            GroomBindingPath: string;
-            GroomPath: string;
-            GroomSID: string;
-            Materials: (
-              | {
-                  CustomData: (
-                    | {
-                        Distribution: ECustomDataDistribution;
-                        MaterialGroup: string;
-                        ParameterID: number;
-                        Variations: {
-                          ParameterValue: number;
-                          Weight: number;
-                        }[];
-                      }
-                    | {
-                        Distribution: ECustomDataDistribution;
-                        MaterialGroup: string;
-                        Variations: {
-                          MaterialInstanceParameters: {
-                            ParameterName: string;
-                            TexturePath: string;
-                          }[];
-                          Weight: number;
-                        }[];
-                      }
-                  )[];
-                  MaterialGroup: string;
-                  MaterialSlot: number;
-                }
-              | {
-                  MaterialGroup: string;
-                  MaterialSlot: number;
-                  Variations: {
-                    MaterialPath: string;
-                    VariationIndex: number;
-                    Weight: number;
-                  }[];
-                }
-            )[];
-            VariationIndex: number;
-            Weight: number;
-          }
-        | {
-            FromHairQualityRenderTextureInsteadOfGroom: number;
-            GroomBindingPath: string;
-            GroomPath: string;
-            GroomSID: string;
-            Materials: (
-              | {
-                  CustomData: (
-                    | {
-                        Distribution: ECustomDataDistribution;
-                        MaterialGroup: string;
-                        ParameterID: number;
-                        Variations: {
-                          ParameterValue: number;
-                          Weight: number;
-                        }[];
-                      }
-                    | {
-                        Distribution: ECustomDataDistribution;
-                        MaterialGroup: string;
-                        Variations: {
-                          MaterialInstanceParameters: {
-                            ParameterName: string;
-                            TexturePath: string;
-                          }[];
-                          Weight: number;
-                        }[];
-                      }
-                  )[];
-                  MaterialGroup: string;
-                  MaterialSlot: number;
-                }
-              | {
-                  MaterialGroup: string;
-                  MaterialSlot: number;
-                  Variations: {
-                    MaterialPath: string;
-                    VariationIndex: number;
-                    Weight: number;
-                  }[];
-                }
-            )[];
-            VariationIndex: number;
-            Weight: number;
-          }
-      )[];
-    }
-  | {
-      CategoryName: string;
-      Variations: (
-        | {
-            AdditionalGrooms: {
-              GroomBindingPath: string;
-              GroomPath: string;
-              MaterialPath: string;
-              Materials: {
-                MaterialGroup: string;
-                MaterialSlot: number;
-                Variations: {
-                  MaterialPath: string;
-                  Weight: number;
-                }[];
-              }[];
-            }[];
-            GroomBindingPath: string;
-            GroomPath: string;
-            GroomSID: string;
-            MaterialPath: string;
-            Materials: {
-              CustomData: (
-                | {
-                    Distribution: ECustomDataDistribution;
-                    MaterialGroup: string;
-                    ParameterID: number;
-                    Variations: {
-                      ParameterValue: number;
-                      Weight: number;
-                    }[];
-                  }
-                | {
-                    Distribution: ECustomDataDistribution;
-                    MaterialGroup: string;
-                    Variations: {
-                      MaterialInstanceParameters: {
-                        ParameterName: string;
-                        TexturePath: string;
-                      }[];
-                      Weight: number;
-                    }[];
-                  }
-              )[];
-              MaterialGroup: string;
-              MaterialSlot: number;
-              Variations: {
-                MaterialPath: string;
-                VariationIndex: number;
-                Weight: number;
-              }[];
-            }[];
-            VariationIndex: number;
-            Weight: number;
-          }
-        | {
-            AdditionalGrooms: {
-              GroomBindingPath: string;
-              GroomPath: string;
-              Materials: {
-                MaterialGroup: string;
-                MaterialSlot: number;
-                Variations: {
-                  MaterialPath: string;
-                  Weight: number;
-                }[];
-              }[];
-            }[];
-            CustomData: {
-              ShortHair: {
-                Distribution: ECustomDataDistribution;
-                MaterialGroup: string;
-                Variations: {
-                  MaterialInstanceParameters: {
-                    ParameterName: string;
-                    TexturePath: string;
-                  }[];
-                  Weight: number;
-                }[];
-              };
-            };
-            GroomBindingPath: string;
-            GroomPath: string;
-            GroomSID: string;
-            MaterialPath: string;
-            Materials: {
-              CustomData: {
-                ShortHair: {
-                  Distribution: ECustomDataDistribution;
-                  MaterialGroup: string;
-                  Variations: {
-                    MaterialInstanceParameters: {
-                      ParameterName: string;
-                      TexturePath: string;
-                    }[];
-                    Weight: number;
-                  }[];
-                };
-              };
-              MaterialGroup: string;
-              MaterialSlot: number;
-              Variations: {
-                MaterialPath: string;
-                VariationIndex: number;
-                Weight: number;
-              }[];
-            }[];
-            VariationIndex: number;
-            Weight: number;
-          }
-        | {
-            AdditionalGrooms: {
-              GroomBindingPath: string;
-              GroomPath: string;
-              Materials: {
-                MaterialGroup: string;
-                MaterialSlot: number;
-                Variations: {
-                  MaterialPath: string;
-                  Weight: number;
-                }[];
-              }[];
-            }[];
-            GroomBindingPath: string;
-            GroomPath: string;
-            GroomSID: string;
-            MaterialPath: string;
-            Materials: {
-              CustomData: {
-                ShortHair: {
-                  Distribution: ECustomDataDistribution;
-                  MaterialGroup: string;
-                  Variations: {
-                    MaterialInstanceParameters: {
-                      ParameterName: string;
-                      TexturePath: string;
-                    }[];
-                    Weight: number;
-                  }[];
-                };
-              };
-              MaterialGroup: string;
-              MaterialSlot: number;
-              Variations: {
-                MaterialPath: string;
-                VariationIndex: number;
-                Weight: number;
-              }[];
-            }[];
-            VariationIndex: number;
-            Weight: number;
-          }
-        | {
-            AdditionalGrooms: {
-              GroomBindingPath: string;
-              GroomPath: string;
-              Materials: {
-                MaterialGroup: string;
-                MaterialSlot: number;
-                Variations: {
-                  MaterialPath: string;
-                  Weight: number;
-                }[];
-              }[];
-            }[];
-            GroomBindingPath: string;
-            GroomPath: string;
-            GroomSID: string;
-            Materials: {
-              CustomData: {
-                ShortHair: {
-                  Distribution: ECustomDataDistribution;
-                  MaterialGroup: string;
-                  Variations: {
-                    MaterialInstanceParameters: {
-                      ParameterName: string;
-                      TexturePath: string;
-                    }[];
-                    Weight: number;
-                  }[];
-                };
-              };
-              MaterialGroup: string;
-              MaterialSlot: number;
-              Variations: {
-                MaterialPath: string;
-                Weight: number;
-              }[];
-            }[];
-            VariationIndex: number;
-            Weight: number;
-          }
-      )[];
-    }
-  | {
-      CategoryName: string;
-      Variations: (
-        | {
-            AdditionalGrooms: {
-              GroomBindingPath: string;
-              GroomPath: string;
-              MaterialPath: string;
-            }[];
-            GroomBindingPath: string;
-            GroomPath: string;
-            GroomSID: string;
-            MaterialPath: string;
-            Materials: {
-              MaterialGroup: string;
-              MaterialSlot: number;
-              Variations: (
-                | {
-                    MaterialPath: string;
-                    VariationIndex: number;
-                    Weight: number;
-                  }
-                | {
-                    MaterialPath: string;
-                    Weight: number;
-                  }
-              )[];
-            }[];
-            VariationIndex: number;
-            Weight: number;
-          }
-        | {
-            AdditionalGrooms: {
-              GroomBindingPath: string;
-              GroomPath: string;
-              MaterialPath: string;
-            }[];
-            GroomBindingPath: string;
-            GroomPath: string;
-            GroomSID: string;
-            MaterialPath: string;
-            Weight: number;
-          }
-      )[];
-    }
-  | {
-      CategoryName: string;
-      Variations: (
-        | {
-            AdditionalGrooms: {
-              GroomBindingPath: string;
-              GroomPath: string;
-              MaterialPath: string;
-            }[];
-            GroomBindingPath: string;
-            GroomPath: string;
-            GroomSID: string;
-            MaterialPath: string;
-            Materials: {
-              CustomData: {
-                Distribution: ECustomDataDistribution;
-                MaterialGroup: string;
-                ParameterID: number;
-                Variations: {
-                  ParameterValue: number;
-                  Weight: number;
-                }[];
-              }[];
-              MaterialGroup: string;
-              MaterialSlot: number;
-            }[];
-            Weight: number;
-          }
-        | {
-            GroomBindingPath: string;
-            GroomPath: string;
-            GroomSID: string;
-            MaterialPath: string;
-            Materials: (
-              | {
-                  CustomData: {
-                    Distribution: ECustomDataDistribution;
-                    MaterialGroup: string;
-                    ParameterID: number;
-                    Variations: {
-                      ParameterValue: number;
-                      Weight: number;
-                    }[];
-                  }[];
-                  MaterialGroup: string;
-                  MaterialSlot: number;
-                }
-              | {
-                  MaterialGroup: string;
-                  MaterialSlot: number;
-                  Variations: {
-                    MaterialPath: string;
-                    VariationIndex: number;
-                    Weight: number;
-                  }[];
-                }
-            )[];
-            Weight: number;
-          }
-      )[];
-    }
-  | {
-      CategoryName: string;
-      Variations: (
-        | {
-            AdditionalGrooms: {
-              GroomBindingPath: string;
-              GroomPath: string;
-              MaterialPath: string;
-            }[];
-            bHasCustomData: boolean;
-            GroomBindingPath: string;
-            GroomPath: string;
-            GroomSID: string;
-            MaterialPath: string;
-            Materials: {
-              CustomData: {
-                Distribution: ECustomDataDistribution;
-                MaterialGroup: string;
-                ParameterID: number;
-                Variations: {
-                  ParameterValue: number;
-                  Weight: number;
-                }[];
-              }[];
-              MaterialGroup: string;
-              MaterialSlot: number;
-              Variations: {
-                MaterialPath: string;
-                VariationIndex: number;
-                Weight: number;
-              }[];
-            }[];
-            VariationIndex: number;
-            Weight: number;
-          }
-        | {
-            AdditionalGrooms: {
-              GroomBindingPath: string;
-              GroomPath: string;
-              Materials: {
-                MaterialGroup: string;
-                MaterialSlot: number;
-                Variations: {
-                  MaterialPath: string;
-                  VariationIndex: number;
-                  Weight: number;
-                }[];
-              }[];
-            }[];
-            GroomBindingPath: string;
-            GroomPath: string;
-            GroomSID: string;
-            MaterialPath: string;
-            Materials: (
-              | {
-                  CustomData: {
-                    Distribution: ECustomDataDistribution;
-                    MaterialGroup: string;
-                    ParameterID: number;
-                    Variations: {
-                      ParameterValue: number;
-                      Weight: number;
-                    }[];
-                  }[];
-                  MaterialGroup: string;
-                  MaterialSlot: number;
-                }
-              | {
-                  MaterialGroup: string;
-                  MaterialSlot: number;
-                  Variations: {
-                    MaterialPath: string;
-                    VariationIndex: number;
-                    Weight: number;
-                  }[];
-                }
-            )[];
-            VariationIndex: number;
-            Weight: number;
-          }
-        | {
-            AdditionalGrooms: {
-              GroomBindingPath: string;
-              GroomPath: string;
-              Materials: {
-                MaterialGroup: string;
-                MaterialSlot: number;
-                Variations: {
-                  MaterialPath: string;
-                  VariationIndex: number;
-                  Weight: number;
-                }[];
-              }[];
-            }[];
-            GroomBindingPath: string;
-            GroomPath: string;
-            GroomSID: string;
-            Materials: (
-              | {
-                  CustomData: {
-                    Distribution: ECustomDataDistribution;
-                    MaterialGroup: string;
-                    ParameterID: number;
-                    Variations: {
-                      ParameterValue: number;
-                      Weight: number;
-                    }[];
-                  }[];
-                  MaterialGroup: string;
-                  MaterialSlot: number;
-                }
-              | {
-                  MaterialGroup: string;
-                  MaterialSlot: number;
-                  Variations: {
-                    MaterialPath: string;
-                    VariationIndex: number;
-                    Weight: number;
-                  }[];
-                }
-            )[];
-            VariationIndex: number;
-            Weight: number;
-          }
-      )[];
-    }
-  | {
-      CategoryName: string;
-      Variations: (
-        | {
-            GroomBindingPath: string;
-            GroomPath: string;
-            GroomSID: string;
-            Materials: {
-              MaterialGroup: string;
-              MaterialSlot: number;
-              Variations: {
-                MaterialPath: string;
-                VariationIndex: number;
-                Weight: number;
-              }[];
-            }[];
-            Weight: number;
-          }
-        | {
-            GroomBindingPath: string;
-            GroomPath: string;
-            GroomSID: string;
-            Weight: number;
-          }
-      )[];
+    }[];
+    CustomData: {
+      ShortHair: {
+        Distribution: ECustomDataDistribution;
+        MaterialGroup: string;
+      };
     };
+    FromHairQualityRenderTextureInsteadOfGroom: number;
+    GroomBindingPath: string;
+    GroomPath: string;
+    GroomSID: string;
+    MaterialPath: string;
+    Materials: {
+      CustomData: {
+        Distribution: ECustomDataDistribution;
+        MaterialGroup: string;
+        ParameterID: number;
+        Variations: {
+          ParameterValue: number;
+          Weight: number;
+          MaterialInstanceParameters: {
+            ParameterName: string;
+            TexturePath: string;
+          }[];
+        }[];
+      }[];
+      MaterialGroup: string;
+      MaterialSlot: number;
+      Variations: {
+        MaterialPath: string;
+        VariationIndex: number;
+        Weight: number;
+      }[];
+    }[];
+    VariationIndex: number;
+    Weight: number;
+    bHasCustomData: boolean;
+  }[];
+};
 
 export type FactionGoalType = "Aggressive" | "Defensive" | "Normal";
+
+export type ContextualAction = {
+  AnimationData: { MontagePath: string; MontageSection: string }[];
+  CanInteractWithPlayer: boolean;
+  ConditionalSelectorNodes: ContextualAction[];
+  Effects: string;
+  Interrupt: ContextualAction;
+  IsValidForQuestDialog: boolean;
+  NodeType: EContextualActionNodeType;
+  Preconditions: string;
+  RandomSelectorNodes: ContextualAction[];
+  Repetitions: ERepetitions;
+  RepetitionsCount: number;
+  SequentialSelectorNodes: ContextualAction[];
+  ShouldDisableDialogAnimations: boolean;
+  ShouldPlayerCrouchDuringDialog: boolean;
+  Weights: { Weight: number }[];
+};
