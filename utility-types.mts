@@ -52,6 +52,8 @@ export type Caliber =
   | "APG7V"
   | "AVOG"
   | "None";
+
+export type WeaponShootDistance = "Long" | "Medium" | "Short";
 export type SID = string;
 export type Rank = "Newbie" | "Experienced" | "Veteran" | "Master";
 export type Newbie = "ERank::Newbie";
@@ -525,6 +527,46 @@ export type ItemGeneratorEntry = {
   }[];
 };
 
+type GroomVariation = {
+  AdditionalGrooms: GroomVariation[];
+  CustomData: {
+    ShortHair: {
+      Distribution: ECustomDataDistribution;
+      MaterialGroup: string;
+    };
+  };
+  FromHairQualityRenderTextureInsteadOfGroom: number;
+  GroomBindingPath: string;
+  GroomPath: string;
+  GroomSID: string;
+  MaterialPath: string;
+  Materials: {
+    CustomData: {
+      Distribution: ECustomDataDistribution;
+      MaterialGroup: string;
+      ParameterID: number;
+      Variations: {
+        ParameterValue: number;
+        Weight: number;
+        MaterialInstanceParameters: {
+          ParameterName: string;
+          TexturePath: string;
+        }[];
+      }[];
+    }[];
+    MaterialGroup: string;
+    MaterialSlot: number;
+    Variations: {
+      MaterialPath: string;
+      VariationIndex: number;
+      Weight: number;
+    }[];
+  }[];
+  VariationIndex: number;
+  Weight: number;
+  bHasCustomData: boolean;
+};
+
 export type GroomCategory = {
   CategoryName: string;
   FromHairQualityUseVariationReplacementMap: number;
@@ -532,85 +574,7 @@ export type GroomCategory = {
     From: number;
     To: number;
   }[];
-  Variations: {
-    AdditionalGrooms: {
-      GroomBindingPath: string;
-      GroomPath: string;
-      MaterialPath: string;
-      Materials: {
-        CustomData: {
-          Distribution: ECustomDataDistribution;
-          MaterialGroup: string;
-          ParameterID: number;
-          ShortHair: {
-            Distribution: ECustomDataDistribution;
-            MaterialGroup: string;
-            Variations: {
-              MaterialInstanceParameters: {
-                ParameterName: string;
-                TexturePath: string;
-              }[];
-              Weight: number;
-            }[];
-          };
-          Variations: {
-            ParameterValue: number;
-            Weight: number;
-          }[];
-        }[];
-        MaterialGroup: string;
-        MaterialSlot: number;
-        Variations: {
-          ParameterValue: number;
-          VariationIndex: number;
-
-          MaterialInstanceParameters: {
-            ParameterName: string;
-            TexturePath: string;
-          }[];
-          MaterialPath: string;
-
-          Weight: number;
-        }[];
-      }[];
-    }[];
-    CustomData: {
-      ShortHair: {
-        Distribution: ECustomDataDistribution;
-        MaterialGroup: string;
-      };
-    };
-    FromHairQualityRenderTextureInsteadOfGroom: number;
-    GroomBindingPath: string;
-    GroomPath: string;
-    GroomSID: string;
-    MaterialPath: string;
-    Materials: {
-      CustomData: {
-        Distribution: ECustomDataDistribution;
-        MaterialGroup: string;
-        ParameterID: number;
-        Variations: {
-          ParameterValue: number;
-          Weight: number;
-          MaterialInstanceParameters: {
-            ParameterName: string;
-            TexturePath: string;
-          }[];
-        }[];
-      }[];
-      MaterialGroup: string;
-      MaterialSlot: number;
-      Variations: {
-        MaterialPath: string;
-        VariationIndex: number;
-        Weight: number;
-      }[];
-    }[];
-    VariationIndex: number;
-    Weight: number;
-    bHasCustomData: boolean;
-  }[];
+  Variations: GroomVariation[];
 };
 
 export type FactionGoalType = "Aggressive" | "Defensive" | "Normal";
@@ -631,4 +595,14 @@ export type ContextualAction = {
   ShouldDisableDialogAnimations: boolean;
   ShouldPlayerCrouchDuringDialog: boolean;
   Weights: { Weight: number }[];
+};
+
+export type Protection = {
+  Burn: number;
+  ChemicalBurn: number;
+  Fall: number;
+  PSY: number;
+  Radiation: number;
+  Shock: number;
+  Strike: number;
 };

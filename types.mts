@@ -199,6 +199,8 @@ import {
   VecRotTemp,
   Conditions,
   ContextualAction,
+  WeaponShootDistance,
+  Protection,
 } from "./utility-types.mts";
 
 import { GetStructType } from "./Struct.mts";
@@ -990,24 +992,8 @@ export type ArmorPrototype = GetStructType<{
   }[];
   PhysicsInteractionPrototypeSID: string;
   PreinstalledUpgrades: string[];
-  Protection: {
-    Burn: number;
-    ChemicalBurn: number;
-    Fall: number;
-    PSY: number;
-    Radiation: number;
-    Shock: number;
-    Strike: number;
-  };
-  ProtectionNPC: {
-    Burn: number;
-    ChemicalBurn: number;
-    Fall: number;
-    PSY: number;
-    Radiation: number;
-    Shock: number;
-    Strike: number;
-  };
+  Protection: Protection;
+  ProtectionNPC: Protection;
   SectionSettings: {
     BottomPosition: number;
     LeftPosition: number;
@@ -2984,18 +2970,8 @@ export type FastTravelPrototype = GetStructType<{
       GlobalVariablePrototypeSID: string;
       TargetValue: number;
     }[];
-    RankDiscountCoefficient: {
-      Experienced: number;
-      Master: number;
-      Newbie: number;
-      Veteran: number;
-    };
-    ReputationDiscountCoefficient: {
-      Disaffection: number;
-      Enemy: number;
-      Friend: number;
-      Neutral: number;
-    };
+    RankDiscountCoefficient: Record<Rank, number>;
+    ReputationDiscountCoefficient: Record<Reaction, number>;
   };
   GuideDelay: number;
   Locations: {
@@ -3258,15 +3234,7 @@ export type GeneralNPCObjPrototype = GetStructType<{
   NPCPrototypeSID: string;
   NPCType: ENPCType;
   OfflineCombatWeight: number;
-  Protection: {
-    Burn: number;
-    ChemicalBurn: number;
-    Fall: number;
-    PSY: number;
-    Radiation: number;
-    Shock: number;
-    Strike: number;
-  };
+  Protection: Protection;
   ReactOnApproachWithWeapon: boolean;
   SequentialAbilities: string[];
   SequentialAbilitiesActionData: {
@@ -3586,60 +3554,20 @@ export type LairPrototype = GetStructType<{
     IsALifePoint: boolean;
     PossibleInhabitantFactions: {
       Faction: Faction;
-      SpawnSettingsPerPlayerRanks: {
-        Experienced: {
+      SpawnSettingsPerPlayerRanks: Record<
+        Rank,
+        {
           InitialSpawnQuantityPercent: number;
           InitialSpawnQuantityRespawnTimeSeconds: number;
           MaxSpawnQuantity: number;
           MaxSpawnQuantityRespawnTimeSeconds: number;
-          SpawnSettingsPerArchetypes: {
-            GeneralNPC_Duty_CloseCombat: {
-              MinQuantityPerArchetype: number;
-              SpawnWeight: number;
-            };
-          };
+          SpawnSettingsPerArchetypes: Record<
+            Faction,
+            { MinQuantityPerArchetype: number; SpawnWeight: number }
+          >;
           WipeRespawnTimeoutSeconds: number;
-        };
-        Master: {
-          InitialSpawnQuantityPercent: number;
-          InitialSpawnQuantityRespawnTimeSeconds: number;
-          MaxSpawnQuantity: number;
-          MaxSpawnQuantityRespawnTimeSeconds: number;
-          SpawnSettingsPerArchetypes: {
-            GeneralNPC_Duty_CloseCombat: {
-              MinQuantityPerArchetype: number;
-              SpawnWeight: number;
-            };
-          };
-          WipeRespawnTimeoutSeconds: number;
-        };
-        Newbie: {
-          InitialSpawnQuantityPercent: number;
-          InitialSpawnQuantityRespawnTimeSeconds: number;
-          MaxSpawnQuantity: number;
-          MaxSpawnQuantityRespawnTimeSeconds: number;
-          SpawnSettingsPerArchetypes: {
-            GeneralNPC_Duty_CloseCombat: {
-              MinQuantityPerArchetype: number;
-              SpawnWeight: number;
-            };
-          };
-          WipeRespawnTimeoutSeconds: number;
-        };
-        Veteran: {
-          InitialSpawnQuantityPercent: number;
-          InitialSpawnQuantityRespawnTimeSeconds: number;
-          MaxSpawnQuantity: number;
-          MaxSpawnQuantityRespawnTimeSeconds: number;
-          SpawnSettingsPerArchetypes: {
-            GeneralNPC_Duty_CloseCombat: {
-              MinQuantityPerArchetype: number;
-              SpawnWeight: number;
-            };
-          };
-          WipeRespawnTimeoutSeconds: number;
-        };
-      };
+        }
+      >;
     }[];
   };
   SID: string;
@@ -4378,152 +4306,25 @@ export type NPCSpawnerPrototype = GetStructType<{
 
 export type NPCWeaponAttributesPrototype = GetStructType<{
   AIParameters: {
-    BehaviorTypes: {
-      Experienced: {
+    BehaviorTypes: Record<
+      Rank | "Zombie",
+      Record<
+        WeaponShootDistance,
+        {
+          IgnoreDispersionMaxShots: number;
+          IgnoreDispersionMinShots: number;
+          MaxSecondsDelay: number;
+          MaxShots: number;
+          MinSecondsDelay: number;
+          MinShots: number;
+        }
+      > & {
         CharacterWeaponSettingsSID: string;
-        CombatEffectiveFireDistanceMax: number;
-        CombatEffectiveFireDistanceMin: number;
-        Long: {
-          IgnoreDispersionMaxShots: number;
-          IgnoreDispersionMinShots: number;
-          MaxSecondsDelay: number;
-          MaxShots: number;
-          MinSecondsDelay: number;
-          MinShots: number;
-        };
-        Medium: {
-          IgnoreDispersionMaxShots: number;
-          IgnoreDispersionMinShots: number;
-          MaxSecondsDelay: number;
-          MaxShots: number;
-          MinSecondsDelay: number;
-          MinShots: number;
-        };
+        CombatEffectiveFireDistanceMax: string;
+        CombatEffectiveFireDistanceMin: string;
         NonAutomaticWeaponShotDelay: number;
-        Short: {
-          IgnoreDispersionMaxShots: number;
-          IgnoreDispersionMinShots: number;
-          MaxSecondsDelay: number;
-          MaxShots: number;
-          MinSecondsDelay: number;
-          MinShots: number;
-        };
-      };
-      Master: {
-        CharacterWeaponSettingsSID: string;
-        CombatEffectiveFireDistanceMax: number;
-        CombatEffectiveFireDistanceMin: number;
-        Long: {
-          IgnoreDispersionMaxShots: number;
-          IgnoreDispersionMinShots: number;
-          MaxSecondsDelay: number;
-          MaxShots: number;
-          MinSecondsDelay: number;
-          MinShots: number;
-        };
-        Medium: {
-          IgnoreDispersionMaxShots: number;
-          IgnoreDispersionMinShots: number;
-          MaxSecondsDelay: number;
-          MaxShots: number;
-          MinSecondsDelay: number;
-          MinShots: number;
-        };
-        NonAutomaticWeaponShotDelay: number;
-        Short: {
-          IgnoreDispersionMaxShots: number;
-          IgnoreDispersionMinShots: number;
-          MaxSecondsDelay: number;
-          MaxShots: number;
-          MinSecondsDelay: number;
-          MinShots: number;
-        };
-      };
-      Newbie: {
-        CharacterWeaponSettingsSID: string;
-        CombatEffectiveFireDistanceMax: number;
-        CombatEffectiveFireDistanceMin: number;
-        Long: {
-          IgnoreDispersionMaxShots: number;
-          IgnoreDispersionMinShots: number;
-          MaxSecondsDelay: number;
-          MaxShots: number;
-          MinSecondsDelay: number;
-          MinShots: number;
-        };
-        Medium: {
-          IgnoreDispersionMaxShots: number;
-          IgnoreDispersionMinShots: number;
-          MaxSecondsDelay: number;
-          MaxShots: number;
-          MinSecondsDelay: number;
-          MinShots: number;
-        };
-        NonAutomaticWeaponShotDelay: number;
-        Short: {
-          IgnoreDispersionMaxShots: number;
-          IgnoreDispersionMinShots: number;
-          MaxSecondsDelay: number;
-          MaxShots: number;
-          MinSecondsDelay: number;
-          MinShots: number;
-        };
-      };
-      Veteran: {
-        CharacterWeaponSettingsSID: string;
-        CombatEffectiveFireDistanceMax: number;
-        CombatEffectiveFireDistanceMin: number;
-        Long: {
-          IgnoreDispersionMaxShots: number;
-          IgnoreDispersionMinShots: number;
-          MaxSecondsDelay: number;
-          MaxShots: number;
-          MinSecondsDelay: number;
-          MinShots: number;
-        };
-        Medium: {
-          IgnoreDispersionMaxShots: number;
-          IgnoreDispersionMinShots: number;
-          MaxSecondsDelay: number;
-          MaxShots: number;
-          MinSecondsDelay: number;
-          MinShots: number;
-        };
-        NonAutomaticWeaponShotDelay: number;
-        Short: {
-          IgnoreDispersionMaxShots: number;
-          IgnoreDispersionMinShots: number;
-          MaxSecondsDelay: number;
-          MaxShots: number;
-          MinSecondsDelay: number;
-          MinShots: number;
-        };
-      };
-      Zombie: {
-        CharacterWeaponSettingsSID: string;
-        CombatEffectiveFireDistanceMax: number;
-        CombatEffectiveFireDistanceMin: number;
-        Long: {
-          IgnoreDispersionMaxShots: number;
-          IgnoreDispersionMinShots: number;
-          MaxShots: number;
-          MinShots: number;
-        };
-        Medium: {
-          IgnoreDispersionMaxShots: number;
-          IgnoreDispersionMinShots: number;
-          MaxShots: number;
-          MinShots: number;
-        };
-        NonAutomaticWeaponShotDelay: number;
-        Short: {
-          IgnoreDispersionMaxShots: number;
-          IgnoreDispersionMinShots: number;
-          MaxShots: number;
-          MinShots: number;
-        };
-      };
-    };
+      }
+    >;
   };
   AnimBlueprint: string;
   MuzzleSocketName: string;
@@ -7111,158 +6912,25 @@ export type VoiceModulatorPrototype = GetStructType<{
 export type WeaponAttributesPrototype = GetStructType<{
   AimShellShutterSocketName: string;
   AIParameters: {
-    BehaviorTypes: {
-      Experienced: {
+    BehaviorTypes: Record<
+      Rank | "Zombie",
+      Record<
+        WeaponShootDistance,
+        {
+          IgnoreDispersionMaxShots: number;
+          IgnoreDispersionMinShots: number;
+          MaxSecondsDelay: number;
+          MaxShots: number;
+          MinSecondsDelay: number;
+          MinShots: number;
+        }
+      > & {
         CharacterWeaponSettingsSID: string;
         CombatEffectiveFireDistanceMax: string;
         CombatEffectiveFireDistanceMin: string;
-        Long: {
-          IgnoreDispersionMaxShots: number;
-          IgnoreDispersionMinShots: number;
-          MaxSecondsDelay: number;
-          MaxShots: number;
-          MinSecondsDelay: number;
-          MinShots: number;
-        };
-        Medium: {
-          IgnoreDispersionMaxShots: number;
-          IgnoreDispersionMinShots: number;
-          MaxSecondsDelay: number;
-          MaxShots: number;
-          MinSecondsDelay: number;
-          MinShots: number;
-        };
         NonAutomaticWeaponShotDelay: number;
-        Short: {
-          IgnoreDispersionMaxShots: number;
-          IgnoreDispersionMinShots: number;
-          MaxSecondsDelay: number;
-          MaxShots: number;
-          MinSecondsDelay: number;
-          MinShots: number;
-        };
-      };
-      Master: {
-        CharacterWeaponSettingsSID: string;
-        CombatEffectiveFireDistanceMax: string;
-        CombatEffectiveFireDistanceMin: string;
-        Long: {
-          IgnoreDispersionMaxShots: number;
-          IgnoreDispersionMinShots: number;
-          MaxSecondsDelay: number;
-          MaxShots: number;
-          MinSecondsDelay: number;
-          MinShots: number;
-        };
-        Medium: {
-          IgnoreDispersionMaxShots: number;
-          IgnoreDispersionMinShots: number;
-          MaxSecondsDelay: number;
-          MaxShots: number;
-          MinSecondsDelay: number;
-          MinShots: number;
-        };
-        NonAutomaticWeaponShotDelay: number;
-        Short: {
-          IgnoreDispersionMaxShots: number;
-          IgnoreDispersionMinShots: number;
-          MaxSecondsDelay: number;
-          MaxShots: number;
-          MinSecondsDelay: number;
-          MinShots: number;
-        };
-      };
-      Newbie: {
-        CharacterWeaponSettingsSID: string;
-        CombatEffectiveFireDistanceMax: string;
-        CombatEffectiveFireDistanceMin: string;
-        Long: {
-          IgnoreDispersionMaxShots: number;
-          IgnoreDispersionMinShots: number;
-          MaxSecondsDelay: number;
-          MaxShots: number;
-          MinSecondsDelay: number;
-          MinShots: number;
-        };
-        Medium: {
-          IgnoreDispersionMaxShots: number;
-          IgnoreDispersionMinShots: number;
-          MaxSecondsDelay: number;
-          MaxShots: number;
-          MinSecondsDelay: number;
-          MinShots: number;
-        };
-        NonAutomaticWeaponShotDelay: number;
-        Short: {
-          IgnoreDispersionMaxShots: number;
-          IgnoreDispersionMinShots: number;
-          MaxSecondsDelay: number;
-          MaxShots: number;
-          MinSecondsDelay: number;
-          MinShots: number;
-        };
-      };
-      Veteran: {
-        CharacterWeaponSettingsSID: string;
-        CombatEffectiveFireDistanceMax: string;
-        CombatEffectiveFireDistanceMin: string;
-        Long: {
-          IgnoreDispersionMaxShots: number;
-          IgnoreDispersionMinShots: number;
-          MaxSecondsDelay: number;
-          MaxShots: number;
-          MinSecondsDelay: number;
-          MinShots: number;
-        };
-        Medium: {
-          IgnoreDispersionMaxShots: number;
-          IgnoreDispersionMinShots: number;
-          MaxSecondsDelay: number;
-          MaxShots: number;
-          MinSecondsDelay: number;
-          MinShots: number;
-        };
-        NonAutomaticWeaponShotDelay: number;
-        Short: {
-          IgnoreDispersionMaxShots: number;
-          IgnoreDispersionMinShots: number;
-          MaxSecondsDelay: number;
-          MaxShots: number;
-          MinSecondsDelay: number;
-          MinShots: number;
-        };
-      };
-      Zombie: {
-        CharacterWeaponSettingsSID: string;
-        CombatEffectiveFireDistanceMax: string;
-        CombatEffectiveFireDistanceMin: string;
-        Long: {
-          IgnoreDispersionMaxShots: number;
-          IgnoreDispersionMinShots: number;
-          MaxSecondsDelay: number;
-          MaxShots: number;
-          MinSecondsDelay: number;
-          MinShots: number;
-        };
-        Medium: {
-          IgnoreDispersionMaxShots: number;
-          IgnoreDispersionMinShots: number;
-          MaxSecondsDelay: number;
-          MaxShots: number;
-          MinSecondsDelay: number;
-          MinShots: number;
-        };
-        NonAutomaticWeaponShotDelay: number;
-        Short: {
-          IgnoreDispersionMaxShots: number;
-          IgnoreDispersionMinShots: number;
-          MaxSecondsDelay: number;
-          MaxShots: number;
-          MinSecondsDelay: number;
-          MinShots: number;
-        };
-      };
-    };
+      }
+    >;
   };
   AnimBlueprint: string;
   DefaultWeaponSettingsSID: string;
@@ -7802,36 +7470,16 @@ export type AIGlobal = GetStructType<{
     VisibilityCoef: number;
   }[];
   CombatTacticsSettings: {
-    CombatTacticsParamsPerFactions: {
-      Bandits: {
+    CombatTacticsParamsPerFactions: Record<
+      Faction,
+      {
         ChangeChance: number;
         ConfidenceToAttack: number;
         ConfidenceToRetreat: number;
         UpdateIntervalSecondsMax: number;
         UpdateIntervalSecondsMin: number;
-      };
-      Humanoid: {
-        ChangeChance: number;
-        ConfidenceToAttack: number;
-        ConfidenceToRetreat: number;
-        UpdateIntervalSecondsMax: number;
-        UpdateIntervalSecondsMin: number;
-      };
-      Monolith: {
-        ChangeChance: number;
-        ConfidenceToAttack: number;
-        ConfidenceToRetreat: number;
-        UpdateIntervalSecondsMax: number;
-        UpdateIntervalSecondsMin: number;
-      };
-      Mutant: {
-        ChangeChance: number;
-        ConfidenceToAttack: number;
-        ConfidenceToRetreat: number;
-        UpdateIntervalSecondsMax: number;
-        UpdateIntervalSecondsMin: number;
-      };
-    };
+      }
+    >;
   };
   ContextualActionSettings: {
     ContextualActionGameGraphPathActuationDistance: number;
@@ -7976,26 +7624,7 @@ export type AIGlobal = GetStructType<{
     ThreatReportDelaySeconds: number;
   };
   ThrowGrenadeSettings: {
-    AvailableGrenadesPerFaction: {
-      Army: {
-        Experienced: number;
-        Master: number;
-        Newbie: number;
-        Veteran: number;
-      };
-      Bandits: {
-        Experienced: number;
-        Master: number;
-        Newbie: number;
-        Veteran: number;
-      };
-      Humanoid: {
-        Experienced: number;
-        Master: number;
-        Newbie: number;
-        Veteran: number;
-      };
-    };
+    AvailableGrenadesPerFaction: Record<Faction, Record<Rank, number>>;
   };
   TimeToSkipLairPeacefulSpawnAfterMemberDies: number;
   TouchSensorSettings: {
@@ -8389,12 +8018,7 @@ export type CoreVariable = GetStructType<{
   FaustCloneCountCap: number;
   FinalCreditsWithVideoClass: string;
   FirstTimeSettingsState: string;
-  FlashlightCombatUseChance: {
-    Experienced: number;
-    Master: number;
-    Newbie: number;
-    Veteran: number;
-  };
+  FlashlightCombatUseChance: Record<Rank, number>;
   FlashlightDialogIntensityLerpTime: number;
   FlashlightDialogIntensityPercent: number;
   FleshClothSurfaceMaterial: string;
