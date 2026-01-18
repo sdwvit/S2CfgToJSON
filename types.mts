@@ -205,7 +205,7 @@ import {
 } from "./utility-types.mts";
 import { GetStructType } from "./Struct.mts";
 
-export type AbilityPrototypes = GetStructType<{
+export type AbilityPrototype = GetStructType<{
   AbilityPreparationTime: number;
   AbilityProbability: string;
   AbilityTags: string[];
@@ -546,7 +546,7 @@ export type AbilityPrototypes = GetStructType<{
   ZSpawnOffset: number;
 }>;
 
-export type AimAssistConePrototypes = GetStructType<{
+export type AimAssistConePrototype = GetStructType<{
   AimAssistWeightsSID: string;
   AngleCurvePath: string;
   HeightCurvePath: string;
@@ -554,7 +554,7 @@ export type AimAssistConePrototypes = GetStructType<{
   TrackedBones: EDamageBone[];
 }>;
 
-export type AimAssistPresetPrototypes = GetStructType<{
+export type AimAssistPresetPrototype = GetStructType<{
   LostTargetTrackingTime: number;
   MagnetismAimAssistConeSIDs: string[];
   MovingTrackingAimAssistConeSID: string;
@@ -570,7 +570,7 @@ export type AimAssistPresetPrototypes = GetStructType<{
   StickinessAimAssistConeSID: string;
 }>;
 
-export type AimAssistWeightsPrototypes = GetStructType<{
+export type AimAssistWeightsPrototype = GetStructType<{
   InitialWeight: number;
   MinWeight: number;
   SID: string;
@@ -580,7 +580,7 @@ export type AimAssistWeightsPrototypes = GetStructType<{
   }[];
 }>;
 
-export type ALifeDirectorScenarioPrototypes = GetStructType<{
+export type ALifeDirectorScenarioPrototype = GetStructType<{
   ALifeScenarioNPCArchetypesLimitsPerPlayerRank: {
     Rank: ERank;
     Restrictions: {
@@ -2133,7 +2133,7 @@ export type ALifeDirectorScenarioPrototypes = GetStructType<{
   SID: string;
 }>;
 
-export type ALifePolicyPrototypes = GetStructType<{
+export type ALifePolicyPrototype = GetStructType<{
   CorpseRadius: number;
   FarLairDistance: string;
   FullWipeRefillCooldown: string;
@@ -2149,7 +2149,7 @@ export type ALifePolicyPrototypes = GetStructType<{
   TriggerOfflineALifeCorpseDecomposition: number;
 }>;
 
-export type ALifePopulationManagerFactionPrototypes = GetStructType<{
+export type ALifePopulationManagerFactionPrototype = GetStructType<{
   ALifeLairExpansionRadius: number;
   ALifeLairExpansionTime: number;
   ALifeStartSimulation: string;
@@ -2683,7 +2683,7 @@ export type ALifePopulationManagerFactionPrototypes = GetStructType<{
   SID: string;
 }>;
 
-export type AmmoPrototypes = GetStructType<{
+export type AmmoPrototype = GetStructType<{
   AimDispersionMod: number;
   AmmoPackCount: number;
   AmmoType: EAmmoType;
@@ -2720,7 +2720,7 @@ export type AmmoPrototypes = GetStructType<{
   Weight: number;
 }>;
 
-export type AnimationBudgetPrototypes = GetStructType<{
+export type AnimationBudgetPrototype = GetStructType<{
   AlwaysTickFalloffAggression: number;
   AutoCalculatedSignificanceMaxDistance: number;
   BudgetFactorBeforeAggressiveReducedWork: number;
@@ -2750,14 +2750,14 @@ export type AnimationBudgetPrototypes = GetStructType<{
   WorkUnitSmoothingSpeed: number;
 }>;
 
-export type AnomalyOverlapPrototypes = GetStructType<{
+export type AnomalyOverlapPrototype = GetStructType<{
   FirstAnomalyType: EAnomalyType;
   IsOverlapAllowed: boolean;
   SecondAnomalyType: EAnomalyType;
   SID: number;
 }>;
 
-export type AnomalyPrototypes = GetStructType<{
+export type AnomalyPrototype = GetStructType<{
   ActivateFeedbackRadius: number;
   ActivationDelay: string;
   ActivationSpeedThreshold: number;
@@ -2923,7 +2923,7 @@ export type AnomalyPrototypes = GetStructType<{
   ZeroGravityRadius: number;
 }>;
 
-export type ArmorPrototypes = GetStructType<{
+export type ArmorPrototype = GetStructType<{
   ArmorSoundType: string;
   ArtifactSlots: number;
   BaseDurability: number;
@@ -2988,7 +2988,7 @@ export type ArmorPrototypes = GetStructType<{
   Weight: number;
 }>;
 
-export type ArtifactPrototypes = GetStructType<{
+export type ArtifactPrototype = GetStructType<{
   AnomalyDamageDeflections: {
     AnomalyType: EAnomalyType;
     ChargeQuantity: number;
@@ -3076,7 +3076,7 @@ export type ArtifactPrototypes = GetStructType<{
   WeightDecreaseRate: number;
 }>;
 
-export type ArtifactSpawnerPrototypes = GetStructType<{
+export type ArtifactSpawnerPrototype = GetStructType<{
   ExcludeRules: EArtifactSpawnerExcludeRule[];
   Experienced: {
     Count: number;
@@ -3141,7 +3141,7 @@ export type ArtifactSpawnerPrototypes = GetStructType<{
   };
 }>;
 
-export type AttachMeshPrototypes = GetStructType<{
+export type AttachMeshPrototype = GetStructType<{
   "3": {
     MaterialGroup: string;
     MaterialSlot: number;
@@ -3480,7 +3480,7 @@ export type AttachMeshPrototypes = GetStructType<{
   VoiceModulatorSID: string;
 }>;
 
-export type AttachPrototypes = GetStructType<{
+export type AttachPrototype = GetStructType<{
   AttachInstallSound: string;
   AttachType: EAttachType;
   AttachUninstallSound: string;
@@ -3568,7 +3568,7 @@ export type AttachPrototypes = GetStructType<{
   Weight: number;
 }>;
 
-export type AudioRoomPrototypes = GetStructType<{
+export type AudioRoomPrototype = GetStructType<{
   AudioRoomBakedReflection: string;
   AudioRoomBandwidth: string;
   LateReverb: {
@@ -3588,7 +3588,7 @@ export type AudioRoomPrototypes = GetStructType<{
   SID: string;
 }>;
 
-export type AudioScattererPrototypes = GetStructType<{
+export type AudioScattererPrototype = GetStructType<{
   AudioScattererMap: string;
   CheckTime: number;
   ID: number;
@@ -3611,14 +3611,14 @@ export type AudioScattererPrototypes = GetStructType<{
   SID: string;
 }>;
 
-export type BackpackPrototypes = GetStructType<{
+export type BackpackPrototype = GetStructType<{
   AnimationPath: string;
   MeshPath: string;
   Priority: number;
   SID: string;
 }>;
 
-export type BarbedWirePrototypes = GetStructType<{
+export type BarbedWirePrototype = GetStructType<{
   ArmorDamage: number;
   ArmorPiercing: number;
   BleedingChance: number;
@@ -3632,13 +3632,13 @@ export type BarbedWirePrototypes = GetStructType<{
   SID: string;
 }>;
 
-export type BenchmarkItemGeneratorPrototypes = GetStructType<{
+export type BenchmarkItemGeneratorPrototype = GetStructType<{
   ID: number;
   ItemGenerator: ItemGeneratorEntry[];
   SID: string;
 }>;
 
-export type BenchmarkMeshGeneratorPrototypes = GetStructType<{
+export type BenchmarkMeshGeneratorPrototype = GetStructType<{
   Attachments: MeshAttachment[];
   CustomData: {
     MaterialGroup: string;
@@ -3665,7 +3665,7 @@ export type BenchmarkMeshGeneratorPrototypes = GetStructType<{
   SID: string;
 }>;
 
-export type BlueprintPrototypes = GetStructType<{
+export type BlueprintPrototype = GetStructType<{
   DestroyOnPickup: boolean;
   FittingWeaponsSIDs: string[];
   Icon: string;
@@ -3681,7 +3681,7 @@ export type BlueprintPrototypes = GetStructType<{
   Weight: number;
 }>;
 
-export type BodyMeshPrototypes = GetStructType<{
+export type BodyMeshPrototype = GetStructType<{
   AdditionalMesh: {
     MeshPath: string;
   }[];
@@ -3713,18 +3713,18 @@ export type BodyMeshPrototypes = GetStructType<{
   SocketName: string;
 }>;
 
-export type BodyMeshSimulatePhysicsPrototypes = GetStructType<{
+export type BodyMeshSimulatePhysicsPrototype = GetStructType<{
   BonesToApplyPhysics: string[];
   SID: string;
 }>;
 
-export type BoltPrototypes = GetStructType<{
+export type BoltPrototype = GetStructType<{
   CrosshairType: ECrosshairType;
   PhysicsInteractionPrototypeSID: string;
   SID: string;
 }>;
 
-export type BoolProviderPrototypes = GetStructType<{
+export type BoolProviderPrototype = GetStructType<{
   bInvert: boolean;
   bPlayerTarget: boolean;
   ParamType: EObjBoolParams;
@@ -3733,14 +3733,14 @@ export type BoolProviderPrototypes = GetStructType<{
   Type: EBoolProviderType;
 }>;
 
-export type CameraShakeGroupPrototypes = GetStructType<{
+export type CameraShakeGroupPrototype = GetStructType<{
   BlendSpeed: number;
   MaxCount: number;
   SID: string;
   Type: ECameraShakeGroupType;
 }>;
 
-export type CameraShakePrototypes = GetStructType<{
+export type CameraShakePrototype = GetStructType<{
   CameraShakePath: string;
   GroupSID: string;
   IntensityProviderSID: string;
@@ -3754,7 +3754,7 @@ export type CameraShakePrototypes = GetStructType<{
   VitalType: EVitalType;
 }>;
 
-export type CharacterWeaponSettingsPrototypes = GetStructType<{
+export type CharacterWeaponSettingsPrototype = GetStructType<{
   Accuracy: number;
   AccuracyUI: number;
   AlwaysPierce: boolean;
@@ -3800,7 +3800,7 @@ export type CharacterWeaponSettingsPrototypes = GetStructType<{
   UnequippedSocketName: string;
 }>;
 
-export type CluePrototypes = GetStructType<{
+export type CluePrototype = GetStructType<{
   DefaultValue: string;
   Description: string;
   ID: number;
@@ -3808,7 +3808,7 @@ export type CluePrototypes = GetStructType<{
   Type: EGlobalVariableType;
 }>;
 
-export type CombatSynchronizationPrototypes = GetStructType<{
+export type CombatSynchronizationPrototype = GetStructType<{
   CombatEnteringUncheckedTags: string[];
   DifficultySID: string;
   Experienced: {
@@ -3886,19 +3886,19 @@ export type CombatSynchronizationPrototypes = GetStructType<{
   };
 }>;
 
-export type ConstBoolProviderPrototypes = GetStructType<{
+export type ConstBoolProviderPrototype = GetStructType<{
   SID: string;
   Type: EBoolProviderType;
   Value: boolean;
 }>;
 
-export type ConstFloatProviderPrototypes = GetStructType<{
+export type ConstFloatProviderPrototype = GetStructType<{
   SID: string;
   Type: EFloatProviderType;
   Value: number;
 }>;
 
-export type ConstraintPrototypes = GetStructType<{
+export type ConstraintPrototype = GetStructType<{
   Constraints: {
     ConstraintType: EAIConstraintType;
     Duration: number;
@@ -3908,7 +3908,7 @@ export type ConstraintPrototypes = GetStructType<{
   SID: string;
 }>;
 
-export type ConsumablePrototypes = GetStructType<{
+export type ConsumablePrototype = GetStructType<{
   AlternativeEffectPrototypeSIDs: string[];
   AnimBlueprint: string;
   bIsUsesLeftHand: boolean;
@@ -3950,7 +3950,7 @@ export type ConsumablePrototypes = GetStructType<{
   Weight: number;
 }>;
 
-export type ContextualActionBlueprintPrototypes = GetStructType<{
+export type ContextualActionBlueprintPrototype = GetStructType<{
   AnimationFinalFrameTransforms: {
     Rotation: Rot;
     Vector: Vec3;
@@ -3970,7 +3970,7 @@ export type ContextualActionBlueprintPrototypes = GetStructType<{
   UsingWeapon: boolean;
 }>;
 
-export type ContextualActionBodyPartsPrototypes = GetStructType<{
+export type ContextualActionBodyPartsPrototype = GetStructType<{
   BodyParts: {
     BodyPart: EContextualActionBodyPart;
     RestrictedItems: string[];
@@ -3978,7 +3978,7 @@ export type ContextualActionBodyPartsPrototypes = GetStructType<{
   SID: string;
 }>;
 
-export type ContextualActionDialogSettingsPrototypes = GetStructType<{
+export type ContextualActionDialogSettingsPrototype = GetStructType<{
   MaxAnecdoteMembersCount: number;
   MaxDialogMembersCount: number;
   MinAnecdoteNeedValue: number;
@@ -3987,7 +3987,7 @@ export type ContextualActionDialogSettingsPrototypes = GetStructType<{
   SID: string;
 }>;
 
-export type ContextualActionNodePrototypes = GetStructType<{
+export type ContextualActionNodePrototype = GetStructType<{
   Effects: string;
   Enter: string;
   Execute: {
@@ -8900,7 +8900,7 @@ export type ContextualActionNodePrototypes = GetStructType<{
   SID: string;
 }>;
 
-export type CorpseClueStashPrototypes = GetStructType<{
+export type CorpseClueStashPrototype = GetStructType<{
   AdditionalSearchRadius: number;
   AddSpawnChance: number;
   BaseSpawnChance: number;
@@ -8915,7 +8915,7 @@ export type CorpseClueStashPrototypes = GetStructType<{
   SID: string;
 }>;
 
-export type CorpsePrototypes = GetStructType<{
+export type CorpsePrototype = GetStructType<{
   AllowedAttachSuffixes: string[];
   BlockAttachSuffixes: string[];
   BloodPoolMaterial: string;
@@ -8929,7 +8929,7 @@ export type CorpsePrototypes = GetStructType<{
   SID: string;
 }>;
 
-export type CoverEvaluatorPrototypes = GetStructType<{
+export type CoverEvaluatorPrototype = GetStructType<{
   AdvanceCoeff: number;
   BaseValue: number;
   CanUseCovers: boolean;
@@ -8985,7 +8985,7 @@ export type CoverEvaluatorPrototypes = GetStructType<{
   WeaponDistanceCoeff: number;
 }>;
 
-export type DailySchedulePrototypes = GetStructType<{
+export type DailySchedulePrototype = GetStructType<{
   ScheduleIntervals: {
     AvailableNeeds: EContextualActionNeeds[];
     IntervalEndTime: string;
@@ -8994,7 +8994,7 @@ export type DailySchedulePrototypes = GetStructType<{
   SID: string;
 }>;
 
-export type DamageSourcePrototypes = GetStructType<{
+export type DamageSourcePrototype = GetStructType<{
   AudioSwitch: string;
   bIsLooped: boolean;
   bWithoutSFX: boolean;
@@ -9008,12 +9008,12 @@ export type DamageSourcePrototypes = GetStructType<{
   VoiceOverNeededDamage: number;
 }>;
 
-export type DebugItemGeneratorPrototypes = GetStructType<{
+export type DebugItemGeneratorPrototype = GetStructType<{
   ItemGenerator: ItemGeneratorEntry[];
   SID: string;
 }>;
 
-export type DestructibleObjectPrototypes = GetStructType<{
+export type DestructibleObjectPrototype = GetStructType<{
   bAllowPhaseSkipping: boolean;
   bHasSpaceRestrictor: boolean;
   Blueprint: string;
@@ -9056,7 +9056,7 @@ export type DestructibleObjectPrototypes = GetStructType<{
   WindowDestructVFX: string;
 }>;
 
-export type DetectorPrototypes = GetStructType<{
+export type DetectorPrototype = GetStructType<{
   AnimBlueprint: string;
   AnomalyDetectionRadius: number;
   AnomalyTexturePaths: {
@@ -9094,7 +9094,7 @@ export type DetectorPrototypes = GetStructType<{
   Weight: number;
 }>;
 
-export type DialogChainPrototypes = GetStructType<{
+export type DialogChainPrototype = GetStructType<{
   CanBeInterrupted: boolean;
   CanInterruptByCombat: boolean;
   CanInterruptByEmission: boolean;
@@ -9112,7 +9112,7 @@ export type DialogChainPrototypes = GetStructType<{
   StartingDialogPrototypeSID: string;
 }>;
 
-export type DialogPoolPrototypes = GetStructType<{
+export type DialogPoolPrototype = GetStructType<{
   AvailableDialogs: string[];
   DialogEventType: EDialogEventType;
   DialogMemberRestrictions: {
@@ -9140,7 +9140,7 @@ export type DialogPoolPrototypes = GetStructType<{
   SID: string;
 }>;
 
-export type DialogPrototypes = GetStructType<{
+export type DialogPrototype = GetStructType<{
   Actions: {
     DialogAction: EDialogAction;
     DialogActionParam: string;
@@ -9644,7 +9644,7 @@ export type DialogPrototypes = GetStructType<{
   WaitForSequenceToFinish: boolean;
 }>;
 
-export type DifficultyPrototypes = GetStructType<{
+export type DifficultyPrototype = GetStructType<{
   AccumulatedDamageReductionCurveWeightMax: number;
   AccumulatedDamageReductionCurveWeightMaxDistance: number;
   AccumulatedDamageReductionCurveWeightMin: number;
@@ -9726,7 +9726,7 @@ export type DifficultyPrototypes = GetStructType<{
   Weather_Storm_Weight: number;
 }>;
 
-export type DoorPrototypes = GetStructType<{
+export type DoorPrototype = GetStructType<{
   bConsumeItemCountOnOpen: number;
   Blueprint: string;
   bOpenInBothSides: boolean;
@@ -9747,14 +9747,14 @@ export type DoorPrototypes = GetStructType<{
   SID: string;
 }>;
 
-export type EffectBoolProviderPrototypes = GetStructType<{
+export type EffectBoolProviderPrototype = GetStructType<{
   bPlayerTarget: boolean;
   EffectSID: string;
   SID: string;
   Type: EBoolProviderType;
 }>;
 
-export type EffectFloatProviderPrototypes = GetStructType<{
+export type EffectFloatProviderPrototype = GetStructType<{
   ConditionSID: string;
   FalseValueSID: string;
   SID: string;
@@ -9763,7 +9763,7 @@ export type EffectFloatProviderPrototypes = GetStructType<{
   Value: number;
 }>;
 
-export type EffectPrototypes = GetStructType<{
+export type EffectPrototype = GetStructType<{
   AffectedStaminaActionTypes: EStaminaAction[];
   AmmoType: EAmmoType;
   AmmoTypeProjectiles: {
@@ -10253,7 +10253,7 @@ export type EffectPrototypes = GetStructType<{
   YAxisMinValue: number;
 }>;
 
-export type EffectSourcePriorityPrototypes = GetStructType<{
+export type EffectSourcePriorityPrototype = GetStructType<{
   SID: string;
   SourcePriorities: {
     EffectSource: EEffectSource;
@@ -10261,7 +10261,7 @@ export type EffectSourcePriorityPrototypes = GetStructType<{
   }[];
 }>;
 
-export type EmissionPrototypes = GetStructType<{
+export type EmissionPrototype = GetStructType<{
   AIEvents: {
     AIEventStartTime: number;
     AIEventType: EEmissionAIEvent;
@@ -10299,7 +10299,7 @@ export type EmissionPrototypes = GetStructType<{
   StartEmissionOnRedSkyDuringTranisition: boolean;
 }>;
 
-export type EnemyEvaluatorPrototypes = GetStructType<{
+export type EnemyEvaluatorPrototype = GetStructType<{
   ChangeEnemyCooldown: number;
   CloseCombatMaxPenaltyDistance: number;
   DamageAccumulationDurationSeconds: number;
@@ -10317,7 +10317,7 @@ export type EnemyEvaluatorPrototypes = GetStructType<{
   SID: string;
 }>;
 
-export type ExplosionPrototypes = GetStructType<{
+export type ExplosionPrototype = GetStructType<{
   ArmorPenetrationNPC: number;
   ArmorPenetrationPlayer: number;
   ConcussionEffects: string[];
@@ -10352,7 +10352,7 @@ export type ExplosionPrototypes = GetStructType<{
   SID: string;
 }>;
 
-export type FaceBlockingBlendMaskPrototypes = GetStructType<{
+export type FaceBlockingBlendMaskPrototype = GetStructType<{
   AllowedBlendShapes: string[];
   BlockingMasks: {
     BlockingWeight: number;
@@ -10364,13 +10364,13 @@ export type FaceBlockingBlendMaskPrototypes = GetStructType<{
   SID: string;
 }>;
 
-export type FactionActionRestrictionPrototypes = GetStructType<{
+export type FactionActionRestrictionPrototype = GetStructType<{
   Factions: string[];
   ID: number;
   SID: string;
 }>;
 
-export type FastTravelLocationPrototypes = GetStructType<{
+export type FastTravelLocationPrototype = GetStructType<{
   BlockingGlobalVariables: {
     GlobalVariablePrototypeSID: string;
     GlobalVariableValue: number;
@@ -10385,7 +10385,7 @@ export type FastTravelLocationPrototypes = GetStructType<{
   SID: string;
 }>;
 
-export type FastTravelPrototypes = GetStructType<{
+export type FastTravelPrototype = GetStructType<{
   DiscountCoefficients: {
     GlobalVariableCoefficient: {
       DiscountCoefficient: number;
@@ -10422,7 +10422,7 @@ export type FastTravelPrototypes = GetStructType<{
   SID: string;
 }>;
 
-export type FlairSensorPrototypes = GetStructType<{
+export type FlairSensorPrototype = GetStructType<{
   DetectionSpeed: number;
   DistancePenaltyCurve: string;
   FlairLocatedMultiplier: number;
@@ -10441,7 +10441,7 @@ export type FlairSensorPrototypes = GetStructType<{
   SID: string;
 }>;
 
-export type FlashlightPrototypes = GetStructType<{
+export type FlashlightPrototype = GetStructType<{
   BrokenCooldownSeconds: number;
   DroppedBeforeBurnOutPauseTimeSeconds: number;
   DroppedBurnOutTimeSeconds: number;
@@ -10539,7 +10539,7 @@ export type FlashlightPrototypes = GetStructType<{
   )[];
 }>;
 
-export type FloatProviderPrototypes = GetStructType<{
+export type FloatProviderPrototype = GetStructType<{
   bPlayerTarget: boolean;
   ConditionSID: string;
   DelayMax: number;
@@ -12328,7 +12328,7 @@ export type GameLite = GetStructType<{
   ZombieFactionUIDName: string;
 }>;
 
-export type GDItemPrototypes = GetStructType<{
+export type GDItemPrototype = GetStructType<{
   Cost: number;
   Icon: string;
   IsQuestItem: boolean;
@@ -12342,7 +12342,7 @@ export type GDItemPrototypes = GetStructType<{
   Weight: number;
 }>;
 
-export type GeneralNPCObjPrototypes = GetStructType<{
+export type GeneralNPCObjPrototype = GetStructType<{
   Abilities: Record<
     Ability,
     {
@@ -12534,7 +12534,7 @@ export type GeneralNPCObjPrototypes = GetStructType<{
   };
 }>;
 
-export type GenericLairPrototypes = GetStructType<{
+export type GenericLairPrototype = GetStructType<{
   Preset: {
     ALifeLairsSearchRadius: number;
     GameTimeOfflineToRerollLairData: number;
@@ -12576,7 +12576,7 @@ export type GenericLairPrototypes = GetStructType<{
   SID: string;
 }>;
 
-export type GlobalVariablePrototypes = GetStructType<{
+export type GlobalVariablePrototype = GetStructType<{
   DefaultValue: string;
   Description: string;
   ID: number;
@@ -12584,14 +12584,14 @@ export type GlobalVariablePrototypes = GetStructType<{
   Type: EGlobalVariableType;
 }>;
 
-export type GreetingsPopupPrototypes = GetStructType<{
+export type GreetingsPopupPrototype = GetStructType<{
   Background: string;
   EditionBitFlag: number;
   LocalizationSID: string;
   SID: string;
 }>;
 
-export type GrenadePrototypes = GetStructType<{
+export type GrenadePrototype = GetStructType<{
   ArmorDamage: number;
   ArmorPiercing: number;
   BaseComfort: number;
@@ -12625,18 +12625,18 @@ export type GrenadePrototypes = GetStructType<{
   Weight: number;
 }>;
 
-export type GroomBlockingMappingPrototypes = GetStructType<{
+export type GroomBlockingMappingPrototype = GetStructType<{
   BlockingGrooms: string[];
   BlockingGroomSIDs: string[];
   SID: string;
 }>;
 
-export type GroomGeneratorPrototypes = GetStructType<{
+export type GroomGeneratorPrototype = GetStructType<{
   Category: GroomCategory[];
   SID: string;
 }>;
 
-export type HappyHoursPrototypes = GetStructType<{
+export type HappyHoursPrototype = GetStructType<{
   HappyHoursRanges: {
     HappyHoursCheckDeviation: number;
     HappyHoursDeviation: number;
@@ -12646,7 +12646,7 @@ export type HappyHoursPrototypes = GetStructType<{
   SID: string;
 }>;
 
-export type HearingSensorPrototypes = GetStructType<{
+export type HearingSensorPrototype = GetStructType<{
   HearingVolumeThreshold: string;
   ID: number;
   SID: string;
@@ -12656,7 +12656,7 @@ export type HearingSensorPrototypes = GetStructType<{
   }[];
 }>;
 
-export type ImpactPhysicalMaterialPrototypes = GetStructType<{
+export type ImpactPhysicalMaterialPrototype = GetStructType<{
   ImpactPhysicalMaterialsResources: (
     | {
         AdditionalRoll: number;
@@ -12745,7 +12745,7 @@ export type ImpactPhysicalMaterialPrototypes = GetStructType<{
   SID: string;
 }>;
 
-export type InfotopicPrototypes = GetStructType<{
+export type InfotopicPrototype = GetStructType<{
   BlockingFactions: string[];
   BlockingGlobalVariables: {
     GlobalVariablePrototypeSID: string;
@@ -12785,7 +12785,7 @@ export type InfotopicPrototypes = GetStructType<{
   ZoneSearchRadius: number;
 }>;
 
-export type InputMappingContextPrototypes = GetStructType<{
+export type InputMappingContextPrototype = GetStructType<{
   AssetPath: string;
   CleanupInputSystemOnRemove: boolean;
   IgnorePreviousPressedKeysOnCapture: boolean;
@@ -12795,7 +12795,7 @@ export type InputMappingContextPrototypes = GetStructType<{
   SID: string;
 }>;
 
-export type ItemContainerPrototypes = GetStructType<{
+export type ItemContainerPrototype = GetStructType<{
   Blueprint: string;
   bOpeningInventory: boolean;
   CachePrototypeID: string;
@@ -12810,7 +12810,7 @@ export type ItemContainerPrototypes = GetStructType<{
   StashTypeSoundSwitch: string;
 }>;
 
-export type ItemGeneratorPrototypes = GetStructType<{
+export type ItemGeneratorPrototype = GetStructType<{
   GeneratedItems: string[];
   ID: number;
   ItemGenerator: ItemGeneratorEntry[];
@@ -12823,7 +12823,7 @@ export type ItemGeneratorPrototypes = GetStructType<{
   SpecificRewardSound: EUISound;
 }>;
 
-export type ItemPrototypes = GetStructType<{
+export type ItemPrototype = GetStructType<{
   BaseDurability: number;
   ConsumeOnUse: boolean;
   Cost: number;
@@ -12856,7 +12856,7 @@ export type ItemPrototypes = GetStructType<{
   Weight: number;
 }>;
 
-export type JournalQuestPrototypes = GetStructType<{
+export type JournalQuestPrototype = GetStructType<{
   Description: string;
   Descriptions: string[];
   Image: string;
@@ -12870,14 +12870,14 @@ export type JournalQuestPrototypes = GetStructType<{
   Stages: string;
 }>;
 
-export type KeyItemPrototypes = GetStructType<{
+export type KeyItemPrototype = GetStructType<{
   LocalizationSID: string;
   PhysicsInteractionPrototypeSID: string;
   SID: string;
   Weight: number;
 }>;
 
-export type LairPrototypes = GetStructType<{
+export type LairPrototype = GetStructType<{
   ID: number;
   Preset: {
     InitialInhabitantFaction: string;
@@ -12943,13 +12943,13 @@ export type LairPrototypes = GetStructType<{
   SID: string;
 }>;
 
-export type LevelStreamingPrototypes = GetStructType<{
+export type LevelStreamingPrototype = GetStructType<{
   HiddenLevels: string[];
   ID: number;
   SID: string;
 }>;
 
-export type LR_MeshGeneratorPrototypes = GetStructType<{
+export type LR_MeshGeneratorPrototype = GetStructType<{
   Attachments: Record<
     MeshAttachment,
     {
@@ -13222,7 +13222,7 @@ export type LR_MeshGeneratorPrototypes = GetStructType<{
   SID: string;
 }>;
 
-export type MarkerPrototypes = GetStructType<{
+export type MarkerPrototype = GetStructType<{
   Description: string;
   HubRadius: number;
   InitDiscoverState: string;
@@ -13236,7 +13236,7 @@ export type MarkerPrototypes = GetStructType<{
   WorldPosition: Vec3;
 }>;
 
-export type MeleeWeaponPrototypes = GetStructType<{
+export type MeleeWeaponPrototype = GetStructType<{
   ArmorDamage: number;
   ArmorPiercing: number;
   Bleeding: number;
@@ -13270,7 +13270,7 @@ export type MeleeWeaponPrototypes = GetStructType<{
   }[];
 }>;
 
-export type MeshGeneratorPrototypes = GetStructType<{
+export type MeshGeneratorPrototype = GetStructType<{
   Attachments: Record<
     MeshAttachment,
     {
@@ -13547,7 +13547,7 @@ export type MeshGeneratorPrototypes = GetStructType<{
   SID: string;
 }>;
 
-export type MeshPrototypes = GetStructType<
+export type MeshPrototype = GetStructType<
   {
     AdditionalMeshes: {
       MeshPath: string;
@@ -13571,7 +13571,7 @@ export type MeshPrototypes = GetStructType<
   } & Rot
 >;
 
-export type MisansceneNodePrototypes = GetStructType<{
+export type MisansceneNodePrototype = GetStructType<{
   ActorID: number;
   ActorSID: string;
   ActorsSID: string[];
@@ -13587,7 +13587,7 @@ export type MisansceneNodePrototypes = GetStructType<{
   TargetGuid: string;
 }>;
 
-export type MoneyPrototypes = GetStructType<{
+export type MoneyPrototype = GetStructType<{
   Cost: number;
   DestroyOnPickup: boolean;
   EffectOnPickPrototypeSIDs: string[];
@@ -13603,7 +13603,7 @@ export type MoneyPrototypes = GetStructType<{
   Weight: number;
 }>;
 
-export type MovementFXPrototypes = GetStructType<{
+export type MovementFXPrototype = GetStructType<{
   BackFootSoundEvent: string;
   DashVFXPath: string;
   FootstepFX: (
@@ -13661,7 +13661,7 @@ export type MovementFXPrototypes = GetStructType<{
   };
 }>;
 
-export type MovementSensorPrototypes = GetStructType<{
+export type MovementSensorPrototype = GetStructType<{
   DetectionRadius: number;
   DetectionSpeed: number;
   DistancePenaltyCurve: string;
@@ -13671,14 +13671,14 @@ export type MovementSensorPrototypes = GetStructType<{
   SID: string;
 }>;
 
-export type MusicManagerPrototypes = GetStructType<{
+export type MusicManagerPrototype = GetStructType<{
   CombatTracks: {
     TrackSwitchValue: string;
   }[];
   SID: string;
 }>;
 
-export type MutantLootPrototypes = GetStructType<{
+export type MutantLootPrototype = GetStructType<{
   Cost: number;
   DestroyOnPickup: boolean;
   Icon: string;
@@ -13694,7 +13694,7 @@ export type MutantLootPrototypes = GetStructType<{
   Weight: number;
 }>;
 
-export type NightVisionGogglesPrototypes = GetStructType<{
+export type NightVisionGogglesPrototype = GetStructType<{
   ActiveEffectSIDs: string[];
   Cost: number;
   Icon: string;
@@ -13714,7 +13714,7 @@ export type NightVisionGogglesPrototypes = GetStructType<{
   Weight: number;
 }>;
 
-export type NotePrototypes = GetStructType<{
+export type NotePrototype = GetStructType<{
   AudiologChainPrototypeSID: string;
   CustomIconPath: string;
   ID: number;
@@ -13724,7 +13724,7 @@ export type NotePrototypes = GetStructType<{
   Title: string;
 }>;
 
-export type NotificationEventPrototypes = GetStructType<{
+export type NotificationEventPrototype = GetStructType<{
   FactionBasedSoundEventInformation: {
     Faction: string;
     FactionDetectionRadius: number;
@@ -13736,7 +13736,7 @@ export type NotificationEventPrototypes = GetStructType<{
   Type: ENotificationEventType;
 }>;
 
-export type NPCNeedsPresetPrototypes = GetStructType<{
+export type NPCNeedsPresetPrototype = GetStructType<{
   GoalNeeds: (
     | boolean
     | {
@@ -13788,7 +13788,7 @@ export type NPCNeedsPresetPrototypes = GetStructType<{
   SID: string;
 }>;
 
-export type NPCNightVisionSetupPrototypes = GetStructType<{
+export type NPCNightVisionSetupPrototype = GetStructType<{
   AllowedAttachSuffixes: string[];
   BlockAttachSuffixes: string[];
   ID: number;
@@ -13830,7 +13830,7 @@ export type NPCNightVisionSetupPrototypes = GetStructType<{
   SpotlightBrightnessOverride: number;
 }>;
 
-export type NPCPrototypes = GetStructType<{
+export type NPCPrototype = GetStructType<{
   BusyCommentDialogChain: string;
   BuyCoefficient: number;
   ByeDialogChain: string;
@@ -13862,7 +13862,7 @@ export type NPCPrototypes = GetStructType<{
   VoiceUA: string;
 }>;
 
-export type NPCSpawnerPrototypes = GetStructType<{
+export type NPCSpawnerPrototype = GetStructType<{
   Blueprint: string;
   MinPopulationCountToRefresh: number;
   ObjPrototypeSIDs: string[];
@@ -13872,7 +13872,7 @@ export type NPCSpawnerPrototypes = GetStructType<{
   SpawnRadius: number;
 }>;
 
-export type NPCWeaponAttributesPrototypes = GetStructType<{
+export type NPCWeaponAttributesPrototype = GetStructType<{
   AIParameters: {
     BehaviorTypes: {
       Experienced: {
@@ -14040,7 +14040,7 @@ export type NPCWeaponAttributesPrototypes = GetStructType<{
   SID: string;
 }>;
 
-export type NPCWeaponSettingsPrototypes = GetStructType<{
+export type NPCWeaponSettingsPrototype = GetStructType<{
   ArmorDamage: number;
   ArmorPiercing: number;
   BaseBleeding: number;
@@ -14062,7 +14062,7 @@ export type NPCWeaponSettingsPrototypes = GetStructType<{
   StaggerEffectPrototypeSID: string;
 }>;
 
-export type ObjAimAssistParamsPrototypes = GetStructType<{
+export type ObjAimAssistParamsPrototype = GetStructType<{
   BoneClusters: {
     AdditionalBones: string[];
     MainBone: string;
@@ -14071,12 +14071,12 @@ export type ObjAimAssistParamsPrototypes = GetStructType<{
   SID: string;
 }>;
 
-export type ObjCrouchParamsPrototypes = GetStructType<{
+export type ObjCrouchParamsPrototype = GetStructType<{
   CrouchEffectSIDs: string[];
   SID: string;
 }>;
 
-export type ObjCustomAbilityDialogPrototypes = GetStructType<{
+export type ObjCustomAbilityDialogPrototype = GetStructType<{
   AbilityDialogues: {
     AbilityTag: string;
     DialogueSIDs: string[];
@@ -14084,7 +14084,7 @@ export type ObjCustomAbilityDialogPrototypes = GetStructType<{
   SID: string;
 }>;
 
-export type ObjEffectMaxParamsPrototypes = GetStructType<{
+export type ObjEffectMaxParamsPrototype = GetStructType<{
   MaxEffectValues: {
     EffectSID: EEffectType;
     MaxValue: number;
@@ -14092,7 +14092,7 @@ export type ObjEffectMaxParamsPrototypes = GetStructType<{
   SID: string;
 }>;
 
-export type ObjHoldBreathParamsPrototypes = GetStructType<{
+export type ObjHoldBreathParamsPrototype = GetStructType<{
   HoldBreathCooldown: number;
   HoldBreathDrainPerSecond: number;
   HoldBreathMaxStamina: number;
@@ -14110,7 +14110,7 @@ export type ObjHoldBreathParamsPrototypes = GetStructType<{
   SID: string;
 }>;
 
-export type ObjOnHitParamsPrototypes = GetStructType<{
+export type ObjOnHitParamsPrototype = GetStructType<{
   DamageTypeEffects: (
     | {
         DamageType: EDamageType;
@@ -14144,7 +14144,7 @@ export type ObjOnHitParamsPrototypes = GetStructType<{
   SID: string;
 }>;
 
-export type ObjPrototypes = GetStructType<{
+export type ObjPrototype = GetStructType<{
   Abilities: Record<
     Ability,
     {
@@ -15096,7 +15096,7 @@ export type ObjPrototypes = GetStructType<{
   ZombieVisionScannerPrototypeSID: string;
 }>;
 
-export type ObjSleepParamsPrototypes = GetStructType<{
+export type ObjSleepParamsPrototype = GetStructType<{
   AllowSleepThreshold: number;
   bAllowEmissionSleep: boolean;
   CantSleepEffectSIDs: string[];
@@ -15108,7 +15108,7 @@ export type ObjSleepParamsPrototypes = GetStructType<{
   SleepHoursMultiplier: number;
 }>;
 
-export type ObjWeatherParamsPrototypes = GetStructType<{
+export type ObjWeatherParamsPrototype = GetStructType<{
   SID: string;
   WeatherAppliedEffectSIDs: {
     LightRainy: string[];
@@ -15117,7 +15117,7 @@ export type ObjWeatherParamsPrototypes = GetStructType<{
   };
 }>;
 
-export type ObjWeightParamsPrototypes = GetStructType<{
+export type ObjWeightParamsPrototype = GetStructType<{
   InventoryPenaltyLessWeight: number;
   MaxInventoryMass: number;
   SID: string;
@@ -15127,14 +15127,14 @@ export type ObjWeightParamsPrototypes = GetStructType<{
   }[];
 }>;
 
-export type OffsetAimingBoolProviderPrototypes = GetStructType<{
+export type OffsetAimingBoolProviderPrototype = GetStructType<{
   ProviderSID: string;
   ProviderSIDs: string[];
   SID: string;
   Type: EBoolProviderType;
 }>;
 
-export type PackOfItemsGroupPrototypes = GetStructType<{
+export type PackOfItemsGroupPrototype = GetStructType<{
   ID: number;
   PackOfItemsSettings: (
     | {
@@ -15166,7 +15166,7 @@ export type PackOfItemsGroupPrototypes = GetStructType<{
   SID: string;
 }>;
 
-export type PassiveDetectorPrototypes = GetStructType<{
+export type PassiveDetectorPrototype = GetStructType<{
   DangerLevelSoundParameter: string;
   DetectorRadius: string;
   DetectorWorkCurve: string;
@@ -15178,7 +15178,7 @@ export type PassiveDetectorPrototypes = GetStructType<{
   Type: EPassiveDetectorType;
 }>;
 
-export type PDATutorialPrototypes = GetStructType<{
+export type PDATutorialPrototype = GetStructType<{
   ExclusiveGamepadType: string;
   Id: number;
   Images: string[];
@@ -15213,7 +15213,7 @@ export type PDATutorialPrototypes = GetStructType<{
   VisibleDifficulties: EGameDifficulty[];
 }>;
 
-export type PhysicsInteractionPrototypes = GetStructType<{
+export type PhysicsInteractionPrototype = GetStructType<{
   ApplyImpulseToHitLocationFromPlayer: boolean;
   DamageToVelocityMultiplier: number;
   DraggingParameterSwitch: string;
@@ -15247,7 +15247,7 @@ export type PhysicsInteractionPrototypes = GetStructType<{
   WaterParticleSpeedThreshold: number;
 }>;
 
-export type PlayerMeshGeneratorPrototypes = GetStructType<{
+export type PlayerMeshGeneratorPrototype = GetStructType<{
   Attachments: Record<
     MeshAttachment,
     {
@@ -15275,7 +15275,7 @@ export type PlayerMeshGeneratorPrototypes = GetStructType<{
   SID: string;
 }>;
 
-export type PlayerWeaponAttributesPrototypes = GetStructType<{
+export type PlayerWeaponAttributesPrototype = GetStructType<{
   AnimBlueprint: string;
   DefaultWeaponSettingsSID: string;
   DisplayBP: string;
@@ -15301,7 +15301,7 @@ export type PlayerWeaponAttributesPrototypes = GetStructType<{
   SID: string;
 }>;
 
-export type PlayerWeaponSettingsPrototypes = GetStructType<{
+export type PlayerWeaponSettingsPrototype = GetStructType<{
   Accuracy: number;
   AccuracyUI: number;
   ArmorDamage: number;
@@ -15329,13 +15329,13 @@ export type PlayerWeaponSettingsPrototypes = GetStructType<{
   SID: string;
 }>;
 
-export type PostEffectFloatProviderPrototypes = GetStructType<{
+export type PostEffectFloatProviderPrototype = GetStructType<{
   PostProcessParamSID: string;
   SID: string;
   Type: EFloatProviderType;
 }>;
 
-export type PostEffectProcessorPrototypes = GetStructType<{
+export type PostEffectProcessorPrototype = GetStructType<{
   bAddIntensity: boolean;
   bInverted: boolean;
   DuplicateResolveType: EDuplicateResolveType;
@@ -15353,20 +15353,20 @@ export type PostEffectProcessorPrototypes = GetStructType<{
   Type: EPostEffectProcessorType;
 }>;
 
-export type PostProcessMaterialPrototypes = GetStructType<{
+export type PostProcessMaterialPrototype = GetStructType<{
   HDRMaterialPath: string;
   MaterialPath: string;
   Priority: number;
   SID: string;
 }>;
 
-export type PostProcessParamPrototypes = GetStructType<{
+export type PostProcessParamPrototype = GetStructType<{
   MaterialSID: string;
   ParameterName: string;
   SID: string;
 }>;
 
-export type ProjectilePrototypes = GetStructType<{
+export type ProjectilePrototype = GetStructType<{
   BlueprintFP: string;
   BlueprintTP: string;
   bUseImpactReflectionMethod: boolean;
@@ -15393,7 +15393,7 @@ export type ProjectilePrototypes = GetStructType<{
   TimeOfVisibilityEnabling: number;
 }>;
 
-export type PsyMeshGeneratorPrototypes = GetStructType<{
+export type PsyMeshGeneratorPrototype = GetStructType<{
   Attachments: Record<
     MeshAttachment,
     {
@@ -15421,7 +15421,7 @@ export type PsyMeshGeneratorPrototypes = GetStructType<{
   SID: string;
 }>;
 
-export type QuestAnomalyPrototypes = GetStructType<{
+export type QuestAnomalyPrototype = GetStructType<{
   AngularDamping: number;
   AnomalyElementType: EAnomalyElementType;
   CollisionHeight: number;
@@ -15438,7 +15438,7 @@ export type QuestAnomalyPrototypes = GetStructType<{
   VelocityThreshold: number;
 }>;
 
-export type QuestArtifactPrototypes = GetStructType<
+export type QuestArtifactPrototype = GetStructType<
   (
     | EAnomalyElementType
     | EArtifactRarity
@@ -15450,7 +15450,7 @@ export type QuestArtifactPrototypes = GetStructType<
   )[]
 >;
 
-export type QuestArtifactSpawnerPrototypes = GetStructType<{
+export type QuestArtifactSpawnerPrototype = GetStructType<{
   Experienced: {
     Count: number;
     MaxCooldown: number;
@@ -15513,7 +15513,7 @@ export type QuestArtifactSpawnerPrototypes = GetStructType<{
   };
 }>;
 
-export type QuestDependencyPrototypes = GetStructType<{
+export type QuestDependencyPrototype = GetStructType<{
   DefaultValue: string;
   Description: string;
   ID: number;
@@ -15521,14 +15521,14 @@ export type QuestDependencyPrototypes = GetStructType<{
   Type: EGlobalVariableType;
 }>;
 
-export type QuestItemGeneratorPrototypes = GetStructType<{
+export type QuestItemGeneratorPrototype = GetStructType<{
   ID: number;
   ItemGenerator: ItemGeneratorEntry[];
   RefreshTime: string;
   SID: string;
 }>;
 
-export type QuestItemPrototypes = GetStructType<{
+export type QuestItemPrototype = GetStructType<{
   AlternativeEffectPrototypeSIDs: string[];
   AnomalyElementType: EAnomalyElementType;
   ArchiartifactType: EArchiartifactType;
@@ -15577,7 +15577,7 @@ export type QuestItemPrototypes = GetStructType<{
   Weight: number;
 }>;
 
-export type QuestMeshGeneratorPrototypes = GetStructType<{
+export type QuestMeshGeneratorPrototype = GetStructType<{
   Attachments: (
     | {
         Attaches: {
@@ -15669,7 +15669,7 @@ export type QuestMeshGeneratorPrototypes = GetStructType<{
   SID: string;
 }>;
 
-export type QuestNodePrototypes = GetStructType<{
+export type QuestNodePrototype = GetStructType<{
   AbilityPrototypeSID: string;
   AchievementSID: string;
   Activate: boolean;
@@ -16000,13 +16000,13 @@ export type QuestNodePrototypes = GetStructType<{
   WoundedOn: boolean;
 }>;
 
-export type QuestNPCGeneratorPrototypes = GetStructType<{
+export type QuestNPCGeneratorPrototype = GetStructType<{
   ItemGenerator: ItemGeneratorEntry[];
   SID: string;
   SpecificRewardSound: EUISound;
 }>;
 
-export type QuestObjPrototypes = GetStructType<{
+export type QuestObjPrototype = GetStructType<{
   Abilities: Record<
     Ability,
     {
@@ -16087,7 +16087,7 @@ export type QuestObjPrototypes = GetStructType<{
   };
 }>;
 
-export type QuestPrototypes = GetStructType<{
+export type QuestPrototype = GetStructType<{
   Description: string;
   DLC: string;
   Image: string;
@@ -16098,7 +16098,7 @@ export type QuestPrototypes = GetStructType<{
   StartQuestNodeSID: string;
 }>;
 
-export type QuestRewardsPrototypes = GetStructType<{
+export type QuestRewardsPrototype = GetStructType<{
   ItemGenerator: ItemGeneratorEntry[];
   MoneyGenerator: {
     MaxCount: number;
@@ -16108,12 +16108,12 @@ export type QuestRewardsPrototypes = GetStructType<{
   SpecificRewardSound: EUISound;
 }>;
 
-export type QuestStashBodyItemGeneratorPrototypes = GetStructType<{
+export type QuestStashBodyItemGeneratorPrototype = GetStructType<{
   ItemGenerator: ItemGeneratorEntry[];
   SID: string;
 }>;
 
-export type RegionMusicPrototypes = GetStructType<{
+export type RegionMusicPrototype = GetStructType<{
   AmbientStateMusicSwitchPath: string;
   MusicState: EMusicState;
   Region: ERegion;
@@ -16121,7 +16121,7 @@ export type RegionMusicPrototypes = GetStructType<{
   SID: string;
 }>;
 
-export type RelationPrototypes = GetStructType<{
+export type RelationPrototype = GetStructType<{
   CharacterReactions: (Record<`${Reaction}->${Reaction}`, number> & {
     Type: ERelationChangingEvent;
   })[];
@@ -16150,7 +16150,7 @@ export type RelationPrototypes = GetStructType<{
   SID: string;
 }>;
 
-export type RestrictorsPrototypes = GetStructType<{
+export type RestrictorsPrototype = GetStructType<{
   OfflineRestrictors: {
     Active: boolean;
     AreasMask: number;
@@ -16164,12 +16164,12 @@ export type RestrictorsPrototypes = GetStructType<{
   SID: string;
 }>;
 
-export type Scripts = GetStructType<{
+export type Script = GetStructType<{
   ScriptsArray: string[];
   SID: string;
 }>;
 
-export type SmartCoverPrototypes = GetStructType<{
+export type SmartCoverPrototype = GetStructType<{
   SID: string;
   WeaponTypes: {
     EnterCoverOffsets: (
@@ -16206,7 +16206,7 @@ export type SmartCoverPrototypes = GetStructType<{
   }[];
 }>;
 
-export type SpawnActorPrototypes = GetStructType<{
+export type SpawnActorPrototype = GetStructType<{
   ActiveLair: boolean;
   ALifeLairsSearchRadius: number;
   ALifeScenariosGroupSID: string;
@@ -16498,13 +16498,13 @@ export type SpawnActorPrototypes = GetStructType<{
   };
 }>;
 
-export type SQ95_GlobalVariablePrototypes = GetStructType<{
+export type SQ95_GlobalVariablePrototype = GetStructType<{
   DefaultValue: string;
   SID: string;
   Type: EGlobalVariableType;
 }>;
 
-export type StashPrototypes = GetStructType<{
+export type StashPrototype = GetStructType<{
   CustomIconPath: string;
   ItemGenerators: (
     | {
@@ -16792,18 +16792,18 @@ export type StashPrototypes = GetStructType<{
   SID: string;
 }>;
 
-export type TeleportGroupPrototypes = GetStructType<{
+export type TeleportGroupPrototype = GetStructType<{
   MinTeleportDistance: number;
   SID: string;
 }>;
 
-export type TeleportPrototypes = GetStructType<{
+export type TeleportPrototype = GetStructType<{
   EffectPrototypeSIDs: string[];
   SID: string;
   TeleportType: EGSCTeleportType;
 }>;
 
-export type TestNPCObjPrototypes = GetStructType<{
+export type TestNPCObjPrototype = GetStructType<{
   CustomMeshGeneratorPrototypeSID: string;
   Faction: string;
   ID: number;
@@ -16812,7 +16812,7 @@ export type TestNPCObjPrototypes = GetStructType<{
   SID: string;
 }>;
 
-export type ThreatPrototypes = GetStructType<{
+export type ThreatPrototype = GetStructType<{
   Actions: {
     ThreatLevelValueMax: number;
     ThreatLevelValueMin: number;
@@ -16857,7 +16857,7 @@ export type ThreatPrototypes = GetStructType<{
   )[];
 }>;
 
-export type TradePrototypes = GetStructType<{
+export type TradePrototype = GetStructType<{
   bInfiniteMoney: boolean;
   BuyDiscounts: {
     ConditionSID: string;
@@ -16891,7 +16891,7 @@ export type TradePrototypes = GetStructType<{
   TradeTimeStart: number;
 }>;
 
-export type TradeTestBoolProviderPrototypes = GetStructType<{
+export type TradeTestBoolProviderPrototype = GetStructType<{
   Days: number;
   Faction: string;
   Hours: number;
@@ -16903,7 +16903,7 @@ export type TradeTestBoolProviderPrototypes = GetStructType<{
   Type: EBoolProviderType;
 }>;
 
-export type UpdatePopupPrototypes = GetStructType<{
+export type UpdatePopupPrototype = GetStructType<{
   SaveFileVersion: number;
   SID: string;
   TabData: {
@@ -16915,7 +16915,7 @@ export type UpdatePopupPrototypes = GetStructType<{
   }[];
 }>;
 
-export type UpgradePrototypes = GetStructType<{
+export type UpgradePrototype = GetStructType<{
   AttachPrototypeSIDs: string[];
   BaseCost: number;
   BlockingGlobalVariables: {
@@ -16952,7 +16952,7 @@ export type UpgradePrototypes = GetStructType<{
   VerticalPosition: EUpgradeVerticalPosition;
 }>;
 
-export type UserNotificationPrototypes = GetStructType<{
+export type UserNotificationPrototype = GetStructType<{
   ID: number;
   SID: string;
   Sound: string;
@@ -16961,7 +16961,7 @@ export type UserNotificationPrototypes = GetStructType<{
   Type: EUserNotificationType;
 }>;
 
-export type VisionScannerPrototypes = GetStructType<{
+export type VisionScannerPrototype = GetStructType<{
   AnglePercentToScorePenaltyCurve: string;
   CentralVisionDistance: number;
   DaytimeDistanceAndAnglesVisibilityPercentModificationCurve: string;
@@ -16993,7 +16993,7 @@ export type VisionScannerPrototypes = GetStructType<{
   VerticalVisionHalvedAngleDegrees: number;
 }>;
 
-export type VisionTickPrototypes = GetStructType<{
+export type VisionTickPrototype = GetStructType<{
   NPCDeadBudget: number;
   NPCEnemyBudget: number;
   NPCNotEnemyBudget: number;
@@ -17006,7 +17006,7 @@ export type VisionTickPrototypes = GetStructType<{
   SID: string;
 }>;
 
-export type VoiceModulatorPrototypes = GetStructType<{
+export type VoiceModulatorPrototype = GetStructType<{
   AuxBusControlValue: number;
   AuxBusPath: string;
   ObjectOffSFX: string;
@@ -17016,7 +17016,7 @@ export type VoiceModulatorPrototypes = GetStructType<{
   SID: string;
 }>;
 
-export type WeaponAttributesPrototypes = GetStructType<{
+export type WeaponAttributesPrototype = GetStructType<{
   AimShellShutterSocketName: string;
   AIParameters: {
     BehaviorTypes: {
@@ -17180,14 +17180,14 @@ export type WeaponAttributesPrototypes = GetStructType<{
   SID: string;
 }>;
 
-export type WeaponFloatProviderPrototypes = GetStructType<{
+export type WeaponFloatProviderPrototype = GetStructType<{
   ProviderSIDs: string[];
   SID: string;
   Type: EFloatProviderType;
   Value: number;
 }>;
 
-export type WeaponGeneralSetupPrototypes = GetStructType<{
+export type WeaponGeneralSetupPrototype = GetStructType<{
   AdditionalBulletsAfterReloadingCount: number;
   AimGamepadAimAssistPresetSID: string;
   AimingCurve: string;
@@ -17522,7 +17522,7 @@ export type WeaponGeneralSetupPrototypes = GetStructType<{
   WeaponTypeSoundSwitch: string;
 }>;
 
-export type WeaponPrototypes = GetStructType<{
+export type WeaponPrototype = GetStructType<{
   BaseDurability: number;
   Cost: number;
   EffectPrototypeSIDs: string[];
@@ -17557,7 +17557,7 @@ export type WeaponPrototypes = GetStructType<{
   Weight: number;
 }>;
 
-export type WeatherChainPrototypes = GetStructType<{
+export type WeatherChainPrototype = GetStructType<{
   SID: string;
   SourceWeather: EWeather;
   TargetWeather: EWeather;
@@ -17570,7 +17570,7 @@ export type WeatherChainPrototypes = GetStructType<{
   }[];
 }>;
 
-export type WeatherPrototypes = GetStructType<{
+export type WeatherPrototype = GetStructType<{
   AltitudeCurveIndex: number;
   SID: string;
   WeatherParams: (
@@ -17865,7 +17865,7 @@ export type WeatherPrototypes = GetStructType<{
   }[];
 }>;
 
-export type WeatherSelectionPrototypes = GetStructType<
+export type WeatherSelectionPrototype = GetStructType<
   {
     EmissionPrototypeSID: string;
     Priority: number;
