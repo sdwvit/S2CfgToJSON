@@ -8714,9 +8714,10 @@ export type QuestNodePrototypeAudioLocalizedAssetsToLoadItem = GetStructType<
   string[]
 >;
 
-export type QuestNodePrototypeConditions = GetStructType<
-  (EConditionCheckType | QuestNodePrototypeConditionsItem)[]
->;
+export type QuestNodePrototypeConditions = GetStructType<{
+  ConditionCheckType: EConditionCheckType;
+}> &
+  GetStructType<(EConditionCheckType | QuestNodePrototypeConditionsItem)[]>;
 
 export type QuestNodePrototypeConditionsItem = GetStructType<
   (
@@ -9795,7 +9796,7 @@ export type SpawnActorPrototype = GetStructType<{
   SignalReceivers: SpawnActorPrototypeSignalReceivers;
   SignalSenders: SpawnActorPrototypeSignalSenders;
   SimplifiedOverlap: boolean;
-  SpawnedGenericMembers: string;
+  SpawnedGenericMembers: SpawnActorPrototypeSpawnedGenericMembers;
   SpawnedPrototypeSID: string;
   SpawnedSquadMembersCount: number;
   SpawnInRadius: number;
