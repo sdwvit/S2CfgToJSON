@@ -177,81 +177,57 @@ import {
   EWeatherParam,
   EWeightStatus,
   EZombificationType,
+  EDialogAnimationType,
+  EItemGenerationCategory,
+  EContextualActionEffectType,
+  ERepetitions,
+  EDistanceSelectorCondition,
+  EContextualActionPreconditionType,
+  EQuestConditionType,
+  EJournalState,
+  EQuestNodeState,
+  EScenarioBranch,
+  EThreatAwareness,
+  EConditionCheckType,
+  EQuestRewardType,
 } from "./enums.mts";
 
-import {
-  Ability,
-  MeshAttachment,
-  Faction,
-  Rank,
-  Reaction,
-  RGBA,
-  SID,
-  Vec2,
-  Vec3,
-  Vec4,
-  WeatherSelection,
-  Rot,
-  VecRot,
-  ItemGeneratorEntry,
-  GroomCategory,
-  FactionGoalType,
-  VecRotTemp,
-  Conditions,
-  ContextualAction,
-  WeaponShootDistance,
-  Protection,
-} from "./utility-types.mts";
-
 import { GetStructType } from "./Struct.mts";
+import {
+  Archetype,
+  Faction,
+  HumanAbilityName,
+  MeshAttachment,
+  ObjectAbilityName,
+  Reaction,
+  SID,
+  WeatherSelection,
+} from "./utility-types.mts";
 
 export type AbilityPrototype = GetStructType<{
   AbilityPreparationTime: number;
   AbilityProbability: string;
-  AbilityTags: string[];
+  AbilityTags: SpawnActorPrototypeIgnoreCollisionActors;
   AbilityType: EAbility;
   ActivateAnomalySyncTag: string;
   ActivationNiagaraPath: string;
   ActivationRadius: number;
   AdjustLocation: boolean;
-  AgentToEnemyVisibilityParams: {
-    CanSeeThroughOcluders: boolean;
-    DistanceRange: Vec2;
-    VisibilityTestChannel: ECollisionChannel;
-  };
-  AgentToWeaponVisibilityParams: {
-    CanSeeThroughOcluders: boolean;
-    DistanceRange: Vec2;
-    OwnerEyesOffset: number;
-    VisibilityTestChannel: ECollisionChannel;
-    VisibilityTestRadius: number;
-  };
+  AgentToEnemyVisibilityParams: AbilityPrototypeAgentToEnemyVisibilityParams;
+  AgentToWeaponVisibilityParams: AbilityPrototypeAgentToWeaponVisibilityParams;
   AimingDuration: number;
-  AkEvents: {
-    AkEvent: string;
-    AkSwitches: string[];
-  }[];
-  Anomalies: {
-    NiagaraPath: string;
-    SID: string;
-  }[];
+  AkEvents: AbilityPrototypeAkEvents;
+  Anomalies: AbilityPrototypeAnomalies;
   AnomalyLifetime: number;
   ApplyOnAgents: boolean;
   ApplyOnPlayer: boolean;
   ArmorDamage: number;
   ArmorPiercing: number;
-  AttachVFXBoneNames: string[];
+  AttachVFXBoneNames: SpawnActorPrototypeSignals;
   AttackCollisionProfile: string;
   AttackConditionName: string;
-  AttackConditions: {
-    StartAttackMaxAngle: number;
-    StartAttackMaxAngleToEnemyDirection: number;
-    StartAttackMaxDistance: number;
-    StartAttackMinAngle: number;
-    StartAttackMinAngleToEnemyDirection: number;
-    StartAttackMinDistance: number;
-  };
-  AttackParams: {};
+  AttackConditions: AbilityPrototypeAttackConditions;
+  AttackParams: AIGlobalSoundEventTypeSpreadSpeedList;
   AttackSyncTag: string;
   bCanShootLevitatingObject: boolean;
   bIsControllerAttack: boolean;
@@ -261,9 +237,7 @@ export type AbilityPrototype = GetStructType<{
   BlinkDelay: number;
   BlinkEffect: string;
   BlinkSoundEvent: string;
-  BonesDamageSet: {
-    DamageBone: EDamageBone;
-  }[];
+  BonesDamageSet: AbilityPrototypeBonesDamageSet;
   bPullToOwner: boolean;
   bUseOwnerLocation: boolean;
   CalculateDamageOnlyFromPlayer: boolean;
@@ -272,16 +246,9 @@ export type AbilityPrototype = GetStructType<{
   CanBePerformedOnNPC: boolean;
   CanBePerformedOnPlayer: boolean;
   CanBeTriggeredByAnyEnemy: boolean;
-  CancelAbilitiesWithTag: string[];
+  CancelAbilitiesWithTag: SpawnActorPrototypeSignals;
   CollisionProfileName: string;
-  ConditionalCooldowns: {
-    ConditionTag: string;
-    TriggeredCooldowns: {
-      bForce: boolean;
-      CooldownTag: string;
-      Duration: number;
-    }[];
-  }[];
+  ConditionalCooldowns: AbilityPrototypeConditionalCooldowns;
   CooldownMax: number;
   CooldownMin: number;
   CooldownTag: string;
@@ -292,45 +259,22 @@ export type AbilityPrototype = GetStructType<{
   DamageAccumulationDurationSeconds: number;
   DamageCurve: string;
   DamageDistance: number;
-  DamageParams: {
-    ArmorDamage: number;
-    ArmorPiercing: number;
-    Bleeding: number;
-    BleedingChanceIncrement: number;
-    bShouldIgnoreArmor: boolean;
-    Damage: number;
-    DamageSource: EDamageSource;
-    DamageType: EDamageType;
-  };
+  DamageParams: AbilityPrototypeDamageParams;
   DamageRadius: number;
   DamageSource: EDamageSource;
   DamageType: EDamageType;
   DamageVolumeMultiplier: string;
   DebugTag: string;
   DisarmMode: EThrowQueueDisarmMode;
-  DistanceRange: Vec2;
+  DistanceRange: SpawnActorPrototypeFreeformTriggerVerticesItem;
   DPS: number;
   DragDelay: number;
   Duration: number;
-  Effects: {
-    Chance: number;
-    EffectPrototypeSID: string;
-  }[];
-  EffectsDistanced: {
-    Chance: number;
-    EffectPrototypeSID: string;
-    MaxDistance: number;
-    MinDistance: number;
-  }[];
+  Effects: AbilityPrototypeEffects;
+  EffectsDistanced: AbilityPrototypeEffectsDistanced;
   EffectsRadius: number;
   EffectsTriggerInterval: number;
-  EnemyVisibilityParams: {
-    CanSeeThroughOcluders: boolean;
-    DistanceRange: Vec2;
-    OwnerEyesOffset: number;
-    VisibilityTestChannel: ECollisionChannel;
-    VisibilityTestRadius: number;
-  };
+  EnemyVisibilityParams: AbilityPrototypeEnemyVisibilityParams;
   FailureThrowVelocity: number;
   FloatingStartSound: string;
   FloatingStopSound: string;
@@ -341,17 +285,15 @@ export type AbilityPrototype = GetStructType<{
   GravityForce: number;
   GrenadeSID: string;
   HeavyVolumeThreshold: number;
-  HitDamage: Vec2;
+  HitDamage: SpawnActorPrototypeFreeformTriggerVerticesItem;
   HitDetectionAngle: number;
   HitDetectionDistance: number;
   HitReactionStartPhase: EAbilityStatePhase;
-  IgnoredCalibersSet: {
-    IgnoredCaliber: EAmmoCaliber;
-  }[];
+  IgnoredCalibersSet: AbilityPrototypeIgnoredCalibersSet;
   LevitationAngularAccelerationRate: number;
   LevitationAngularVelocity: number;
-  LevitationDisplacementFrequency: Vec3;
-  LevitationHeight: Vec2;
+  LevitationDisplacementFrequency: SpawnActorPrototypeVector;
+  LevitationHeight: SpawnActorPrototypeFreeformTriggerVerticesItem;
   LevitationSpeed: number;
   LimitAngle: number;
   MaxActivationDistance: string;
@@ -360,7 +302,7 @@ export type AbilityPrototype = GetStructType<{
   MaxDiscoveryRadius: number;
   MaxHeightAboveGround: number;
   MaxIntervalBetweenDamage: number;
-  MaxLevitationDisplacement: Vec3;
+  MaxLevitationDisplacement: SpawnActorPrototypeVector;
   MaxObjCount: number;
   MaxShootDelay: number;
   MaxShotsAmount: number;
@@ -376,110 +318,62 @@ export type AbilityPrototype = GetStructType<{
   MinObjQueueWaitTime: number;
   MinShotsAmount: number;
   MinSoundDist: number;
-  Montages: string[];
-  MontagesMove: string[];
+  Montages: QuestNodePrototypeTargetQuestGuids;
+  MontagesMove: SpawnActorPrototypeSignals;
   NPCDamageMultiplier: number;
-  OptionalObjTypeList: {};
+  OptionalObjTypeList: AIGlobalSoundEventTypeSpreadSpeedList;
   PlayerLookAtBoneName: string;
   PlayerLookAtEnterDuration: number;
   PlayerLookAtPresetName: string;
   PlayerPushForce: number;
-  PossessedWeaponParams: {
-    GroundOffset: number;
-    MaxLevitationDisplacement: Vec3;
-    MaxLevitationFrequency: Vec3;
-    MovementSpeed: number;
-    RotationSpeed: number;
-    ShootingDuration: {
-      Max: number;
-      Min: number;
-    };
-  };
-  PsyAbilityAimOffset: {
-    AnimOffset: string;
-    InterpolationSpeed: number;
-    MaxAngle: number;
-  };
+  PossessedWeaponParams: AbilityPrototypePossessedWeaponParams;
+  PsyAbilityAimOffset: AbilityPrototypePsyAbilityAimOffset;
   PsyAttackSyncTag: string;
   PullToOwner: boolean;
-  PullToOwnerRadius: Vec2;
+  PullToOwnerRadius: SpawnActorPrototypeFreeformTriggerVerticesItem;
   RadialImpulse: number;
   Radius: number;
-  RemoveCooldownTags: string[];
-  RequiredObjTypeList: EObjType[];
-  ShieldParams: {
-    AttachToBone: string;
-    BlueprintPath: string;
-    IsStationary: boolean;
-    MaxTimeSinceLastDamage: number;
-    MinAccumulatedDamage: number;
-    MinDistToEnemy: number;
-    ShieldSpawnDelay: number;
-  };
+  RemoveCooldownTags: SpawnActorPrototypeLairCoreVolumes;
+  RequiredObjTypeList: AbilityPrototypeRequiredObjTypeList;
+  ShieldParams: AbilityPrototypeShieldParams;
   ShiftbyX: number;
   ShouldIgnoreArmor: boolean;
   SID: string;
   SpawnAbilityBackSpawnAttempts: number;
-  SpawnAbilityDistance: Vec2;
+  SpawnAbilityDistance: SpawnActorPrototypeFreeformTriggerVerticesItem;
   SpawnAbilityFrontAngle: string;
   SpawnAbilityFrontSpawnAttempts: number;
-  SpawnAbilityItemSIDs: string[];
+  SpawnAbilityItemSIDs: AbilityPrototypeSpawnAbilityItemSIDs;
   SpawnRadius: string;
   SquadLimit: number;
-  SummonParams: {
-    MaxInstancesInGroup: number;
-    SpawnAngleDistribution: Vec2;
-    SpawnAngleInitialOffset: Vec2;
-    SpawnAroundEnemy: boolean;
-    SpawnDelay: number;
-    SpawnEffects: boolean;
-    SpawnRadius: Vec2;
-    SummonObjects: {
-      ActorNeedsDestroyOnDeath: boolean;
-      Behaviour: ESummonBehaviourOnSpawn;
-      Chance: number;
-      DiesWhenAbilityOwnerDies: boolean;
-      DiesWhenAbilityOwnerLeavesCombat: boolean;
-      MaxLifetime: number;
-      OffscreenTimeToDie: number;
-      Orientation: ESummonSpawnOrientation;
-      OrientationOffset: number;
-      PrototypeSID: string;
-      PsyNPCType: EPsyNPCType;
-    }[];
-    SwapPlaces: boolean;
-  };
+  SummonParams: AbilityPrototypeSummonParams;
   SyncTag: string;
   TargetBone: string;
   ThrowAbilityCorpseTimeToHitSeconds: number;
-  ThrowAbilityDamage: Vec2;
+  ThrowAbilityDamage: SpawnActorPrototypeFreeformTriggerVerticesItem;
   ThrowAbilityDamageVolumeMultiplier: string;
-  ThrowAbilityDistance: Vec2;
+  ThrowAbilityDistance: SpawnActorPrototypeFreeformTriggerVerticesItem;
   ThrowAbilityFlyingSpeed: number;
   ThrowAbilityHeavyVolumeThreshold: number;
   ThrowAbilityLevitationAngularAccelerationRate: number;
   ThrowAbilityLevitationAngularVelocity: number;
-  ThrowAbilityLevitationDisplacementFrequency: Vec3;
-  ThrowAbilityLevitationHeight: Vec2;
+  ThrowAbilityLevitationDisplacementFrequency: SpawnActorPrototypeVector;
+  ThrowAbilityLevitationHeight: SpawnActorPrototypeFreeformTriggerVerticesItem;
   ThrowAbilityLevitationSpeed: number;
-  ThrowAbilityMaxLevitationDisplacement: Vec3;
+  ThrowAbilityMaxLevitationDisplacement: SpawnActorPrototypeVector;
   ThrowAbilityThrowCorpses: boolean;
-  ThrowAbilityThrowDelay: Vec2;
+  ThrowAbilityThrowDelay: SpawnActorPrototypeFreeformTriggerVerticesItem;
   ThrowAbilityTimeToHitSeconds: number;
   ThrowAbilityUnpossessSpeedPercent: number;
-  ThrowDelay: Vec2;
-  ThrowInterval: Vec2;
+  ThrowDelay: SpawnActorPrototypeFreeformTriggerVerticesItem;
+  ThrowInterval: SpawnActorPrototypeFreeformTriggerVerticesItem;
   ThrowProbability: string;
   ThrowSyncTag: string;
   TimeLimit: number;
   TimeToExplode: number;
   TimeToHitSeconds: number;
   TossLocationRadiusOffset: number;
-  TriggeredCooldowns: {
-    bForce: boolean;
-    CooldownTag: string;
-    Duration: number;
-  }[];
+  TriggeredCooldowns: AbilityPrototypeTriggeredCooldowns;
   UnpossessSpeedPercent: number;
   UseCustomPayload: boolean;
   VisibilityTestChannel: ECollisionChannel;
@@ -488,16 +382,620 @@ export type AbilityPrototype = GetStructType<{
   VitalCooldownCurve: string;
   VitalThreshold: number;
   VitalType: EVitalType;
-  WeaponToEnemyVisibilityParams: {
-    CanSeeThroughOcluders: boolean;
-    DistanceRange: Vec2;
-    OwnerEyesOffset: number;
-    VisibilityTestChannel: ECollisionChannel;
-    VisibilityTestRadius: number;
-  };
+  WeaponToEnemyVisibilityParams: AbilityPrototypeAgentToWeaponVisibilityParams;
   WeaponVFX: string;
   ZombificationType: EZombificationType;
   ZSpawnOffset: number;
+}>;
+
+export type AbilityPrototypeAgentToEnemyVisibilityParams = GetStructType<{
+  CanSeeThroughOcluders: boolean;
+  DistanceRange: SpawnActorPrototypeFreeformTriggerVerticesItem;
+  VisibilityTestChannel: ECollisionChannel;
+}>;
+
+export type AbilityPrototypeAgentToWeaponVisibilityParams = GetStructType<{
+  CanSeeThroughOcluders: boolean;
+  DistanceRange: SpawnActorPrototypeFreeformTriggerVerticesItem;
+  OwnerEyesOffset: number;
+  VisibilityTestChannel: ECollisionChannel;
+  VisibilityTestRadius: number;
+}>;
+
+export type AbilityPrototypeAkEvents = GetStructType<
+  AbilityPrototypeAkEventsItem[]
+>;
+
+export type AbilityPrototypeAkEventsItem = GetStructType<{
+  AkEvent: string;
+  AkSwitches: SpawnActorPrototypeLairCoreVolumes;
+}>;
+
+export type AbilityPrototypeAnomalies = GetStructType<
+  AbilityPrototypeAnomaliesItem[]
+>;
+
+export type AbilityPrototypeAnomaliesItem = GetStructType<{
+  NiagaraPath: string;
+  SID: string;
+}>;
+
+export type AbilityPrototypeAttackConditions = GetStructType<{
+  StartAttackMaxAngle: number;
+  StartAttackMaxAngleToEnemyDirection: number;
+  StartAttackMaxDistance: number;
+  StartAttackMinAngle: number;
+  StartAttackMinAngleToEnemyDirection: number;
+  StartAttackMinDistance: number;
+}>;
+
+export type AbilityPrototypeBonesDamageSet = GetStructType<
+  AbilityPrototypeBonesDamageSetItem[]
+>;
+
+export type AbilityPrototypeBonesDamageSetItem = GetStructType<{
+  DamageBone: EDamageBone;
+}>;
+
+export type AbilityPrototypeConditionalCooldowns = GetStructType<
+  AbilityPrototypeConditionalCooldownsItem[]
+>;
+
+export type AbilityPrototypeConditionalCooldownsItem = GetStructType<{
+  ConditionTag: string;
+  TriggeredCooldowns: AbilityPrototypeTriggeredCooldowns;
+}>;
+
+export type AbilityPrototypeDamageParams = GetStructType<{
+  ArmorDamage: number;
+  ArmorPiercing: number;
+  Bleeding: number;
+  BleedingChanceIncrement: number;
+  bShouldIgnoreArmor: boolean;
+  Damage: number;
+  DamageSource: EDamageSource;
+  DamageType: EDamageType;
+}>;
+
+export type AbilityPrototypeEffects = GetStructType<
+  AbilityPrototypeEffectsItem[]
+>;
+
+export type AbilityPrototypeEffectsDistanced = GetStructType<
+  AbilityPrototypeEffectsDistancedItem[]
+>;
+
+export type AbilityPrototypeEffectsDistancedItem = GetStructType<{
+  Chance: number;
+  EffectPrototypeSID: string;
+  MaxDistance: number;
+  MinDistance: number;
+}>;
+
+export type AbilityPrototypeEffectsItem = GetStructType<{
+  Chance: number;
+  EffectPrototypeSID: string;
+  ShouldPauseByDialog: boolean;
+}>;
+
+export type AbilityPrototypeEnemyVisibilityParams = GetStructType<{
+  CanSeeThroughOcluders: boolean;
+  DistanceRange: SpawnActorPrototypeFreeformTriggerVerticesItem;
+  OwnerEyesOffset: number;
+  VisibilityTestChannel: ECollisionChannel;
+  VisibilityTestRadius: number;
+}>;
+
+export type AbilityPrototypeIgnoredCalibersSet = GetStructType<
+  AbilityPrototypeIgnoredCalibersSetItem[]
+>;
+
+export type AbilityPrototypeIgnoredCalibersSetItem = GetStructType<{
+  IgnoredCaliber: EAmmoCaliber;
+}>;
+
+export type AbilityPrototypePossessedWeaponParams = GetStructType<{
+  GroundOffset: number;
+  MaxLevitationDisplacement: SpawnActorPrototypeVector;
+  MaxLevitationFrequency: SpawnActorPrototypeVector;
+  MovementSpeed: number;
+  RotationSpeed: number;
+  ShootingDuration: SpawnActorPrototypeMaxSpawnQuantity;
+}>;
+
+export type AbilityPrototypePsyAbilityAimOffset = GetStructType<{
+  AnimOffset: string;
+  InterpolationSpeed: number;
+  MaxAngle: number;
+}>;
+
+export type AbilityPrototypeRequiredObjTypeList = GetStructType<EObjType[]>;
+
+export type AbilityPrototypeShieldParams = GetStructType<{
+  AttachToBone: string;
+  BlueprintPath: string;
+  IsStationary: boolean;
+  MaxTimeSinceLastDamage: number;
+  MinAccumulatedDamage: number;
+  MinDistToEnemy: number;
+  ShieldSpawnDelay: number;
+}>;
+
+export type AbilityPrototypeSpawnAbilityItemSIDs = GetStructType<string[]>;
+
+export type AbilityPrototypeSummonObjects = GetStructType<
+  AbilityPrototypeSummonObjectsItem[]
+>;
+
+export type AbilityPrototypeSummonObjectsItem = GetStructType<{
+  ActorNeedsDestroyOnDeath: boolean;
+  Behaviour: ESummonBehaviourOnSpawn;
+  Chance: number;
+  DiesWhenAbilityOwnerDies: boolean;
+  DiesWhenAbilityOwnerLeavesCombat: boolean;
+  MaxLifetime: number;
+  OffscreenTimeToDie: number;
+  Orientation: ESummonSpawnOrientation;
+  OrientationOffset: number;
+  PrototypeSID: string;
+  PsyNPCType: EPsyNPCType;
+}>;
+
+export type AbilityPrototypeSummonParams = GetStructType<{
+  MaxInstancesInGroup: number;
+  SpawnAngleDistribution: SpawnActorPrototypeFreeformTriggerVerticesItem;
+  SpawnAngleInitialOffset: SpawnActorPrototypeFreeformTriggerVerticesItem;
+  SpawnAroundEnemy: boolean;
+  SpawnDelay: number;
+  SpawnEffects: boolean;
+  SpawnRadius: SpawnActorPrototypeFreeformTriggerVerticesItem;
+  SummonObjects: AbilityPrototypeSummonObjects;
+  SwapPlaces: boolean;
+}>;
+
+export type AbilityPrototypeTriggeredCooldowns = GetStructType<
+  AbilityPrototypeTriggeredCooldownsItem[]
+>;
+
+export type AbilityPrototypeTriggeredCooldownsItem = GetStructType<{
+  bForce: boolean;
+  CooldownTag: string;
+  Duration: number;
+}>;
+
+export type Achievement = GetStructType<{
+  "0": AchievementAchievementGoalsItem;
+  "1": AchievementAchievementGoalsItem;
+  "10": AchievementAchievementGoalsItem;
+  "11": AchievementAchievementGoalsItem;
+  "12": AchievementAchievementGoalsItem;
+  "13": AchievementAchievementGoalsItem;
+  "14": AchievementAchievementGoalsItem;
+  "15": AchievementAchievementGoalsItem;
+  "16": AchievementAchievementGoalsItem;
+  "17": AchievementAchievementGoalsItem;
+  "18": AchievementAchievementGoalsItem;
+  "19": AchievementAchievementGoalsItem;
+  "2": AchievementAchievementGoalsItem;
+  "20": AchievementAchievementGoalsItem;
+  "21": AchievementAchievementGoalsItem;
+  "22": AchievementAchievementGoalsItem;
+  "23": AchievementAchievementGoalsItem;
+  "24": AchievementAchievementGoalsItem;
+  "25": AchievementAchievementGoalsItem;
+  "26": AchievementAchievementGoalsItem;
+  "27": AchievementAchievementGoalsItem;
+  "28": AchievementAchievementGoalsItem;
+  "29": AchievementAchievementGoalsItem;
+  "3": AchievementAchievementGoalsItem;
+  "30": AchievementAchievementGoalsItem;
+  "31": AchievementAchievementGoalsItem;
+  "32": AchievementAchievementGoalsItem;
+  "33": AchievementAchievementGoalsItem;
+  "34": AchievementAchievementGoalsItem;
+  "35": AchievementAchievementGoalsItem;
+  "36": AchievementAchievementGoalsItem;
+  "37": AchievementAchievementGoalsItem;
+  "38": AchievementAchievementGoalsItem;
+  "39": AchievementAchievementGoalsItem;
+  "4": AchievementAchievementGoalsItem;
+  "40": AchievementAchievementGoalsItem;
+  "41": AchievementAchievementGoalsItem;
+  "42": AchievementAchievementGoalsItem;
+  "43": AchievementAchievementGoalsItem;
+  "44": AchievementAchievementGoalsItem;
+  "45": AchievementAchievementGoalsItem;
+  "46": AchievementAchievementGoalsItem;
+  "47": AchievementAchievementGoalsItem;
+  "48": AchievementAchievementGoalsItem;
+  "49": AchievementAchievementGoalsItem;
+  "5": AchievementAchievementGoalsItem;
+  "50": AchievementAchievementGoalsItem;
+  "51": AchievementAchievementGoalsItem;
+  "52": AchievementAchievementGoalsItem;
+  "53": AchievementAchievementGoalsItem;
+  "54": AchievementAchievementGoalsItem;
+  "55": AchievementAchievementGoalsItem;
+  "56": AchievementAchievementGoalsItem;
+  "57": AchievementAchievementGoalsItem;
+  "58": AchievementAchievementGoalsItem;
+  "6": AchievementAchievementGoalsItem;
+  "7": AchievementAchievementGoalsItem;
+  "8": AchievementAchievementGoalsItem;
+  "9": AchievementAchievementGoalsItem;
+  AcceptableInterval: number;
+  AnomalyPrototypeSID: string;
+  ArmorSIDs: AchievementMutantsSID;
+  BleedingThreshold: number;
+  Calibers: AchievementCalibers;
+  DrunkennessThreshold: number;
+  DrunknessThreshold: number;
+  FoodSet: AchievementFoodSet;
+  HeadshotDistance: number;
+  HungerThreshold: number;
+  Items: AchievementItems;
+  MarkerTypes: AchievementMarkerTypes;
+  MinHeight: number;
+  MinSquadSize: number;
+  MutantSID: string;
+  MutantsSID: AchievementMutantsSID;
+  NumberOfWeapons: number;
+  PsyThreshold: number;
+  RadiationThreshold: number;
+  RequiredCount: number;
+  SleepinessThreshold: number;
+  TargetSID: string;
+  TimeWindow: number;
+}>;
+
+export type AchievementAchievementGoalsItem = GetStructType<{
+  Goal: number;
+  SID: string;
+}>;
+
+export type AchievementCalibers = GetStructType<EAmmoCaliber[]>;
+
+export type AchievementFoodSet = GetStructType<AIGlobalMaterialsItem[]>;
+
+export type AchievementItems = GetStructType<string[]>;
+
+export type AchievementMarkerTypes = GetStructType<EMarkerType[]>;
+
+export type AchievementMutantsSID = GetStructType<string[]>;
+
+export type AIGlobal = GetStructType<{
+  ALifeSettings: AIGlobalALifeSettings;
+  AllowCorpseProcessForQuestAgent: boolean;
+  AllowWeaponPickupBasedOnPrice: boolean;
+  AllowWeaponPickupWhenLooting: boolean;
+  AnomalyRestrictionsSettings: AIGlobalAnomalyRestrictionsSettings;
+  AudioRoomLoudnessMultiplierList: AIGlobalAudioRoomLoudnessMultiplierList;
+  CharacterPoseSettings: AIGlobalCharacterPoseSettings;
+  CombatTacticsSettings: AIGlobalCombatTacticsSettings;
+  ContextualActionSettings: AIGlobalContextualActionSettings;
+  CorpseBehaviorFactionRestrictions: SpawnActorPrototypeIgnoreCollisionActors;
+  CoverSettings: AIGlobalCoverSettings;
+  DangerAreaSettings: AIGlobalDangerAreaSettings;
+  DeadBodyToConsiderAsThreatDuration: number;
+  DistanceToSwitchToWalkIn: number;
+  DistanceToSwitchToWalkOut: number;
+  FlashlightInteractDuration: number;
+  FlashlightTimeOfDayOff: number;
+  FlashlightTimeOfDayOn: number;
+  FlashlightUseSettings: AIGlobalFlashlightUseSettings;
+  FocusLocationSelectionSettings: AIGlobalFocusLocationSelectionSettings;
+  ForceRunInsteadSprintDistanceFromPathStart: number;
+  ForceRunInsteadSprintDistanceToNextPortal: number;
+  ForceRunInsteadSprintDistanceToPathEnd: number;
+  ForceRunInsteadSprintPortalRotationAngleThreshold: number;
+  HearingSensorSettings: AIGlobalHearingSensorSettings;
+  HideWeaponWarningBarkDelay: string;
+  LuminanceSettings: AIGlobalLuminanceSettings;
+  MaterialTranslucencyList: AIGlobalMaterialTranslucencyList;
+  MaxAgentsCount: number;
+  MaxHideWeaponWarningFollowDistance: string;
+  MinALifeDespawnDistance: number;
+  MinALifeSpawnDistance: number;
+  MutantCorpseProcessFactionPerRank: AIGlobalMutantCorpseProcessFactionPerRank;
+  OfflineUsingGameGraphMoveFactor: number;
+  PhysMatSettings: AIGlobalPhysMatSettings;
+  PlayerFlashlightVisionSettings: AIGlobalPlayerFlashlightVisionSettings;
+  PreyLighterOffVisibilityCoef: number;
+  PreyLighterOnVisibilityCoef: number;
+  ReactionOnEmissionSettings: AIGlobalReactionOnEmissionSettings;
+  RegionRank: AIGlobalRegionRank;
+  SID: string;
+  SoundEventTypeSpreadSpeedList: AIGlobalSoundEventTypeSpreadSpeedList;
+  ThreatsSettings: AIGlobalThreatsSettings;
+  ThrowGrenadeSettings: AIGlobalThrowGrenadeSettings;
+  TimeToSkipLairPeacefulSpawnAfterMemberDies: number;
+  TouchSensorSettings: AIGlobalTouchSensorSettings;
+  WeaponAttachmentsModifiersList: AIGlobalWeaponAttachmentsModifiersList;
+  WeaponLootDistance: number;
+  WeatherSettings: AIGlobalWeatherSettings;
+}>;
+
+export type AIGlobalALifeSettings = GetStructType<{
+  OfflineCombatAreaLifetimeSeconds: number;
+}>;
+
+export type AIGlobalAllowedRanks = GetStructType<EAgentRankMask[]>;
+
+export type AIGlobalAnomalyRestrictionsSettings = GetStructType<{
+  AnomalyRestrictionsIgnoreChanceZombie: number;
+  AnomalyRestrictionsUpdateIntervalSeconds: number;
+}>;
+
+export type AIGlobalArmy = GetStructType<{
+  Experienced: number;
+  Master: number;
+  Newbie: number;
+  Veteran: number;
+}>;
+
+export type AIGlobalAudioRoomLoudnessMultiplierList = GetStructType<
+  AIGlobalAudioRoomLoudnessMultiplierListItem[]
+>;
+
+export type AIGlobalAudioRoomLoudnessMultiplierListItem = GetStructType<{
+  LoudnessMultiplier: number;
+  Type: EAudioRoomPresetBandwidth;
+}>;
+
+export type AIGlobalAvailableGrenadesPerFaction = GetStructType<{
+  Army: AIGlobalArmy;
+  Bandits: AIGlobalBandits;
+  Humanoid: AIGlobalBandits;
+}>;
+
+export type AIGlobalBandits = GetStructType<{
+  ChangeChance: number;
+  ConfidenceToAttack: number;
+  ConfidenceToRetreat: number;
+  Experienced: number;
+  Master: number;
+  Newbie: number;
+  UpdateIntervalSecondsMax: number;
+  UpdateIntervalSecondsMin: number;
+  Veteran: number;
+}>;
+
+export type AIGlobalCharacterPoseSettings = GetStructType<
+  AIGlobalCharacterPoseSettingsItem[]
+>;
+
+export type AIGlobalCharacterPoseSettingsItem = GetStructType<{
+  NoiseCoef: number;
+  Pose: EStateTag;
+  VisibilityCoef: number;
+}>;
+
+export type AIGlobalCombatTacticsParamsPerFactions = GetStructType<{
+  Bandits: AIGlobalBandits;
+  Humanoid: AIGlobalBandits;
+  Monolith: AIGlobalMonolith;
+  Mutant: AIGlobalMonolith;
+}>;
+
+export type AIGlobalCombatTacticsSettings = GetStructType<{
+  CombatTacticsParamsPerFactions: AIGlobalCombatTacticsParamsPerFactions;
+}>;
+
+export type AIGlobalContextualActionSettings = GetStructType<{
+  ContextualActionGameGraphPathActuationDistance: number;
+  ContextualActionInterruptAnimationScaleWhenThreatened: number;
+  ContextualActionSearchDistance: number;
+  ContextualActionSearchFriendDistance: number;
+  DistanceToEquipWeaponBeforeContextualAction: number;
+  DistanceToHideWeaponBeforeContextualAction: number;
+  DistanceToTurnOffFlashlightBeforeContextualActionSquared: number;
+  DistanceToTurnOnFlashlightBeforeContextualActionSquared: number;
+}>;
+
+export type AIGlobalCoverSettings = GetStructType<{
+  MinBehindTreeCoverHeight: string;
+  MinGenericCoverHeight: string;
+  MinGenericCoverWidth: string;
+  MinHighCoverHeight: string;
+  MinLowCoverHeight: string;
+  MinSmartWidth: string;
+}>;
+
+export type AIGlobalDangerAreaSettings = GetStructType<{
+  DangerAreaCostMultiplier: number;
+  DangerAreaLifetimeDistance: number;
+  DangerAreaLifetimeSeconds: number;
+  DangerAreaMaxNum: number;
+  DangerAreaOverlapsForRestriction: number;
+  DangerAreaPlayerDamageAccumulationSeconds: number;
+  DangerAreaRadius: number;
+}>;
+
+export type AIGlobalEnvironmentLuminanceCoefficients = GetStructType<{
+  RoomBaseCoefficients: AIGlobalRoomBaseCoefficients;
+  TimeOfDayBaseLuminance: AIGlobalTimeOfDayBaseLuminance;
+  WeatherLuminanceCoefficients: AIGlobalWeatherLuminanceCoefficients;
+}>;
+
+export type AIGlobalFlashlightUseSettings = GetStructType<{
+  FlashlightMeshDespawnDelay: number;
+  FlashlightMeshDespawnNPCToCameraAngleThreshold: number;
+  FlashlightMeshDespawnPlayerCameraFOVDistance: number;
+  FlashlightMinStateTime: number;
+  FlashlightUseLuminanceThresholdDayOff: number;
+  FlashlightUseLuminanceThresholdDayOn: number;
+  FlashlightUseTracePoints: AIGlobalFlashlightUseTracePoints;
+  MaxFlashlightAgentProcessPerUpdate: number;
+  MaxFlashlightsUsedSimultaneously: number;
+  MaxFlashlightUseTracesPerUpdate: number;
+}>;
+
+export type AIGlobalFlashlightUseTracePoints = GetStructType<
+  AIGlobalFlashlightUseTracePointsItem[]
+>;
+
+export type AIGlobalFlashlightUseTracePointsItem = GetStructType<{
+  RelativeLocation: SpawnActorPrototypeVector;
+}>;
+
+export type AIGlobalFocusLocationSelectionSettings = GetStructType<{
+  FocusLocationStartLookingEarlyOffset: number;
+}>;
+
+export type AIGlobalHearingSensorSettings = GetStructType<{
+  NonEnemySoundHearingCoef: number;
+  SoundVisionValidationThreshold: number;
+}>;
+
+export type AIGlobalLuminanceSettings = GetStructType<{
+  BaseLuminance: number;
+  EnvironmentLuminanceCoefficients: AIGlobalEnvironmentLuminanceCoefficients;
+  LightLuminanceByTimeOfDayCurve: string;
+  LightSourceLuminanceMultiplier: number;
+  MaxLightGatheringRadius: number;
+  MaxLuminanceAgentProcessPerUpdate: number;
+  MaxLuminanceTracesPerUpdate: number;
+  MinAmbientLuminanceToSkipTraces: number;
+  ShadowLuminanceByTimeOfDayCurve: string;
+  ShadowOffsetByTimeOfDayCurve: string;
+}>;
+
+export type AIGlobalMaterials = GetStructType<AIGlobalMaterialsItem[]>;
+
+export type AIGlobalMaterialsItem = GetStructType<{
+  SID: string;
+}>;
+
+export type AIGlobalMaterialTranslucencyList = GetStructType<
+  AIGlobalMaterialTranslucencyListItem[]
+>;
+
+export type AIGlobalMaterialTranslucencyListItem = GetStructType<{
+  Materials: AIGlobalMaterials;
+  Translucency: number;
+}>;
+
+export type AIGlobalMonolith = GetStructType<{
+  ChangeChance: number;
+  ConfidenceToAttack: number;
+  ConfidenceToRetreat: number;
+  UpdateIntervalSecondsMax: number;
+  UpdateIntervalSecondsMin: number;
+}>;
+
+export type AIGlobalMutantCorpseProcessFactionPerRank = GetStructType<
+  AIGlobalMutantCorpseProcessFactionPerRankItem[]
+>;
+
+export type AIGlobalMutantCorpseProcessFactionPerRankItem = GetStructType<{
+  AllowedRanks: AIGlobalAllowedRanks;
+  Faction: string;
+}>;
+
+export type AIGlobalPhysMatSettings = GetStructType<
+  AIGlobalPhysMatSettingsItem[]
+>;
+
+export type AIGlobalPhysMatSettingsItem = GetStructType<{
+  CharacterNoiseCoef: number;
+  MaterialType: EPhysicalMaterialType;
+}>;
+
+export type AIGlobalPlayerFlashlightVisionSettings = GetStructType<{
+  FlashlightMaxVisionScorePerSecond: number;
+  FlashlightMinVisionScorePerSecond: number;
+  FlashlightVisionConeHalfAngle: number;
+  FlashlightVisionConeLength: number;
+  NumTracePointsPerVisionUpdate: number;
+}>;
+
+export type AIGlobalReactionOnEmissionSettings = GetStructType<{
+  DistanceToAvoidPreparingForEmission: number;
+  DistanceToShelterToWalk: number;
+  InvulnerableAfterEmissionStart: number;
+  MinCoveredDistanceToChangeMovementType: number;
+  ReceivedDamageTimeToEnterCombatDuringEmission: number;
+  ReceivedDamageToEnterCombatDuringEmission: number;
+  SheltersSearchDistance: number;
+  TransitionAlphaToPrepareForEmission: number;
+}>;
+
+export type AIGlobalRegionRank = GetStructType<AIGlobalRegionRankItem[]>;
+
+export type AIGlobalRegionRankItem = GetStructType<{
+  MaxRank: ERank;
+  MinRank: ERank;
+  Region: ERegion;
+}>;
+
+export type AIGlobalRoomBaseCoefficients = GetStructType<
+  AIGlobalRoomBaseCoefficientsItem[]
+>;
+
+export type AIGlobalRoomBaseCoefficientsItem = GetStructType<{
+  Coefficient: number;
+  RoomType: EAudioRoomPresetBandwidth;
+}>;
+
+export type AIGlobalSoundEventTypeSpreadSpeedList = GetStructType<{}>;
+
+export type AIGlobalThreatsSettings = GetStructType<{
+  CorpseSmellAfterDeathTimeout: number;
+  EnemyReportDelaySeconds: number;
+  FlairIdentifyAsEnemyOutsideFrontZoneMultiplier: number;
+  LootingCorpsesDeathTimeInterval: number;
+  ThreatReportDelaySeconds: number;
+}>;
+
+export type AIGlobalThrowGrenadeSettings = GetStructType<{
+  AvailableGrenadesPerFaction: AIGlobalAvailableGrenadesPerFaction;
+}>;
+
+export type AIGlobalTimeOfDayBaseLuminance = GetStructType<
+  AIGlobalTimeOfDayBaseLuminanceItem[]
+>;
+
+export type AIGlobalTimeOfDayBaseLuminanceItem = GetStructType<{
+  Luminance: number;
+  TimeFrom: number;
+  TimeTill: number;
+}>;
+
+export type AIGlobalTouchSensorSettings = GetStructType<{
+  TouchDistanceThreshold: number;
+  TouchNonEnemyPlayerLookAtTime: number;
+  TouchNonEnemyPlayerReactionTime: number;
+  TouchSensorCooldown: number;
+}>;
+
+export type AIGlobalWeaponAttachmentsModifiersList = GetStructType<
+  AIGlobalWeaponAttachmentsModifiersListItem[]
+>;
+
+export type AIGlobalWeaponAttachmentsModifiersListItem = GetStructType<{
+  HearingDistanceModifier: number;
+  ThreatPointsMultiplier: number;
+  WeaponAttachmentSID: string;
+}>;
+
+export type AIGlobalWeatherLuminanceCoefficients = GetStructType<
+  AIGlobalWeatherLuminanceCoefficientsItem[]
+>;
+
+export type AIGlobalWeatherLuminanceCoefficientsItem = GetStructType<{
+  Coefficient: number;
+  WeatherType: EWeather;
+}>;
+
+export type AIGlobalWeatherSettings = GetStructType<
+  AIGlobalWeatherSettingsItem[]
+>;
+
+export type AIGlobalWeatherSettingsItem = GetStructType<{
+  FlairCoef: number;
+  HearingDistanceCoef: number;
+  VisibilityCoef: number;
+  WeatherSID: string;
 }>;
 
 export type AimAssistConePrototype = GetStructType<{
@@ -505,12 +1003,14 @@ export type AimAssistConePrototype = GetStructType<{
   AngleCurvePath: string;
   HeightCurvePath: string;
   SID: string;
-  TrackedBones: EDamageBone[];
+  TrackedBones: AimAssistConePrototypeTrackedBones;
 }>;
+
+export type AimAssistConePrototypeTrackedBones = GetStructType<EDamageBone[]>;
 
 export type AimAssistPresetPrototype = GetStructType<{
   LostTargetTrackingTime: number;
-  MagnetismAimAssistConeSIDs: string[];
+  MagnetismAimAssistConeSIDs: SpawnActorPrototypeSignals;
   MovingTrackingAimAssistConeSID: string;
   SID: string;
   SnappingAimAlphaThreshold: number;
@@ -528,20 +1028,20 @@ export type AimAssistWeightsPrototype = GetStructType<{
   InitialWeight: number;
   MinWeight: number;
   SID: string;
-  WeightRules: {
-    Type: EAimAssistWeightType;
-    WeightModifier: number;
-  }[];
+  WeightRules: AimAssistWeightsPrototypeWeightRules;
+}>;
+
+export type AimAssistWeightsPrototypeWeightRules = GetStructType<
+  AimAssistWeightsPrototypeWeightRulesItem[]
+>;
+
+export type AimAssistWeightsPrototypeWeightRulesItem = GetStructType<{
+  Type: EAimAssistWeightType;
+  WeightModifier: number;
 }>;
 
 export type ALifeDirectorScenarioPrototype = GetStructType<{
-  ALifeScenarioNPCArchetypesLimitsPerPlayerRank: {
-    Rank: ERank;
-    Restrictions: {
-      AgentType: EAgentType;
-      MaxCount: number;
-    }[];
-  }[];
+  ALifeScenarioNPCArchetypesLimitsPerPlayerRank: ALifeScenarioNPCArchetypesLimitsPerPlayerRank;
   DefaultALifeLairExpansionToPlayerTimeMax: number;
   DefaultALifeLairExpansionToPlayerTimeMin: number;
   DefaultEmissionScenarioGroup: string;
@@ -555,134 +1055,81 @@ export type ALifeDirectorScenarioPrototype = GetStructType<{
   DefaultSpawnDelayMax: number;
   DefaultSpawnDelayMin: number;
   FallbackMaxSpawnCount: number;
-  FallbackNPCTypes: string[];
-  ProhibitedAgentTypes: EAgentType[];
-  RestrictedObjPrototypeSIDs: string[];
-  ScenarioGroups: {
-    AllScenarios: {
-      PostSpawnDirectorTimeoutMax: number;
-      PostSpawnDirectorTimeoutMin: number;
-      ScenarioSIDs: Record<string, { ScenarioWeight: number }>;
-      SID: string;
-      SpawnDelayMax: number;
-      SpawnDelayMin: number;
-    };
-    CaptureLairs: {
-      PostSpawnDirectorTimeoutMax: number;
-      PostSpawnDirectorTimeoutMin: number;
-      ScenarioSIDs: Record<string, { ScenarioWeight: number }>;
-      SID: string;
-      SpawnDelayMax: number;
-      SpawnDelayMin: number;
-    };
-    ContextualActions: {
-      PostSpawnDirectorTimeoutMax: number;
-      PostSpawnDirectorTimeoutMin: number;
-      ScenarioSIDs: Record<string, { ScenarioWeight: number }>;
-      SID: string;
-      SpawnDelayMax: number;
-      SpawnDelayMin: number;
-    };
-    Emission: {
-      PostSpawnDirectorTimeoutMax: number;
-      PostSpawnDirectorTimeoutMin: number;
-      ScenarioSIDs: Record<string, { ScenarioWeight: number }>;
-      SID: string;
-      SpawnDelayMax: number;
-      SpawnDelayMin: number;
-    };
-    EmptyGroup: {
-      PostSpawnDirectorTimeoutMax: number;
-      PostSpawnDirectorTimeoutMin: number;
-      ScenarioSIDs: Record<string, { ScenarioWeight: number }>;
-      SID: string;
-      SpawnDelayMax: number;
-      SpawnDelayMin: number;
-    };
-    Global: {
-      PostSpawnDirectorTimeoutMax: number;
-      PostSpawnDirectorTimeoutMin: number;
-      ScenarioSIDs: Record<string, { ScenarioWeight: number }>;
-      SID: string;
-      SpawnDelayMax: number;
-      SpawnDelayMin: number;
-    };
-    Global_LesserZone: {
-      PostSpawnDirectorTimeoutMax: number;
-      PostSpawnDirectorTimeoutMin: number;
-      ScenarioSIDs: Record<string, { ScenarioWeight: number }>;
-      SID: string;
-      SpawnDelayMax: number;
-      SpawnDelayMin: number;
-    };
-    Hub: {
-      PostSpawnDirectorTimeoutMax: number;
-      PostSpawnDirectorTimeoutMin: number;
-      ScenarioSIDs: Record<string, { ScenarioWeight: number }>;
-      SID: string;
-      SpawnDelayMax: number;
-      SpawnDelayMin: number;
-    };
-    HumanVsMutants: {
-      PostSpawnDirectorTimeoutMax: number;
-      PostSpawnDirectorTimeoutMin: number;
-      ScenarioSIDs: Record<string, { ScenarioWeight: number }>;
-      SID: string;
-      SpawnDelayMax: number;
-      SpawnDelayMin: number;
-    };
-    HumanVsMutants_LesserZone: {
-      PostSpawnDirectorTimeoutMax: number;
-      PostSpawnDirectorTimeoutMin: number;
-      ScenarioSIDs: Record<string, { ScenarioWeight: number }>;
-      SID: string;
-      SpawnDelayMax: number;
-      SpawnDelayMin: number;
-    };
-    Local: {
-      PostSpawnDirectorTimeoutMax: number;
-      PostSpawnDirectorTimeoutMin: number;
-      ScenarioSIDs: Record<string, { ScenarioWeight: number }>;
-      SID: string;
-      SpawnDelayMax: number;
-      SpawnDelayMin: number;
-    };
-    Quiet: {
-      PostSpawnDirectorTimeoutMax: number;
-      PostSpawnDirectorTimeoutMin: number;
-      ScenarioSIDs: Record<string, { ScenarioWeight: number }>;
-      SID: string;
-      SpawnDelayMax: number;
-      SpawnDelayMin: number;
-    };
-    Swamp_ScenarioGroups: {
-      PostSpawnDirectorTimeoutMax: number;
-      PostSpawnDirectorTimeoutMin: number;
-      ScenarioSIDs: Record<string, { ScenarioWeight: number }>;
-      SID: string;
-      SpawnDelayMax: number;
-      SpawnDelayMin: number;
-    };
-  };
-  Scenarios: Record<
-    string,
-    {
-      PlayerRequiredRank: ERank;
-      ScenarioGroupsTarget: EALifeDirectorScenarioTarget;
-      ScenarioSquads: {
-        AgentPrototypeSID: string;
-        AliveMultiplierMax: number;
-        AliveMultiplierMin: number;
-        bPlayerEnemy: boolean;
-        DeadMultiplier: number;
-        RelationGroup: number;
-        WoundedMultiplier: number;
-        AgentArchetype: EAgentArchetype;
-      }[];
-      SID: string;
-    }
-  >;
+  FallbackNPCTypes: QuestNodePrototypeTargetQuestGuids;
+  ProhibitedAgentTypes: ALifeDirectorScenarioPrototypeProhibitedAgentTypes;
+  RestrictedObjPrototypeSIDs: ALifeDirectorScenarioPrototypeRestrictedObjPrototypeSIDs;
+  ScenarioGroups: ALifeDirectorScenarioPrototypeScenarioGroups;
+  Scenarios: ALifeDirectorScenarioPrototypeScenarios;
   SID: string;
+}>;
+
+export type ALifeScenarioNPCArchetypesLimitsPerPlayerRank = GetStructType<
+  ALifeDirectorScenarioPrototypeALifeScenarioNPCArchetypesLimitsPerPlayerRankItem[]
+>;
+
+export type ALifeDirectorScenarioPrototypeALifeScenarioNPCArchetypesLimitsPerPlayerRankItem =
+  GetStructType<{
+    Rank: ERank;
+    Restrictions: ALifeDirectorScenarioPrototypeRestrictions;
+  }>;
+
+export type ALifeDirectorScenarioPrototypeEmission = GetStructType<{
+  PostSpawnDirectorTimeoutMax: number;
+  PostSpawnDirectorTimeoutMin: number;
+  ScenarioSIDs: ALifeDirectorScenarioPrototypeScenarios;
+  SID: string;
+  SpawnDelayMax: number;
+  SpawnDelayMin: number;
+}>;
+
+export type ALifeDirectorScenarioPrototypeHumans_AttackEnemyLair_Friendly =
+  GetStructType<{
+    ExpansionSquadNumMax: number;
+    ExpansionSquadNumMin: number;
+    PlayerRequiredRank: ERank;
+    ScenarioGroupsTarget: EALifeDirectorScenarioTarget;
+    ScenarioSquads: ALifeDirectorScenarioPrototypeScenarioSquads;
+    ScenarioWeight: number;
+    SID: string;
+  }>;
+
+export type ALifeDirectorScenarioPrototypeProhibitedAgentTypes = GetStructType<
+  EAgentType[]
+>;
+
+export type ALifeDirectorScenarioPrototypeRestrictedObjPrototypeSIDs =
+  GetStructType<string[]>;
+
+export type ALifeDirectorScenarioPrototypeRestrictions = GetStructType<
+  ALifeDirectorScenarioPrototypeRestrictionsItem[]
+>;
+
+export type ALifeDirectorScenarioPrototypeRestrictionsItem = GetStructType<{
+  AgentType: EAgentType;
+  MaxCount: number;
+}>;
+
+export type ALifeDirectorScenarioPrototypeScenarioGroups = GetStructType<
+  Record<string, ALifeDirectorScenarioPrototypeEmission>
+>;
+
+export type ALifeDirectorScenarioPrototypeScenarios = GetStructType<
+  Record<string, ALifeDirectorScenarioPrototypeHumans_AttackEnemyLair_Friendly>
+>;
+
+export type ALifeDirectorScenarioPrototypeScenarioSquads = GetStructType<
+  ALifeDirectorScenarioPrototypeScenarioSquadsItem[]
+>;
+
+export type ALifeDirectorScenarioPrototypeScenarioSquadsItem = GetStructType<{
+  AgentArchetype: EAgentArchetype;
+  AgentPrototypeSID: string;
+  AliveMultiplierMax: number;
+  AliveMultiplierMin: number;
+  bPlayerEnemy: boolean;
+  DeadMultiplier: number;
+  RelationGroup: number;
+  WoundedMultiplier: number;
 }>;
 
 export type ALifePolicyPrototype = GetStructType<{
@@ -705,23 +1152,32 @@ export type ALifePopulationManagerFactionPrototype = GetStructType<{
   ALifeLairExpansionRadius: number;
   ALifeLairExpansionTime: number;
   ALifeStartSimulation: string;
-  Factions: Record<
-    Faction,
-    {
-      ALifeFactionGoals: Record<
-        FactionGoalType,
-        {
-          MaxLairs: number;
-          MinLairs: number;
-          TacticType: EALifeFactionGoalType;
-        }
-      >;
-      ALifeLairExpansionBattleChance: number;
-      Faction: Faction;
-    }
-  >;
+  Factions: ALifePopulationManagerFactionPrototypeFactions;
   SID: string;
 }>;
+
+export type ALifePopulationManagerFactionPrototypeAggressive = GetStructType<{
+  MaxLairs: number;
+  MinLairs: number;
+  TacticType: EALifeFactionGoalType;
+}>;
+
+export type ALifePopulationManagerFactionPrototypeALifeFactionGoals =
+  GetStructType<{
+    Aggressive: ALifePopulationManagerFactionPrototypeAggressive;
+    Defensive: ALifePopulationManagerFactionPrototypeAggressive;
+    Normal: ALifePopulationManagerFactionPrototypeAggressive;
+  }>;
+
+export type ALifePopulationManagerFactionPrototypeBandits = GetStructType<{
+  ALifeFactionGoals: ALifePopulationManagerFactionPrototypeALifeFactionGoals;
+  ALifeLairExpansionBattleChance: number;
+  Faction: string;
+}>;
+
+export type ALifePopulationManagerFactionPrototypeFactions = GetStructType<
+  Record<Faction, ALifePopulationManagerFactionPrototypeBandits>
+>;
 
 export type AmmoPrototype = GetStructType<{
   AimDispersionMod: number;
@@ -738,8 +1194,8 @@ export type AmmoPrototype = GetStructType<{
   DamageMod: number;
   DamageSource: EDamageSource;
   DispersionMod: number;
-  EffectPrototypeSIDs: string[];
-  FittingWeaponsSIDs: string[];
+  EffectPrototypeSIDs: SpawnActorPrototypeIgnoreCollisionActors;
+  FittingWeaponsSIDs: SpawnActorPrototypeLairCoreVolumes;
   FlatnessMod: number;
   FPShellFXPath: string;
   FractionCount: number;
@@ -820,22 +1276,9 @@ export type AnomalyPrototype = GetStructType<{
   BoltActivationAngle: number;
   BoltAngularVelocityMultiplier: number;
   BoltLinearVelocityMultiplier: number;
-  BonesToTrace: EObjSkeletalMeshTraceBone[];
+  BonesToTrace: AnomalyPrototypeBonesToTrace;
   bTraceObjectsOnOverlap: boolean;
-  BubblePrototype: {
-    BubbleFormationTime: number;
-    DamageRadius: number;
-    MaxHP: number;
-    MaxSpeed: number;
-    MinHP: number;
-    MinSpeed: number;
-    ReflectionOffset: number;
-    SpeedGainTime: number;
-    SpeedLossTime: number;
-    TargetIgnoreTime: number;
-    TargetLocationUpdateFrequency: number;
-    TargetOffset: number;
-  };
+  BubblePrototype: AnomalyPrototypeBubblePrototype;
   BulletSpeedOverride: number;
   CharacterPushingImpulse: number;
   ClickerOtherAnomalyJumpChance: number;
@@ -870,14 +1313,14 @@ export type AnomalyPrototype = GetStructType<{
   GrenadeLinearVelocityMultiplier: number;
   HuntDistance: number;
   IdleSwitchPath: string;
-  IgnoredProjectileSIDs: string[];
-  ImmuneObjPrototypeSIDs: string[];
-  InteractionEffectPrototypeSIDs: string[];
+  IgnoredProjectileSIDs: SpawnActorPrototypeIgnoreCollisionActors;
+  ImmuneObjPrototypeSIDs: SpawnActorPrototypeIgnoreCollisionActors;
+  InteractionEffectPrototypeSIDs: SingletonConstantBandits;
   ItemDefaultVelocityMultiplier: number;
   LavaClotTTLMax: number;
   LavaClotTTLMin: number;
-  LavaHitEffectPrototypeSIDs: string[];
-  LavaItemHitEffectPrototypeSIDs: string[];
+  LavaHitEffectPrototypeSIDs: SpawnActorPrototypeSignals;
+  LavaItemHitEffectPrototypeSIDs: SpawnActorPrototypeIgnoreCollisionActors;
   LiftingHeight: number;
   LiftUpTime: number;
   LinearDamping: number;
@@ -896,37 +1339,16 @@ export type AnomalyPrototype = GetStructType<{
   ParticleDamageRadius: number;
   ParticleMaxCount: string;
   ParticleMinDistanceToTarget: number;
-  ParticlePrototype: {
-    CollisionRadiusMax: number;
-    CollisionRadiusMin: number;
-    DamageRadius: number;
-    InitialSpeedInterpolationTime: number;
-    InteractionEffectPrototypeSIDs: string[];
-    MaxHP: number;
-    MaxInitialSpeed: number;
-    MaxSpeed: number;
-    MaxTTL: number;
-    MinHP: number;
-    MinInitialSpeed: number;
-    MinSpeed: number;
-    MinTTL: number;
-    ParticleAmountMax: number;
-    ParticleAmountMin: number;
-    ReflectionOffset: number;
-    SpeedGainTime: number;
-    SpeedLossTime: number;
-    SpreadingRadius: number;
-    TargetOffset: number;
-  };
+  ParticlePrototype: AnomalyPrototypeParticlePrototype;
   ParticleSpawnDelay: number;
   ParticleSpawnHeight: number;
   ParticleSpawnPredictionTime: number;
-  PassiveEffectPrototypeSIDs: string[];
+  PassiveEffectPrototypeSIDs: SpawnActorPrototypeSignals;
   PillowVFXLerpDuration: number;
   PlayerSpiralingPower: number;
-  PlayerStanceChangeEffectPrototypeSIDs: {};
-  PostInteractionEffectPrototypeSIDs: string[];
-  PreInteractionEffectPrototypeSIDs: string[];
+  PlayerStanceChangeEffectPrototypeSIDs: AIGlobalSoundEventTypeSpreadSpeedList;
+  PostInteractionEffectPrototypeSIDs: SpawnActorPrototypeIgnoreCollisionActors;
+  PreInteractionEffectPrototypeSIDs: SpawnActorPrototypeIgnoreCollisionActors;
   PullForce: number;
   PushImpulse: number;
   PushingForce: number;
@@ -947,7 +1369,7 @@ export type AnomalyPrototype = GetStructType<{
   ThirdPersonSwitchPath: string;
   TimeToCenter: number;
   ToxicCloudAppearTime: number;
-  ToxicCloudBoxCollision: Vec3;
+  ToxicCloudBoxCollision: SpawnActorPrototypeVector;
   ToxicCloudDisappearChance: number;
   ToxicCloudDisappearCheck: number;
   ToxicCloudDisappearTime: number;
@@ -963,6 +1385,48 @@ export type AnomalyPrototype = GetStructType<{
   ZeroGravityRadius: number;
 }>;
 
+export type AnomalyPrototypeBonesToTrace = GetStructType<
+  EObjSkeletalMeshTraceBone[]
+>;
+
+export type AnomalyPrototypeBubblePrototype = GetStructType<{
+  BubbleFormationTime: number;
+  DamageRadius: number;
+  MaxHP: number;
+  MaxSpeed: number;
+  MinHP: number;
+  MinSpeed: number;
+  ReflectionOffset: number;
+  SpeedGainTime: number;
+  SpeedLossTime: number;
+  TargetIgnoreTime: number;
+  TargetLocationUpdateFrequency: number;
+  TargetOffset: number;
+}>;
+
+export type AnomalyPrototypeParticlePrototype = GetStructType<{
+  CollisionRadiusMax: number;
+  CollisionRadiusMin: number;
+  DamageRadius: number;
+  InitialSpeedInterpolationTime: number;
+  InteractionEffectPrototypeSIDs: SingletonConstantBandits;
+  MaxHP: number;
+  MaxInitialSpeed: number;
+  MaxSpeed: number;
+  MaxTTL: number;
+  MinHP: number;
+  MinInitialSpeed: number;
+  MinSpeed: number;
+  MinTTL: number;
+  ParticleAmountMax: number;
+  ParticleAmountMin: number;
+  ReflectionOffset: number;
+  SpeedGainTime: number;
+  SpeedLossTime: number;
+  SpreadingRadius: number;
+  TargetOffset: number;
+}>;
+
 export type ArmorPrototype = GetStructType<{
   ArmorSoundType: string;
   ArtifactSlots: number;
@@ -970,7 +1434,7 @@ export type ArmorPrototype = GetStructType<{
   bBlockHead: boolean;
   bPreventFromLimping: boolean;
   Cost: number;
-  EffectPrototypeSIDs: string[];
+  EffectPrototypeSIDs: SpawnActorPrototypeSignals;
   Icon: string;
   IncreaseSpeedCoef: number;
   Invisible: boolean;
@@ -980,45 +1444,65 @@ export type ArmorPrototype = GetStructType<{
   ItemTypeSwitchValue: string;
   LocalizationSID: string;
   MaxStackCount: number;
-  MeshGenerator: {
-    MeshGeneratorPrototypeSID: string;
-    Weight: number;
-  }[];
+  MeshGenerator: ArmorPrototypeMeshGenerator;
   MeshPrototypeSID: string;
   NoiseCoef: number;
-  NpcMeshGenerator: {
-    MeshGeneratorPrototypeSID: string;
-    Weight: number;
-  }[];
+  NpcMeshGenerator: ArmorPrototypeNpcMeshGenerator;
   PhysicsInteractionPrototypeSID: string;
-  PreinstalledUpgrades: string[];
-  Protection: Protection;
-  ProtectionNPC: Protection;
-  SectionSettings: {
-    BottomPosition: number;
-    LeftPosition: number;
-    ModuleLineDirection: ELineDirection;
-    RightPoition: number;
-    SectionIsEnabled: boolean;
-    TopPosition: number;
-    UpgradeLineDirection: ELineDirection;
-    UpgradeTargetPartType: EUpgradeTargetPartType;
-  }[];
+  PreinstalledUpgrades: SpawnActorPrototypeIgnoreCollisionActors;
+  Protection: ArmorPrototypeProtection;
+  ProtectionNPC: ArmorPrototypeProtection;
+  SectionSettings: ArmorPrototypeSectionSettings;
   SID: string;
   StaggerEffectPrototypeSID: string;
   Type: EItemType;
-  UpgradePrototypeSIDs: string[];
+  UpgradePrototypeSIDs: ArmorPrototypeUpgradePrototypeSIDs;
   VoiceModulatorSID: string;
   Weight: number;
 }>;
 
+export type ArmorPrototypeMeshGenerator = GetStructType<
+  ArmorPrototypeMeshGeneratorItem[]
+>;
+
+export type ArmorPrototypeMeshGeneratorItem = GetStructType<{
+  MeshGeneratorPrototypeSID: string;
+  Weight: number;
+}>;
+
+export type ArmorPrototypeNpcMeshGenerator = GetStructType<
+  ArmorPrototypeMeshGeneratorItem[]
+>;
+
+export type ArmorPrototypeProtection = GetStructType<{
+  Burn: number;
+  ChemicalBurn: number;
+  Fall: number;
+  PSY: number;
+  Radiation: number;
+  Shock: number;
+  Strike: number;
+}>;
+
+export type ArmorPrototypeSectionSettings = GetStructType<
+  ArmorPrototypeSectionSettingsItem[]
+>;
+
+export type ArmorPrototypeSectionSettingsItem = GetStructType<{
+  BottomPosition: number;
+  LeftPosition: number;
+  ModuleLineDirection: ELineDirection;
+  RightPoition: number;
+  SectionIsEnabled: boolean;
+  TopPosition: number;
+  UpgradeLineDirection: ELineDirection;
+  UpgradeTargetPartType: EUpgradeTargetPartType;
+}>;
+
+export type ArmorPrototypeUpgradePrototypeSIDs = GetStructType<string[]>;
+
 export type ArtifactPrototype = GetStructType<{
-  AnomalyDamageDeflections: {
-    AnomalyType: EAnomalyType;
-    ChargeQuantity: number;
-    DamageDeflection: number;
-    TimeToReduceCharge: number;
-  }[];
+  AnomalyDamageDeflections: ArtifactPrototypeAnomalyDamageDeflections;
   AnomalyElementType: EAnomalyElementType;
   ArchiartifactType: EArchiartifactType;
   ArtifactSpawn: boolean;
@@ -1037,9 +1521,9 @@ export type ArtifactPrototype = GetStructType<{
   DestroyOnPickup: boolean;
   DetectorRequired: boolean;
   DisableCollisionWhenHide: boolean;
-  EffectOnPickPrototypeSIDs: (string | Vec3)[];
-  EffectPrototypeSIDs: string[];
-  EffectsDisplayTypes: EEffectDisplayType[];
+  EffectOnPickPrototypeSIDs: ArtifactPrototypeEffectOnPickPrototypeSIDs;
+  EffectPrototypeSIDs: SingletonConstantBandits;
+  EffectsDisplayTypes: ArtifactPrototypeEffectsDisplayTypes;
   EffectsDuration: number;
   FakeArtifactDissolveSound: string;
   FakeArtifactDissolveVFX: string;
@@ -1071,7 +1555,7 @@ export type ArtifactPrototype = GetStructType<{
   MeshPrototypeSID: string;
   MinimalDrunkenness: number;
   MinWeight: number;
-  NegativeEffectPrototypeSIDs: string[];
+  NegativeEffectPrototypeSIDs: SpawnActorPrototypeIgnoreCollisionActors;
   ParticleOnImpact: string;
   ParticleOnShow: string;
   ParticleStateTransitionFadeIn: string;
@@ -1081,310 +1565,259 @@ export type ArtifactPrototype = GetStructType<{
   Persistent: boolean;
   PhysicsInteractionPrototypeSID: string;
   PlayerDistance: number;
-  PositiveEffectPrototypeSIDs: string[];
+  PositiveEffectPrototypeSIDs: SingletonConstantBandits;
   Radius: number;
   Rarity: EArtifactRarity;
   ReturnDistanceValue: number;
-  ShouldShowEffects: boolean[];
+  ShouldShowEffects: ArtifactPrototypeShouldShowEffects;
   SID: string;
   SoundStateTransitionOnHide: string;
   SoundStateTransitionOnShow: string;
   StateTransitionDelay: number;
   Strafe: boolean;
   Type: EItemType;
-  ViewOffset: Vec3;
-  WakeUpEffectSIDs: string[];
+  ViewOffset: SpawnActorPrototypeVector;
+  WakeUpEffectSIDs: SpawnActorPrototypeIgnoreCollisionActors;
   Weight: number;
   WeightDecreaseAmount: number;
   WeightDecreaseDelay: number;
   WeightDecreaseRate: number;
 }>;
 
+export type ArtifactPrototypeAnomalyDamageDeflections = GetStructType<
+  ArtifactPrototypeAnomalyDamageDeflectionsItem[]
+>;
+
+export type ArtifactPrototypeAnomalyDamageDeflectionsItem = GetStructType<{
+  AnomalyType: EAnomalyType;
+  ChargeQuantity: number;
+  DamageDeflection: number;
+  TimeToReduceCharge: number;
+}>;
+
+export type ArtifactPrototypeEffectOnPickPrototypeSIDs = GetStructType<
+  (SpawnActorPrototypeVector | string)[]
+>;
+
+export type ArtifactPrototypeEffectsDisplayTypes = GetStructType<
+  EEffectDisplayType[]
+>;
+
+export type ArtifactPrototypeShouldShowEffects = GetStructType<boolean[]>;
+
 export type ArtifactSpawnerPrototype = GetStructType<{
-  ExcludeRules: EArtifactSpawnerExcludeRule[];
-  Experienced: {
-    Count: number;
-    MaxCooldown: number;
-    MinCooldown: number;
-    Radius: number;
-    RarityChance: {
-      Common: number;
-      Epic: number;
-      Rare: number;
-      Uncommon: number;
-    };
-    SpawnChanceBase: number;
-    SpawnChanceBonus: number;
-  };
+  ExcludeRules: ArtifactSpawnerPrototypeExcludeRules;
+  Experienced: QuestArtifactSpawnerPrototypeNewbie;
   ID: number;
-  ListOfArtifacts: string[];
-  Master: {
-    Count: number;
-    MaxCooldown: number;
-    MinCooldown: number;
-    Radius: number;
-    RarityChance: {
-      Common: number;
-      Epic: number;
-      Rare: number;
-      Uncommon: number;
-    };
-    SpawnChanceBase: number;
-    SpawnChanceBonus: number;
-  };
-  Newbie: {
-    Count: number;
-    MaxCooldown: number;
-    MinCooldown: number;
-    Radius: number;
-    RarityChance: {
-      Common: number;
-      Epic: number;
-      Rare: number;
-      Uncommon: number;
-    };
-    SpawnChanceBase: number;
-    SpawnChanceBonus: number;
-  };
+  ListOfArtifacts: ArtifactSpawnerPrototypeListOfArtifacts;
+  Master: QuestArtifactSpawnerPrototypeNewbie;
+  Newbie: ArtifactSpawnerPrototypeNewbie;
   SID: string;
   SingleArtifactSpawner: boolean;
   UseListOfArtifacts: boolean;
-  Veteran: {
-    Count: number;
-    MaxCooldown: number;
-    MinCooldown: number;
-    Radius: number;
-    RarityChance: {
-      Common: number;
-      Epic: number;
-      Rare: number;
-      Uncommon: number;
-    };
-    SpawnChanceBase: number;
-    SpawnChanceBonus: number;
-  };
+  Veteran: QuestArtifactSpawnerPrototypeNewbie;
+}>;
+
+export type ArtifactSpawnerPrototypeExcludeRules = GetStructType<
+  EArtifactSpawnerExcludeRule[]
+>;
+
+export type ArtifactSpawnerPrototypeListOfArtifacts = GetStructType<string[]>;
+
+export type ArtifactSpawnerPrototypeNewbie = GetStructType<{
+  Count: number;
+  MaxCooldown: number;
+  MinCooldown: number;
+  Radius: number;
+  RarityChance: QuestArtifactSpawnerPrototypeRarityChance;
+  SpawnChanceBase: number;
+  SpawnChanceBonus: number;
+}>;
+
+export type AssetLibrary = GetStructType<{
+  AkEffectShareSet: AssetLibraryAkEffectShareSet;
+  AKRtpc: AssetLibraryAKRtpc;
+  AnimationBlueprints: AssetLibraryAnimationBlueprints;
+  AnomalyBlueprint: string;
+  Blueprint: AssetLibraryBlueprint;
+  CharacterBlueprint: AssetLibraryCharacterBlueprint;
+  CurveFloat: AssetLibraryCurveFloat;
+  InteractableBlueprint: AssetLibraryInteractableBlueprint;
+  ItemIcons: AIGlobalSoundEventTypeSpreadSpeedList;
+  Material: AIGlobalSoundEventTypeSpreadSpeedList;
+  MaterialInstanceConstant: AssetLibraryMaterialInstanceConstant;
+  MaterialParameterCollection: AssetLibraryMaterialParameterCollection;
+  NavModifiers: string;
+  NiagaraSystems: AssetLibraryNiagaraSystems;
+  NPCSpawnerBlueprint: string;
+  ParticleSystems: AssetLibraryParticleSystems;
+  ProjectileBlueprint: AssetLibraryProjectileBlueprint;
+  SkeletalMesh: AssetLibrarySkeletalMesh;
+  StaticMesh: AssetLibraryStaticMesh;
+  Texture2D: string;
+  TextureRenderTarget2D: AIGlobalSoundEventTypeSpreadSpeedList;
+  UIIcons: AIGlobalSoundEventTypeSpreadSpeedList;
+  UIWidgetBlueprint: AssetLibraryUIWidgetBlueprint;
+}>;
+
+export type AssetLibraryAkEffectShareSet = GetStructType<{
+  Full: string;
+  Medium: string;
+  Narrow: string;
+}>;
+
+export type AssetLibraryAKRtpc = GetStructType<{
+  CutsceneRTPCParameter: string;
+  DeathRTPCParameter: string;
+  DialogueRTPCParameter: string;
+  DialogueVolumeRTPCParameter: string;
+  DisableCopyrightedMusicRTPCParameter: string;
+  EffectsVolumeRTPCParameter: string;
+  MainVolumeRTPCParameter: string;
+  MusicVolumeRTPCParameter: string;
+  MuteAllRTPCParameter: string;
+}>;
+
+export type AssetLibraryAnimationBlueprints = GetStructType<{
+  BoltAnimationBlueprint: string;
+  InjectorAnimationBlueprint: string;
+  KnifeAnimationBlueprint: string;
+  PDAAnimationBlueprint: string;
+}>;
+
+export type AssetLibraryBlueprint = GetStructType<{
+  Bolt: string;
+  LevelTreesCollection: string;
+  Lever: string;
+  SceneCaptureCube: string;
+  TripleLever: string;
+}>;
+
+export type AssetLibraryCharacterBlueprint = GetStructType<{
+  Player: string;
+}>;
+
+export type AssetLibraryCurveFloat = GetStructType<{
+  AimingWeaponDirtCurve: string;
+  AimingWeaponFOVCurve: string;
+  AmbientSoundCurve: string;
+  CrouchCurve: string;
+  DefaultDoorCurveBothWays: string;
+  DefaultLeverCurve: string;
+  DefaultLeverCurveReverse: string;
+  EndTranslationWorldMapCurve: string;
+  FadeoutScreenCurve: string;
+  FlailAlphaCurve: string;
+  InteractProgressBarCurve: string;
+  LadderEnterCurve: string;
+  LandPredictionAlphaCurve: string;
+  MusicSoundCurve: string;
+  StartTranslationWorldMapCurve: string;
+  TranslationWorldMapCurve: string;
+  ZoomCameraCurve: string;
+}>;
+
+export type AssetLibraryInteractableBlueprint = GetStructType<{
+  ItemContainer: string;
+  SkeletalItemContainer: string;
+}>;
+
+export type AssetLibraryMaterialInstanceConstant = GetStructType<{
+  BoltMaterialPath: string;
+  Clouds: string;
+  PDAMaterial: string;
+}>;
+
+export type AssetLibraryMaterialParameterCollection = GetStructType<{
+  Foliage: string;
+  FOV: string;
+  MPC_PPM: string;
+}>;
+
+export type AssetLibraryNiagaraSystems = GetStructType<{
+  TwinkleIdle: string;
+  TwinkleInterract: string;
+}>;
+
+export type AssetLibraryParticleSystems = GetStructType<{
+  BodyExplodeParticle: string;
+}>;
+
+export type AssetLibraryProjectileBlueprint = GetStructType<{
+  BP_A000D: string;
+  BP_A000DTP: string;
+}>;
+
+export type AssetLibrarySkeletalMesh = GetStructType<{
+  BoltSkeletal: string;
+  GuitarSkeletal: string;
+  InjectorSkeletal: string;
+  InjectorSkeleton: string;
+  KnifeSkeletal: string;
+  PDASkeletal: string;
+  SK_ful_sta_01: string;
+}>;
+
+export type AssetLibraryStaticMesh = GetStructType<{
+  BoxTrigger: string;
+  CylinderShape: string;
+  CylinderTrigger: string;
+  SphereTrigger: string;
+}>;
+
+export type AssetLibraryUIWidgetBlueprint = GetStructType<{
+  AttachSelectorClass: string;
+  BackgroundBlurViewClass: string;
+  DebugHUDWidgetClass: string;
+  DialogWidgetClass: string;
+  FadeoutScreenWidgetClass: string;
+  FastDialogClass: string;
+  GamePauseMenuClass: string;
+  GuitarPlayWidgetClass: string;
+  HUDWidgetClass: string;
+  InspectArtifactWidgetClass: string;
+  InteractWidgetClass: string;
+  InventoryWidgetClass: string;
+  ItemSelectorClass: string;
+  MainMenuWidgetClass: string;
+  MarkerCompassWidgetClass: string;
+  MarkerIconsDataTable: string;
+  PDAClass: string;
+  PlayVideoWidgetClass: string;
+  RightClickMenuWidgetClass: string;
+  SleepWidgetClass: string;
+  SubtitleClass: string;
+  TradeWidgetClass: string;
+  UpgradesWidgetClass: string;
+  WorldMapHubMarkerClass: string;
+  WorldMapMarcerClass: string;
+  WorldMapPlayerMarkerClass: string;
+  WorldMapRegionMarkerClass: string;
 }>;
 
 export type AttachMeshPrototype = GetStructType<{
-  "3": {
-    MaterialGroup: string;
-    MaterialSlot: number;
-    Variations: {
-      MaterialPath: string;
-      Weight: number;
-    }[];
-  };
-  AdditionalCollisions: {
-    BoxCollisions: {
-      CollisionProfileName: string;
-      ComponentName: string;
-      Extent: Vec3;
-      PhysicalMaterialPath: string;
-      SocketName: string;
-      TransformTranslation: Vec3;
-    }[];
-    CapsuleCollisions: {
-      CollisionProfileName: string;
-      ComponentName: string;
-      HalfHeight: number;
-      PhysicalMaterialPath: string;
-      Radius: number;
-      SocketName: string;
-      TransformRotator: Rot;
-      TransformTranslation: Vec3;
-    }[];
-  };
-  AdditionalMesh: {
-    BodyMeshSID: string;
-    MaterialCount: number;
-    MeshPath: string;
-    SkeletonPath: string;
-  }[];
+  "3": AttachMeshPrototypeTor_mer_01_a_PSYItem;
+  AdditionalCollisions: AttachMeshPrototypeAdditionalCollisions;
+  AdditionalMesh: AttachMeshPrototypeAdditionalMesh;
   AnimPath: string;
+  bHasClothSimulation: boolean;
+  bHasExoskeleton: boolean;
   BodyMeshType: EBodyMeshType;
-  ComponentTags: string[];
+  bReceiveAttachedDecals: boolean;
+  bReceiveDecals: boolean;
+  bRenderCustomDepthPass: boolean;
+  bShouldUseParentBound: boolean;
+  bUseCustomLODSync: boolean;
+  ComponentTags: SpawnActorPrototypeIgnoreCollisionActors;
   FaceBlockingBlendMaskPrototypeSID: string;
   GroomBlockingMappingPrototypeSID: string;
   GroomPrototypeSID: string;
   IsSkeletal: boolean;
   ItemPrototypeSID: string;
-  LODSyncMapping: number[];
+  LODSyncMapping: AttachMeshPrototypeLODSyncMapping;
   MaterialCount: number;
-  MaterialLODs: {
-    LODLevel: number;
-    LODSectionIndex: number;
-    MaterialPostfix: string;
-  }[];
-  Materials: {
-    CustomData: {
-      Chevron_index: {
-        Distribution: ECustomDataDistribution;
-        MaterialGroup: string;
-        ParameterID: number;
-        Variations: {
-          ParameterValue: number;
-          Weight: number;
-        }[];
-      };
-      Damage: {
-        Distribution: ECustomDataDistribution;
-        MaterialGroup: string;
-        Variations: {
-          MaterialInstanceParameters: {
-            ParameterName: string;
-            TexturePath: string;
-          }[];
-          Weight: number;
-        }[];
-      };
-      DamageIndex_01: {
-        Distribution: ECustomDataDistribution;
-        MaterialGroup: string;
-        ParameterID: number;
-        Variations: {
-          ParameterValue: number;
-          Weight: number;
-        }[];
-      };
-      DamageIndex_02: {
-        Distribution: ECustomDataDistribution;
-        MaterialGroup: string;
-        ParameterID: number;
-        Variations: {
-          ParameterValue: number;
-          Weight: number;
-        }[];
-      };
-      DamagePoss_01: {
-        Distribution: ECustomDataDistribution;
-        MaterialGroup: string;
-        ParameterID: number;
-        VariationCount: number;
-      };
-      DamagePoss_02: {
-        Distribution: ECustomDataDistribution;
-        MaterialGroup: string;
-        ParameterID: number;
-        VariationCount: number;
-      };
-      DamageRotation_Index_01: {
-        Distribution: ECustomDataDistribution;
-        MaterialGroup: string;
-        ParameterID: number;
-        VariationCount: number;
-      };
-      DamageRotation_Index_02: {
-        Distribution: ECustomDataDistribution;
-        MaterialGroup: string;
-        ParameterID: number;
-        VariationCount: number;
-      };
-      DamageScale_Index_01: {
-        Distribution: ECustomDataDistribution;
-        MaterialGroup: string;
-        ParameterID: number;
-        VariationCount: number;
-      };
-      DamageScale_Index_02: {
-        Distribution: ECustomDataDistribution;
-        MaterialGroup: string;
-        ParameterID: number;
-        Variations: {
-          ParameterValue: number;
-          Weight: number;
-        }[];
-      };
-      DefectIntensity_Index: {
-        Distribution: ECustomDataDistribution;
-        MaterialGroup: string;
-        ParameterID: number;
-        VariationCount: number;
-      };
-      Defects: {
-        Distribution: ECustomDataDistribution;
-        MaterialGroup: string;
-        Variations: {
-          MaterialInstanceParameters: {
-            ParameterName: string;
-            TexturePath: string;
-          }[];
-          Weight: number;
-        }[];
-      };
-      Dirt: {
-        Distribution: ECustomDataDistribution;
-        MaterialGroup: string;
-        Variations: {
-          MaterialInstanceParameters: {
-            ParameterName: string;
-            TexturePath: string;
-          }[];
-          Weight: number;
-        }[];
-      };
-      Dirt_Intensity: {
-        Distribution: ECustomDataDistribution;
-        MaterialGroup: string;
-        ParameterID: number;
-        VariationCount: number;
-        Variations: {
-          ParameterValue: number;
-          Weight: number;
-        }[];
-      };
-      FrecklesDensity_Index: {
-        Distribution: ECustomDataDistribution;
-        MaterialGroup: string;
-        ParameterID: number;
-        Variations: {
-          ParameterValue: number;
-          Weight: number;
-        }[];
-      };
-      Normal_Intensity: {
-        Distribution: ECustomDataDistribution;
-        MaterialGroup: string;
-        ParameterID: number;
-        VariationCount: number;
-      };
-      SkinTone_Index: {
-        Distribution: ECustomDataDistribution;
-        MaterialGroup: string;
-        ParameterID: number;
-        VariationCount: number;
-        Variations: {
-          ParameterValue: number;
-          Weight: number;
-        }[];
-      };
-      Teeth: {
-        Distribution: ECustomDataDistribution;
-        MaterialGroup: string;
-        ParameterID: number;
-        Variations: {
-          ParameterValue: number;
-          VariationIndex: number;
-          Weight: number;
-        }[];
-      };
-      TeethColor: {
-        Distribution: ECustomDataDistribution;
-        MaterialGroup: string;
-        ParameterID: number;
-        Variations: {
-          ParameterValue: number;
-          Weight: number;
-        }[];
-      };
-    };
-    MaterialGroup: string;
-    MaterialSlot: number;
-    Variations: {
-      MaterialPath: string;
-      VariationIndex: number;
-      Weight: number;
-    }[];
-  }[];
+  MaterialLODs: AttachMeshPrototypeMaterialLODs;
+  Materials: AttachMeshPrototypeMaterials;
   MeshPath: string;
   MeshType: EMeshSubType;
   OffsetX: number;
@@ -1394,22 +1827,159 @@ export type AttachMeshPrototype = GetStructType<{
   RotationPitch: number;
   RotationRoll: number;
   RotationYaw: number;
-  SID: string;
   ScaleX: number;
   ScaleY: number;
   ScaleZ: number;
   ShadowMeshPath: string;
+  SID: string;
   SkeletonPath: string;
   SocketName: string;
   SyncOption: string;
   VoiceModulatorSID: string;
-  bHasClothSimulation: boolean;
-  bHasExoskeleton: boolean;
-  bReceiveAttachedDecals: boolean;
-  bReceiveDecals: boolean;
-  bRenderCustomDepthPass: boolean;
-  bShouldUseParentBound: boolean;
-  bUseCustomLODSync: boolean;
+}>;
+
+export type AttachMeshPrototypeAdditionalCollisions = GetStructType<{
+  BoxCollisions: AttachMeshPrototypeBoxCollisions;
+  CapsuleCollisions: AttachMeshPrototypeCapsuleCollisions;
+}>;
+
+export type AttachMeshPrototypeAdditionalMesh = GetStructType<
+  AttachMeshPrototypeAdditionalMeshItem[]
+>;
+
+export type AttachMeshPrototypeAdditionalMeshItem = GetStructType<{
+  BodyMeshSID: string;
+  MaterialCount: number;
+  MeshPath: string;
+  SkeletonPath: string;
+}>;
+
+export type AttachMeshPrototypeBoxCollisions = GetStructType<
+  AttachMeshPrototypeBoxCollisionsItem[]
+>;
+
+export type AttachMeshPrototypeBoxCollisionsItem = GetStructType<{
+  CollisionProfileName: string;
+  ComponentName: string;
+  Extent: SpawnActorPrototypeVector;
+  PhysicalMaterialPath: string;
+  SocketName: string;
+  TransformTranslation: SpawnActorPrototypeVector;
+}>;
+
+export type AttachMeshPrototypeCapsuleCollisions = GetStructType<
+  AttachMeshPrototypeCapsuleCollisionsItem[]
+>;
+
+export type AttachMeshPrototypeCapsuleCollisionsItem = GetStructType<{
+  CollisionProfileName: string;
+  ComponentName: string;
+  HalfHeight: number;
+  PhysicalMaterialPath: string;
+  Radius: number;
+  SocketName: string;
+  TransformRotator: SpawnActorPrototypeRotation;
+  TransformTranslation: SpawnActorPrototypeVector;
+}>;
+
+export type AttachMeshPrototypeCustomData = GetStructType<{
+  Chevron_index: AttachMeshPrototypeDamageIndex_01;
+  Damage: AttachMeshPrototypeDirt;
+  DamageIndex_01: AttachMeshPrototypeDamageIndex_01;
+  DamageIndex_02: AttachMeshPrototypeDamageIndex_01;
+  DamagePoss_01: AttachMeshPrototypeNormal_Intensity;
+  DamagePoss_02: AttachMeshPrototypeNormal_Intensity;
+  DamageRotation_Index_01: AttachMeshPrototypeNormal_Intensity;
+  DamageRotation_Index_02: AttachMeshPrototypeNormal_Intensity;
+  DamageScale_Index_01: AttachMeshPrototypeNormal_Intensity;
+  DamageScale_Index_02: AttachMeshPrototypeDamageIndex_01;
+  DefectIntensity_Index: AttachMeshPrototypeNormal_Intensity;
+  Defects: AttachMeshPrototypeDirt;
+  Dirt: AttachMeshPrototypeDirt;
+  Dirt_Intensity: AttachMeshPrototypeSkinTone_Index;
+  FrecklesDensity_Index: AttachMeshPrototypeDamageIndex_01;
+  Normal_Intensity: AttachMeshPrototypeNormal_Intensity;
+  SkinTone_Index: AttachMeshPrototypeSkinTone_Index;
+  Teeth: AttachMeshPrototypeDamageIndex_01;
+  TeethColor: AttachMeshPrototypeDamageIndex_01;
+}>;
+
+export type AttachMeshPrototypeDamageIndex_01 = GetStructType<{
+  Distribution: ECustomDataDistribution;
+  MaterialGroup: string;
+  ParameterID: number;
+  Variations: AttachMeshPrototypeVariations;
+}>;
+
+export type AttachMeshPrototypeDirt = GetStructType<{
+  Distribution: ECustomDataDistribution;
+  MaterialGroup: string;
+  Variations: AttachMeshPrototypeVariations;
+}>;
+
+export type AttachMeshPrototypeLODSyncMapping = GetStructType<number[]>;
+
+export type AttachMeshPrototypeMaterialInstanceParameters = GetStructType<
+  AttachMeshPrototypeMaterialInstanceParametersItem[]
+>;
+
+export type AttachMeshPrototypeMaterialInstanceParametersItem = GetStructType<{
+  ParameterName: string;
+  TexturePath: string;
+}>;
+
+export type AttachMeshPrototypeMaterialLODs = GetStructType<
+  AttachMeshPrototypeMaterialLODsItem[]
+>;
+
+export type AttachMeshPrototypeMaterialLODsItem = GetStructType<{
+  LODLevel: number;
+  LODSectionIndex: number;
+  MaterialPostfix: string;
+}>;
+
+export type AttachMeshPrototypeMaterials = GetStructType<
+  AttachMeshPrototypeMaterialsItem[]
+>;
+
+export type AttachMeshPrototypeMaterialsItem = GetStructType<{
+  CustomData: AttachMeshPrototypeCustomData;
+  MaterialGroup: string;
+  MaterialSlot: number;
+  Variations: AttachMeshPrototypeVariations;
+}>;
+
+export type AttachMeshPrototypeNormal_Intensity = GetStructType<{
+  Distribution: ECustomDataDistribution;
+  MaterialGroup: string;
+  ParameterID: number;
+  VariationCount: number;
+}>;
+
+export type AttachMeshPrototypeSkinTone_Index = GetStructType<{
+  Distribution: ECustomDataDistribution;
+  MaterialGroup: string;
+  ParameterID: number;
+  VariationCount: number;
+  Variations: AttachMeshPrototypeVariations;
+}>;
+
+export type AttachMeshPrototypeTor_mer_01_a_PSYItem = GetStructType<{
+  MaterialGroup: string;
+  MaterialSlot: number;
+  Variations: AttachMeshPrototypeVariations;
+}>;
+
+export type AttachMeshPrototypeVariations = GetStructType<
+  AttachMeshPrototypeVariationsItem[]
+>;
+
+export type AttachMeshPrototypeVariationsItem = GetStructType<{
+  MaterialInstanceParameters: AttachMeshPrototypeMaterialInstanceParameters;
+  MaterialPath: string;
+  ParameterValue: number;
+  VariationIndex: number;
+  Weight: number;
 }>;
 
 export type AttachPrototype = GetStructType<{
@@ -1419,128 +1989,177 @@ export type AttachPrototype = GetStructType<{
   bPermanent: boolean;
   CanHoldBreath: boolean;
   Cost: number;
-  EffectPrototypeSIDs: string[];
-  FittingWeaponsSIDs: string[];
-  FPParticlesBasedOnHeating: {
-    PostShooting: {
-      MinHeatingValueToAppear: number;
-      PFXPath: string;
-      SocketName: string;
-    };
-    Shooting: {
-      MinHeatingValueToAppear: number;
-      PFXPath: string;
-      SocketName: string;
-    };
-    VFXGroupName: string;
-  }[];
-  HideOnAttachPrototypeIDInstalled: string[];
+  EffectPrototypeSIDs: SpawnActorPrototypeLairCoreVolumes;
+  FittingWeaponsSIDs: SpawnActorPrototypeLockReceivers;
+  FPParticlesBasedOnHeating: AttachPrototypeFPParticlesBasedOnHeating;
+  HideOnAttachPrototypeIDInstalled: GroomBlockingMappingPrototypeBlockingGroomSIDs;
   Icon: string;
   InventoryActionTime: number;
-  IronSight: {
-    MeshArray: {
-      MeshPrototypeSID: string;
-      Socket: string;
-    }[];
-  };
+  IronSight: AttachPrototypeIronSight;
   ItemGridHeight: number;
   ItemGridWidth: number;
   ItemTypeSwitchValue: string;
-  LaserSight: {
-    LaserEndLightOffset: number;
-    LaserStartTraceOffset: number;
-    MaxLaserDistance: number;
-    MaxLaserTimeOnDrop: number;
-    MinLaserDistance: number;
-    MinLaserTimeOnDrop: number;
-    MinOffsetAimLaserDistance: number;
-    PlayerVFXPath: string;
-    StartSocketName: string;
-    VFXPath: string;
-  };
+  LaserSight: AttachPrototypeLaserSight;
   LayerImagePriority: number;
   LocalizationSID: string;
-  Magazine: {
-    BindBulletsToAttach: boolean;
-    HasMultipleMeshes: boolean;
-    IsTwinMagazine: boolean;
-    MaxAmmo: number;
-    MeshArray: {
-      MagazineMeshType: EMagazineMeshType;
-      MeshPrototypeSID: string;
-    }[];
-    PhysicsInteractionPrototypeSID: string;
-  };
+  Magazine: AttachPrototypeMagazine;
   MaxStackCount: number;
   MeshInWorldPrototypeSID: string;
   MeshPrototypeSID: string;
   PhysicsInteractionPrototypeSID: string;
-  Scope: {
-    AimingCutoutRadius: number;
-    AimingCutoutThreshold: number;
-    AimingEffects: {
-      PlayerOnlyEffects: string[];
-    };
-    BaseZoomCoefficientIndex: number;
-    bOverrideAimingEffects: boolean;
-    ChangeZoomScopeSound: string;
-    ZoomCoefficients: number[];
-  };
-  ShootingAttach: {
-    WeaponPrototypeSID: string;
-  };
+  Scope: AttachPrototypeScope;
+  ShootingAttach: AttachPrototypeShootingAttach;
   SID: string;
   Slot: EAttachSlot;
   SortGroup: ESortGroup;
   SortPriority: number;
   Type: EItemType;
-  WeaponFlashlight: {
-    FlashlightPrototypeID: number;
-  };
+  WeaponFlashlight: AttachPrototypeWeaponFlashlight;
   Weight: number;
 }>;
+
+export type AttachPrototypeAimingEffects = GetStructType<{
+  PlayerOnlyEffects: SpawnActorPrototypeIgnoreCollisionActors;
+}>;
+
+export type AttachPrototypeFPParticlesBasedOnHeating = GetStructType<
+  AttachPrototypeFPParticlesBasedOnHeatingItem[]
+>;
+
+export type AttachPrototypeFPParticlesBasedOnHeatingItem = GetStructType<{
+  PostShooting: NPCWeaponAttributesPrototypeShooting;
+  Shooting: NPCWeaponAttributesPrototypeShooting;
+  VFXGroupName: string;
+}>;
+
+export type AttachPrototypeIronSight = GetStructType<{
+  MeshArray: AttachPrototypeMeshArray;
+}>;
+
+export type AttachPrototypeLaserSight = GetStructType<{
+  LaserEndLightOffset: number;
+  LaserStartTraceOffset: number;
+  MaxLaserDistance: number;
+  MaxLaserTimeOnDrop: number;
+  MinLaserDistance: number;
+  MinLaserTimeOnDrop: number;
+  MinOffsetAimLaserDistance: number;
+  PlayerVFXPath: string;
+  StartSocketName: string;
+  VFXPath: string;
+}>;
+
+export type AttachPrototypeMagazine = GetStructType<{
+  BindBulletsToAttach: boolean;
+  HasMultipleMeshes: boolean;
+  IsTwinMagazine: boolean;
+  MaxAmmo: number;
+  MeshArray: AttachPrototypeMeshArray;
+  PhysicsInteractionPrototypeSID: string;
+}>;
+
+export type AttachPrototypeMeshArray = GetStructType<
+  (
+    | AttachPrototypeMeshArrayItem
+    | WeaponGeneralSetupPrototypeAdditionalMeshesItem
+  )[]
+>;
+
+export type AttachPrototypeMeshArrayItem = GetStructType<{
+  MagazineMeshType: EMagazineMeshType;
+  MeshPrototypeSID: string;
+  Socket: string;
+}>;
+
+export type AttachPrototypeScope = GetStructType<{
+  AimingCutoutRadius: number;
+  AimingCutoutThreshold: number;
+  AimingEffects: AttachPrototypeAimingEffects;
+  BaseZoomCoefficientIndex: number;
+  bOverrideAimingEffects: boolean;
+  ChangeZoomScopeSound: string;
+  ZoomCoefficients: AttachPrototypeZoomCoefficients;
+}>;
+
+export type AttachPrototypeShootingAttach = GetStructType<{
+  WeaponPrototypeSID: string;
+}>;
+
+export type AttachPrototypeWeaponFlashlight = GetStructType<{
+  FlashlightPrototypeID: number;
+}>;
+
+export type AttachPrototypeZoomCoefficients = GetStructType<number[]>;
 
 export type AudioRoomPrototype = GetStructType<{
   AudioRoomBakedReflection: string;
   AudioRoomBandwidth: string;
-  LateReverb: {
-    AuxBux: string;
-    FadeRate: number;
-    Priority: number;
-    SendLevel: number;
-  };
-  Room: {
-    AuxSendLevel: number;
-    BeginRoomOverlapEvent: string;
-    EndRoomOverlapEvent: string;
-    Priority: number;
-    RoomTone: string;
-    TransmissionLoss: number;
-  };
+  LateReverb: AudioRoomPrototypeLateReverb;
+  Room: AudioRoomPrototypeRoom;
   SID: string;
+}>;
+
+export type AudioRoomPrototypeLateReverb = GetStructType<{
+  AuxBux: string;
+  FadeRate: number;
+  Priority: number;
+  SendLevel: number;
+}>;
+
+export type AudioRoomPrototypeRoom = GetStructType<{
+  AuxSendLevel: number;
+  BeginRoomOverlapEvent: string;
+  EndRoomOverlapEvent: string;
+  Priority: number;
+  RoomTone: string;
+  TransmissionLoss: number;
 }>;
 
 export type AudioScattererPrototype = GetStructType<{
   AudioScattererMap: string;
   CheckTime: number;
   ID: number;
-  ListOfBrushes: {
-    "2DEvent": string;
-    BrushColor: number;
-    Event2DFadeOutTime: number;
-    ListOf3DEvents: {
-      "3DEvent": string;
-      Height: number;
-      MaxDistFromPlayer: number;
-      MinDistFromPlayer: number;
-      SpawnChanceOnDay: number;
-      SpawnChanceOnNight: number;
-    }[];
-    SID: string;
-    VisualizationColor: RGBA;
-  }[];
+  ListOfBrushes: AudioScattererPrototypeListOfBrushes;
   ScanRadiusFor2DEvents: number;
   SID: string;
+}>;
+
+export type AudioScattererPrototypeListOf3DEvents = GetStructType<
+  AudioScattererPrototypeListOf3DEventsItem[]
+>;
+
+export type AudioScattererPrototypeListOf3DEventsItem = GetStructType<{
+  "3DEvent": string;
+  Height: number;
+  MaxDistFromPlayer: number;
+  MinDistFromPlayer: number;
+  SpawnChanceOnDay: number;
+  SpawnChanceOnNight: number;
+}>;
+
+export type AudioScattererPrototypeListOfBrushes = GetStructType<
+  AudioScattererPrototypeListOfBrushesItem[]
+>;
+
+export type AudioScattererPrototypeListOfBrushesItem = GetStructType<{
+  "2DEvent": string;
+  BrushColor: number;
+  Event2DFadeOutTime: number;
+  ListOf3DEvents: AudioScattererPrototypeListOf3DEvents;
+  SID: string;
+  VisualizationColor: AudioScattererPrototypeVisualizationColor;
+}>;
+
+export type AudioScattererPrototypeVisualizationColor = GetStructType<{
+  A: number;
+  B: number;
+  G: number;
+  R: number;
+}>;
+
+export type AutoSaveVariable = GetStructType<{
+  AutoSaveIntervalTime: number;
+  AutoSaveOnFailRetryIntervalTime: number;
 }>;
 
 export type BackpackPrototype = GetStructType<{
@@ -1560,46 +2179,107 @@ export type BarbedWirePrototype = GetStructType<{
   DamageDelay: number;
   ID: number;
   MovementSpeedDegradeDelay: number;
-  NegativeEffectPrototypeSIDs: string[];
+  NegativeEffectPrototypeSIDs: SpawnActorPrototypeSignals;
   SID: string;
 }>;
 
 export type BenchmarkItemGeneratorPrototype = GetStructType<{
   ID: number;
-  ItemGenerator: ItemGeneratorEntry[];
+  ItemGenerator: BenchmarkItemGeneratorPrototypeItemGenerator;
   SID: string;
 }>;
 
+export type BenchmarkItemGeneratorPrototypeItemGenerator = GetStructType<
+  BenchmarkItemGeneratorPrototypeItemGeneratorItem[]
+>;
+
+export type BenchmarkItemGeneratorPrototypeItemGeneratorItem = GetStructType<{
+  bAllowSameCategoryGeneration: boolean;
+  Category: EItemGenerationCategory;
+  PossibleItems: BenchmarkItemGeneratorPrototypePossibleItems;
+}>;
+
+export type BenchmarkItemGeneratorPrototypePossibleItems = GetStructType<
+  BenchmarkItemGeneratorPrototypePossibleItemsItem[]
+>;
+
+export type BenchmarkItemGeneratorPrototypePossibleItemsItem = GetStructType<{
+  AmmoMaxCount: number;
+  AmmoMinCount: number;
+  bRequireWeapon: string;
+  Chance: number;
+  ItemPrototypeSID: string;
+  MaxCount: number;
+  MaxDurability: number;
+  MinCount: number;
+  MinDurability: number;
+  Weight: number;
+}>;
+
 export type BenchmarkMeshGeneratorPrototype = GetStructType<{
-  Attachments: MeshAttachment[];
-  CustomData: {
-    MaterialGroup: string;
-    Variations: {
-      ParameterValue: number;
-      Weight: number;
-    }[];
-  }[];
-  Groom: {
-    CategoryName: string;
-    Variations: {
-      VariationIndex: number;
-      Weight: number;
-    }[];
-  }[];
-  Materials: {
-    MaterialGroup: string;
-    Variations: {
-      VariationIndex: number;
-      Weight: number;
-    }[];
-  }[];
+  Attachments: BenchmarkMeshGeneratorPrototypeAttachments;
+  CustomData: BenchmarkMeshGeneratorPrototypeCustomData;
+  Groom: BenchmarkMeshGeneratorPrototypeGroom;
+  Materials: BenchmarkMeshGeneratorPrototypeMaterials;
   ParentMeshGeneratorSID: string;
   SID: string;
 }>;
 
+export type BenchmarkMeshGeneratorPrototypeAttaches = GetStructType<
+  BenchmarkMeshGeneratorPrototypeAttachesItem[]
+>;
+
+export type BenchmarkMeshGeneratorPrototypeAttachesItem = GetStructType<{
+  BlockingBodyMeshes: DialogPrototypeLocalizedSequences;
+  BlockingSlots: SingletonConstantZombie;
+  BodyMeshSID: string;
+  Weight: number;
+}>;
+
+export type BenchmarkMeshGeneratorPrototypeAttachments = GetStructType<
+  BenchmarkMeshGeneratorPrototypeAttachmentsItem[]
+>;
+
+export type BenchmarkMeshGeneratorPrototypeAttachmentsItem = GetStructType<{
+  Attaches: BenchmarkMeshGeneratorPrototypeAttaches;
+  SlotName: string;
+}>;
+
+export type BenchmarkMeshGeneratorPrototypeCustomData = GetStructType<
+  BenchmarkMeshGeneratorPrototypeMaterialsItem[]
+>;
+
+export type BenchmarkMeshGeneratorPrototypeGroom = GetStructType<
+  BenchmarkMeshGeneratorPrototypeGroomItem[]
+>;
+
+export type BenchmarkMeshGeneratorPrototypeGroomItem = GetStructType<{
+  CategoryName: string;
+  Variations: BenchmarkMeshGeneratorPrototypeVariations;
+}>;
+
+export type BenchmarkMeshGeneratorPrototypeMaterials = GetStructType<
+  BenchmarkMeshGeneratorPrototypeMaterialsItem[]
+>;
+
+export type BenchmarkMeshGeneratorPrototypeMaterialsItem = GetStructType<{
+  MaterialGroup: string;
+  Variations: BenchmarkMeshGeneratorPrototypeVariations;
+}>;
+
+export type BenchmarkMeshGeneratorPrototypeVariations = GetStructType<
+  BenchmarkMeshGeneratorPrototypeVariationsItem[]
+>;
+
+export type BenchmarkMeshGeneratorPrototypeVariationsItem = GetStructType<{
+  ParameterValue: number;
+  VariationIndex: number;
+  Weight: number;
+}>;
+
 export type BlueprintPrototype = GetStructType<{
   DestroyOnPickup: boolean;
-  FittingWeaponsSIDs: string[];
+  FittingWeaponsSIDs: SpawnActorPrototypeIgnoreCollisionActors;
   Icon: string;
   Invisible: boolean;
   InvisibleInPlayerInventory: boolean;
@@ -1614,22 +2294,13 @@ export type BlueprintPrototype = GetStructType<{
 }>;
 
 export type BodyMeshPrototype = GetStructType<{
-  AdditionalMesh: {
-    MeshPath: string;
-  }[];
+  AdditionalMesh: BodyMeshPrototypeAdditionalMesh;
   AnimPath: string;
   BodyMeshType: EBodyMeshType;
   GroomPrototypeSID: string;
   IsSkeletal: boolean;
   ItemPrototypeSID: string;
-  Materials: {
-    MaterialGroup: string;
-    MaterialSlot: number;
-    Variations: {
-      MaterialPath: string;
-      Weight: number;
-    }[];
-  }[];
+  Materials: BodyMeshPrototypeMaterials;
   MeshPath: string;
   MeshType: EMeshSubType;
   OffsetX: number;
@@ -1645,8 +2316,35 @@ export type BodyMeshPrototype = GetStructType<{
   SocketName: string;
 }>;
 
+export type BodyMeshPrototypeAdditionalMesh = GetStructType<
+  BodyMeshPrototypeAdditionalMeshItem[]
+>;
+
+export type BodyMeshPrototypeAdditionalMeshItem = GetStructType<{
+  MeshPath: string;
+}>;
+
+export type BodyMeshPrototypeMaterials = GetStructType<
+  BodyMeshPrototypeMaterialsItem[]
+>;
+
+export type BodyMeshPrototypeMaterialsItem = GetStructType<{
+  MaterialGroup: string;
+  MaterialSlot: number;
+  Variations: BodyMeshPrototypeVariations;
+}>;
+
+export type BodyMeshPrototypeVariations = GetStructType<
+  BodyMeshPrototypeVariationsItem[]
+>;
+
+export type BodyMeshPrototypeVariationsItem = GetStructType<{
+  MaterialPath: string;
+  Weight: number;
+}>;
+
 export type BodyMeshSimulatePhysicsPrototype = GetStructType<{
-  BonesToApplyPhysics: string[];
+  BonesToApplyPhysics: SpawnActorPrototypeLairCoreVolumes;
   SID: string;
 }>;
 
@@ -1663,6 +2361,15 @@ export type BoolProviderPrototype = GetStructType<{
   SID: string;
   TraceHeight: number;
   Type: EBoolProviderType;
+}>;
+
+export type CameraManagerConstant = GetStructType<
+  CameraManagerConstantFlagToMaterialItem[]
+>;
+
+export type CameraManagerConstantFlagToMaterialItem = GetStructType<{
+  FlagValue: EPostProcessEffectType;
+  MaterialObjectPath: string;
 }>;
 
 export type CameraShakeGroupPrototype = GetStructType<{
@@ -1698,10 +2405,7 @@ export type CharacterWeaponSettingsPrototype = GetStructType<{
   BulletDropHeight: number;
   BulletDropLength: number;
   ChanceBleedingPerShot: number;
-  CombatSynchronizationScore: {
-    Score: number;
-    TokenTag: string;
-  }[];
+  CombatSynchronizationScore: CharacterWeaponSettingsPrototypeCombatSynchronizationScore;
   CoverPiercing: number;
   DamageUI: number;
   DispersionRadius: number;
@@ -1727,10 +2431,13 @@ export type CharacterWeaponSettingsPrototype = GetStructType<{
   SID: string;
   StaggerEffectPrototypeSID: string;
   StealthReveal: number;
-  UnequippedRelativeRotation: Rot;
-  UnequippedRelativeTranslation: Vec3;
+  UnequippedRelativeRotation: SpawnActorPrototypeRotation;
+  UnequippedRelativeTranslation: SpawnActorPrototypeVector;
   UnequippedSocketName: string;
 }>;
+
+export type CharacterWeaponSettingsPrototypeCombatSynchronizationScore =
+  GetStructType<CombatSynchronizationPrototypeSynchronizationPrimitivesItem[]>;
 
 export type CluePrototype = GetStructType<{
   DefaultValue: string;
@@ -1741,54 +2448,39 @@ export type CluePrototype = GetStructType<{
 }>;
 
 export type CombatSynchronizationPrototype = GetStructType<{
-  CombatEnteringUncheckedTags: string[];
+  CombatEnteringUncheckedTags: SpawnActorPrototypeIgnoreCollisionActors;
   DifficultySID: string;
-  Experienced: {
-    FilterGroups: {
-      AllowedTags: string[];
-      CooldownMin: number;
-      MaxScore: number;
-    }[];
-    SynchronizationPrimitives: {
-      Score: number;
-      TokenTag: string;
-    }[];
-  };
-  Master: {
-    FilterGroups: {
-      AllowedTags: string[];
-      CooldownMax: number;
-      MaxScore: number;
-    }[];
-    SynchronizationPrimitives: {
-      Score: number;
-      TokenTag: string;
-    }[];
-  };
-  Newbie: {
-    FilterGroups: {
-      AllowedTags: string[];
-      CooldownMax: number;
-      MaxScore: number;
-    }[];
-    SynchronizationPrimitives: {
-      Score: number;
-      TokenTag: string;
-    }[];
-  };
+  Experienced: CombatSynchronizationPrototypeNewbie;
+  Master: CombatSynchronizationPrototypeNewbie;
+  Newbie: CombatSynchronizationPrototypeNewbie;
   SID: string;
-  Veteran: {
-    FilterGroups: {
-      AllowedTags: string[];
-      CooldownMax: number;
-      MaxScore: number;
-    }[];
-    SynchronizationPrimitives: {
-      Score: number;
-      TokenTag: string;
-    }[];
-  };
+  Veteran: CombatSynchronizationPrototypeNewbie;
 }>;
+
+export type CombatSynchronizationPrototypeFilterGroups = GetStructType<
+  CombatSynchronizationPrototypeFilterGroupsItem[]
+>;
+
+export type CombatSynchronizationPrototypeFilterGroupsItem = GetStructType<{
+  AllowedTags: SingletonConstantZombie;
+  CooldownMax: number;
+  CooldownMin: number;
+  MaxScore: number;
+}>;
+
+export type CombatSynchronizationPrototypeNewbie = GetStructType<{
+  FilterGroups: CombatSynchronizationPrototypeFilterGroups;
+  SynchronizationPrimitives: CombatSynchronizationPrototypeSynchronizationPrimitives;
+}>;
+
+export type CombatSynchronizationPrototypeSynchronizationPrimitives =
+  GetStructType<CombatSynchronizationPrototypeSynchronizationPrimitivesItem[]>;
+
+export type CombatSynchronizationPrototypeSynchronizationPrimitivesItem =
+  GetStructType<{
+    Score: number;
+    TokenTag: string;
+  }>;
 
 export type ConstBoolProviderPrototype = GetStructType<{
   SID: string;
@@ -1803,25 +2495,31 @@ export type ConstFloatProviderPrototype = GetStructType<{
 }>;
 
 export type ConstraintPrototype = GetStructType<{
-  Constraints: {
-    ConstraintType: EAIConstraintType;
-    Duration: number;
-    MaxCount: number;
-    Radius: number;
-  }[];
+  Constraints: ConstraintPrototypeConstraints;
   SID: string;
 }>;
 
+export type ConstraintPrototypeConstraints = GetStructType<
+  ConstraintPrototypeConstraintsItem[]
+>;
+
+export type ConstraintPrototypeConstraintsItem = GetStructType<{
+  ConstraintType: EAIConstraintType;
+  Duration: number;
+  MaxCount: number;
+  Radius: number;
+}>;
+
 export type ConsumablePrototype = GetStructType<{
-  AlternativeEffectPrototypeSIDs: string[];
+  AlternativeEffectPrototypeSIDs: UpgradePrototypeEffectPrototypeSIDs;
   AnimBlueprint: string;
   bIsUsesLeftHand: boolean;
   bIsUsesRightHand: boolean;
   ConsumableType: EConsumableType;
   ConsumeOnUse: boolean;
   Cost: number;
-  EffectPrototypeSIDs: string[];
-  EffectsDisplayTypes: EEffectDisplayType[];
+  EffectPrototypeSIDs: SpawnActorPrototypeLockReceivers;
+  EffectsDisplayTypes: ConsumablePrototypeEffectsDisplayTypes;
   FastUseGroup: EFastUseGroupType;
   FastUsePrio: number;
   Icon: string;
@@ -1830,19 +2528,16 @@ export type ConsumablePrototype = GetStructType<{
   IsQuestItemPrototype: boolean;
   ItemGridHeight: number;
   ItemGridWidth: number;
-  ItemTags: string[];
+  ItemTags: SpawnActorPrototypeIgnoreCollisionActors;
   ItemTypeSwitchValue: string;
   LocalizationSID: string;
   MaxStackCount: number;
   MeshPath: string;
   MeshPrototypeSID: string;
-  NegativeEffectPrototypeSIDs: {
-    Effect: string;
-    Weight: number;
-  }[];
+  NegativeEffectPrototypeSIDs: ConsumablePrototypeNegativeEffectPrototypeSIDs;
   NegativeEffectsChance: number;
   PhysicsInteractionPrototypeSID: string;
-  ShouldShowEffects: boolean[];
+  ShouldShowEffects: ConsumablePrototypeShouldShowEffects;
   SID: string;
   SocketName: string;
   SortGroup: ESortGroup;
@@ -1854,11 +2549,23 @@ export type ConsumablePrototype = GetStructType<{
   Weight: number;
 }>;
 
+export type ConsumablePrototypeEffectsDisplayTypes = GetStructType<
+  EEffectDisplayType[]
+>;
+
+export type ConsumablePrototypeNegativeEffectPrototypeSIDs = GetStructType<
+  ConsumablePrototypeNegativeEffectPrototypeSIDsItem[]
+>;
+
+export type ConsumablePrototypeNegativeEffectPrototypeSIDsItem = GetStructType<{
+  Effect: string;
+  Weight: number;
+}>;
+
+export type ConsumablePrototypeShouldShowEffects = GetStructType<boolean[]>;
+
 export type ContextualActionBlueprintPrototype = GetStructType<{
-  AnimationFinalFrameTransforms: {
-    Rotation: Rot;
-    Vector: Vec3;
-  }[][];
+  AnimationFinalFrameTransforms: ContextualActionBlueprintPrototypeAnimationFinalFrameTransforms;
   AttachReferenceNames: string;
   CanInteractWithPlayer: boolean;
   CompoundActorTags: string;
@@ -1874,12 +2581,38 @@ export type ContextualActionBlueprintPrototype = GetStructType<{
   UsingWeapon: boolean;
 }>;
 
+export type ContextualActionBlueprintPrototypeAnimationFinalFrameTransforms =
+  GetStructType<
+    ContextualActionBlueprintPrototypeAnimationFinalFrameTransformsItem[]
+  >;
+
+export type ContextualActionBlueprintPrototypeAnimationFinalFrameTransformsItem =
+  GetStructType<
+    ContextualActionBlueprintPrototypeAnimationFinalFrameTransformsItemItem[]
+  >;
+
+export type ContextualActionBlueprintPrototypeAnimationFinalFrameTransformsItemItem =
+  GetStructType<{
+    Rotation: SpawnActorPrototypeRotation;
+    Vector: SpawnActorPrototypeVector;
+  }>;
+
+export type ContextualActionBlueprintPrototypeNeeds = GetStructType<
+  EContextualActionNeeds[]
+>;
+
 export type ContextualActionBodyPartsPrototype = GetStructType<{
-  BodyParts: {
-    BodyPart: EContextualActionBodyPart;
-    RestrictedItems: string[];
-  }[];
+  BodyParts: ContextualActionBodyPartsPrototypeBodyParts;
   SID: string;
+}>;
+
+export type ContextualActionBodyPartsPrototypeBodyParts = GetStructType<
+  ContextualActionBodyPartsPrototypeBodyPartsItem[]
+>;
+
+export type ContextualActionBodyPartsPrototypeBodyPartsItem = GetStructType<{
+  BodyPart: EContextualActionBodyPart;
+  RestrictedItems: DialogPrototypeLocalizedSequences;
 }>;
 
 export type ContextualActionDialogSettingsPrototype = GetStructType<{
@@ -1894,7 +2627,7 @@ export type ContextualActionDialogSettingsPrototype = GetStructType<{
 export type ContextualActionNodePrototype = GetStructType<{
   Effects: string;
   Enter: string;
-  Execute: ContextualAction;
+  Execute: ContextualActionNodePrototypeExecute;
   Exit: string;
   Interrupt: string;
   NodePrototypeVersion: number;
@@ -1903,5894 +2636,180 @@ export type ContextualActionNodePrototype = GetStructType<{
   SID: string;
 }>;
 
-export type CorpseClueStashPrototype = GetStructType<{
-  AdditionalSearchRadius: number;
-  AddSpawnChance: number;
-  BaseSpawnChance: number;
-  CorpseClueData: {
-    Rank: ERank;
-    RankClue: {
-      Rank: ERank;
-      Weight: string;
-    }[];
-  }[];
-  Region: ERegion;
-  SID: string;
-}>;
-
-export type CorpsePrototype = GetStructType<{
-  AllowedAttachSuffixes: string[];
-  BlockAttachSuffixes: string[];
-  BloodPoolMaterial: string;
-  BloodPoolSeverity: number;
-  BonesToHit: string[];
-  CauseOfDeath: ECauseOfDeath;
-  DecalsMaterialSID: string;
-  HitsCount: number;
-  Pose: string;
-  Severity: number;
-  SID: string;
-}>;
-
-export type CoverEvaluatorPrototype = GetStructType<{
-  AdvanceCoeff: number;
-  BaseValue: number;
-  CanUseCovers: boolean;
-  DangerousCoverZoneCoeff: number;
-  DefaultCoverSettings: {
-    bUseCombatEffectiveFireDistance: boolean;
-    bUseDistanceEvaluators: boolean;
-    FrontLineHalfAngle: number;
-    FrontlineInfluence: number;
-    MaxDistanceToAlly: number;
-    MaxDistanceToEnemy: number;
-    MinDistanceToEnemy: number;
-  };
-  EnemyCoverageCoeff: string;
-  ExplosiveSafeDistanceAddend: number;
-  ExplosivesCoverageCoeff: number;
-  ExplosivesCoverSettings: {
-    bUseCombatEffectiveFireDistance: boolean;
-    bUseDistanceEvaluators: boolean;
-    FrontLineHalfAngle: number;
-    FrontlineInfluence: number;
-    MaxDistanceToAlly: number;
-    MaxDistanceToEnemy: number;
-    MinDistanceToEnemy: number;
-  };
-  FormationCoeff: number;
-  FrequentlyUsedCoverCoeff: number;
-  FrequentlyUsedNoCoverCoeff: number;
-  LocationInDangerCoverThreshold: number;
-  LocationInDangerExplosiveThreshold: number;
-  LocationInDangerNoCoverThreshold: number;
-  LowGroundCoeff: number;
-  MaxCoverageByType: {
-    BehindTreeCover: number;
-    Generic: number;
-    High: number;
-    Low: number;
-    NoCover: number;
-    NoShootingPosition: number;
-  };
-  MaxCoverSegmentCoverageBase: number;
-  MaxCoverSegmentCoveragePlayer: number;
-  MaxPathLength: number;
-  NewLocationAdvantageCoeff: string;
-  NewLocationAdvantageCoeffsOverride: {
-    NoCover: number;
-  };
-  PathLengthExponentBase: number;
-  RestrictionDistance: number;
-  ShouldApproachEnemy: boolean;
-  SID: string;
-  SquadMembersInDirectionCoeff: number;
-  WeaponDistanceCoeff: number;
-}>;
-
-export type DailySchedulePrototype = GetStructType<{
-  ScheduleIntervals: {
-    AvailableNeeds: EContextualActionNeeds[];
-    IntervalEndTime: string;
-    IntervalStartTime: string;
-  }[];
-  SID: string;
-}>;
-
-export type DamageSourcePrototype = GetStructType<{
-  AudioSwitch: string;
-  bIsLooped: boolean;
-  bWithoutSFX: boolean;
-  CriticalHitAudioEventPath: string;
-  PlayAudioEvent: string;
-  PlayerVoiceoverEventPath: string;
-  SID: string;
-  StopAudioEvent: string;
-  VoiceOverAccumulationTime: number;
-  VoiceOverCooldown: number;
-  VoiceOverNeededDamage: number;
-}>;
-
-export type DebugItemGeneratorPrototype = GetStructType<{
-  ItemGenerator: ItemGeneratorEntry[];
-  SID: string;
-}>;
-
-export type DestructibleObjectPrototype = GetStructType<{
-  bAllowPhaseSkipping: boolean;
-  bHasSpaceRestrictor: boolean;
-  Blueprint: string;
-  bSimulatePhysics: boolean;
-  DestructAudioEvent: string;
-  ExplosionPrototypeSID: string;
-  FallingVelocityThreshold: number;
-  ID: number;
-  ImpulseOverride: number;
-  ImpulseToDamageCoef: number;
-  MassMultiplier: number;
-  MaxDamageForLoudness: number;
-  MinDamageForLoudness: number;
-  ObjectPhaseSettings: {
-    DamageDestroyThreshold: number;
-    DamageIgnoranceThreshold: number;
-    DestructibleActions: {
-      ActionCompletionDelay: number;
-      ActionType: EDestructionActionType;
-      AssetOptions:
-        | string
-        | {
-            AssetPath: string;
-            AssetWeight: number;
-          }[];
-    }[];
-    IgnoredDamageTypes: EDamageType[];
-  }[];
-  OriginalMesh: string;
-  PhysicsInteractionPrototypeSID: string;
-  SID: string;
-  TileOffsetMax: number;
-  TileOffsetMin: number;
-  VFXVariation: number;
-  WindowDestructVFX: string;
-}>;
-
-export type DetectorPrototype = GetStructType<{
-  AnimBlueprint: string;
-  AnomalyDetectionRadius: number;
-  AnomalyTexturePaths: {
-    AnomalyElementType: EAnomalyElementType;
-    SpriteTexturePath: string;
-  }[];
-  ArtifactSignalCurve: string;
-  ArtifactTexturePath: string;
-  CanvasMaterialPath: string;
-  Cost: number;
-  DangerLevelSoundParameter: string;
-  DefaultArtifactRadius: number;
-  DetectorType: EDetectorType;
-  DetectorWorkCurve: string;
-  DetectorWorkRadius: string;
-  DetectorWorkSFX: string;
-  DisplayUpdateInterval: number;
-  ExclusionAnomalyList: string[];
-  ExclusionArtifactList: string[];
-  Icon: string;
-  ItemSlotType: EInventoryEquipmentSlot;
-  ItemTypeSwitchValue: string;
-  MaxStackCount: number;
-  MeshInWorldPrototypeSID: string;
-  MeshPrototypeSID: string;
-  MinDetectRadius: number;
-  PhysicsInteractionPrototypeSID: string;
-  RadiusDivider: number;
-  RenderTargetResolution: number;
-  ShowArtifactRadius: string;
-  SID: string;
-  SonarRadius: number;
-  SpriteMaterialPath: string;
-  Type: EItemType;
-  Weight: number;
-}>;
-
-export type DialogChainPrototype = GetStructType<{
-  CanBeInterrupted: boolean;
-  CanInterruptByCombat: boolean;
-  CanInterruptByEmission: boolean;
-  ContinueAfterInterrupt: boolean;
-  DialogMembers: {
-    DialogMemberName: string;
-    OptionalMember: boolean;
-  }[];
-  DialogOnTheGo: boolean;
-  DLC: string;
-  ID: number;
-  IsInteractive: boolean;
-  IsPCDialogMember: boolean;
-  SID: string;
-  StartingDialogPrototypeSID: string;
-}>;
-
-export type DialogPoolPrototype = GetStructType<{
-  AvailableDialogs: string[];
-  DialogEventType: EDialogEventType;
-  DialogMemberRestrictions: {
-    "0": {
-      FactionRestrictions: string[];
-    };
-    ExcludedFactions: {
-      Faction: Faction;
-    };
-    ExcludedObjPrototypes: {
-      NPCPrototypeSID: string;
-    };
-    FactionRestrictions: {
-      "0": string;
-      Faction: Faction;
-    };
-    ObjPrototypeRestrictions: {
-      "0": string;
-      NPCPrototypeSID: string;
-    };
-  };
-  OptionalMembersCount: number;
-  RequiredMembersCount: number;
-  RequiresGroup: boolean;
-  SID: string;
-}>;
-
-export type DialogPrototype = GetStructType<{
-  Actions: {
-    DialogAction: EDialogAction;
-    DialogActionParam: string;
-  }[];
-  AKEventName: string;
-  AKEventSubPath: string;
-  Animation: string;
-  AnswerText: string;
-  AssetsSubPath: string;
-  BlendExpForEaseInOut: number;
-  BrokenGameDataFilter: EBrokenGameDataFilter;
-  CanBeInterrupted: boolean;
-  Conditions: Conditions;
-  DialogActionParam: string;
-  DialogActions: string;
-  DialogAnswerActions: {
-    ChangeValueMode: EChangeValueMode;
-    ConsumablePrototypeSID: {
-      VariableType: EGlobalVariableType;
-      VariableValue: string;
-    };
-    DialogAction: EDialogAction;
-    DialogActionParam: {
-      VariableType: EGlobalVariableType;
-      VariableValue: number;
-    };
-    GlobalVariablePrototypeSID: string;
-    ItemsCount: {
-      VariableType: EGlobalVariableType;
-      VariableValue: number;
-    };
-    VariableValue: number;
-    WithEquipped: boolean;
-  }[];
-  DialogChainPrototypeSID: string;
-  DialogMemberIndex: number;
-  DialogMemberName: string;
-  DialogMembersAnimations: {
-    DialogAnimations: string;
-    EmotionalState: EEmotionalFaceMasks;
-    LookAtTarget: number;
-  }[];
-  DialogPriority: EDialogPriority;
-  FaceAnimationAssetName: string;
-  FaceAnimationSubPath: string;
-  HasVOInSequence: boolean;
-  Icon: string;
-  ID: number;
-  LocalizedSequences: string[];
-  LookAtObjSID: string;
-  LoopSequence: boolean;
-  MainReply: boolean;
-  NextDialogOptions: {
-    AnswerTo: number;
-    AvailableFromStart: boolean;
-    Conditions: Conditions;
-    ExcludeBy: string;
-    IncludeBy: string;
-    MainReply: boolean;
-    NextDialogSID: string;
-    Terminate: boolean;
-    VisibleOnFailedCondition: boolean;
-  }[];
-  NextDialogSID: string;
-  NodePrototypeVersion: number;
-  PreblendSequence: boolean;
-  PreblendTime: number;
-  RotationTime: number;
-  SelfLocation: string;
-  ShowDialogWindow: boolean;
-  ShowNextDialogOptionsAsAnswers: boolean;
-  SID: string;
-  Sound: string;
-  SpeechDuration: number;
-  TargetLocation: string;
-  Text: string;
-  TopicAvailabilityConditions: Conditions;
-  Unskippable: boolean;
-  VisibleOnFailedCondition: boolean;
-  VoiceModulatorPrototypeID: string;
-  WaitForSequenceToFinish: boolean;
-}>;
-
-export type DifficultyPrototype = GetStructType<{
-  AccumulatedDamageReductionCurveWeightMax: number;
-  AccumulatedDamageReductionCurveWeightMaxDistance: number;
-  AccumulatedDamageReductionCurveWeightMin: number;
-  AccumulatedDamageReductionIncludesHealedHealth: boolean;
-  AdditionalMechanicsEffects: string[];
-  AgentCooldownMultipliers: {
-    AgentPrototypeSID: string;
-    CooldownMultipliers: {
-      CooldownMultiplier: number;
-      CooldownTag: string;
-    }[];
-  }[];
-  AllowedSaveTypes: ESaveType[];
-  Ammo_Cost: number;
-  Anomaly_Damage: number;
-  Armor_Anomaly: number;
-  Armor_Cost: number;
-  Armor_Durability: number;
-  Armor_PSY: number;
-  Armor_Radiation: number;
-  Armor_Strike_Add: number;
-  Artifact_Cost: number;
-  AutosaveAfterQuests: string[];
-  BlockSettings: boolean;
-  bShouldDisableCompass: boolean;
-  bShouldDisableCrosshair: boolean;
-  bShouldDisableDeadBodyMarkers: boolean;
-  bShouldDisableStashMarkers: boolean;
-  BuyCondition: number;
-  Consumable_Cost: number;
-  CorpseSmartLoot: {
-    GeneralNPC: string;
-  };
-  DefaultAimAssistPresetType: EAimAssistPresetType;
-  DescriptionSID: string;
-  Effect_Bleeding: number;
-  Effect_Degen_Bleeding: number;
-  Effect_Satiety: number;
-  Effect_Sleepiness: number;
-  Explosion_BaseDamage: number;
-  HipAccuracyMultiplier: number;
-  Mutant_AttackCooldown: number;
-  Mutant_BaseDamage: number;
-  NightVisionGoggles_Cost: number;
-  NPC_Armor_Strike_Add: number;
-  NPC_AttackCooldown: number;
-  NPC_HP: number;
-  NPC_Weapon_BaseDamage: number;
-  NPC_Weapon_Rank_Add: number;
-  PlayerWeapon_HeadshotMultiplier: number;
-  PsyPhantomNPCOverrides: {
-    bPsyNPCApplyBleeding: boolean;
-    OverrideEffectPrototypeSID: string;
-    PSYDelayBeforeNewSpawnCycleModifier: number;
-    PsyNPCDurabilityDamageMultiplier: number;
-    PsyPhantomNPCCountMultiplier: number;
-  }[];
-  Radiation_AccumulationSpeed: number;
-  Regen_HP: number;
-  Repair_Cost: number;
-  Reward_MainLine_Money: number;
-  Reward_SideLine_Money: number;
-  SellCondition: number;
-  ShowWarningPopup: boolean;
-  SID: string;
-  TitleSID: string;
-  TotalSaveLimits: {
-    Limit: number;
-    SubType: ESaveSubType;
-  }[];
-  Upgrade_Cost: number;
-  Weapon_BaseDamage: number;
-  Weapon_Cost: number;
-  Weapon_Durability: number;
-  Weapon_DurabilityDamage: number;
-  Weapon_JammingMultiplier: number;
-  Weapon_Rank_Add: number;
-  Weather_Emission_Weight: number;
-  Weather_Storm_Weight: number;
-}>;
-
-export type DoorPrototype = GetStructType<{
-  bConsumeItemCountOnOpen: number;
-  Blueprint: string;
-  bOpenInBothSides: boolean;
-  ID: number;
-  LockedByGlobalVariable: {
-    GlobalVariableSID: string;
-    Value: number;
-  }[];
-  LockedByItemPrototype: {
-    ItemCount: number;
-    ItemPrototypeSID: string;
-  }[];
-  LockedByScenarioFlag: {
-    GlobalVariableSID: string;
-    Value: number;
-  }[];
-  OpenCurve: string;
-  SID: string;
-}>;
-
-export type EffectBoolProviderPrototype = GetStructType<{
-  bPlayerTarget: boolean;
-  EffectSID: string;
-  SID: string;
-  Type: EBoolProviderType;
-}>;
-
-export type EffectFloatProviderPrototype = GetStructType<{
-  ConditionSID: string;
-  FalseValueSID: string;
-  SID: string;
-  TrueValueSID: string;
-  Type: EFloatProviderType;
-  Value: number;
-}>;
-
-export type EffectPrototype = GetStructType<{
-  AffectedStaminaActionTypes: EStaminaAction[];
-  AmmoType: EAmmoType;
-  AmmoTypeProjectiles: {
-    AmmoType: EAmmoType;
-    ProjectilePrototypeSID: string;
-  }[];
-  ApplyExtraEffectPrototypeSIDs: string[];
-  ApplyToMainHandedEquipment: boolean;
-  ArmorPiercing: number;
-  ArtifactEquipmentSlots: EInventoryEquipmentSlot[];
-  AssetPath: string;
-  AttachmentItemPrototypeSID: string;
-  AttachType: EAttachType;
-  AvailableObjPrototypes: string[];
-  AxisType: EInputAxisType;
-  bEnable: boolean;
-  bIsLooped: boolean;
-  bIsPermanent: boolean;
-  bIsSmooth: boolean;
-  BlockAnimationTypes: EActionType[];
-  bStartEffect: boolean;
-  bUpdateValueEachTickNPC: boolean;
-  bUpdateValueEachTickPlayer: boolean;
-  Caliber: EAmmoCaliber;
-  CameraShakeEffectSubtype: ECameraShakeEffectSubtype;
-  CameraShakePrototypeSID: string;
-  CauseOfDeath: ECauseOfDeath;
-  Charges: number;
-  ConditionComparance: EConditionComparance;
-  ConditionSID: string;
-  DamageSource: EDamageSource;
-  DamageType: EDamageType;
-  Delay: number;
-  DelayBeforeNewSpawnCycleMax: number;
-  DelayBeforeNewSpawnCycleMin: number;
-  DelayMax: number;
-  DelayMin: number;
-  DialogBlendInDuration: number;
-  DialogBlendOutDuration: number;
-  DialogIntensityMultiplier: number;
-  DragImpulseRangeNPC: {
-    Max: number;
-    Min: number;
-  };
-  DuplicationType: EDuplicateResolveType;
-  DurabilityDamageRange: {
-    Max: number;
-    Min: number;
-  };
-  Duration: number;
-  EffectCurvePath: string;
-  EffectLevel: string;
-  EffectModifiers: {
-    DurationMultiplier: number;
-    EffectPrototypeSID: string;
-    ValueMultiplier: number;
-  }[];
-  EffectsToBlockIDs: string[];
-  FalseEffectSID: string;
-  FireIntervals: number[];
-  FireTypes: EFireType[];
-  GadgetTypes: string[];
-  Hint: boolean;
-  Icon: string;
-  InstantFirstCharge: boolean;
-  InterpolationTime: number;
-  InventoryEquipmentSlot: EInventoryEquipmentSlot;
-  IsCurvePercent: boolean;
-  IsSaveable: boolean;
-  LocalizationSID: string;
-  MaxSpawnPhantoms: number;
-  MaxSpeed: number;
-  MechanicsEffect: {
-    ConditionComparance: EConditionComparance;
-    ConditionEffects: {
-      BigSleepiness: {
-        ApplicableEffects: {
-          EffectSID: string;
-          RemoveOnTransition: boolean;
-        }[];
-        ConditionValue: number;
-      };
-      DeadlyRadiation: {
-        ApplicableEffects: {
-          EffectSID: string;
-          RemoveOnTransition: boolean;
-        }[];
-        ConditionValue: number;
-      };
-      Disabled: {
-        ApplicableEffects: {
-          EffectSID: string;
-          RemoveOnTransition: boolean;
-        }[];
-        ConditionValue: number;
-      };
-      DisableHungerNegative: {
-        ApplicableEffects: string;
-        ConditionValue: number;
-      };
-      DisableRadiationNegative: {
-        ApplicableEffects: string;
-        ConditionValue: number;
-      };
-      DisableSleepinessNegative: {
-        ApplicableEffects: string;
-        ConditionValue: number;
-      };
-      FullHP: {
-        ApplicableEffects: {
-          EffectSID: string;
-          RemoveOnTransition: boolean;
-        }[];
-        ConditionValue: number;
-      };
-      HighFallHeight: {
-        ApplicableEffects: {
-          EffectSID: string;
-          RemoveOnTransition: boolean;
-        }[];
-        ConditionValue: number;
-      };
-      HighOverDrunkness: {
-        ApplicableEffects: {
-          EffectSID: string;
-          RemoveOnTransition: boolean;
-        }[];
-        ConditionValue: number;
-      };
-      LightRadiation: {
-        ApplicableEffects: {
-          EffectSID: string;
-          RemoveOnTransition: boolean;
-        }[];
-        ConditionValue: number;
-      };
-      LightRadiation_2: {
-        ApplicableEffects: {
-          EffectSID: string;
-          RemoveOnTransition: boolean;
-        }[];
-        ConditionValue: number;
-      };
-      Low: {
-        ApplicableEffects: {
-          EffectSID: string;
-          RemoveOnTransition: boolean;
-        }[];
-        ConditionValue: number;
-      };
-      LowBleeding: {
-        ApplicableEffects: {
-          EffectSID: string;
-          RemoveOnTransition: boolean;
-        }[];
-        ConditionValue: number;
-      };
-      LowDrunkness: {
-        ApplicableEffects: {
-          EffectSID: string;
-          RemoveOnTransition: boolean;
-        }[];
-        ConditionValue: number;
-      };
-      LowFallHeight: {
-        ApplicableEffects: {
-          EffectSID: string;
-          RemoveOnTransition: boolean;
-        }[];
-        ConditionValue: number;
-      };
-      LowHPThreshold: {
-        ApplicableEffects: {
-          EffectSID: string;
-          RemoveOnTransition: boolean;
-        }[];
-        ConditionValue: number;
-      };
-      LowHunger: {
-        ApplicableEffects: {
-          EffectSID: string;
-          RemoveOnTransition: boolean;
-        }[];
-        ConditionValue: number;
-      };
-      LowSleepiness: {
-        ApplicableEffects: {
-          EffectSID: string;
-          RemoveOnTransition: boolean;
-        }[];
-        ConditionValue: number;
-      };
-      LowSPThreshold: {
-        ApplicableEffects: {
-          EffectSID: string;
-          RemoveOnTransition: boolean;
-        }[];
-        ConditionValue: number;
-      };
-      Medium: {
-        ApplicableEffects: {
-          EffectSID: string;
-          RemoveOnTransition: boolean;
-        }[];
-        ConditionValue: number;
-      };
-      MediumBleeding: {
-        ApplicableEffects: {
-          EffectSID: string;
-          RemoveOnTransition: boolean;
-        }[];
-        ConditionValue: number;
-      };
-      MediumDrunkness: {
-        ApplicableEffects: {
-          EffectSID: string;
-          RemoveOnTransition: boolean;
-        }[];
-        ConditionValue: number;
-      };
-      MediumHunger: {
-        ApplicableEffects: {
-          EffectSID: string;
-          RemoveOnTransition: boolean;
-        }[];
-        ConditionValue: number;
-      };
-      MediumRadiation: {
-        ApplicableEffects: {
-          EffectSID: string;
-          RemoveOnTransition: boolean;
-        }[];
-        ConditionValue: number;
-      };
-      MediumSleepiness: {
-        ApplicableEffects: {
-          EffectSID: string;
-          RemoveOnTransition: boolean;
-        }[];
-        ConditionValue: number;
-      };
-      No: {
-        ApplicableEffects: string;
-        ConditionValue: number;
-      };
-      NoBleeding: {
-        ApplicableEffects: string;
-        ConditionValue: number;
-      };
-      NoDrunkness: {
-        ApplicableEffects: string;
-        ConditionValue: number;
-      };
-      None: {
-        ApplicableEffects: string;
-        ConditionValue: number;
-      };
-      NoOverDrunkness: {
-        ApplicableEffects: string;
-        ConditionValue: number;
-      };
-      NormalHPThreshold: {
-        ApplicableEffects: string;
-        ConditionValue: number;
-      };
-      NormalSP: {
-        ApplicableEffects: string;
-        ConditionValue: number;
-      };
-      NoSleepiness: {
-        ApplicableEffects: string;
-        ConditionValue: number;
-      };
-      PhaseFour: {
-        ApplicableEffects: {
-          EffectSID: string;
-          RemoveOnTransition: boolean;
-        }[];
-        ConditionValue: number;
-      };
-      PhaseOne: {
-        ApplicableEffects: {
-          EffectSID: string;
-          RemoveOnTransition: boolean;
-        }[];
-        ConditionValue: number;
-      };
-      PhaseThree: {
-        ApplicableEffects: {
-          EffectSID: string;
-          RemoveOnTransition: boolean;
-        }[];
-        ConditionValue: number;
-      };
-      PhaseTwo: {
-        ApplicableEffects: {
-          EffectSID: string;
-          RemoveOnTransition: boolean;
-        }[];
-        ConditionValue: number;
-      };
-      RadiationLevel10: {
-        ApplicableEffects: {
-          EffectSID: string;
-          RemoveOnTransition: boolean;
-        }[];
-        ConditionValue: number;
-      };
-      RadiationLevel4: {
-        ApplicableEffects: {
-          EffectSID: string;
-          RemoveOnTransition: boolean;
-        }[];
-        ConditionValue: number;
-      };
-      RadiationLevel5: {
-        ApplicableEffects: {
-          EffectSID: string;
-          RemoveOnTransition: boolean;
-        }[];
-        ConditionValue: number;
-      };
-      RadiationLevel6: {
-        ApplicableEffects: {
-          EffectSID: string;
-          RemoveOnTransition: boolean;
-        }[];
-        ConditionValue: number;
-      };
-      RadiationLevel7: {
-        ApplicableEffects: {
-          EffectSID: string;
-          RemoveOnTransition: boolean;
-        }[];
-        ConditionValue: number;
-      };
-      RadiationLevel8: {
-        ApplicableEffects: {
-          EffectSID: string;
-          RemoveOnTransition: boolean;
-        }[];
-        ConditionValue: number;
-      };
-      RadiationLevel9: {
-        ApplicableEffects: {
-          EffectSID: string;
-          RemoveOnTransition: boolean;
-        }[];
-        ConditionValue: number;
-      };
-      SmallSleepiness: {
-        ApplicableEffects: {
-          EffectSID: string;
-          RemoveOnTransition: boolean;
-        }[];
-        ConditionValue: number;
-      };
-      Strong: {
-        ApplicableEffects: {
-          EffectSID: string;
-          RemoveOnTransition: boolean;
-        }[];
-        ConditionValue: number;
-      };
-      StrongBleeding: {
-        ApplicableEffects: {
-          EffectSID: string;
-          RemoveOnTransition: boolean;
-        }[];
-        ConditionValue: number;
-      };
-      StrongDrunkness: {
-        ApplicableEffects: {
-          EffectSID: string;
-          RemoveOnTransition: boolean;
-        }[];
-        ConditionValue: number;
-      };
-      StrongHunger: {
-        ApplicableEffects: {
-          EffectSID: string;
-          RemoveOnTransition: boolean;
-        }[];
-        ConditionValue: number;
-      };
-      StrongHungerNegative: {
-        ApplicableEffects: {
-          EffectSID: string;
-          RemoveOnTransition: boolean;
-        }[];
-        ConditionValue: number;
-      };
-      StrongRadiation: {
-        ApplicableEffects: {
-          EffectSID: string;
-          RemoveOnTransition: boolean;
-        }[];
-        ConditionValue: number;
-      };
-      StrongRadiationNegative: {
-        ApplicableEffects: {
-          EffectSID: string;
-          RemoveOnTransition: boolean;
-        }[];
-        ConditionValue: number;
-      };
-      StrongSleepiness: {
-        ApplicableEffects: {
-          EffectSID: string;
-          RemoveOnTransition: boolean;
-        }[];
-        ConditionValue: number;
-      };
-      StrongSleepinessNegative: {
-        ApplicableEffects: {
-          EffectSID: string;
-          RemoveOnTransition: boolean;
-        }[];
-        ConditionValue: number;
-      };
-      VeryLowHunger: {
-        ApplicableEffects: {
-          EffectSID: string;
-          RemoveOnTransition: boolean;
-        }[];
-        ConditionValue: number;
-      };
-      VeryLowSleepiness: {
-        ApplicableEffects: string;
-        ConditionValue: number;
-      };
-      Weak: {
-        ApplicableEffects: {
-          EffectSID: string;
-          RemoveOnTransition: boolean;
-        }[];
-        ConditionValue: number;
-      };
-    };
-    StartMechanicsValue: number;
-    StopMechanicsValue: number;
-    VitalBarType: EVitalType;
-  };
-  MechanicsSourceEffectSID: string;
-  MinSpawnPhantoms: number;
-  MinSpeed: number;
-  Money: number;
-  OverrideWeaponPattern: string;
-  Param1: string;
-  PhantomPhantomMaxDistance: number;
-  PhantomPhantomMinDistance: number;
-  PhantomPlayerMaxDistance: number;
-  PhantomPlayerMinDistance: number;
-  Positive: EBeneficial;
-  ProcessorSID: string;
-  PsyNPCType: EPsyNPCType;
-  Radius: number;
-  ShouldIgnoreArmor: boolean;
-  ShouldPauseByDialog: boolean;
-  ShowUpgradeEffect: boolean;
-  ShowUpgradeEffectValue: boolean;
-  SID: string;
-  SoundEffectSubtype: ESoundEffectSubtype;
-  StopEffectSID: string;
-  Tag: string;
-  TargetValue: number;
-  TeleportGroupSID: string;
-  TeleportType: EGSCTeleportType;
-  Text: string;
-  TimeBetwenDespawnPhantomMax: number;
-  TimeBetwenDespawnPhantomMin: number;
-  TimeBetwenSpawnPhantomMax: number;
-  TimeBetwenSpawnPhantomMin: number;
-  TimePerCharge: number;
-  TimePerChargeMax: number;
-  TimePerChargeMin: number;
-  TrueEffectSID: string;
-  Type: EEffectType;
-  UseOnlyOnPlayer: boolean;
-  ValueMax: string;
-  ValueMin: string;
-  ValueProviderSID: string;
-  VitalType: EVitalType;
-  XAxisMaxValue: number;
-  XAxisMinValue: number;
-  YAxisMaxValue: number;
-  YAxisMinValue: number;
-}>;
-
-export type EffectSourcePriorityPrototype = GetStructType<{
-  SID: string;
-  SourcePriorities: {
-    EffectSource: EEffectSource;
-    Priority: number;
-  }[];
-}>;
-
-export type EmissionPrototype = GetStructType<{
-  AIEvents: {
-    AIEventStartTime: number;
-    AIEventType: EEmissionAIEvent;
-  }[];
-  AppliedEffects: string[];
-  Assets: {
-    ActiveEmissionIntensitySoundParameter: string;
-    ActiveEmissionSound: string;
-    ActiveSecondEmissionSound: string;
-    EmissionDamageCurve: string;
-    EmissionVFX: string;
-    EndEmissionSound: string;
-    GeneratorsEndSequence: string;
-    GeneratorsIdleSequence: string;
-    GeneratorsStartSequence: string;
-    StartEmissionSound: string;
-  };
-  DamageSettings: {
-    EmissionDamageBlendTime: number;
-  };
-  MaxEmissionKillDelayALife: number;
-  MaxReactionOnEmissionTimeALife: number;
-  MaxReactionOnEmissionTimeQuest: number;
-  MinEmissionKillDelayALife: number;
-  MinReactionOnEmissionTimeALife: number;
-  MinReactionOnEmissionTimeQuest: number;
-  OriginX: number;
-  OriginY: number;
-  SID: string;
-  Stages: {
-    PhaseDuration: number;
-    PhaseStartTime: number;
-    StageID: EEmissionStage;
-  }[];
-  StartEmissionOnRedSkyDuringTranisition: boolean;
-}>;
-
-export type EnemyEvaluatorPrototype = GetStructType<{
-  ChangeEnemyCooldown: number;
-  CloseCombatMaxPenaltyDistance: number;
-  DamageAccumulationDurationSeconds: number;
-  DamageAccumulationMaxValue: string;
-  DamageAccumulationMinValue: string;
-  DistanceCoeff: number;
-  NoAddedDamageCoeff: number;
-  NotPlayerCoeff: number;
-  NPCSelectedAsEnemyValue: number;
-  NPCSelectedAsTargetByOtherCoeff: number;
-  PlayerSelectedAsEnemyValue: number;
-  PlayerSelectedAsTargetByOtherCoeff: number;
-  RangedCombatMaxPenaltyDistance: number;
-  RangeSearchPathToEnemies: number;
-  SID: string;
-}>;
-
-export type ExplosionPrototype = GetStructType<{
-  ArmorPenetrationNPC: number;
-  ArmorPenetrationPlayer: number;
-  ConcussionEffects: string[];
-  ConcussionRadius: number;
-  DamageArmorNPC: number;
-  DamageArmorPlayer: number;
-  DamageDestructible: number;
-  DamageNPC: number;
-  DamagePlayer: number;
-  DamageSource: EDamageSource;
-  DefaultEffectSIDs: string[];
-  ExplosionAkSFX: string;
-  ExplosionDamageCurve: string;
-  ExplosionDefectAkSFX: string;
-  ExplosionDefectNiagaraSystemVFX: string;
-  ExplosionInAirNiagaraSystemVFX: string;
-  ExplosionNiagaraSystemVFX: string;
-  ExplosionParticleTraceSize: number;
-  ExplosionUnderwaterNiagaraSystemVFX: string;
-  ExplosionWaterDepthRTPC: string;
-  ForceFeedbackRadius: number;
-  ImpactPhysicalMaterialPrototypeSID: string;
-  ImpulseDamageCurve: string;
-  ImpulsePower: number;
-  ImpulseRadius: number;
-  NPCConcussionEffects: string[];
-  PhysicalMaterialEffects: {
-    EffectSIDs: string[];
-    PhysicalMaterialType: EPhysicalMaterialType;
-  }[];
-  Radius: number;
-  SID: string;
-}>;
-
-export type FaceBlockingBlendMaskPrototype = GetStructType<{
-  AllowedBlendShapes: string[];
-  BlockingMasks: {
-    BlockingWeight: number;
-    MaskType: EFaceBlockingBlendMasks;
-  }[];
-  bShouldDisableAllBlendShapes: boolean;
-  ForHairQualityUseGroomBlocking: number;
-  GroomBlockingMappingPrototypeSID: string;
-  SID: string;
-}>;
-
-export type FactionActionRestrictionPrototype = GetStructType<{
-  Factions: string[];
-  ID: number;
-  SID: string;
-}>;
-
-export type FastTravelLocationPrototype = GetStructType<{
-  BlockingGlobalVariables: {
-    GlobalVariablePrototypeSID: string;
-    GlobalVariableValue: number;
-  }[];
-  LocationCategory: string;
-  Name: string;
-  PlayerLocation: Vec3 & { Yaw: number };
-  RequiredGlobalVariables: {
-    GlobalVariablePrototypeSID: string;
-    GlobalVariableValue: number;
-  }[];
-  SID: string;
-}>;
-
-export type FastTravelPrototype = GetStructType<{
-  DiscountCoefficients: {
-    GlobalVariableCoefficient: {
-      DiscountCoefficient: number;
-      GlobalVariablePrototypeSID: string;
-      TargetValue: number;
-    }[];
-    RankDiscountCoefficient: Record<Rank, number>;
-    ReputationDiscountCoefficient: Record<Reaction, number>;
-  };
-  GuideDelay: number;
-  Locations: {
-    CurrentFastTravelLocationPrototypeSID: string;
-    DestinationFastTravelLocationPrototypeSID: string;
-    Name: string;
-    RequiredItems: string;
-    RequiredMoney: number;
-  }[];
-  MaxAccumulatedPointsForVitals: {
-    Bleeding: number;
-    Hunger: number;
-    Radiation: number;
-  };
-  OverweightLock: EOverweightLock;
-  SID: string;
-}>;
-
-export type FlairSensorPrototype = GetStructType<{
-  DetectionSpeed: number;
-  DistancePenaltyCurve: string;
-  FlairLocatedMultiplier: number;
-  FrontDetectionSpeed: number;
-  FrontSensingAngle: number;
-  FrontSensingRadius: number;
-  IsActive: boolean;
-  LoseFlairFreezetime: number;
-  LosePointsPerSecond: number;
-  MaxFlairPoints: number;
-  MinCombatSignificantFlairScore: number;
-  MinSignificantFlairScore: number;
-  ProcessingCorpseMultiplier: number;
-  RelaxMultiplier: number;
-  SensingRadius: number;
-  SID: string;
-}>;
-
-export type FlashlightPrototype = GetStructType<{
-  BrokenCooldownSeconds: number;
-  DroppedBeforeBurnOutPauseTimeSeconds: number;
-  DroppedBurnOutTimeSeconds: number;
-  EffectSIDs: string[];
-  ExtraLightDistanceBasedParameters: {
-    AttenuationRadius: number;
-    Distance: number;
-    Intencity: number;
-    OuterConeAngle: number;
-  }[];
-  FlashlightPriority: EFlashlightPriority;
-  HeadBoneNameToCheckHitToFlashlight: string;
-  ID: number;
-  PathToFlashlightBurnOutAudioEvent: string;
-  PathToFlashlightTurnOffAudioEvent: string;
-  PathToFlashlightTurnOnAudioEvent: string;
-  PathToInnerRadiusCurve: string;
-  PathToOuterRadiusCurve: string;
-  RadiusChangeSpeed: number;
-  SID: string;
-  SocketNamesMeshes: {
-    AdditionalMeshes:
-      | string
-      | {
-          MeshPath: string;
-          OffsetRotator: Rot;
-          OffsetVector: Vec3;
-        }[];
-    MeshOffsetParams: {
-      OffsetRotator: Rot;
-      OffsetVector: Vec3;
-    };
-    MeshPath: string;
-    RelatedMeshes:
-      | {
-          RelatedMeshAsset: string;
-        }
-      | string[];
-    SocketName: string;
-    SpotlightOffsetParams: {
-      OffsetRotator: Rot;
-      OffsetVector: Vec3;
-      SocketName: string;
-    };
-  }[];
-}>;
-
-export type FloatProviderPrototype = GetStructType<{
-  bPlayerTarget: boolean;
-  ConditionSID: string;
-  DelayMax: number;
-  DelayMin: number;
-  FalseValueSID: string;
-  FirstProviderSID: string;
-  ParamType: EObjFloatParams;
-  ProviderSIDs: string[];
-  SecondProviderSID: string;
-  SID: string;
-  TimeFModValue: number;
-  TrueValueSID: string;
-  Type: EFloatProviderType;
-  Value: number;
-  ValueProviderSID: string;
-  VitalType: EVitalType;
-  WeatherParam: EWeatherParam;
-}>;
-
-export type GDItemPrototype = GetStructType<{
-  Cost: number;
-  Icon: string;
-  IsQuestItem: boolean;
-  IsQuestItemPrototype: boolean;
-  ItemGridHeight: number;
-  ItemGridWidth: number;
-  LocalizationSID: string;
-  MeshPrototypeSID: string;
-  SID: string;
-  Type: EItemType;
-  Weight: number;
-}>;
-
-export type GeneralNPCObjPrototype = GetStructType<{
-  Abilities: Record<
-    Ability,
-    {
-      ActivationTag: string;
-      SID: string;
-    }
-  >;
-  AdvanceParameters: {
-    DurationSeconds: number;
-    MaxDistance: number;
-    Montage: string;
-  };
-  AimAssistParamsSID: string;
-  Anim: EObjAnim;
-  ArmorDifferenceCoefMeleeAttacks: number;
-  ArmorDifferenceCoefProjectiles: number;
-  Blueprint: string;
-  BoneDamageCoefficients: {
-    DamageBone: EDamageBone;
-    DamageCoef: number;
-  }[];
-  CamperFeatureData: {
-    CamperRadius: number;
-    SyncTokenTag: string;
-    TimeToAssumeAsCamper: number;
-  };
-  CanBeKnockedDown: boolean;
-  CombatParameters: {
-    CheckEnemyTime: number;
-    CoverEvaluatorSID: string;
-    DamageThresholdToChangeLocation: number;
-    EarlyExitReloadTime: number;
-    EnemyCouldBeVisibleMaxDistance: number;
-    LoseEnemyVisibilityTime: number;
-    MaxTimeInBadShootingPosition: number;
-    NearbyDistanceWeaponNotReady: number;
-    NearbyDistanceWeaponReady: number;
-    RetreatToCoverDistance: number;
-  };
-  CustomMeshGeneratorPrototypeSID: string;
-  DoorTransitionSettings: {
-    Default: {
-      Animation: string;
-      StartDistance: number;
-    };
-    OneHandedWeaponCombat: {
-      Animation: string;
-      StartDistance: number;
-    };
-    OneHandedWeaponRelax: {
-      Animation: string;
-      StartDistance: number;
-    };
-    TwoHandedWeaponCombat: {
-      Animation: string;
-      StartDistance: number;
-    };
-    TwoHandedWeaponRelax: {
-      Animation: string;
-      StartDistance: number;
-    };
-  };
-  EscapeParameters: {
-    AttackEscapeDelay: number;
-    EscapeRadius: number;
-    FailureChance: string;
-    InterruptEscapeAfterEnemyLostDelay: number;
-    InterruptEscapeDelay: number;
-    SquadLostFractionToEscape: string;
-  };
-  EvadeParameters: {
-    AcceptableAngle: number;
-    AccumulatedDamage: number;
-    AnimationData: {
-      Montage: string;
-      Type: EEvadeActionType;
-    }[];
-    ApproachDistance: number;
-    DamageDetectionSeconds: number;
-    RequiredAmmoThreshold: string;
-  };
-  Faction: Faction;
-  FlairSensorPrototypeSID: string;
-  FlankParameters: {
-    ActivationDelaySeconds: number;
-    CostScale: number;
-    DamageDetectionSeconds: number;
-    ExtraSlotChance: string;
-    ExtraSlotTime: number;
-    FrontZone: Vec2[];
-    Height: number;
-    MaxAccumulatedDamage: number;
-    MaxAdvancedLocationSelectionDuration: number;
-    MaxPathCost: number;
-    MaxPathLength: number;
-    MaxSuccessDistance: number;
-    MinPathLength: number;
-    MinPathOffsetFromTarget: number;
-    MinSuccessDistance: number;
-    ScaleFactor: number;
-  };
-  FlashlightPrototypeSID: string;
-  HumanAmbushParameters: {
-    ApproachableDistance: number;
-    EntryDelay: number;
-    PathLengthThreshold: number;
-    PathUpdateInterval: number;
-  };
-  IgnoreEmission: boolean;
-  IsAffectingByMaxAttaches: boolean;
-  IsZombie: boolean;
-  ItemGeneratorPrototypeSID: string;
-  Mass: number;
-  MeshGeneratorPrototypeSID: string;
-  MovementParams: {
-    AirControlCoef: number;
-    BaseLookUpRate: number;
-    BaseTurnRate: number;
-    CanDash: boolean;
-    ClimbSpeedCoef: number;
-    CrouchSpeed: number;
-    JumpSpeedCoef: number;
-    LimpSpeedCoef: number;
-    LowCrouchSpeed: number;
-    MaxSlowdownValue: number;
-    MoveBackCrouchCoef: number;
-    MoveBackLowCrouchCoef: number;
-    MovementSpeedCoef: number;
-    RunBackCoef: number;
-    RunDiagonalBackCoef: number;
-    RunSpeed: number;
-    SprintSpeed: number;
-    StaggerAngle: number;
-    WalkBackCoef: number;
-    WalkDiagonalBackCoef: number;
-    WalkSpeed: number;
-    WalkTransitionCoef: number;
-  };
-  NeedsPresetSID: string;
-  NPCPrototypeSID: string;
-  NPCType: ENPCType;
-  OfflineCombatWeight: number;
-  Protection: Protection;
-  ReactOnApproachWithWeapon: boolean;
-  SequentialAbilities: string[];
-  SequentialAbilitiesActionData: {
-    bOrientsToTarget: boolean;
-  };
-  SID: string;
-  SpawnPhantomParams: {
-    DelayBeforeMovement: number;
-    PhantomAllowedEquipItems: string[];
-    PhantomAttackAbilityTag: string;
-    PhantomBlueprint: string;
-  };
-  SuppressiveFireParameters: {
-    LookAtBoneName: string;
-    MaxAccumulatedDamage: number;
-    MaxTimeToLoseTarget: number;
-    TraceDistance: number;
-  };
-  SyncParameters: {
-    AdvanceSyncTag: string;
-    AttackSyncTag: string;
-    EvadeSyncTag: string;
-    FlankSyncTag: string;
-    MovementSyncTag: string;
-    SuppressiveFireSyncTag: string;
-  };
-  TradePrototypeSID: string;
-  Type: EObjType;
-  VitalParams: {
-    DegenBleeding: number;
-    DegenPsyPoints: number;
-    DegenRadiation: number;
-    DegenSuppressionPoints: number;
-    MaxHP: number;
-    MaxSP: number;
-    RegenHP: number;
-    RegenHPDelayTimeSeconds: number;
-  };
-}>;
-
-export type GenericLairPrototype = GetStructType<{
-  Preset: {
-    ALifeLairsSearchRadius: number;
-    GameTimeOfflineToRerollLairData: number;
-    InitialInhabitantFaction: string;
-    IsALifePoint: boolean;
-    LairType: ELairType;
-    PossibleInhabitantFactions: Record<
-      Faction,
-      {
-        Faction: Faction;
-        SpawnSettingsPerPlayerRanks: Record<
-          Rank,
-          {
-            InitialSpawnQuantityPercent: number;
-            InitialSpawnQuantityRespawnTimeSeconds: number;
-            MaxSpawnQuantity: number;
-            MaxSpawnQuantityRespawnTimeSeconds: number;
-            SpawnSettingsPerArchetypes: Record<
-              Faction,
-              {
-                MinQuantityPerArchetype: number;
-                SpawnWeight: number;
-              }
-            >;
-            WipeRespawnTimeoutSeconds: number;
-          }
-        >;
-      }
-    >;
-    RestingLairInstantSpawnScenarioChance: number;
-    RestingLairLongDelaySpawnMax: number;
-    RestingLairLongDelaySpawnMin: number;
-    RestingLairMaxNPCCount: number;
-    RestingLairMinNPCCount: number;
-    RestingLairShortDelayedSpawnScenarioChance: number;
-    RestingLairShortDelaySpawnMax: number;
-    RestingLairShortDelaySpawnMin: number;
-  };
-  SID: string;
-}>;
-
-export type GlobalVariablePrototype = GetStructType<{
-  DefaultValue: string;
-  Description: string;
-  ID: number;
-  SID: string;
-  Type: EGlobalVariableType;
-}>;
-
-export type GreetingsPopupPrototype = GetStructType<{
-  Background: string;
-  EditionBitFlag: number;
-  LocalizationSID: string;
-  SID: string;
-}>;
-
-export type GrenadePrototype = GetStructType<{
-  ArmorDamage: number;
-  ArmorPiercing: number;
-  BaseComfort: number;
-  Blueprint: string;
-  Cost: number;
-  CrosshairType: ECrosshairType;
-  EffectApplyDistanceCoefficient: number;
-  ExplosionPrototypeSID: string;
-  GrenadeAnimBlueprint: string;
-  GrenadeExplosionHandLethal: string;
-  GrenadeExplosionHandNonlethal: string;
-  GrenadeExplosionLethalThreshold: string;
-  GrenadeType: EGrenadeType;
-  Icon: string;
-  ImpulseStrength: number;
-  InnerDamage: number;
-  ItemTypeSwitchValue: string;
-  MeshInWorldPrototypeSID: string;
-  MeshPrototypeSID: string;
-  NPCWeaponAttributes: string;
-  OuterDamage: number;
-  OuterWoundingRadius: number;
-  PhysicsInteractionPrototypeSID: string;
-  RollVelocityThreshold: number;
-  SafeTimeAfterThrow: number;
-  SID: string;
-  SkeletalMeshPrototypeSID: string;
-  StaticMeshPrototypeSID: string;
-  TimeToExplode: number;
-  Type: EItemType;
-  Weight: number;
-}>;
-
-export type GroomBlockingMappingPrototype = GetStructType<{
-  BlockingGrooms: string[];
-  BlockingGroomSIDs: string[];
-  SID: string;
-}>;
-
-export type GroomGeneratorPrototype = GetStructType<{
-  Category: GroomCategory[];
-  SID: string;
-}>;
-
-export type HappyHoursPrototype = GetStructType<{
-  HappyHoursRanges: {
-    HappyHoursCheckDeviation: number;
-    HappyHoursDeviation: number;
-    HappyHoursTime: number;
-  }[];
-  ID: number;
-  SID: string;
-}>;
-
-export type HearingSensorPrototype = GetStructType<{
-  HearingVolumeThreshold: string;
-  ID: number;
-  SID: string;
-  SoundEvents: {
-    HearingDistance: number;
-    Type: ESoundEventType;
-  }[];
-}>;
-
-export type ImpactPhysicalMaterialPrototype = GetStructType<{
-  ImpactPhysicalMaterialsResources: {
-    AdditionalRoll: number;
-    ImpactParticle: string;
-
-    ImpactParticleSize: number;
-
-    ImpactSurfaceDecalSize: Vec3;
-    ImpactSurfaceDecals: string[];
-
-    MaterialCoefficient: number;
-
-    PhysicalMaterialType: EPhysicalMaterialType;
-    bRandomizeRoll: boolean;
-  }[];
-  SID: string;
-}>;
-
-export type InfotopicPrototype = GetStructType<{
-  BlockingFactions: string[];
-  BlockingGlobalVariables: {
-    GlobalVariablePrototypeSID: string;
-    GlobalVariableValue: number;
-  }[];
-  BlockingNPCs: {
-    BlockingNPCObjPrototypeSID: string;
-  };
-  BlockingRegions: ERegion[];
-  BlockingReputations: {
-    Faction: Faction;
-    Reputation: ERelationLevel;
-  }[];
-  BlockingZoneSIDs: {
-    ZonePlaceholder: string;
-  };
-  ID: number;
-  InfotopicDialogs: string[];
-  LairSearchRadius: number;
-  RandomWeight: number;
-  RequiredFactions: string[];
-  RequiredGlobalVariables: {
-    GlobalVariablePrototypeSID: string;
-    GlobalVariableValue: number;
-  }[];
-  RequiredLairs: {
-    Faction: Faction;
-  };
-  RequiredNPCs: string[];
-  RequiredRegions: ERegion[];
-  RequiredReputations: {
-    Faction: Faction;
-    Reputation: ERelationLevel;
-  }[];
-  RequiredZoneSIDs: string[];
-  SID: string;
-  ZoneSearchRadius: number;
-}>;
-
-export type InputMappingContextPrototype = GetStructType<{
-  AssetPath: string;
-  CleanupInputSystemOnRemove: boolean;
-  IgnorePreviousPressedKeysOnCapture: boolean;
-  IgnorePreviousPressedKeysOnRemove: boolean;
-  MappingId: EMappingContext;
-  Priority: EInputMappingContextPriority;
-  SID: string;
-}>;
-
-export type ItemContainerPrototype = GetStructType<{
-  Blueprint: string;
-  bOpeningInventory: boolean;
-  CachePrototypeID: string;
-  EmptyMeshPrototypeSID: string;
-  ForcePhysics: boolean;
-  ItemContainerType: EItemContainerType;
-  MeshPrototypeSID: string;
-  RespawnTimeSeconds: number;
-  SID: string;
-  StashCloseEvent: string;
-  StashOpenEvent: string;
-  StashTypeSoundSwitch: string;
-}>;
-
-export type ItemGeneratorPrototype = GetStructType<{
-  GeneratedItems: string[];
-  ID: number;
-  ItemGenerator: ItemGeneratorEntry[];
-  MoneyGenerator: {
-    MaxCount: number;
-    MinCount: number;
-  };
-  RefreshTime: string;
-  SID: string;
-  SpecificRewardSound: EUISound;
-}>;
-
-export type ItemPrototype = GetStructType<{
-  BaseDurability: number;
-  ConsumeOnUse: boolean;
-  Cost: number;
-  DestroyOnPickup: boolean;
-  EffectOnPickPrototypeSIDs: string[];
-  EffectPrototypeSIDs: string[];
-  EffectsDisplayTypes: {};
-  FittingWeaponsSIDs: {};
-  HasPhysics: boolean;
-  Hint: string;
-  Icon: string;
-  IconBig: string;
-  IgnoreEquippedWeight: boolean;
-  Invisible: boolean;
-  InvisibleInPlayerInventory: boolean;
-  ItemGridHeight: number;
-  ItemGridWidth: number;
-  ItemSlotType: EInventoryEquipmentSlot;
-  ItemTypeSwitchValue: string;
-  MaxStackCount: number;
-  MeshPrototypeSID: string;
-  PhysicsInteractionPrototypeSID: string;
-  SectionPositions: string[];
-  ShouldShowEffects: string[];
-  SID: string;
-  SortGroup: ESortGroup;
-  SortPriority: number;
-  Type: EItemType;
-  Usable: boolean;
-  Weight: number;
-}>;
-
-export type JournalQuestPrototype = GetStructType<{
-  Description: string;
-  Descriptions: string[];
-  Image: string;
-  ImagePath: string;
-  LocationSID: string;
-  MainQuest: boolean;
-  Name: string;
-  Region: ERegion;
-  RewardTypes: string;
-  SID: string;
-  Stages: string;
-}>;
-
-export type KeyItemPrototype = GetStructType<{
-  LocalizationSID: string;
-  PhysicsInteractionPrototypeSID: string;
-  SID: string;
-  Weight: number;
-}>;
-
-export type LairPrototype = GetStructType<{
-  ID: number;
-  Preset: {
-    InitialInhabitantFaction: string;
-    IsALifePoint: boolean;
-    PossibleInhabitantFactions: {
-      Faction: Faction;
-      SpawnSettingsPerPlayerRanks: Record<
-        Rank,
-        {
-          InitialSpawnQuantityPercent: number;
-          InitialSpawnQuantityRespawnTimeSeconds: number;
-          MaxSpawnQuantity: number;
-          MaxSpawnQuantityRespawnTimeSeconds: number;
-          SpawnSettingsPerArchetypes: Record<
-            Faction,
-            { MinQuantityPerArchetype: number; SpawnWeight: number }
-          >;
-          WipeRespawnTimeoutSeconds: number;
-        }
-      >;
-    }[];
-  };
-  SID: string;
-}>;
-
-export type LevelStreamingPrototype = GetStructType<{
-  HiddenLevels: string[];
-  ID: number;
-  SID: string;
-}>;
-
-export type LR_MeshGeneratorPrototype = GetStructType<{
-  Attachments: Record<
-    MeshAttachment,
-    {
-      Attaches: {
-        BlockingBodyMeshes: string[];
-        BlockingSlots: string[];
-        BodyMeshSID: string;
-        Weight: number;
-      }[];
-      IsSkeletal: boolean;
-      Name: string;
-      OffsetX: number;
-      OffsetY: number;
-      OffsetZ: number;
-      RotationPitch: number;
-      RotationRoll: number;
-      RotationYaw: number;
-      ScaleX: number;
-      ScaleY: number;
-      ScaleZ: number;
-      SlotName: string;
-      SocketName: string;
-    }
-  >;
-  CustomData: {
-    "0": {
-      Distribution: ECustomDataDistribution;
-      MaterialGroup: string;
-      Variations: {
-        VariationIndex: number;
-        Weight: number;
-      }[];
-    };
-    Chevron_index: {
-      Distribution: ECustomDataDistribution;
-      MaterialGroup: string;
-      Variations: {
-        VariationIndex: number;
-        Weight: number;
-      }[];
-    };
-    Damage: {
-      Distribution: ECustomDataDistribution;
-      MaterialGroup: string;
-      Variations: {
-        VariationIndex: number;
-        Weight: number;
-        bBlockedInVisualizer: boolean;
-      }[];
-    };
-    DamageIndex_01: {
-      Distribution: ECustomDataDistribution;
-      MaterialGroup: string;
-      Variations: {
-        VariationIndex: number;
-        Weight: number;
-        bBlockedInVisualizer: boolean;
-      }[];
-    };
-    DamageIndex_02: {
-      Distribution: ECustomDataDistribution;
-      MaterialGroup: string;
-      Variations: {
-        VariationIndex: number;
-        Weight: number;
-        bBlockedInVisualizer: boolean;
-      }[];
-    };
-    DamagePoss_01: {
-      Distribution: ECustomDataDistribution;
-      MaterialGroup: string;
-      Variations: {
-        VariationIndex: number;
-        Weight: number;
-        bBlockedInVisualizer: boolean;
-      }[];
-    };
-    DamagePoss_02: {
-      Distribution: ECustomDataDistribution;
-      MaterialGroup: string;
-      Variations: {
-        VariationIndex: number;
-        Weight: number;
-        bBlockedInVisualizer: boolean;
-      }[];
-    };
-    DamageRotation_Index_01: {
-      Distribution: ECustomDataDistribution;
-      MaterialGroup: string;
-      Variations: {
-        VariationIndex: number;
-        Weight: number;
-        bBlockedInVisualizer: boolean;
-      }[];
-    };
-    DamageRotation_Index_02: {
-      Distribution: ECustomDataDistribution;
-      MaterialGroup: string;
-      Variations: {
-        VariationIndex: number;
-        Weight: number;
-        bBlockedInVisualizer: boolean;
-      }[];
-    };
-    DamageScale_Index_01: {
-      Distribution: ECustomDataDistribution;
-      MaterialGroup: string;
-      Variations: {
-        VariationIndex: number;
-        Weight: number;
-        bBlockedInVisualizer: boolean;
-      }[];
-    };
-    DamageScale_Index_02: {
-      Distribution: ECustomDataDistribution;
-      MaterialGroup: string;
-      Variations: {
-        VariationIndex: number;
-        Weight: number;
-        bBlockedInVisualizer: boolean;
-      }[];
-    };
-    DefectIntensity_Index: {
-      Distribution: ECustomDataDistribution;
-      MaterialGroup: string;
-      Variations: {
-        VariationIndex: number;
-        Weight: number;
-        bBlockedInVisualizer: boolean;
-      }[];
-    };
-    Defects: {
-      Distribution: ECustomDataDistribution;
-      MaterialGroup: string;
-      Variations: {
-        VariationIndex: number;
-        Weight: number;
-        bBlockedInVisualizer: boolean;
-      }[];
-    };
-    Dirt: {
-      Distribution: ECustomDataDistribution;
-      MaterialGroup: string;
-      Variations: {
-        VariationIndex: number;
-        Weight: number;
-        bBlockedInVisualizer: boolean;
-      }[];
-    };
-    Dirt_Intensity: {
-      Distribution: ECustomDataDistribution;
-      MaterialGroup: string;
-      Variations: {
-        bBlockedInVisualizer: boolean;
-        VariationIndex: number;
-        Weight: number;
-      }[];
-    };
-    Teeth: {
-      Distribution: ECustomDataDistribution;
-      MaterialGroup: string;
-      Variations: {
-        VariationIndex: number;
-        Weight: number;
-      }[];
-    };
-    TeethColor: {
-      Distribution: ECustomDataDistribution;
-      MaterialGroup: string;
-      Variations: {
-        VariationIndex: number;
-        Weight: number;
-        bBlockedInVisualizer: boolean;
-      }[];
-    };
-  };
-  Groom: {
-    CategoryName: string;
-    Variations: {
-      VariationIndex: number;
-      Weight: number;
-    }[];
-  }[];
-  Materials: {
-    MaterialGroup: string;
-    Variations: {
-      VariationIndex: number;
-      Weight: number;
-    }[];
-  }[];
-  ParentMeshGeneratorSID: string;
-  SID: string;
-}>;
-
-export type MarkerPrototype = GetStructType<{
-  Description: string;
-  HubRadius: number;
-  InitDiscoverState: string;
-  MarkerExploreDistance: number;
-  MarkerRadius: number;
-  MarkerRevealDistance: number;
-  MarkType: EMarkerType;
-  RegionType: ERegion;
-  SID: string;
-  Title: string;
-  WorldPosition: Vec3;
-}>;
-
-export type MeleeWeaponPrototype = GetStructType<{
-  ArmorDamage: number;
-  ArmorPiercing: number;
-  Bleeding: number;
-  BleedingChanceIncrement: number;
-  CrosshairType: ECrosshairType;
-  Damage: number;
-  DamageModifiers: {
-    HandOccupied: number;
-    StrongAttack: number;
-  };
-  HeavyAttackImpactSoundEvent: string;
-  HitDetectionAngle: number;
-  HitDetectionDistance: number;
-  HitDetectionRadius: number;
-  ImpactPhysicalMaterialPrototypeSID: string;
-  ImpulseModifiers: {
-    HandOccupied: number;
-    StrongAttack: number;
-  };
-  ImpulseStrength: number;
-  LightAttackImpactSoundEvent: string;
-  ShouldIgnoreArmor: boolean;
-  SID: string;
-  SourceEffects: {
-    Chance: number;
-    EffectPrototypeSID: string;
-  }[];
-  TargetEffects: {
-    Chance: number;
-    EffectPrototypeSID: string;
-  }[];
-}>;
-
-export type MeshGeneratorPrototype = GetStructType<{
-  Attachments: Record<
-    MeshAttachment,
-    {
-      Attaches: {
-        BlockingBodyMeshes: string[];
-        BlockingSlots: string[];
-        BodyMeshSID: string;
-        Weight: number;
-      }[];
-      IsSkeletal: boolean;
-      Name: string;
-      OffsetX: number;
-      OffsetY: number;
-      OffsetZ: number;
-      RotationPitch: number;
-      RotationRoll: number;
-      RotationYaw: number;
-      ScaleX: number;
-      ScaleY: number;
-      ScaleZ: number;
-      SlotName: string;
-      SocketName: string;
-    }
-  >;
-  CustomData: {
-    "0": {
-      Distribution: ECustomDataDistribution;
-      MaterialGroup: string;
-      Variations: {
-        VariationIndex: number;
-        Weight: number;
-      }[];
-    };
-    Chevron_index: {
-      Distribution: ECustomDataDistribution;
-      MaterialGroup: string;
-      Variations: {
-        VariationIndex: number;
-        Weight: number;
-      }[];
-    };
-    Damage: {
-      Distribution: ECustomDataDistribution;
-      MaterialGroup: string;
-      Variations: {
-        VariationIndex: number;
-        Weight: number;
-        bBlockedInVisualizer: boolean;
-      }[];
-    };
-    DamageIndex_01: {
-      Distribution: ECustomDataDistribution;
-      MaterialGroup: string;
-      Variations: {
-        VariationIndex: number;
-        Weight: number;
-        bBlockedInVisualizer: boolean;
-      }[];
-    };
-    DamageIndex_02: {
-      Distribution: ECustomDataDistribution;
-      MaterialGroup: string;
-      Variations: {
-        VariationIndex: number;
-        Weight: number;
-        bBlockedInVisualizer: boolean;
-      }[];
-    };
-    DamagePoss_01: {
-      Distribution: ECustomDataDistribution;
-      MaterialGroup: string;
-      Variations: {
-        VariationIndex: number;
-        Weight: number;
-        bBlockedInVisualizer: boolean;
-      }[];
-    };
-    DamagePoss_02: {
-      Distribution: ECustomDataDistribution;
-      MaterialGroup: string;
-      Variations: {
-        VariationIndex: number;
-        Weight: number;
-        bBlockedInVisualizer: boolean;
-      }[];
-    };
-    DamageRotation_Index_01: {
-      Distribution: ECustomDataDistribution;
-      MaterialGroup: string;
-      Variations: {
-        VariationIndex: number;
-        Weight: number;
-        bBlockedInVisualizer: boolean;
-      }[];
-    };
-    DamageRotation_Index_02: {
-      Distribution: ECustomDataDistribution;
-      MaterialGroup: string;
-      Variations: {
-        VariationIndex: number;
-        Weight: number;
-        bBlockedInVisualizer: boolean;
-      }[];
-    };
-    DamageScale_Index_01: {
-      Distribution: ECustomDataDistribution;
-      MaterialGroup: string;
-      Variations: {
-        VariationIndex: number;
-        Weight: number;
-        bBlockedInVisualizer: boolean;
-      }[];
-    };
-    DamageScale_Index_02: {
-      Distribution: ECustomDataDistribution;
-      MaterialGroup: string;
-      Variations: {
-        VariationIndex: number;
-        Weight: number;
-        bBlockedInVisualizer: boolean;
-      }[];
-    };
-    DefectIntensity_Index: {
-      Distribution: ECustomDataDistribution;
-      MaterialGroup: string;
-      Variations: {
-        VariationIndex: number;
-        Weight: number;
-        bBlockedInVisualizer: boolean;
-      }[];
-    };
-    Defects: {
-      Distribution: ECustomDataDistribution;
-      MaterialGroup: string;
-      Variations: {
-        VariationIndex: number;
-        Weight: number;
-        bBlockedInVisualizer: boolean;
-      }[];
-    };
-    Dirt: {
-      Distribution: ECustomDataDistribution;
-      MaterialGroup: string;
-      Variations: {
-        VariationIndex: number;
-
-        Weight: number;
-        bBlockedInVisualizer: boolean;
-      }[];
-    };
-    Dirt_Intensity: {
-      Distribution: ECustomDataDistribution;
-      MaterialGroup: string;
-      Variations: {
-        bBlockedInVisualizer: boolean;
-        VariationIndex: number;
-        Weight: number;
-      }[];
-    };
-    Teeth: {
-      Distribution: ECustomDataDistribution;
-      MaterialGroup: string;
-      Variations: {
-        VariationIndex: number;
-        Weight: number;
-      }[];
-    };
-    TeethColor: {
-      Distribution: ECustomDataDistribution;
-      MaterialGroup: string;
-      Variations: {
-        VariationIndex: number;
-        Weight: number;
-        bBlockedInVisualizer: boolean;
-      }[];
-    };
-  };
-  Groom: {
-    CategoryName: string;
-    Variations: {
-      VariationIndex: number;
-      Weight: number;
-    }[];
-  }[];
-  Materials: {
-    MaterialGroup: string;
-    Variations: {
-      VariationIndex: number;
-      Weight: number;
-    }[];
-  }[];
-  ParentMeshGeneratorSID: string;
-  QualityPresetsMeshGenerators: {
-    MeshGeneratorSID: string;
-    QualityPresetIndex: number;
-  }[];
-  SID: string;
-}>;
-
-export type MeshPrototype = GetStructType<
-  {
-    AdditionalMeshes: {
-      MeshPath: string;
-      MeshPrototypeSID: string;
-    }[];
-    ID: number;
-    MaterialPath: string;
-    Materials: {
-      MaterialPath: string;
-      MaterialSlot: number;
-    }[];
-    MeshPath: string;
-    MeshType: EMeshSubType;
-    ScaleX: number;
-    ScaleY: number;
-    ScaleZ: number;
-    SID: string;
-    SizX: number;
-    SizeY: number;
-    SizeZ: number;
-  } & Rot
+export type ContextualActionNodePrototypeAnimationData = GetStructType<
+  ContextualActionNodePrototypeAnimationDataItem[]
 >;
 
-export type MisansceneNodePrototype = GetStructType<{
-  ActorID: number;
-  ActorSID: string;
-  ActorsSID: string[];
-  Chances: number[];
-  Connections: {
-    Input: string[];
-    Output: string[];
-  };
-  MisansceneSID: string;
-  NodeType: EMisansceneNodeType;
-  Repetitions: number;
-  SID: string;
-  TargetGuid: string;
+export type ContextualActionNodePrototypeAnimationDataItem = GetStructType<{
+  MontagePath: string;
+  MontageSection: string;
 }>;
 
-export type MoneyPrototype = GetStructType<{
-  Cost: number;
-  DestroyOnPickup: boolean;
-  EffectOnPickPrototypeSIDs: string[];
-  EffectPrototypeSIDs: string[];
-  Icon: string;
-  InvisibleInPlayerInventory: boolean;
-  LocalizationSID: string;
-  MeshInWorldPrototypeSID: string;
-  MeshPrototypeSID: string;
-  PhysicsInteractionPrototypeSID: string;
-  SID: string;
-  Type: EItemType;
-  Weight: number;
-}>;
-
-export type MovementFXPrototype = GetStructType<{
-  BackFootSoundEvent: string;
-  DashVFXPath: string;
-  FootstepFX: {
-    BackFootDecal: string;
-    FrontFootDecal: string;
-    ImpactParticle: string;
-    ImpactParticleRunSprint: string;
-    ImpactSurfaceDecalSize: Vec3;
-    PhysicalMaterialType: EPhysicalMaterialType;
-  }[][];
-  FrontFootSoundEvent: string;
-  ID: number;
-  InteractLadderMetal: string;
-  InteractLadderWood: string;
-  InteractSoundEvent: {
-    InteractionFX: EInteractFXType;
-    SoundEvent: string;
-  }[];
-  MovementTypeJogging: string;
-  MovementTypeRun: string;
-  MovementTypeSprint: string;
-  MovementTypeWalk: string;
-  PhysicsSoundSID: string;
-  PlayerCrouchEvent: string;
-  PlayerJumpEvent: string;
-  PlayerLandingEvent: string;
-  PlayerLowCrouchEvent: string;
-  PlayerStandEvent: string;
-  SID: string;
-  WaterMovement: {
-    ImpactSpawnIntervalSeconds: number;
-    JumpWaterImpact: string;
-    MovingThroughLowWaterImpactRunSprint: string;
-    MovingThroughLowWaterImpactWalk: string;
-    MovingThroughWaterImpact: string;
-  };
-}>;
-
-export type MovementSensorPrototype = GetStructType<{
-  DetectionRadius: number;
-  DetectionSpeed: number;
-  DistancePenaltyCurve: string;
-  Enabled: boolean;
-  IdentificationThreshold: number;
-  MinObjectSpeedRange: Vec2;
-  SID: string;
-}>;
-
-export type MusicManagerPrototype = GetStructType<{
-  CombatTracks: {
-    TrackSwitchValue: string;
-  }[];
-  SID: string;
-}>;
-
-export type MutantLootPrototype = GetStructType<{
-  Cost: number;
-  DestroyOnPickup: boolean;
-  Icon: string;
-  Invisible: boolean;
-  ItemGridHeight: number;
-  ItemGridWidth: number;
-  ItemTypeSwitchValue: string;
-  LocalizationSID: string;
-  MeshPrototypeSID: string;
-  PhysicsInteractionPrototypeSID: string;
-  SID: string;
-  Type: EItemType;
-  Weight: number;
-}>;
-
-export type NightVisionGogglesPrototype = GetStructType<{
-  ActiveEffectSIDs: string[];
-  Cost: number;
-  Icon: string;
-  Icon1x1: string;
-  Invisible: boolean;
-  ItemSlotType: EInventoryEquipmentSlot;
-  ItemTypeSwitchValue: string;
-  LocalizationSID: string;
-  MaxStackCount: number;
-  MeshPrototypeSID: string;
-  NPCGogglesPrototypeSID: string;
-  PhysicsInteractionPrototypeSID: string;
-  SID: string;
-  TurnOffAudioEvent: string;
-  TurnOnAudioEvent: string;
-  Type: EItemType;
-  Weight: number;
-}>;
-
-export type NotePrototype = GetStructType<{
-  AudiologChainPrototypeSID: string;
-  CustomIconPath: string;
-  ID: number;
-  NoteType: ENoteType;
-  SID: string;
-  Text: string;
-  Title: string;
-}>;
-
-export type NotificationEventPrototype = GetStructType<{
-  FactionBasedSoundEventInformation: {
-    Faction: Faction;
-    FactionDetectionRadius: number;
-  }[];
-  ID: number;
-  MaxNotificationEventOccurencePerSecond: number;
-  MaxSoundSpreadingDistance: number;
-  SID: string;
-  Type: ENotificationEventType;
-}>;
-
-export type NPCNeedsPresetPrototype = GetStructType<{
-  GoalNeeds: (
-    | boolean
-    | {
-        InitialNeedValue: number;
-        MaxIncreasePerMinute: number;
-        MinIncreasePerMinute: number;
-        NeedSatisfactionThreshold: number;
-        NeedTag: string;
-      }
-  )[];
-  Needs: {
-    IncreaseRateMax: number;
-    IncreaseRateMin: number;
-    MaxCount: number;
-    NeedType: EContextualActionNeeds;
-    Radius: number;
-  }[];
-  NeedsResolvers: (
-    | boolean
-    | {
-        ExpansionResolverFactory: {
-          MaxSquadSize: number;
-          MinSquadSize: number;
-        };
-        IdentificationTag: string;
-        OnCompleted: {
-          NeedTag: string;
-          SatisfactionAmount: number;
-        }[];
-        ResolverFactory: string;
-        ReuniteWithLairResolverFactory: {
-          MaxSquadSize: number;
-          MinSquadSize: number;
-        };
-      }
-  )[];
-  SID: string;
-}>;
-
-export type NPCNightVisionSetupPrototype = GetStructType<{
-  AllowedAttachSuffixes: string[];
-  BlockAttachSuffixes: string[];
-  ID: number;
-  IncompatibleSuffixes: string[];
-  MaterialEmissiveMultOverride: number;
-  PointLightOffsets: {
-    PointLightOffsetRotator: Rot;
-    PointLightOffsetVector: Vec3;
-  }[];
-  SID: string;
-  SocketNamesMeshes: {
-    HelmetAttachmentMesh: string;
-    HelmetAttachmentOffsetRotator: Rot;
-    HelmetAttachmentOffsetVector: Vec3;
-    MeshOffsetParams: {
-      MeshPath: string;
-      OffsetRotator: Rot;
-      OffsetVector: Vec3;
-    }[];
-    RelatedMeshes:
-      | string[]
-      | {
-          RelatedMeshAsset: string;
-        };
-    SocketName: string;
-  }[];
-  SpotlightBrightnessOverride: number;
-}>;
-
-export type NPCPrototype = GetStructType<{
-  BusyCommentDialogChain: string;
-  BuyCoefficient: number;
-  ByeDialogChain: string;
-  CallPlayerCommentDialogChain: string;
-  DefeatCommentDialogChain: string;
-  DefeatTopicDialogChain: string;
-  FastTravelPrototypeSID: string;
-  HelloDialogChain: string;
-  Money: number;
-  NameTextKey: string;
-  NPCMarker: string;
-  NPCType: ENPCType;
-  QuestNPC: boolean;
-  ResumeCommentDialogChain: string;
-  SellCoefficient: number;
-  SID: string;
-  Skills: string[];
-  ThreshHoldItemCondition: number;
-  TradeTopicDialogChain: string;
-  TravelTopicDialogChain: string;
-  UpdateMarkerOnMap: boolean;
-  Upgrades: {
-    Enabled: boolean;
-    UpgradePrototypeSID: string;
-  }[];
-  UpgradeTopicDialogChain: string;
-  UseGeneratedName: boolean;
-  VoiceEN: string;
-  VoiceUA: string;
-}>;
-
-export type NPCSpawnerPrototype = GetStructType<{
-  Blueprint: string;
-  MinPopulationCountToRefresh: number;
-  ObjPrototypeSIDs: string[];
-  QuantityMaxInSquad: number;
-  QuantityMinInSquad: number;
-  SID: string;
-  SpawnRadius: number;
-}>;
-
-export type NPCWeaponAttributesPrototype = GetStructType<{
-  AIParameters: {
-    BehaviorTypes: Record<
-      Rank | "Zombie",
-      Record<
-        WeaponShootDistance,
-        {
-          IgnoreDispersionMaxShots: number;
-          IgnoreDispersionMinShots: number;
-          MaxSecondsDelay: number;
-          MaxShots: number;
-          MinSecondsDelay: number;
-          MinShots: number;
-        }
-      > & {
-        CharacterWeaponSettingsSID: string;
-        CombatEffectiveFireDistanceMax: string;
-        CombatEffectiveFireDistanceMin: string;
-        NonAutomaticWeaponShotDelay: number;
-      }
-    >;
-  };
-  AnimBlueprint: string;
-  MuzzleSocketName: string;
-  ParticlesBasedOnHeating: {
-    PostShooting: {
-      MinHeatingValueToAppear: number;
-      PFXPath: string;
-      SocketName: string;
-    };
-    Shooting: {
-      MinHeatingValueToAppear: number;
-      PFXPath: string;
-      SocketName: string;
-    };
-    VFXGroupName: string;
-  }[];
-  ShellShutterSocketName: string;
-  SID: string;
-}>;
-
-export type NPCWeaponSettingsPrototype = GetStructType<{
-  ArmorDamage: number;
-  ArmorPiercing: number;
-  BaseBleeding: number;
-  BaseDamage: number;
-  BulletDropHeight: number;
-  ChanceBleedingPerShot: string;
-  CombatSynchronizationScore: {
-    Score: number;
-    TokenTag: string;
-  }[];
-  DispersionRadius: number;
-  DispersionRadiusMultiplierByDistanceCurve: string;
-  DispersionRadiusZombieAddend: number;
-  DistanceDropOffLength: number;
-  DurabilityDamagePerShot: number;
-  FireDistanceDropOff: number;
-  MinBulletDistanceDamageModifier: number;
-  SID: string;
-  StaggerEffectPrototypeSID: string;
-}>;
-
-export type ObjAimAssistParamsPrototype = GetStructType<{
-  BoneClusters: {
-    AdditionalBones: string[];
-    MainBone: string;
-    VisibilityBone: string;
-  }[];
-  SID: string;
-}>;
-
-export type ObjCrouchParamsPrototype = GetStructType<{
-  CrouchEffectSIDs: string[];
-  SID: string;
-}>;
-
-export type ObjCustomAbilityDialogPrototype = GetStructType<{
-  AbilityDialogues: {
-    AbilityTag: string;
-    DialogueSIDs: string[];
-  }[];
-  SID: string;
-}>;
-
-export type ObjEffectMaxParamsPrototype = GetStructType<{
-  MaxEffectValues: {
-    EffectSID: EEffectType;
-    MaxValue: number;
-  }[];
-  SID: string;
-}>;
-
-export type ObjHoldBreathParamsPrototype = GetStructType<{
-  HoldBreathCooldown: number;
-  HoldBreathDrainPerSecond: number;
-  HoldBreathMaxStamina: number;
-  HoldBreathRegenPerSecond: string;
-  HoldBreathStaminaThreshold: number;
-  PostHoldBreathParameters: {
-    EffectPrototypeSIDs: string[];
-    Threshold: number;
-  }[];
-  SID: string;
-}>;
-
-export type ObjOnHitParamsPrototype = GetStructType<{
-  DamageTypeEffects: {
-    DamageType: EDamageType;
-    Effects: {
-      AccumulationTime: number;
-      EffectSID: string;
-      MaxDamage: number;
-      MaxEffectValueModifier: number;
-      MinDamage: number;
-      MinEffectValueModifier: number;
-    }[];
-  }[];
-  DirectionalDamageEffects: {
-    EffectSID: string;
-    MaxDamage: number;
-    MaxEffectValueModifier: number;
-    MinDamage: number;
-    MinEffectValueModifier: number;
-  }[][];
-  SID: string;
-}>;
-
-export type ObjPrototype = GetStructType<{
-  AIVisionTargetParams: {
-    FriendlyTracePoints: {
-      BaseScorePerSecond: number;
-      BoneName: string;
-      Label: string;
-    }[];
-    TracePoints: {
-      BaseScorePerSecond: number;
-      BoneName: string;
-      Label: string;
-      RelativeLocation: Vec3;
-    }[];
-  };
-  Abilities: Record<
-    Ability,
-    {
-      ActivationTag: string;
-      SID: string;
-    }
-  >;
-  AdvanceParameters: {
-    MaxAdvanceDurationSeconds: number;
-    MaxDistanceToEnemy: number;
-  };
-  AgentBehaviourParameters: {
-    WeaponHandling: {
-      FarFireQueueDelaySeconds: number;
-      FireQueueDelayRandomizationFactor: number;
-      MaxFireCountQueueScaler: number;
-      MinFireCountQueueScaler: number;
-      NearFireQueueDelaySeconds: number;
-      PerBoneIgnoreDispersionModifiers: {
-        BoneLabel: string;
-        Max: number;
-        Min: number;
-      }[];
-      SwitchWeaponIfNoAmmo: boolean;
-    };
-  };
-  AgentType: EAgentType;
-  AimAssistParamsSID: string;
-  Anim: EObjAnim;
-  AnomalyDetectorPrototypeSID: string;
-  AnomalyRestrictionsIgnoreChance: number;
-  ApplicableMechanicsEffects: string[];
-  ArmorDifferenceCoefMeleeAttacks: number;
-  ArmorDifferenceCoefProjectiles: number;
-  AttackParams: {
-    FireDispersionParams: {
-      CrouchMoveCoef: number;
-      Default: number;
-      DefaultAim: number;
-      Jump: number;
-      LowCrouchCoef: number;
-      VelocityFactor: number;
-    };
-    ForceDistance: number;
-    MeleeAttackAcceptanceDistance: number;
-    MeleeAttackHeight: number;
-    MeleeAttackRadius: number;
-    MeleeDamage: number;
-    MutantAttackParams: {
-      ExampleAttack: {
-        ArmorPiercing: number;
-        AttackRootMotionTravelDistance: number;
-        Bleeding: number;
-        BleedingChanceIncrement: number;
-        Damage: number;
-        DamageSource: EDamageSource;
-        Effects: {
-          Chance: number;
-          EffectPrototypeSID: string;
-        }[];
-        MaxAttackAngle: number;
-        MinAttackDistance: number;
-        MutantAttackType: EMutantAttackType;
-      };
-      JumpAttack: {
-        ArmorPiercing: number;
-        AttackRootMotionTravelDistance: number;
-        Bleeding: number;
-        BleedingChanceIncrement: number;
-        Cooldown: number;
-        Damage: number;
-        DamageSource: EDamageSource;
-        Effects: {
-          Chance: number;
-          EffectPrototypeSID: string;
-        }[];
-        MaxAttackAngle: number;
-        MinAttackDistance: number;
-        MutantAttackType: EMutantAttackType;
-      };
-    };
-  };
-  BlinkTeleportActionData: {
-    bStartAmbushOnBlink: boolean;
-    FinishAmbushTime: {
-      MaxTime: number;
-      MinTime: number;
-    };
-  };
-  Blueprint: string;
-  BoneBleedingCoefficients: {
-    DamageBone: EDamageBone;
-    DamageCoef: number;
-  }[];
-  BoneDamageCoefficients: {
-    DamageBone: EDamageBone;
-    DamageCoef: number;
-  }[];
-  BoneDamageMap: {
-    "0": {
-      CapsuleNames: string[];
-      DamageBone: EDamageBone;
-    };
-    "1": {
-      CapsuleNames: string[];
-      DamageBone: EDamageBone;
-    };
-  };
-  CamperFeatureData: {
-    CamperRadius: number;
-    SyncTokenTag: string;
-    TimeToAssumeAsCamper: number;
-  };
-  CanBeKnockedDown: boolean;
-  CanDailyScheduleBeOverride: boolean;
-  CanPeekOut: boolean;
-  CanProcessCorpses: boolean;
-  ChangeCombatLocationActionData: {
-    MoveToLocationFinishedAcceptableDistance: number;
-    SearchSimpleLocationRadius: number;
-  };
-  ChargeActionData: {
-    AcceptableRadiusToTheEnd: number;
-    DistToRunAfterTarget: number;
-    Enabled: boolean;
-    MaxDistToTarget: number;
-    MinDistToTarget: number;
-    SyncTag: string;
-  };
-  ChaserFeatureData: {
-    ChaserRadius: number;
-    Enabled: boolean;
-    RemainingHPToAssumeAsChaser: number;
-    TimeToAssumeAsChaser: number;
-  };
-  ClawAttackAnyAngleData: {
-    AttacksConditions: {
-      AbilityTag: string;
-      StartAttackMaxAngle: number;
-      StartAttackMaxAngleToEnemyDirection: number;
-      StartAttackMinAngle: number;
-      StartAttackMinAngleToEnemyDirection: number;
-    }[];
-    AttackSyncTag: string;
-    Enabled: boolean;
-    HitOffset: number;
-    StartAttackMaxDistance: number;
-    StartAttackMinDistance: number;
-  };
-  ClawAttackData: {
-    AbilityTag: string;
-    AttacksConditions: {
-      AbilityTag: string;
-      StartAttackMaxAngle: number;
-      StartAttackMaxAngleToEnemyDirection: number;
-      StartAttackMinAngle: number;
-      StartAttackMinAngleToEnemyDirection: number;
-    }[];
-    AttackSyncTag: string;
-    Cooldown_Failed: number;
-    Cooldown_SeriesFailed: number;
-    Enabled: boolean;
-    HitOffset: number;
-    MaxZDiff: number;
-    OrderActionMaxAngle: number;
-    OrderActionMinAngle: number;
-    StartAttackMaxAngle: number;
-    StartAttackMaxAngleToEnemyDirection: number;
-    StartAttackMaxDistance: number;
-    StartAttackMaxDistanceTargetReachable: number;
-    StartAttackMinAngle: number;
-    StartAttackMinAngleToEnemyDirection: number;
-    StartAttackMinDistance: number;
-  };
-  CombatParameters: {
-    CheckEnemyTime: number;
-    CoverEvaluatorSID: string;
-    DamageThresholdToChangeLocation: number;
-    EarlyExitReloadTime: number;
-    EnemyCouldBeVisibleMaxDistance: number;
-    LoseEnemyVisibilityTime: number;
-    MaxTimeInBadShootingPosition: number;
-    NearbyDistanceWeaponNotReady: number;
-    NearbyDistanceWeaponReady: number;
-    RetreatToCoverDistance: number;
-    UseFrontLineSearchPoint: boolean;
-  };
-  CombatSummonFeatureData: {
-    bCheckLocationsBeforeStart: boolean;
-    SummonAbilityTag: string;
-  };
-  CriticalDamageAccumulationPeriod: number;
-  CriticalDamageCoefThreshold: number;
-  CriticalDamageCooldownMax: number;
-  CriticalDamageCooldownMin: number;
-  CriticalDamageThreshold: number;
-  CrouchParamsSID: string;
-  CustomAbilityDialogSID: string;
-  CustomMeshGeneratorPrototypeSID: string;
-  DailyScheduleSID: string;
-  DamageAccumulatedToRetreat: number;
-  DamageAccumulationDurationSeconds: number;
-  DashParameters: {
-    CollisionPreset: string;
-    Montage: string;
-    MovementSound: string;
-    MovementVFX: string;
-  };
-  DeathHandlerFeatureData: {
-    EffectsOnPlayer: {
-      Chance: number;
-      EffectPrototypeSID: string;
-    }[];
-  };
-  DeathHitImpulseMultiplier: number;
-  DeathVelocityImpulseMultiplier: number;
-  DisableMovementWeightThreshold: {
-    BlockingMovement: EStateTag[];
-    WeightStatus: EWeightStatus;
-  }[];
-  DoorTransitionSettings: {
-    Default: {
-      Animation: string;
-      StartDistance: number;
-    };
-  };
-  EffectMaxParamsSID: string;
-  EnemyValidationActionParams: {
-    GenerateValidationLocations: boolean;
-    GroupSpreadingMinDistance: number;
-    MinAdditionalValidationPoints: number;
-    MinDistanceToValidationPoint: number;
-    MinValidationTimeAtLocation: number;
-    PointsSpreadDistance: number;
-    PossibleContextualActions: {};
-    WaitForContextualAction: boolean;
-  };
-  EscapeIsolatedNavmeshActionData: {
-    AbilityActivationTag: string;
-    bEnabled: boolean;
-    JumpDistance: number;
-  };
-  EscapeParameters: {
-    AttackEscapeDelay: number;
-    EscapeRadius: number;
-    FailureChance: string;
-    InterruptEscapeAfterEnemyLostDelay: number;
-    InterruptEscapeDelay: number;
-    SquadLostFractionToEscape: string;
-  };
-  EvadeParameters: {
-    AnimationData: {
-      Montage: string;
-      Type: EEvadeActionType;
-    }[];
-    MovementVFX: string;
-  };
-  Faction: Faction;
-  FactoryClassName: string;
-  FlairParams: {
-    IsActive: boolean;
-    SensingRadius: number;
-  };
-  FlairSensorPrototypeSID: string;
-  FlankParameters: {
-    ActivationDelaySeconds: number;
-    CostScale: number;
-    DamageDetectionSeconds: number;
-    ExtraSlotChance: string;
-    ExtraSlotTime: number;
-    FrontZone: Vec2[];
-    Height: number;
-    MaxAccumulatedDamage: number;
-    MaxPathLength: number;
-    MinPathLength: number;
-    ScaleFactor: number;
-    SprintDistance: number;
-    WalkDistance: number;
-  };
-  FlankThreatActionData: {
-    FlankMaxAngle: number;
-    FlankMaxRadius: number;
-    FlankMinAngle: number;
-    FlankMinRadius: number;
-  };
-  FlashlightPrototypeSID: string;
-  FlyThroughData: {
-    AbilityTag: string;
-    AttackSyncTag: string;
-    Enabled: boolean;
-    JumpMoveMontage: string;
-    MaxJumpHeight: number;
-    MinJumpHeight: number;
-    StartAttackMaxAngle: number;
-    StartAttackMaxAngleToEnemyDirection: number;
-    StartAttackMaxDistance: number;
-    StartAttackMinAngle: number;
-    StartAttackMinAngleToEnemyDirection: number;
-    StartAttackMinDistance: number;
-  };
-  HearingSensorPrototypeSID: string;
-  HideWeaponWarning: {
-    BarkDelay: number;
-    CalmDownTime: number;
-    DetectionDistance: number;
-    FollowDistance: number;
-    IgnoreAfterCombatTime: number;
-    RequiredCombatAction: EThreatActionType;
-    RequiredThreatAction: EThreatActionType;
-    WarningAttemptsBeforeAlert: number;
-  };
-  Hint: string;
-  HoldBreathParamsSID: string;
-  HumanAmbushParameters: {
-    EntryDelay: string;
-  };
-  HumanInteractionParameters: {
-    HealingWoundedDistance: number;
-  };
-  HumanLookAtParameters: {
-    LookAtCooldown: number;
-    LookAtDistance: number;
-    MaxlookAtTime: number;
-    MinlookAtTime: number;
-    PerformGreetingBark: boolean;
-  };
-  ID: number;
-  Icon: string;
-  IgnoreDamageType: EIgnoreDamageType;
-  IgnoreEmission: boolean;
-  IgnoreWoundedRestriction: boolean;
-  ImpactVFXSize: number;
-  InstanceDamageData: {
-    ArmorDamage: number;
-    ArmorPiercing: number;
-    AttackEffects: {};
-    Bleeding: number;
-    BleedingChanceIncrement: number;
-    bShouldIgnoreArmor: boolean;
-    Damage: number;
-    DamageSource: EDamageSource;
-    DamageType: EDamageType;
-    NPCDamageMultiplier: number;
-  };
-  InvisibilityFeatureData: {
-    EnterInvisibilityAbility: string;
-    InvisibilityDeadChangeDurationSeconds: number;
-    InvisibilityEffects: {
-      Chance: number;
-      EffectPrototypeSID: string;
-    }[];
-    InvisibilityEffectsThreshold: number;
-    InvisibilityLossFromDamage: number;
-    ToInvisibleSeconds: number;
-    ToVisibleSeconds: number;
-  };
-  IsAffectingByMaxActorWithSimulation: boolean;
-  IsAffectingByMaxAttaches: boolean;
-  IsZombie: boolean;
-  ItemGeneratorPrototypeSID: string;
-  JumpActionData: {
-    JumpDistance: number;
-    MinDistanceToTarget: number;
-    MinJumpDistance: number;
-    ReducedPathCoefToJump: number;
-  };
-  JumpAttackData: {
-    AbilityTag: string;
-    AttackSyncTag: string;
-    Enabled: boolean;
-    JumpOffset: number;
-    StartAttackMaxAngle: number;
-    StartAttackMaxAngleToEnemyDirection: number;
-    StartAttackMaxDistance: number;
-    StartAttackMinAngle: number;
-    StartAttackMinAngleToEnemyDirection: number;
-    StartAttackMinDistance: number;
-  };
-  JumpToEnemyActionData: {
-    AbilityActivationTag: string;
-    AngleRandomization: number;
-    bEnabled: boolean;
-    bInRadiusOnly: boolean;
-    JumpDistance: number;
-    MinDist: number;
-    PredictionTime: number;
-    RandomRadius: number;
-    ReducedPathCoefToJump: number;
-  };
-  KickAttackData: {
-    AbilityTag: string;
-    AttackSyncTag: string;
-    StartAttackMaxAngle: number;
-    StartAttackMaxAngleToEnemyDirection: number;
-    StartAttackMaxDistance: number;
-    StartAttackMinAngle: number;
-    StartAttackMinAngleToEnemyDirection: number;
-    StartAttackMinDistance: number;
-  };
-  LongJumpAttackData: {
-    AbilityTag: string;
-    AttackSyncTag: string;
-    Enabled: boolean;
-    JumpOffset: number;
-    JumpPredictionSeconds: number;
-    MaxWarpingAngle: number;
-    StartAttackMaxAngle: number;
-    StartAttackMaxAngleToEnemyDirection: number;
-    StartAttackMaxDistance: number;
-    StartAttackMinAngle: number;
-    StartAttackMinAngleToEnemyDirection: number;
-    StartAttackMinDistance: number;
-  };
-  Mass: number;
-  MaxDialogInteractDistance: number;
-  MaxReactionTimeToExplosion: number;
-  MeleeAttackData: {
-    StartAttackMaxAngle: number;
-    StartAttackMaxAngleToEnemyDirection: number;
-    StartAttackMaxDistance: number;
-    StartAttackMinAngle: number;
-    StartAttackMinAngleToEnemyDirection: number;
-    StartAttackMinDistance: number;
-  };
-  Mesh: EObjMesh;
-  MeshGeneratorPrototypeSID: string;
-  MinDialogInteractDistance: number;
-  MinReactionTimeToExplosion: number;
-  MoveToEnemyActionData: {
-    BackStabSyncTag: string;
-    BecomeVisibleDistance: number;
-    Cooldown_MaxAttacksFinished: number;
-    Cooldown_MaxDuration: number;
-    Cooldown_TargetReached: number;
-    EndPathAcceprableDistance: number;
-    EndPathAcceptableDistance: number;
-    MaxActionDuration: number;
-    MaxAttacksFinished: number;
-    MaxOutOfNavmeshDistance: number;
-    MaxPotentialJumpHeight: number;
-    MovementType: EMovementBehaviour;
-    MoveToEnemySyncTag: string;
-    PathBuilderVelocities: {
-      AngularVelocity: number;
-      LinearVelocity: number;
-    }[];
-    PotentialHitPointMaxHeightDiff: number;
-  };
-  MovementParams: {
-    AimLookUpCoef: number;
-    AimSpeedCoef: number;
-    AimTurnCoef: number;
-    AirControlCoef: number;
-    BaseLookUpRate: number;
-    BaseTurnRate: number;
-    CanDash: boolean;
-    ClimbSpeedCoef: number;
-    CrouchSpeed: number;
-    FatiguePerAction: {
-      Climb: number;
-      Crouch: number;
-      Jump: number;
-      Run: number;
-      Sprint: number;
-      Walk: number;
-    };
-    JoggingSpeed: number;
-    JumpSpeedCoef: number;
-    LimpSpeedCoef: number;
-    LowCrouchSpeed: number;
-    MaxSlowdownValue: number;
-    MoveBackCrouchCoef: number;
-    MoveBackLowCrouchCoef: number;
-    MovementSpeedCoef: number;
-    RunBackCoef: number;
-    RunDiagonalBackCoef: number;
-    RunSpeed: number;
-    SprintSpeed: number;
-    StaggerAngle: number;
-    WalkBackCoef: number;
-    WalkDiagonalBackCoef: number;
-    WalkSpeed: number;
-    WalkTransitionCoef: number;
-  };
-  MovementSensorSID: string;
-  MovementVFXPrototypeSID: string;
-  MusicManagerCombatScore: number;
-  MutantAmbushParameters: {
-    AdditionalVisibilityTraceBones: string[];
-    AttackAttemptsBeforeAmbush: number;
-    bCheckTraceForFinishAction: boolean;
-    bEnabled: boolean;
-    bSpawnLockOnInitialize: boolean;
-    DangerAreaLifetime: number;
-    DangerAreaRadius: number;
-    FinishRadius: number;
-    LockLocationDefaultRadius: number;
-    RemoveLockDistance: number;
-  };
-  MutantCoverSelectorFeatureData: {
-    bReturnAnyCoverIfNoValidFound: boolean;
-    CosThresholdForCovers: number;
-    EffectiveDistanceToEnemy: number;
-    ExplorationRadius: {
-      Max: number;
-      Min: number;
-    };
-    IgnoreCoversNearLastCoverDist: number;
-    MinDistanceToEnemy: number;
-    MinimalCoverSize: number;
-    MinResampleDelay: number;
-    ReceivedDamageToResample: number;
-    ReceivedDamageToResampleTime: number;
-    ResampleCooldown: number;
-    SafeDistanceToEnemy: number;
-    SafeDistanceToExplosives: number;
-  };
-  MutantEscapeParameters: {
-    AttackEscapeDelay: number;
-    AttackRadius: number;
-    EscapeRadius: number;
-    FailureChance: string;
-    InterruptEscapeAfterEnemyLostDelay: number;
-    InterruptEscapeDelay: number;
-    SquadLostFractionToEscape: string;
-  };
-  NPCPrototypeSID: string;
-  NPCType: ENPCType;
-  NeedsPresetSID: string;
-  OfflineCombatWeight: number;
-  OnHitParamsSID: string;
-  PathFailedContextualAction: string;
-  PeacefulChatterFeatureData: {
-    EndChatterRadius: number;
-    StartChatterRadius: number;
-  };
-  PostResurrectionEffects: string[];
-  PrepareForAttackActionData: {
-    AngleShiftOnRebuild: number;
-    CircularPathFinishedAcceptableDistance: number;
-    DistanceDifferenceToRebuild: number;
-    ExpensiveCircleRadiusCoef: number;
-    MaxCircleRadius: number;
-    MaxCircleRadiusChangeTime: number;
-    MaxDistanceToLocationAfterCircular: number;
-    MinCircleRadius: number;
-    MinCircleRadiusChangeTime: number;
-    MinDistanceToLocationAfterCircular: number;
-    MovementType: EMovementBehaviour;
-    MoveToLocationFinishedAcceptableDistance: number;
-    OwnerRotationCoef: number;
-    RadiusRandomizationStep: number;
-    TargetBackCoef: number;
-  };
-  PrepareForEmissionContextualAction: string;
-  ProcessCorpseObjectFeatureData: {
-    CorpseInteractionBoneName: string;
-    CorpseInteractionDistance: number;
-  };
-  ProcessCorpseSubjectFeatureData: {
-    CorpseInteractionApproachMaxPathLength: number;
-    CorpseInteractionTimeout: number;
-    InteractionData: {
-      AllowedCorpses: string[];
-      ApproachLocationOffset: number;
-      ContextualAction: string;
-    }[];
-  };
-  Protection: {
-    Burn: number;
-    ChemicalBurn: number;
-    Explosion: number;
-    Fall: number;
-    None: number;
-    PSY: number;
-    Radiation: number;
-    Shock: number;
-    Shot: number;
-    Strike: number;
-  };
-  ReactOnApproachWithWeapon: boolean;
-  ReactOnNonEnemySounds: boolean;
-  RepairCostModifier: number;
-  RetreatActionData: {
-    AbilityTagToTrigger: string;
-    DamageAccumulatedToRetreat: number;
-    DamageAccumulationDurationSeconds: number;
-    EndPathAcceptableDistance: number;
-    HealthPercentToRetreat: number;
-    MinRetreatActivationRadius: number;
-    MovementType: EMovementBehaviour;
-    OwnerSummoned_KillOnRetreatEnd: boolean;
-    RetreatCooldown: number;
-    RetreatRadius: number;
-  };
-  RetreatDuration: number;
-  RetreatRadius: number;
-  RoarActionData: {
-    AbilityActionTag: string;
-    bEnaable: boolean;
-    Enabled: boolean;
-    HPTriggerThreshold: number;
-    StartAttackMaxAngle: number;
-    StartAttackMaxAngleToEnemyDirection: number;
-    StartAttackMaxDistance: number;
-    StartAttackMinAngle: number;
-    StartAttackMinAngleToEnemyDirection: number;
-    StartAttackMinDistance: number;
-    SyncTag: string;
-  };
-  RunAttackData: {
-    AttackSyncTag: string;
-    HitOffset: number;
-    LeftAttackAbiltiyTag: string;
-    MaxWarpingAngle: number;
-    OrderActionMaxAngle: number;
-    OrderActionMinAngle: number;
-    RightAttackAbiltiyTag: string;
-    RunAttackDistance: number;
-    StartAttackMaxAngle: number;
-    StartAttackMaxAngleToEnemyDirection: number;
-    StartAttackMaxDistance: number;
-    StartAttackMinAngle: number;
-    StartAttackMinAngleToEnemyDirection: number;
-    StartAttackMinDistance: number;
-  };
-  SID: string;
-  SearchpointDetectorPrototypeSID: string;
-  SequentialAbilities: string[];
-  SequentialAbilitiesActionData: {
-    bOrientsToTarget: boolean;
-  };
-  ShieldActionData: {
-    AbilityTag: string;
-    Enabled: boolean;
-    MaxAngleToEnemy: number;
-    MaxDistance: number;
-    MinDistance: number;
-    SyncTag: string;
-  };
-  ShieldFeatureData: {
-    AbilityActivationTag: string;
-    DamageAccumulationThreshold: number;
-    DamageAccumulationTime: number;
-  };
-  ShockwaveAttackData: {
-    AbilityTag: string;
-    AttackSyncTag: string;
-    StartAttackMaxAngle: number;
-    StartAttackMaxAngleToEnemyDirection: number;
-    StartAttackMaxDistance: number;
-    StartAttackMinAngle: number;
-    StartAttackMinAngleToEnemyDirection: number;
-    StartAttackMinDistance: number;
-  };
-  ShortJumpAttackData: {
-    AbilityTag: string;
-    AttackSyncTag: string;
-    Enabled: boolean;
-    JumpOffset: number;
-    StartAttackMaxAngle: number;
-    StartAttackMaxAngleToEnemyDirection: number;
-    StartAttackMaxDistance: number;
-    StartAttackMinAngle: number;
-    StartAttackMinAngleToEnemyDirection: number;
-    StartAttackMinDistance: number;
-  };
-  ShouldAvoidDangerPolygons: boolean;
-  ShouldGenerateStashClues: boolean;
-  ShouldHideUnequippedPrimaryWeapon: boolean;
-  ShouldRenderTextureInsteadOfGroom: boolean;
-  ShouldTriggerAnomalies: boolean;
-  SideJumpActionData: {
-    Cooldown: number;
-    DamageAccumulatedToActivate: number;
-    JumpMoveMontages: string[];
-    StartAttackMaxAngle: number;
-    StartAttackMaxAngleToEnemyDirection: number;
-    StartAttackMaxDistance: number;
-    StartAttackMinAngle: number;
-    StartAttackMinAngleToEnemyDirection: number;
-    StartAttackMinDistance: number;
-    TimeSinceLastAbilityEndedTimestampToActivateCooldown: number;
-  };
-  SimulateBattleParams: {
-    SimulateCombatDamageModifier: number;
-    SimulateCombatSpreadModifier: number;
-  };
-  SkeletalMeshTraceBoneMap: {
-    Bone: EObjSkeletalMeshTraceBone;
-    BoneName: string;
-  }[];
-  SleepParamsSID: string;
-  SleepinessActivationDistance: number;
-  SleepinessDeactivationDistance: number;
-  SpaceRestrictorTag: string;
-  SpawnPhantomParams: {
-    DelayBeforeMovement: number;
-    DistanceConditions: {
-      StartAttackMaxDistance: number;
-      StartAttackMinDistance: number;
-    };
-    EffectsOnOverlap: string[];
-    PermanentEffects: string[];
-    PhantomAttackAbilityTag: string;
-    PhantomBlueprint: string;
-  };
-  SpendStaminaInSafeZone: boolean;
-  StaminaPerAction: {
-    Climb: number;
-    Crouch: number;
-    Jogging: number;
-    Jump: number;
-    LowCrouch: number;
-    MeleeButstock: number;
-    MeleeNormal: number;
-    MeleeStrong: number;
-    Run: number;
-    Sprint: number;
-    Vault: number;
-    Walk: number;
-  };
-  StaminaPerActionLightOverweight: {
-    Climb: number;
-    Crouch: number;
-    Jump: number;
-    LowCrouch: number;
-    MeleeButstock: number;
-    MeleeNormal: number;
-    MeleeStrong: number;
-    Run: number;
-    Sprint: number;
-    Vault: number;
-    Walk: number;
-  };
-  StealthKillParams: {
-    AvailabilityDelayTimeSeconds: string;
-    BodyTraceOffset: number;
-    BodyTraceRadius: number;
-    HeadTraceRadius: number;
-    MaxAngleFromBack: number;
-    ShouldHaveEnoughSpace: boolean;
-    SnapBackOffsetSitting: number;
-    SnapBackOffsetSittingOnGround: number;
-    SnapBackOffsetStanding: number;
-    SnapDownOffsetSitting: number;
-    SnapDownOffsetSittingOnGround: number;
-    SnapDownOffsetStanding: number;
-    SpaceTraceHeightModifier: number;
-    SpaceTraceOffsetModifier: number;
-    SpaceTraceRadiusModifier: number;
-    StealthKillDistance: number;
-    TargetPositionMaxOffsetAbove: number;
-    TargetPositionMaxOffsetBelow: number;
-  };
-  StealthKillUnavailable: boolean;
-  StealthParams: {
-    FlashLightCoef: number;
-    NoiseCrouchCoef: number;
-    NoiseJumpCoef: number;
-    NoiseObstacleCoef: number;
-    VisibilityCrouchCoef: number;
-    VisibilityJumpCoef: number;
-    VisibilityObstacleBodyCoef: number;
-    VisibilityObstacleHeadCoef: number;
-    VisibilitySizeFactor: number;
-  };
-  SuppressiveFireParameters: {
-    LookAtBoneName: string;
-    MaxAccumulatedDamage: number;
-    MaxTimeToLoseTarget: number;
-    NeedVisualConfirmation: boolean;
-    TraceDistance: number;
-  };
-  SyncParameters: {
-    AdvanceSyncTag: string;
-    AttackSyncTag: string;
-    EvadeSyncTag: string;
-    FlankSyncTag: string;
-    MovementSyncTag: string;
-    SuppressiveFireSyncTag: string;
-  };
-  Text: string;
-  ThreatPrototypeSID: string;
-  ThrowActionData: {
-    AbilityTag: string;
-    Enabled: boolean;
-    MaxAngleToEnemy: number;
-    MaxDistance: number;
-    MinDistance: number;
-  };
-  TradePrototypeSID: string;
-  TremblingWhileEmissionContextualAction: string;
-  Type: EObjType;
-  UnkillableByALife: boolean;
-  UseGroomReplacement: boolean;
-  VFXSize: number;
-  VaultingParams: {
-    AboveObstaclesCheckHeight: number;
-    DepthTraceRadiusModifier: number;
-    FrontSearchRadiusModifier: number;
-    HeightBetweenObjects: number;
-    IsAllowed: boolean;
-    LandingCorrectionAdditionalSize: number;
-    LandingMaxSlope: number;
-    LandingMinHeight: number;
-    MaxAngle: number;
-    MaxLandingDetectionIterations: number;
-    MaxLandingOffset: number;
-    MaxObstacleHeight: number;
-    MaxTestDistance: number;
-    MaxWindowDetectionIterations: number;
-    MinForwardAxisInputValue: number;
-    MinObstacleHeight: number;
-    StartDistance: number;
-    StartWithSprintPressed: boolean;
-    VaultOverCrouchingHeight: number;
-    VaultOverLandOffset: number;
-    VaultOverMaxDepth: number;
-    VaultOverStandingHeight: number;
-    WidthBetweenObjects: number;
-    WindowBackTraceHeightModifier: number;
-    WindowBackTraceRadiusModifier: number;
-  };
-  VisionScannerPrototypeSID: string;
-  VitalParams: {
-    DegenBleeding: number;
-    DegenDrunknessPoints: number;
-    DegenPsyPoints: number;
-    DegenRadiation: number;
-    DegenSuppressionDelayTimeSeconds: number;
-    DegenSuppressionPoints: number;
-    MaxBleeding: number;
-    MaxConcussionPoints: number;
-    MaxDrunknessPoints: number;
-    MaxFP: number;
-    MaxHP: number;
-    MaxHungerPoints: number;
-    MaxOverDrunknessPoints: number;
-    MaxRadiation: number;
-    MaxSleepinessPoints: number;
-    MaxSP: number;
-    MaxSuppressionPoints: number;
-    MaxThirstPoints: number;
-    RegenFP: number;
-    RegenHealthModifier: number;
-    RegenHP: number;
-    RegenHPDelayTimeSeconds: number;
-    RegenHungerPoints: number;
-    RegenPoppyFieldSleepiness: number;
-    RegenSleepinessPoints: string;
-    RegenSP: number;
-    RegenThirstPoints: number;
-    StaminaDisableThresholds: {
-      RegenerationDelay: number;
-      StateTags: EStateTag[];
-      Threshold: number;
-    }[];
-  };
-  WaterContactInfo: {
-    DualCurveEffects: {
-      DepthCurveMovingDeeper: string;
-      DepthCurveMovingShallower: string;
-      EffectSID: string;
-    }[];
-    ShallowSoundSwitch: string;
-    SingleCurveEffects: {
-      DepthCurve: string;
-      EffectSID: string;
-    }[];
-    StepVFXMaxBodyWaterImmersionDepth: number;
-    WaterDepthRTPC: string;
-    WaterImmersionLevels: {
-      Effects: string[];
-      LevelSoundSwitch: string;
-      MinDepthThreshold: number;
-      WaterLevel: EWaterImmersionLevel;
-    }[];
-  };
-  WeatherParamsSID: string;
-  WeightParamsSID: string;
-  ZombieBehaviourParameters: {
-    CombatBehaviour: {
-      AddedShootingDistanceOnTheGo: number;
-      MaxShootingAngle: number;
-      MaxShootingStationaryDistance: number;
-      MinShootingStationaryDistance: number;
-    };
-    WeaponHandlingOverride: {
-      FarFireQueueDelaySeconds: number;
-      MaxFireCountQueueScaler: number;
-      MinFireCountQueueScaler: number;
-      NearFireQueueDelaySeconds: number;
-      SwitchWeaponIfNoAmmo: boolean;
-    };
-    ZombieAllowedEquipItems: Record<SID, ERank>;
-  };
-  ZombieHearingSensorPrototypeSID: string;
-  ZombieLayingIdleTime: number;
-  ZombieVisionScannerPrototypeSID: string;
-  npc_size: number;
-}>;
-
-export type ObjSleepParamsPrototype = GetStructType<{
-  AllowSleepThreshold: number;
-  bAllowEmissionSleep: boolean;
-  CantSleepEffectSIDs: string[];
-  MinSleepHours: number;
-  PostSleepEffectSIDs: string[];
-  PostSleepMultiplierEffectSIDs: string[];
-  SID: string;
-  SleepEffectSIDs: string[];
-  SleepHoursMultiplier: number;
-}>;
-
-export type ObjWeatherParamsPrototype = GetStructType<{
-  SID: string;
-  WeatherAppliedEffectSIDs: {
-    LightRainy: string[];
-    Rainy: string[];
-    Thundery: string[];
-  };
-}>;
-
-export type ObjWeightParamsPrototype = GetStructType<{
-  InventoryPenaltyLessWeight: number;
-  MaxInventoryMass: number;
-  SID: string;
-  WeightEffectParams: {
-    EffectPrototypeSIDs: string[];
-    Threshold: number;
-  }[];
-}>;
-
-export type OffsetAimingBoolProviderPrototype = GetStructType<{
-  ProviderSID: string;
-  ProviderSIDs: string[];
-  SID: string;
-  Type: EBoolProviderType;
-}>;
-
-export type PackOfItemsGroupPrototype = GetStructType<{
-  ID: number;
-  PackOfItemsSettings: {
-    Items: {
-      ItemPrototypeSID: string;
-      MinDurability: number;
-      Weight: number;
-    }[];
-    MaxDurability: number;
-    MinDurability: number;
-    PlayerRank: ERank;
-  }[];
-  SID: string;
-}>;
-
-export type PassiveDetectorPrototype = GetStructType<{
-  DangerLevelSoundParameter: string;
-  DetectorRadius: string;
-  DetectorWorkCurve: string;
-  DetectorWorkSFX: string;
-  ExclusionAnomalyList: string[];
-  ID: number;
-  SID: string;
-  SignalCurve: string;
-  Type: EPassiveDetectorType;
-}>;
-
-export type PDATutorialPrototype = GetStructType<{
-  ExclusiveGamepadType: string;
-  Id: number;
-  Images: string[];
-  InputMappings: {
-    GamepadInputAction: string;
-    InputAction: string;
-    InputMappingContext: EMappingContext;
-    PCInputMappingNames: string[];
-    ShouldAnimate: boolean;
-  }[];
-  ItemSIDs: string[];
-  MasterDifficultyEquivalentSid: string;
-  RelevantPDANoteTutorial: string;
-  SID: string;
-  TextSid: string;
-  TutorialCategory: EPDATutorialCategory;
-  TutorialDetailsSID: string;
-  TutorialNameSID: string;
-  VisibleDifficulties: EGameDifficulty[];
-}>;
-
-export type PhysicsInteractionPrototype = GetStructType<{
-  ApplyImpulseToHitLocationFromPlayer: boolean;
-  DamageToVelocityMultiplier: number;
-  DraggingParameterSwitch: string;
-  HitDamageThreshold: number;
-  HitParameterSwitch: string;
-  HitVelocityThreshold: number;
-  MaxDraggingRollingVelocityThreshold: number;
-  MaxDraggingVelocityVolume: number;
-  MaxHitVelocityVolume: number;
-  MaxRollingVelocityVolume: number;
-  MaxSoundDistance: number;
-  MaxTimeout: number;
-  MinDraggingRollingVelocityThreshold: number;
-  MinDraggingVelocityVolume: number;
-  MinHitVelocityVolume: number;
-  MinRollingVelocityVolume: number;
-  MinTimeout: number;
-  PhysicalObjectAudioEventPlay: string;
-  PhysicalObjectAudioEventStop: string;
-  PhysicalObjectContinuousSpeedRTPC: string;
-  PhysicalObjectInstantSpeedRTPC: string;
-  PlayerPushImpulse: number;
-  RollingParameterSwitch: string;
-  SID: string;
-  WaterAngularDampingModifier: number;
-  WaterContactAudioEvent: string;
-  WaterContactNiagaraSystemVFX: string;
-  WaterDepthRTPC: string;
-  WaterImpulseReduction: number;
-  WaterLinearDampingModifier: number;
-  WaterParticleSpeedThreshold: number;
-}>;
-
-export type PlayerMeshGeneratorPrototype = GetStructType<{
-  Attachments: Record<
-    MeshAttachment,
-    {
-      Attaches: {
-        BlockingBodyMeshes: string[];
-        BlockingSlots: string[];
-        BodyMeshSID: string;
-        Weight: number;
-      }[];
-      IsSkeletal: boolean;
-      Name: string;
-      OffsetX: number;
-      OffsetY: number;
-      OffsetZ: number;
-      RotationPitch: number;
-      RotationRoll: number;
-      RotationYaw: number;
-      ScaleX: number;
-      ScaleY: number;
-      ScaleZ: number;
-      SlotName: string;
-      SocketName: string;
-    }
-  >;
-  SID: string;
-}>;
-
-export type PlayerWeaponAttributesPrototype = GetStructType<{
-  AnimBlueprint: string;
-  DefaultWeaponSettingsSID: string;
-  DisplayBP: string;
-  ParticlesBasedOnHeating: {
-    PostShooting: {
-      MinHeatingValueToAppear: number;
-      PFXPath: string;
-      SocketName: string;
-    };
-    Shooting: {
-      MinHeatingValueToAppear: number;
-      PFXPath: string;
-      SocketName: string;
-    };
-    VFXGroupName: string;
-  }[];
-  SID: string;
-  ShellShutterSocketName: string;
-}>;
-
-export type PlayerWeaponSettingsPrototype = GetStructType<{
-  Accuracy: number;
-  AccuracyUI: number;
-  ArmorDamage: number;
-  ArmorPiercing: number;
-  BaseBleeding: number;
-  BaseComfort: number;
-  BaseDamage: number;
-  BulletDropHeight: number;
-  BulletDropLength: number;
-  ChanceBleedingPerShot: string;
-  CoverPiercing: number;
-  DamageUI: number;
-  DispersionRadius: number;
-  DistanceDropOffLength: number;
-  DurabilityDamagePerShot: number;
-  EffectiveFireDistanceMax: number;
-  EffectiveFireDistanceMin: number;
-  FireDistanceDropOff: number;
-  FireLoudness: number;
-  HandlingUI: number;
-  MinBulletDistanceArmorPiercingModifier: number;
-  MinBulletDistanceDamageModifier: number;
-  RangeUI: number;
-  RateOfFireUI: number;
-  SID: string;
-}>;
-
-export type PostEffectFloatProviderPrototype = GetStructType<{
-  PostProcessParamSID: string;
-  SID: string;
-  Type: EFloatProviderType;
-}>;
-
-export type PostEffectProcessorPrototype = GetStructType<{
-  bAddIntensity: boolean;
-  bInverted: boolean;
-  DuplicateResolveType: EDuplicateResolveType;
-  Intensity: number;
-  IntensityProviderSID: string;
-  LerpInDuration: number;
-  LerpOutDuration: number;
-  NegativeInterpSpeed: number;
-  ParamSID: string;
-  PeakDuration: number;
-  PositiveInterpSpeed: number;
-  ProviderSIDs: string[];
-  SID: string;
-  SpeedProviderSID: string;
-  Type: EPostEffectProcessorType;
-}>;
-
-export type PostProcessMaterialPrototype = GetStructType<{
-  HDRMaterialPath: string;
-  MaterialPath: string;
-  Priority: number;
-  SID: string;
-}>;
-
-export type PostProcessParamPrototype = GetStructType<{
-  MaterialSID: string;
-  ParameterName: string;
-  SID: string;
-}>;
-
-export type ProjectilePrototype = GetStructType<{
-  BlueprintFP: string;
-  BlueprintTP: string;
-  bUseImpactReflectionMethod: boolean;
-  EffectPrototypeSIDs: string[];
-  FlybyDotProductThreshold: number;
-  FlybySound: string;
-  ImpactBloodDecalMinSize: number;
-  ImpactBloodDecals: string[];
-  ImpactBloodDecalSize: Vec3;
-  ImpactEffectsMinDistance: number;
-  ImpactPhysicalMaterialPrototypeSID: string;
-  ImpactSound: string;
-  MaxFlybyDistance: number;
-  MaxFlyDistance: number;
-  MaxSuppressionDistance: number;
-  MinExplodeDistance: number;
-  PenetrationSpawnChance: number;
-  PenetrationTraceLenght: number;
-  SID: string;
-  Speed: number;
-  SuppressionCenterBone: string;
-  SuppressionEffectSIDs: string[];
-  SuppressionMinSpeed: number;
-  TimeOfVisibilityEnabling: number;
-}>;
-
-export type PsyMeshGeneratorPrototype = GetStructType<{
-  Attachments: Record<
-    MeshAttachment,
-    {
-      Attaches: {
-        BlockingBodyMeshes: string[];
-        BlockingSlots: string[];
-        BodyMeshSID: string;
-        Weight: number;
-      }[];
-      IsSkeletal: boolean;
-      Name: string;
-      OffsetX: number;
-      OffsetY: number;
-      OffsetZ: number;
-      RotationPitch: number;
-      RotationRoll: number;
-      RotationYaw: number;
-      ScaleX: number;
-      ScaleY: number;
-      ScaleZ: number;
-      SlotName: string;
-      SocketName: string;
-    }
-  >;
-  SID: string;
-}>;
-
-export type QuestAnomalyPrototype = GetStructType<{
-  AngularDamping: number;
-  AnomalyElementType: EAnomalyElementType;
-  CollisionHeight: number;
-  DefaultHeightOffset: number;
-  ExplosionActiveTime: number;
-  ID: number;
-  LiftForce: number;
-  LinearDamping: number;
-  ObjectMaxSize: number;
-  PushForce: number;
-  Radius: number;
-  SID: string;
-  Type: EAnomalyType;
-  VelocityThreshold: number;
-}>;
-
-export type QuestArtifactPrototype = GetStructType<
-  (
-    | EAnomalyElementType
-    | EArtifactRarity
-    | EArtifactType
-    | boolean
-    | number
-    | string
-    | string[]
-  )[]
+export type ContextualActionNodePrototypeBodyParts = GetStructType<
+  EContextualActionBodyPart[]
 >;
 
-export type QuestArtifactSpawnerPrototype = GetStructType<{
-  Experienced: {
-    Count: number;
-    MaxCooldown: number;
-    MinCooldown: number;
-    Radius: number;
-    RarityChance: {
-      Common: number;
-      Epic: number;
-      Rare: number;
-      Uncommon: number;
-    };
-    SpawnChanceBase: number;
-    SpawnChanceBonus: number;
-  };
-  ID: number;
-  ListOfArtifacts: string[];
-  Master: {
-    Count: number;
-    MaxCooldown: number;
-    MinCooldown: number;
-    Radius: number;
-    RarityChance: {
-      Common: number;
-      Epic: number;
-      Rare: number;
-      Uncommon: number;
-    };
-    SpawnChanceBase: number;
-    SpawnChanceBonus: number;
-  };
-  Newbie: {
-    Count: number;
-    MaxCooldown: number;
-    MinCooldown: number;
-    Radius: number;
-    RarityChance: {
-      Common: number;
-      Epic: number;
-      Rare: number;
-      Uncommon: number;
-    };
-    SpawnChanceBase: number;
-    SpawnChanceBonus: number;
-  };
-  SID: string;
-  UseListOfArtifacts: boolean;
-  Veteran: {
-    Count: number;
-    MaxCooldown: number;
-    MinCooldown: number;
-    Radius: number;
-    RarityChance: {
-      Common: number;
-      Epic: number;
-      Rare: number;
-      Uncommon: number;
-    };
-    SpawnChanceBase: number;
-    SpawnChanceBonus: number;
-  };
+export type ContextualActionNodePrototypeConditionalSelectorNodes =
+  GetStructType<ContextualActionNodePrototypeConditionalSelectorNodesItem[]>;
+
+export type ContextualActionNodePrototypeConditionalSelectorNodesItem =
+  GetStructType<{
+    AnimationData: ContextualActionNodePrototypeAnimationData;
+    CanInteractWithPlayer: boolean;
+    Effects: ContextualActionNodePrototypeEffects;
+    Interrupt: ContextualActionNodePrototypeInterrupt;
+    IsValidForQuestDialog: boolean;
+    Need: EContextualActionNeeds;
+    NodeType: EContextualActionNodeType;
+    Preconditions: string;
+    RandomSelectorNodes: ContextualActionNodePrototypeRandomSelectorNodes;
+    Repetitions: ERepetitions;
+    RepetitionsCount: number;
+    SequentialSelectorNodes: ContextualActionNodePrototypeSequentialSelectorNodes;
+    ShouldDisableDialogAnimations: boolean;
+    ShouldPlayerCrouchDuringDialog: boolean;
+    Weights: ContextualActionNodePrototypeWeights;
+  }>;
+
+export type ContextualActionNodePrototypeDistanceSelectorNodes = GetStructType<
+  ContextualActionNodePrototypeDistanceSelectorNodesItem[]
+>;
+
+export type ContextualActionNodePrototypeDistanceSelectorNodesItem =
+  GetStructType<{
+    AnimationData: ContextualActionNodePrototypeAnimationData;
+    CanInteractWithPlayer: boolean;
+    Effects: string;
+    Interrupt: ContextualActionNodePrototypeInterrupt;
+    IsValidForQuestDialog: boolean;
+    NodeType: EContextualActionNodeType;
+    Preconditions: string;
+    ShouldDisableDialogAnimations: boolean;
+    ShouldPlayerCrouchDuringDialog: boolean;
+  }>;
+
+export type ContextualActionNodePrototypeEffects = GetStructType<
+  ContextualActionNodePrototypeEffectsItem[]
+>;
+
+export type ContextualActionNodePrototypeEffectsItem = GetStructType<{
+  ChangeValuePerSelector: number;
+  ContextualActionNeed: EContextualActionNeeds;
+  Type: EContextualActionEffectType;
 }>;
 
-export type QuestDependencyPrototype = GetStructType<{
-  DefaultValue: string;
-  Description: string;
-  ID: number;
-  SID: string;
-  Type: EGlobalVariableType;
-}>;
-
-export type QuestItemGeneratorPrototype = GetStructType<{
-  ID: number;
-  ItemGenerator: ItemGeneratorEntry[];
-  RefreshTime: string;
-  SID: string;
-}>;
-
-export type QuestItemPrototype = GetStructType<{
-  AlternativeEffectPrototypeSIDs: string[];
-  AnomalyElementType: EAnomalyElementType;
-  ArchiartifactType: EArchiartifactType;
-  ArtifactType: EArtifactType;
-  ArtifactTypeSwitch: string;
-  Blueprint: string;
-  Cost: number;
-  DetectorRequired: boolean;
-  EffectPrototypeSIDs: string[];
-  EffectsDisplayTypes: EEffectDisplayType[];
-  Icon: string;
-  Icon1x1: string;
-  Invisible: boolean;
-  InvisibleInPlayerInventory: boolean;
-  IsQuestItem: boolean;
-  IsQuestItemPrototype: boolean;
-  ItemGridHeight: number;
-  ItemGridWidth: number;
-  JumpAmount: number;
-  JumpDelay: number;
-  JumpDistance: number;
-  JumpForce: number;
-  JumpHeight: number;
-  JumpSeriesDelay: number;
-  JumpSpeedCoef: number;
-  LandingForce: number;
-  LifeTime: number;
-  LocalizationSID: string;
-  MaxStackCount: number;
-  MeshInWorldPrototypeSID: string;
-  MeshPath: string;
-  MeshPrototypeSID: string;
-  Name: string;
-  PlayerDistance: number;
-  Rarity: EArtifactRarity;
-  RequireWeight: boolean;
-  ReturnDistanceValue: number;
-  ShouldShowEffects: boolean[];
-  ShouldTriggerAnomalies: boolean;
-  SID: string;
-  SoundStateTransitionOnHide: string;
-  SoundStateTransitionOnShow: string;
-  StaticMeshPrototypeSID: string;
-  Strafe: boolean;
-  Type: EItemType;
-  Weight: number;
-}>;
-
-export type QuestMeshGeneratorPrototype = GetStructType<{
-  Attachments: {
-    Attaches: {
-      BlockingBodyMeshes: string[];
-      BlockingGroomSIDs: string[];
-      BlockingGrooms: string[];
-      BlockingSlots: string[];
-      BodyMeshSID: string;
-      Weight: number;
-    }[];
-    SlotName: string;
-  }[];
-  CustomData: {
-    MaterialGroup: string;
-    Variations: {
-      VariationIndex: number;
-      Weight: number;
-    }[];
-  }[];
-  Groom: {
-    CategoryName: string;
-    Variations: {
-      VariationIndex: number;
-      Weight: number;
-    }[];
-  }[];
-  Materials: {
-    MaterialGroup: string;
-    Variations: {
-      VariationIndex: number;
-      Weight: number;
-    }[];
-  }[];
-  MergedMesh: string;
-  ParentMeshGeneratorSID: string;
-  SID: string;
-}>;
-
-export type QuestNodePrototype = GetStructType<{
-  AbilityPrototypeSID: string;
-  AchievementSID: string;
-  Activate: boolean;
-  ActorBoneName: string;
-  AddToPlayerStash: boolean;
-  AIThreatState: number;
-  AKEventPath: string;
-  ApplyRestrictionType: EApplyRestrictionType;
-  AssetsToLoad: string;
-  AttractionPointType: EAttractionPointType;
-  AudioLocalizedAssetsToLoad: string[][];
-  BehaviorType: EBehaviorType;
-  BenchRuns: number;
-  BlendExpForEaseInOut: number;
-  BrokenGameDataFilter: EBrokenGameDataFilter;
-  bTriggersByAnybody: boolean;
-  CallPlayer: boolean;
-  CallPlayerRadius: number;
-  CameraHeight: number;
-  CanBeInterrupted: boolean;
-  CanBeIterrupted: boolean;
-  CanBeTeleported: boolean;
-  CanExitAnytime: boolean;
-  ChangeValueMode: EChangeValueMode;
-  CircleRadius: number;
-  CollisionChannel: number;
-  Conditions: Conditions;
-  ConsoleCommand: string;
-  ContaineredQuestPrototypeSID: string;
-  ContextualActionLookAtPlayerRange: number;
-  ContextualActionRange: number;
-  Continue: boolean;
-  ContinueThroughRadio: boolean;
-  ContinueWhileCombatComments: string;
-  ContinueWhileMovingComments: string;
-  CustomRestPlaceSelection: boolean;
-  CustomSleepPlaceSelection: boolean;
-  DataLayerCombination: string;
-  DataLayerName: string;
-  Description: string;
-  DialogChainPrototypeSID: string;
-  DialogMembers: string[];
-  DialogObjectLocation: Vec3[];
-  DialogToStart: string;
-  DisabledEvents: string;
-  DisableFlashlightControl: boolean;
-  Discovered: boolean;
-  Duration: number;
-  EffectLocation: Vec3;
-  EffectPath: string;
-  EffectPrototypeSID: string;
-  EmissionPrototypeSID: string;
-  EndHour: number;
-  EnteringDuration: number;
-  EquipItems: boolean;
-  EquipmentItemSID: string;
-  EquipmentTypeFilter: EMainHandEquipmentType;
-  Event: EDialogEventType;
-  EventType: EQuestEventType;
-  ExcludeAllNodesInContainer: boolean;
-  ExpectedItemsCount: number;
-  Explored: boolean;
-  Faction: Faction;
-  FadeTime: number;
-  FailureByCombat: boolean;
-  FailureByEmission: boolean;
-  FailureByHumanKil: boolean;
-  FailureByMutantKill: boolean;
-  FailureByPlayerEncounter: boolean;
-  FailureByPlayerKill: boolean;
-  FailureByTargetLost: boolean;
-  FailureByThreat: boolean;
-  FinishBattleComments: string;
-  FinishOnAKEvent: boolean;
-  FirstTargetSID: string;
-  FlashlightAction: EFlashlightAction;
-  FleeType: EFleeType;
-  FollowStartRange: number;
-  FollowStopRange: number;
-  Force: boolean;
-  ForceDespawn: boolean;
-  ForceEmission: boolean;
-  FullAmount: boolean;
-  FullSquad: boolean;
-  GlobalVariablePrototypeSID: string;
-  GoalPriority: EGoalPriority;
-  GoalTargetQuestGuid: string;
-  GuardOpponentFactions: string[];
-  GuardTargetGuid: string;
-  GuardType: EGuardType;
-  GuardZoneShapesGuids: string;
-  HealingType: EHealingType;
-  HideViewType: EHideViewType;
-  HitProducer: string;
-  HitReceiver: string;
-  IdlePosition: Vec3;
-  IgnoreAnomalyFields: boolean;
-  IgnoreCombat: boolean;
-  IgnoreDamageType: EIgnoreDamageType;
-  IgnoreEmission: boolean;
-  IgnoreEnabledCheck: boolean;
-  IgnoreRadiationFeilds: boolean;
-  IgnoreThreat: boolean;
-  ImagePath: string;
-  ImmediatelyIdentifyEnemy: boolean;
-  IncludeWoundedEvent: boolean;
-  InfotopicLastPhrases: {
-    LastPhraseSID: string;
-    NextLaunchedPhraseSID: string;
-  }[];
-  InGameHours: number;
-  InGameMinutes: number;
-  InitialPitch: number;
-  InitialYaw: number;
-  InteractableQuestGuid: string;
-  IsComment: boolean;
-  IsDataLayerEnabled: boolean;
-  IsFinalVideo: boolean;
-  ItemGeneratorSID: string;
-  ItemPrototypeSID: string;
-  ItemsCount: number;
-  ItemSID: string;
-  JournalAction: EJournalAction;
-  JournalEntity: EJournalEntity;
-  JournalQuestDescriptionIndex: number;
-  JournalQuestSID: string;
-  JournalQuestStageSID: string;
-  LastPhrases: {
-    FinishNode: boolean;
-    LastPhraseSID: string;
-    NextLaunchedPhraseSID: string;
-  }[];
-  Launchers: {
-    Connections: {
-      Name: string;
-      SID: string;
-    }[];
-    Excluding: boolean;
-  }[];
-  LaunchOnQuestStart: boolean;
-  LeaveAnomalyZoneComments: string;
-  LinkedNodePrototypeSID: string;
-  LoadingScreenType: ELoadingDestination;
-  LocalizedSequences: string[];
-  Location: string;
-  LookAt: Vec3;
-  LookAtActorFName: string;
-  LookAtLocation: Vec3;
-  LookAtPlaceholder: string;
-  LoopSequence: boolean;
-  MainQuest: boolean;
-  MarkerDescription: string;
-  Markers: string;
-  MarkerSID: string;
-  MasterAKEventForLoad: string;
-  MaxAcceptanceDistance: number;
-  MeshGeneratorSID: string;
-  MinAcceptanceDistance: number;
-  MinFleeTime: number;
-  MinimalReputationLevel: ERelationLevel;
-  MinPanicTime: number;
-  MoveFrom: string;
-  MovementPose: EAIMovementPose;
-  MovementType: EMovementBehaviour;
-  MoveQuestItems: boolean;
-  MoveTo: string;
-  MoveToFailureRange: number;
-  MoveToPath: string;
-  MoveToPlayer: boolean;
-  MoveToSuccessRange: number;
-  NameSID: string;
-  NavAreaClass: string;
-  NavModifier: string;
-  NewDescription: number;
-  NewTechnicianSkill: string;
-  NewTitle: number;
-  NewZoneState: boolean;
-  NodePrototypeVersion: number;
-  NodesToCleanUpResults: string[];
-  NodeType: EQuestNodeType;
-  NotePrototypeSID: string;
-  NPCToStartDialog: number;
-  OutputPinNames: (number | string)[];
-  OverrideDialogTopic: EOverrideDialogTopic;
-  OverrideScenarioGroupSID: string;
-  OwnedHub: string;
-  Params: {
-    ChangeValue: number;
-    ChangeValueMode: EChangeValueMode;
-    IgnoreDamageType: EIgnoreDamageType;
-    ModifiedCharacterParam: EModifiedCharacterParam;
-    Rank: ERank;
-  }[];
-  PatrolCycleCount: number;
-  PatrolPlaceholderGUID: string;
-  PauseEmission: boolean;
-  PDATutorialNoteSID: string;
-  PersonalRestriction: Record<SID, ESpaceRestrictionType>;
-  PinWeights: number[];
-  PistolDurabilityPercent: number;
-  PlayerLeavesWhileCombatComments: string;
-  PlayerLeavesWhileMovingComments: string;
-  PlayWhenReceived: boolean;
-  PostEffectProcessorSID: string;
-  PostProcessParamValue: number;
-  PreblendSequence: boolean;
-  PreblendTime: number;
-  PresetName: string;
-  PrimaryWeaponDurabilityPercent: number;
-  Priority: number;
-  ProfileCsv: boolean;
-  QuestItem: boolean;
-  QuestItemGeneratorSID: string;
-  QuestSID: string;
-  Radius: number;
-  ReachAnomalyZoneComments: string;
-  ReachPointComments: {
-    DialogMembers: string;
-    ReachPointComment: string;
-    ReachPointLocation: Vec3;
-  }[];
-  ReactionTime: number;
-  ReactOnApproachWithWeapon: boolean;
-  ReactOnNonEnemySounds: boolean;
-  ReactType: ETriggerReact;
-  RelationshipValue: number;
-  Remove: boolean;
-  Repeatable: boolean;
-  RepeatableStayAnimation: boolean;
-  ReplaceInventory: boolean;
-  RequiredInputs: string;
-  RequiredSquadMembers: ERequiredSquadMembers;
-  RestLocation: Vec3;
-  RestrictDeadBodyDespawn: boolean;
-  RestrictDeadBodyLootInteraction: boolean;
-  RestrictDeadBodyMovementInteraction: boolean;
-  RestrictDefeatStateInteraction: boolean;
-  RestrictDefeatStateMovementInteraction: boolean;
-  RestrictDialogInteractions: boolean;
-  RestrictedFaction: Record<Faction, ESpaceRestrictionType>;
-  RotationAfterMoveTo: VecRot;
-  RotationFreemoveEdge: number;
-  RotationStopEdge: number;
-  RotationTime: number;
-  SaveTypes: ESaveType[];
-  ScreenText: string;
-  SecondaryWeaponDurabilityPercent: number;
-  SecondTargetSID: string;
-  SeekPlayer: boolean;
-  SelectedDaysOfWeek: number;
-  SelfLocation: string;
-  SequentialAbilityModificationMode: EModifyAbilitySequenceQuestNodeMode;
-  SequentialAbilityPriority: number;
-  SetFactionRelationshipAsPersonal: boolean;
-  SetQuestActive: boolean;
-  ShootingPosition: Vec3;
-  ShootTargetLocation: Vec3;
-  ShotsQueueCount: number;
-  ShouldBeKilled: string;
-  ShouldBlendViaFade: boolean;
-  ShouldLockPersonalRelationship: boolean;
-  ShouldTargetPistol: boolean;
-  ShouldTargetPrimaryWeapon: boolean;
-  ShouldTargetSecondaryWeapon: boolean;
-  SID: string;
-  SignalReceiverGuid: string;
-  SignalSenderGuid: string;
-  SimulateBattle: boolean;
-  SleepLocation: Vec3;
-  SoundLocation: Vec3;
-  SoundPath: string;
-  SpawnHidden: boolean;
-  SpawnNodeExcludeType: ESpawnNodeExcludeType;
-  SpecificItemDespawn: boolean;
-  Squad: string;
-  StageID: EEmissionStage;
-  StartBattleComments: string;
-  StartDelay: number;
-  StartForcedDialog: boolean;
-  StartHour: number;
-  StartPointID: number;
-  StartQuest: boolean;
-  StayAnimation: string;
-  StayContextualAction: string;
-  TalkThroughRadio: boolean[];
-  TargetFaction: string;
-  TargetLocation: Vec3;
-  TargetLocations: Vec3[];
-  TargetMoneyAmount: number;
-  TargetQuestGuid: string;
-  TargetQuestGuids: string[];
-  TargetRank: ERank;
-  TeleportLocationAndRotation: VecRot;
-  TeleportType: EGSCTeleportType;
-  ThreatSensor: number;
-  ThreatsReactRange: number;
-  TimerRate: number;
-  TimeToStartNextNodeBeforeEnd: number;
-  TimeToUseAbility: number;
-  TrackBeforeActive: boolean;
-  TransitionTime: number;
-  TriggerAction: number;
-  TriggerQuestGuid: string;
-  TutorialHeadLocalizedSID: string;
-  TutorialSID: string;
-  TutorialTextLocalizedSID: string;
-  UpgradePrototypeSID: string;
-  UpgradeSIDs: string[];
-  UseAbilityMovementType: EMovementBehaviour;
-  UseAbilityPrototypeSID: string;
-  UseAbilityTarget: string;
-  UseDefaultEmissionPrototype: boolean;
-  UseDeltaValue: boolean;
-  UsePreset: boolean;
-  UseSecondaryWeapon: boolean;
-  VariableValue: boolean;
-  VideoAssetPath: string;
-  VolumeGuid: string;
-  WaitAllDialogEndingsToFinish: boolean;
-  WaitingPlayer: boolean;
-  WaitingTime: number;
-  WeaponReady: boolean;
-  WeaponState: EWeaponState;
-  Weather: EWeather;
-  WidgetType: number;
-  WithEquipped: boolean;
-  WithInventory: boolean;
-  WoundedOn: boolean;
-}>;
-
-export type QuestNPCGeneratorPrototype = GetStructType<{
-  ItemGenerator: ItemGeneratorEntry[];
-  SID: string;
-  SpecificRewardSound: EUISound;
-}>;
-
-export type QuestObjPrototype = GetStructType<{
-  Abilities: Record<
-    Ability,
-    {
-      ActivationTag: string;
-      SID: string;
-    }
-  >;
-  AgentType: EAgentType;
-  AttackParams: {
-    ForceDistance: number;
-    MeleeAttackAcceptanceDistance: number;
-    MeleeAttackHeight: number;
-    MeleeAttackRadius: number;
-    MeleeDamage: number;
-  };
-  Blueprint: string;
-  CanProcessCorpses: boolean;
-  CustomMeshGeneratorPrototypeSID: string;
-  DialogInteractDistance: number;
-  DuplicateFacialAnimationNPCs: string[];
-  Faction: Faction;
-  FlashlightPrototypeSID: string;
-  Hint: string;
-  ID: number;
-  IgnoreDamageType: EIgnoreDamageType;
-  IgnoreEmission: boolean;
-  IgnoreWoundedRestriction: boolean;
-  InventoryPenaltyLessWeight: number;
-  IsAffectingByMaxActorWithSimulation: boolean;
-  IsAffectingByMaxAttaches: boolean;
-  IsZombie: boolean;
-  ItemGeneratorPrototypeSID: string;
-  MaxDialogInteractDistance: number;
-  MaxInventoryMass: number;
-  Mesh: EObjMesh;
-  MeshGeneratorPrototypeSID: string;
-  MinDialogInteractDistance: number;
-  MovementVFXPrototypeSID: string;
-  NeedsPresetSID: string;
-  NPCPrototypeSID: string;
-  NPCType: ENPCType;
-  Protection: {
-    Strike: number;
-  };
-  Rank: ERank;
-  ReactOnNonEnemySounds: boolean;
-  ShouldEnableAdamAppleAnimations: boolean;
-  ShouldGenerateStashClues: boolean;
-  SID: string;
-  Text: string;
-  TradePrototypeSID: string;
-  UnkillableByALife: boolean;
-  UseGroomReplacement: boolean;
-  VitalParams: {
-    DegenFoodPoint: number;
-    DegenPsyPoints: number;
-    DegenStamina: number;
-    DegenWaterPoint: number;
-    MaxFoodPoint: number;
-    MaxFP: number;
-    MaxHP: number;
-    MaxSleepDesirePoint: string;
-    MaxSP: number;
-    MaxWaterPoint: number;
-    RegenFP: number;
-    RegenHP: number;
-    RegenSleepDesirePoint: number;
-    StaminaDisableThresholds: {
-      RegenerationDelay: number;
-      StateTags: EStateTag[];
-      Threshold: number;
-    }[];
-  };
-}>;
-
-export type QuestPrototype = GetStructType<{
-  Description: string;
-  DLC: string;
-  Image: string;
-  LocalQuest: boolean;
-  MainQuest: boolean;
-  Name: string;
-  SID: string;
-  StartQuestNodeSID: string;
-}>;
-
-export type QuestRewardsPrototype = GetStructType<{
-  ItemGenerator: ItemGeneratorEntry[];
-  MoneyGenerator: {
-    MaxCount: number;
-    MinCount: number;
-  };
-  SID: string;
-  SpecificRewardSound: EUISound;
-}>;
-
-export type QuestStashBodyItemGeneratorPrototype = GetStructType<{
-  ItemGenerator: ItemGeneratorEntry[];
-  SID: string;
-}>;
-
-export type RegionMusicPrototype = GetStructType<{
-  AmbientStateMusicSwitchPath: string;
-  MusicState: EMusicState;
-  Region: ERegion;
-  RegionSIDGlobalVariable: string;
-  SID: string;
-}>;
-
-export type RelationPrototype = GetStructType<{
-  CharacterReactions: (Record<`${Reaction}->${Reaction}`, number> & {
-    Type: ERelationChangingEvent;
-  })[];
-  ExpansionPolicies: {
-    AttackLairRestrictions: Record<`${Faction}->${Faction}`, boolean>;
-  };
-  FactionReactions: (Record<`${Reaction}->${Reaction}`, number> & {
-    Type: ERelationChangingEvent;
-  })[];
-  FactionRollbackCooldowns: Record<Faction, number>;
-  Factions: Record<Faction, string>;
-  FactionsInvolvedDistance: number;
-  HubReputationRollbackCooldownModifier: number;
-  LairReputationRollbackCooldownModifier: number;
-  MinRelationLevelToTrade: ERelationLevel;
-  NegativeReactionsExcludedFactions: string[];
-  PositiveReactionsExcludedFactions: string[];
-  RelationLevelRanges: {
-    end: number;
-    start: number;
-  }[];
-  Relations: Record<`${Faction}<->${Faction}`, number>;
-  RelationVersion: number;
-  ReputationRollbackCooldown: number;
-  ReputationRollbackRadius: number;
-  SID: string;
-}>;
-
-export type RestrictorsPrototype = GetStructType<{
-  OfflineRestrictors: {
-    Active: boolean;
-    AreasMask: number;
-    Center: string;
-    Extents: string;
-    GUID: string;
-    Orientation0: string;
-    Orientation1: string;
-    Orientation2: string;
-  }[];
-  SID: string;
-}>;
-
-export type SmartCoverPrototype = GetStructType<{
-  SID: string;
-  WeaponTypes: {
-    EnterCoverOffsets: {
-      PerCoverTypeOffsets:
-        | string
-        | {
-            EnterCoverOffsetVector: string;
-            EnterSide: EAvailableCoverActionsSide;
-            EnterTypes: EAvailableCoverEnterTypes;
-          }[];
-      SmartCoverType: ESmartCoverType;
-    }[];
-    LookFromCoverOffsets: {
-      PerCoverTypeOffsets:
-        | string
-        | {
-            ActionSide: EAvailableCoverActionsSide;
-            HeadOffset: string;
-            LookOutSide: EAvailableCoverActionsSide;
-            RootOffset: string;
-            WeaponOffset: string;
-          }[];
-      SmartCoverType: ESmartCoverType;
-    }[];
-    WeaponType: EWeaponType;
-  }[];
-}>;
-
-export type SpawnActorPrototype = GetStructType<{
-  ALifeLairsSearchRadius: number;
-  ALifeScenariosGroupSID: string;
-  ActiveLair: boolean;
-  AllowFactions: string;
-  AllowNightVisionForQuestNPC: boolean;
-  AllowSpawnInShelter: boolean;
-  AllowSpawnOnIsolatedNavMesh: boolean;
-  AllowedUserRestriction: string;
-  AmmoCount: number;
-  AnomaliesPresets: string[][];
-  AttachReferences: string;
-  AttachmentSID: string;
-  AvrAgentDiameter: number;
-  BubbleInitialLocation: Vec3;
-  CanAttack: boolean;
-  CanBeCaptured: boolean;
-  CanBeWounded: boolean;
-  CanDefend: boolean;
+export type ContextualActionNodePrototypeExecute = GetStructType<{
+  AnimationData: ContextualActionNodePrototypeAnimationData;
   CanInteractWithPlayer: boolean;
-  CenterLocationRotation: {
-    Rotation: Rot;
-    Vector: Vec3;
-  }[];
-  ClickerAnomalyArtifactJumpPositions: string;
-  CloseDoorRadius: number;
-  ClueVariablePrototypeSID: string;
-  CollisionSize: Vec3;
-  CombatTacticsOverride: ECombatTactics;
-  CompoundAnimationReferences: string;
-  ContextualActionAccessibility: number;
-  ContextualActionPreconditions: string;
-  ContextualActionSID: string;
-  CorpsePrototypeSID: string;
-  CorpseStashSID: string;
-  DLC: string;
-  DamageMultiplier: number;
-  DataLayers: string[];
-  DeadPose: string;
-  DecalsMaterialSID: string;
-  DisableCollision: boolean;
-  DisableDespawn: boolean;
-  DisableDrag: boolean;
-  DisableLoot: boolean;
-  DisablePhysics: boolean;
-  DisablePhysicsAndCollision: boolean;
-  DisableRagdollForQuestProtection: boolean;
-  DisableSpawnAndStrafeInThisAnomaly: boolean;
-  Durability: number;
-  EffectPrototypeSIDs: string[];
-  ElectroBakedData: {
-    ElectroNormalVector: string;
-    ElectroTraceEndPoint: string;
-    ElectroTraceStartPoint: string;
-  }[];
-  EnableSmartLootIfPossible: boolean;
-  FactionGroup: {
-    Factions: {
-      Faction: Faction;
-      SpawnBoxes: {
-        Extent: string;
-        Location: string;
-      }[];
-    }[];
-    LairSID: string;
-  };
-  FogDensity: number;
-  FogDensitySecond: number;
-  FogDensitySecondFogData: number;
-  FreeformTriggerHeight: number;
-  FreeformTriggerVertices: Vec2[];
-  GeigerCurve: string;
-  GeigerRadiationIntensity: number;
-  GeigerTriggerOffset: number;
-  GlobalOnlineModifierDistance: number;
-  GlobalOtherOnlineModifierDistance: number;
-  HP: number;
-  HubOwnerGuid: string;
-  ID: number;
-  IgnoreCollisionActors: string;
-  InLocationRotation: {
-    Rotation: Rot;
-    Vector: Vec3;
-  }[][];
-  InfiniteRespawn: boolean;
-  InitialInhabitantFaction: string;
-  IsALifePoint: boolean;
-  IsLootedOnDifficulties: string;
-  ItemGeneratorSettings: string;
-  ItemSID: string;
-  Items: {
-    ChanceToSpawn: number;
-    DisablePhysicsAndCollision: boolean;
-    MaxAmount: number;
-    MinAmount: number;
-    PrototypeSID: string;
-  }[];
-  KillRestrictedFactions: boolean;
-  LairPreferredSpawnType: ELairPreferredSpawnType;
-  LairPrototypeSID: string;
-  LairType: ELairType;
-  LevelName: string;
-  LightningBallLiveBoxExtent: Vec3;
-  LightningBallNavigationPoints: {
-    LightningBallLocation: Vec3[];
-    LightningBallNeighborLocations: number[];
-    LightningBallPatrolPoint: boolean;
-  }[];
-  LightningBallPathUsage: boolean;
-  LocationSID: string;
-  LockReceivers: string[];
-  MainInfoTopicOwner: string;
-  MarkerSID: string;
-  MaxRespawnCount: number;
-  MaxSpawnRank: ERank;
-  MaximumCount: number;
-  Mesh: string;
-  MeshPath: string;
-  MinPatrolNeed: number;
-  MinSpawnRank: ERank;
-  MoveSpeedMultiplier: number;
-  NavModifierVolume: string;
-  NavModifierVolumes: string[];
-  NodeCreationVersion: number;
-  NodePrototypeVersion: number;
-  OnlineModifierDistance: number;
-  OverrideArtifactSpawnLocation: string;
-  OverrideFaction: string;
-  OverrideRank: boolean;
-  OwningFaction: string;
-  PSYControllerArtifactItemSID: string;
-  PSYControllerArtifactLocation: Vec3;
-  PackOfItemsPrototypeSID: string;
-  Path: {
-    Location: string;
-    MovementType: EMovementBehaviour;
-  }[];
-  PatrolPoints: {
-    ContextualActionSearchRadius: number;
-    Location: string;
-    PatrolPointLinks:
-      | string
-      | {
-          DestinationPointIndex: number;
-          Weight: number;
-        }[];
-    StayTimeMax: number;
-    StayTimeMin: number;
-    bIsEndPoint: boolean;
-  }[];
-  PillowAnomalyBiomeType: EPillowAnomalyBiomeType;
-  PlaceholderActorGuid: string;
-  PlaceholderMapPath: string;
-  PositionX: number;
-  PositionY: number;
-  PositionZ: number;
-  PossibleInhabitantFactions: {
-    Faction: Faction;
-    SpawnSettingsPerPlayerRanks: Record<
-      Rank,
-      {
-        InitialSpawnQuantityPercent: number;
-        InitialSpawnQuantityRespawnTimeSeconds: number;
-        MaxSpawnQuantity: number;
-        MaxSpawnQuantityRespawnTimeSeconds: number;
-        SpawnSettingsPerArchetypes: Record<
-          Faction,
-          {
-            MinQuantityPerArchetype: number;
-            SpawnWeight: number;
-          }
-        >;
-        WipeRespawnTimeoutSeconds: number;
-      }
-    >;
-  }[];
-  PostEffectProcessorSID: string;
-  PostProcessConfig: string;
-  PostProcessRadiationCycleSpeed: number;
-  PostProcessRadiationIntensity: number;
-  PresetIndex: number;
-  Priority: number;
-  PsyNPCType: EPsyNPCType;
-  RadiationCycleSpeedPostEffectSID: string;
-  RadiationPerSecondValue: number;
-  Radioactivity: ERadiationPreset;
-  RadioactivityValue: number;
-  Rank: ERank;
-  RespawnMembers: boolean;
-  RespawnOnNPCCount: number;
-  RespawnPoints: string[];
-  RestrictedFactions: string[];
-  RestrictionRadius: number;
-  RotatorAnglePitch: number;
-  RotatorAngleRoll: number;
-  RotatorAngleYaw: number;
-  SID: string;
-  ScaleX: number;
-  ScaleY: number;
-  ScaleZ: number;
-  ScenariosGroupPriority: EALifeGroupPriorityType;
-  ShouldTraceOnOverlap: boolean;
-  ShowOnCompass: boolean;
-  ShowOnMap: boolean;
-  SignalReceivers: {
-    DestroyReceiver: {
-      Guid: string;
-    };
-  };
-  SignalSenders: {
-    DestroySender: {
-      Guid: string;
-      Signals: string;
-    };
-  };
-  SimplifiedOverlap: boolean;
-  SpawnInRadius: number;
-  SpawnOnStart: boolean;
-  SpawnType: ESpawnType;
-  SpawnedGenericMembers: {
-    SpawnedSquadMembersCount: number;
-    SpawnedPrototypeSID: SID;
-  }[];
-  SpawnedPrototypeSID: string;
-  SpawnedSquadMembersCount: number;
-  SquadMembersQuestSIDs: string[];
-  StartPresetID: number;
-  StartWaitTime: number;
-  StashPrototypeSID: string;
-  TeleportGroupSID: string;
-  TextAboveActor: string;
-  TileOffsetIndex: number;
-  TriggerShape: ETriggerShape;
-  UnlockDoorTime: number;
-  UnlockReceivers: string[];
-  UpgradeSID: string;
-  VolumeDailySchedulePresetSID: string;
-  VolumeSID: string;
-  Volumes: {
-    NumOfContextualActions: number;
-    RestrictorVolume: string;
-    ShowMarker: boolean;
-    SpaceRestrictorOffset: number;
-    Volume: string;
-  }[];
-  VolumetricCoverRestrictions: {
-    bEnabled: boolean;
-    Volumes: string;
-  };
-  bDisableTickForWeatherController: boolean;
-  bForceCodePhysicsDisabled: boolean;
-  bForceWeather: boolean;
-  bRandomChancesForSeparateItems: boolean;
-  bRestrictorVolumeEnabled: boolean;
-  bUseCustomLocation: boolean;
-  bWakeUpOnStart: boolean;
+  ConditionalSelectorNodes: ContextualActionNodePrototypeConditionalSelectorNodes;
+  Effects: string;
+  Interrupt: ContextualActionNodePrototypeInterrupt;
+  IsValidForQuestDialog: boolean;
+  NodeType: EContextualActionNodeType;
+  Preconditions: string;
+  RandomSelectorNodes: ContextualActionNodePrototypeRandomSelectorNodes;
+  Repetitions: ERepetitions;
+  RepetitionsCount: number;
+  SequentialSelectorNodes: ContextualActionNodePrototypeSequentialSelectorNodes;
+  ShouldDisableDialogAnimations: boolean;
+  ShouldPlayerCrouchDuringDialog: boolean;
+  Weights: ContextualActionNodePrototypeWeights;
 }>;
 
-export type SQ95_GlobalVariablePrototype = GetStructType<{
-  DefaultValue: string;
-  SID: string;
-  Type: EGlobalVariableType;
+export type ContextualActionNodePrototypeExit = GetStructType<{
+  DistanceSelectorCondition: EDistanceSelectorCondition;
+  DistanceSelectorNodes: ContextualActionNodePrototypeDistanceSelectorNodes;
+  Effects: string;
+  NodeType: EContextualActionNodeType;
+  Preconditions: string;
 }>;
 
-export type StashPrototype = GetStructType<{
-  CustomIconPath: string;
-  ItemGenerators: {
-    Rank: ERank;
-    SmartLootParams: {
-      AttachParams: {
-        MaxPrice: number;
-      }[];
-      ConsumablesParams: {
-        ItemSetCount: number;
-        Items: {
-          Chance: number;
-          ItemPrototypeSID: string;
-          MaxCount: number;
-          MinCount: number;
-          Weight: number;
-        }[];
-        MaxSpawnChance: number;
-        MinSpawnChance: number;
-      }[];
-      GrenadesParams: {
-        ItemSetCount: number;
-        Items: {
-          Chance: number;
-          ItemPrototypeSID: string;
-          MaxCount: number;
-          MinCount: number;
-          Weight: number;
-        }[];
-        MaxSpawnChance: number;
-        MinSpawnChance: number;
-      }[];
-      HealthParams: {
-        Curve: string;
-        Items: {
-          Chance: number;
-          ItemPrototypeSID: string;
-          MaxCount: number;
-          MinCount: number;
-        }[];
-        MaxSpawnChance: number;
-        MinSpawnChance: number;
-      }[];
-
-      PistolWeaponParams: {
-        Items: {
-          ItemPrototypeSID: string;
-          MaxCount: number;
-
-          MinCount: number;
-
-          Weight: number;
-        }[];
-        MainWeaponAmmoCount: number;
-
-        MaxSpawnChance: number;
-        MinSpawnChance: number;
-
-        PriorityCaliber: EAmmoCaliber;
-      }[];
-
-      PrimaryWeaponParams: {
-        Items: {
-          Chance: number;
-          ItemPrototypeSID: string;
-          MaxCount: number;
-          MinCount: number;
-          Weight: number;
-        }[];
-        MainWeaponAmmoCount: number;
-        MaxSpawnChance: number;
-        MinSpawnChance: number;
-        PriorityCaliber: EAmmoCaliber;
-      }[];
-      SecondaryWeaponParams: {
-        Items: {
-          Chance: number;
-          ItemPrototypeSID: string;
-          MaxCount: number;
-          MinCount: number;
-          Weight: number;
-        }[];
-        MainWeaponAmmoCount: number;
-        MaxSpawnChance: number;
-        MinSpawnChance: number;
-        PriorityCaliber: EAmmoCaliber;
-      }[];
-    };
-  }[];
-  SID: string;
+export type ContextualActionNodePrototypeInterrupt = GetStructType<{
+  AnimationData: ContextualActionNodePrototypeAnimationData;
+  CanInteractWithPlayer: boolean;
+  DistanceSelectorCondition: EDistanceSelectorCondition;
+  DistanceSelectorNodes: ContextualActionNodePrototypeDistanceSelectorNodes;
+  Effects: string;
+  IsValidForQuestDialog: boolean;
+  NodeType: EContextualActionNodeType;
+  Preconditions: string;
+  ShouldDisableDialogAnimations: boolean;
+  ShouldPlayerCrouchDuringDialog: boolean;
 }>;
 
-export type TeleportGroupPrototype = GetStructType<{
-  MinTeleportDistance: number;
-  SID: string;
+export type ContextualActionNodePrototypePreconditions = GetStructType<
+  ContextualActionNodePrototypePreconditionsItem[]
+>;
+
+export type ContextualActionNodePrototypePreconditionsItem = GetStructType<{
+  AllowedAgentType: number;
+  AllowedFactions: SpawnActorPrototypeIgnoreCollisionActors;
+  AllowedUserRestriction: string;
+  BodyParts: ContextualActionNodePrototypeBodyParts;
+  GlobalVariableName: string;
+  IsTargetWeather: boolean;
+  ItemPrototypeSID: string;
+  RequireMinRank: ERank;
+  ShouldBeActive: boolean;
+  ShouldBeTrue: boolean;
+  Type: EContextualActionPreconditionType;
+  Weather: ContextualActionNodePrototypeWeather;
 }>;
 
-export type TeleportPrototype = GetStructType<{
-  EffectPrototypeSIDs: string[];
-  SID: string;
-  TeleportType: EGSCTeleportType;
-}>;
+export type ContextualActionNodePrototypeRandomSelectorNodes = GetStructType<
+  ContextualActionNodePrototypeRandomSelectorNodesItem[]
+>;
 
-export type TestNPCObjPrototype = GetStructType<{
-  CustomMeshGeneratorPrototypeSID: string;
-  Faction: Faction;
-  ID: number;
-  NPCPrototypeSID: string;
-  NPCType: ENPCType;
-  SID: string;
-}>;
+export type ContextualActionNodePrototypeRandomSelectorNodesItem =
+  GetStructType<{
+    AkAudioEvent: SpawnActorPrototypeIgnoreCollisionActors;
+    AnimationData: ContextualActionNodePrototypeAnimationData;
+    CanInteractWithPlayer: boolean;
+    Effects: string;
+    Interrupt: ContextualActionNodePrototypeInterrupt;
+    IsValidForQuestDialog: boolean;
+    NodeType: EContextualActionNodeType;
+    Preconditions: string;
+    RandomSelectorNodes: ContextualActionNodePrototypeRandomSelectorNodes;
+    Repetitions: ERepetitions;
+    RepetitionsCount: number;
+    SequentialSelectorNodes: ContextualActionNodePrototypeSequentialSelectorNodes;
+    ShouldDisableDialogAnimations: boolean;
+    ShouldPlayerCrouchDuringDialog: boolean;
+    Weights: ContextualActionNodePrototypeWeights;
+  }>;
 
-export type ThreatPrototype = GetStructType<{
-  Actions: {
-    ThreatLevelValueMax: number;
-    ThreatLevelValueMin: number;
-    ThreatValueFreezeTimeSeconds: number;
-    ThreatValueLossPerSecond: number;
-    Type: EThreatActionType;
-  }[];
-  AlertedRadius: number;
-  AlertedRadiusExpanded: number;
-  bIdentifyEnemyByThreatLevel: boolean;
-  DefaultThreatValueFreezeTimeSeconds: number;
-  DefaultThreatValueLossPerSecond: number;
-  ID: number;
-  IdentifyAsEnemyRadius: number;
-  IdentifyAsEnemyTime: number;
-  MaxThreatLevelValue: number;
-  MaxThreatLevelValueBeforeIndentification: number;
-  ReachedThrealLevelSpeechCommands: {};
-  ShowThreatIndicator: boolean;
-  SID: string;
-  ThreatParams: {
-    ConfidenceDropToZeroTimeSeconds: number;
-    RelationLevels: ERelationLevel[];
-    SoundType: ESoundEventType;
-    ThreatValue: number;
-    Type: EThreatType;
-  }[];
-}>;
+export type ContextualActionNodePrototypeSequentialSelectorNodes =
+  GetStructType<ContextualActionNodePrototypeSequentialSelectorNodesItem[]>;
 
-export type TradePrototype = GetStructType<{
-  bInfiniteMoney: boolean;
-  BuyDiscounts: {
-    ConditionSID: string;
-    Modifier: number;
-  }[];
-  Money: number;
-  RefreshConditionSID: string;
-  SellDiscounts: {
-    ConditionSID: string;
-    Modifier: number;
-  }[];
-  SID: string;
-  TradeGenerators: {
-    ArmorSellMinDurability: number;
-    BuyLimitations: EItemType[];
-    BuyModifier: number;
-    ConditionSID: string;
-    ItemGeneratorPrototypeSID: string;
-    SellModifier: number;
-    WeaponSellMinDurability: number;
-  }[];
-  TradeTimeLength: number;
-  TradeTimeStart: number;
-}>;
+export type ContextualActionNodePrototypeSequentialSelectorNodesItem =
+  GetStructType<{
+    AkAudioEvent: SpawnActorPrototypeIgnoreCollisionActors;
+    AnimationData: ContextualActionNodePrototypeAnimationData;
+    CanInteractWithPlayer: boolean;
+    ConditionalSelectorNodes: ContextualActionNodePrototypeConditionalSelectorNodes;
+    Effects: string;
+    IsValidForQuestDialog: boolean;
+    NodeType: EContextualActionNodeType;
+    Preconditions: string;
+    RandomSelectorNodes: ContextualActionNodePrototypeRandomSelectorNodes;
+    Repetitions: ERepetitions;
+    RepetitionsCount: number;
+    SequentialSelectorNodes: ContextualActionNodePrototypeSequentialSelectorNodes;
+    ShouldDisableDialogAnimations: boolean;
+    ShouldPlayerCrouchDuringDialog: boolean;
+    Weights: ContextualActionNodePrototypeWeights;
+  }>;
 
-export type TradeTestBoolProviderPrototype = GetStructType<{
-  Days: number;
-  Faction: Faction;
-  Hours: number;
-  ProviderSID: string;
-  ProviderSIDs: string[];
-  Ranks: ERank[];
-  ReputationThreshold: number;
-  SID: string;
-  Type: EBoolProviderType;
-}>;
+export type ContextualActionNodePrototypeWeather = GetStructType<EWeather[]>;
 
-export type UpdatePopupPrototype = GetStructType<{
-  SaveFileVersion: number;
-  SID: string;
-  TabData: {
-    Background: string;
-    ContentData: string[];
-    ContentSID: string;
-    TabBackground: string;
-    TabSID: string;
-  }[];
-}>;
+export type ContextualActionNodePrototypeWeights = GetStructType<
+  ContextualActionNodePrototypeWeightsItem[]
+>;
 
-export type UpgradePrototype = GetStructType<{
-  AttachPrototypeSIDs: string[];
-  BaseCost: number;
-  BlockingGlobalVariables: {
-    GlobalVariableSID: string;
-    Value: number;
-  }[];
-  BlockingUpgradePrototypeSIDs: string[];
-  ConnectionLines: EConnectionLineState[];
-  DiscountCoefficient: number;
-  EffectPrototypeSIDs: string[];
-  HiddenWihoutItem: boolean;
-  Hint: string;
-  HorizontalPosition: number;
-  Icon: string;
-  ID: number;
-  Image: string;
-  InterchangeableUpgradePrototypeSIDs: string[];
-  IsModification: boolean;
-  LocalizationSID: string;
-  RepairCostModifier: number;
-  RequiredGlobalVariables: {
-    GlobalVariableSID: string;
-    Value: number;
-  }[];
-  RequiredItemPrototypeSIDs: string[];
-  RequiredUpgradePrototypeSIDs: string[];
-  SID: string;
-  Skills: string[];
-  Text: string;
-  UpgradeCancelSound: string;
-  UpgradeModificationSound: string;
-  UpgradeSound: string;
-  UpgradeTargetPart: EUpgradeTargetPartType;
-  VerticalPosition: EUpgradeVerticalPosition;
-}>;
-
-export type UserNotificationPrototype = GetStructType<{
-  ID: number;
-  SID: string;
-  Sound: string;
-  Text: string;
-  Title: string;
-  Type: EUserNotificationType;
-}>;
-
-export type VisionScannerPrototype = GetStructType<{
-  AnglePercentToScorePenaltyCurve: string;
-  CentralVisionDistance: number;
-  DaytimeDistanceAndAnglesVisibilityPercentModificationCurve: string;
-  DistancePercentToScorePenaltyCurve: string;
-  HorizontalVisionHalvedAngleDegrees: number;
-  LoseTracePointDelta: number;
-  LoseVisionAngleExtensionMultiplier: number;
-  LoseVisionDistanceExtensionMultiplier: number;
-  LostVisibilityFreezeTimeSeconds: number;
-  LostVisibilityScorePerSecondLoss: number;
-  LuminanceToDistanceFlashlightPenaltyFactor: number;
-  LuminanceToDistanceIlluminatedPenaltyFactor: number;
-  LuminanceToDistanceNVGPenaltyFactor: number;
-  LuminanceToDistancePenaltyFactor: number;
-  LuminanceToScoreFlashlightPenaltyFactor: number;
-  LuminanceToScoreIlluminatedPenaltyFactor: number;
-  LuminanceToScoreNVGPenaltyFactor: number;
-  LuminanceToScorePenaltyFactor: number;
-  MaxVisibilityScore: number;
-  MinCombatHoldPositionSignificantVisibilityScore: number[];
-  MinCombatSignificantVisibilityScore: number[];
-  MinCombatSurpriseEnemyLocationSignificantVisibilityScore: number[];
-  MinSignificantVisibilityScore: number[];
-  PeripheralVisionDistance: number;
-  SID: string;
-  SurpriseEnemyLocationDistance: number;
-  TooCloseVisionDistance: number;
-  TooCloseVisionDistanceMultiplier: number;
-  VerticalVisionHalvedAngleDegrees: number;
-}>;
-
-export type VisionTickPrototype = GetStructType<{
-  NPCDeadBudget: number;
-  NPCEnemyBudget: number;
-  NPCNotEnemyBudget: number;
-  OtherTargetsBudget: number;
-  PlayerEnemyBudget: number;
-  PlayerFlashlightBudget: number;
-  PlayerNotEnemyBudget: number;
-  PlayerSeesNPCBudget: number;
-  PopulateTargetsDelay: number;
-  SID: string;
-}>;
-
-export type VoiceModulatorPrototype = GetStructType<{
-  AuxBusControlValue: number;
-  AuxBusPath: string;
-  ObjectOffSFX: string;
-  ObjectOnSFX: string;
-  PresetRTPCPath: string;
-  PresetRTPCValue: number;
-  SID: string;
-}>;
-
-export type WeaponAttributesPrototype = GetStructType<{
-  AimShellShutterSocketName: string;
-  AIParameters: {
-    BehaviorTypes: Record<
-      Rank | "Zombie",
-      Record<
-        WeaponShootDistance,
-        {
-          IgnoreDispersionMaxShots: number;
-          IgnoreDispersionMinShots: number;
-          MaxSecondsDelay: number;
-          MaxShots: number;
-          MinSecondsDelay: number;
-          MinShots: number;
-        }
-      > & {
-        CharacterWeaponSettingsSID: string;
-        CombatEffectiveFireDistanceMax: string;
-        CombatEffectiveFireDistanceMin: string;
-        NonAutomaticWeaponShotDelay: number;
-      }
-    >;
-  };
-  AnimBlueprint: string;
-  DefaultWeaponSettingsSID: string;
-  MuzzleSocketName: string;
-  ParticlesBasedOnHeating: {};
-  ShellShutterSocketName: string;
-  SID: string;
-}>;
-
-export type WeaponFloatProviderPrototype = GetStructType<{
-  ProviderSIDs: string[];
-  SID: string;
-  Type: EFloatProviderType;
-  Value: number;
-}>;
-
-export type WeaponGeneralSetupPrototype = GetStructType<{
-  AdditionalBulletsAfterReloadingCount: number;
-  AimGamepadAimAssistPresetSID: string;
-  AimMouseAimAssistPresetSID: string;
-  AimVFXSocketMinAlpha: number;
-  AimingCurve: string;
-  AimingEffects: {
-    Effects: string[];
-    PlayerOnlyEffects: string[];
-  };
-  AimingFOVModifier: number;
-  AimingMovementSpeedModifier: number;
-  AimingSound: string;
-  AimingTime: number;
-  AimingWeaponFOVCurve: string;
-  AmmoCaliber: EAmmoCaliber;
-  AmmoPerShot: string;
-  AmmoTypeProjectiles: {
-    AmmoType: EAmmoType;
-    ProjectilePrototypeSID: string;
-  }[];
-  BoltActionState: EBoltActionWeaponState;
-  BulletMeshPath: string;
-  BulletsSockets: string[];
-  CameraRecoilPatternBlendCurve: string;
-  CameraRecoilPatternPath: string;
-  CompatibleAttachments: {
-    AdditionalMeshes: {
-      MeshPrototypeSID: string;
-      Socket: string;
-    }[];
-    AdditionalPlankMeshPrototypeSID: string;
-    AdditionalPlankSocket: string;
-    AimMuzzleVFXSocket: string;
-    AimShellShutterVFXSocket: string;
-    AttachPrototypeSID: string;
-    BlockingUpgradeIDs: string;
-    BlockingUpgradeIds: string[];
-    IconPoX: number;
-    IconPosY: number;
-    MeshPrototypeSID: string;
-    Muzzle: string;
-    RequiredUpgradeIDs: string[];
-    Socket: string;
-    WeaponSpecificIcon: string;
-  }[];
-  CooldownTime: number;
-  CrosshairType: ECrosshairType;
-  DefaultEjectMagazineSocketName: string;
-  DefaultFireType: EFireType;
-  DefaultInsertMagazineSocketName: string;
-  DispersionParams: {
-    FirstShotDispersionRadius: number;
-    ShootingStateParams: {
-      AimModifiers: {
-        AimCrouchModifier: number;
-        AimFullCrouchModifier: number;
-        AimModifier: number;
-      };
-      HipModifiers: {
-        HipCrouchModifier: number;
-        HipFullCrouchModifier: string;
-        HipJumpModifier: number;
-        HipModifier: number;
-      };
-      MovementSpeedModifiers: {
-        MovementSpeedModifier: number;
-      };
-      OffsetAimModifiers: {
-        OffsetAimCrouchModifier: number;
-        OffsetAimFullCrouchModifier: number;
-        OffsetAimModifier: number;
-      };
-      RadiusExtensionModifiers: {
-        MaxRadiusExtensionModifier: number;
-        PerIterationRadiusExtensionModifier: number;
-        RadiusExtensionBulletCount: number;
-      };
-      RadiusNormalizationModifiers: {
-        RadiusNormalizationDelay: number;
-        RadiusNormalizationInterval: number;
-      };
-    };
-  };
-  DisplayBP: string;
-  FireEventBreak: string;
-  FireEventLoop: string;
-  FireEventOneShot: string;
-  FireInterval: number;
-  FireIntervalModifiers: number[];
-  FireIntervalRTPCParameter: string;
-  FireQueueCount: number;
-  FireTypes: EFireType[];
-  FullReloadTimeMultiplier: number;
-  HideEquipmentTime: number;
-  HipGamepadAimAssistPresetSID: string;
-  HipMouseAimAssistPresetSID: string;
-  HoldBreathDrainModifier: number;
-  ItemTypeSwitchValue: string;
-  JamType: EJamType;
-  LastBulletInClipEvent: string;
-  LastClipBulletsCount: number;
-  LastClipBulletsDamageModifier: number;
-  LastShootIdle: boolean;
-  LastTotalBulletsCount: number;
-  LastTotalBulletsDamageModifier: number;
-  LeanAimingRestoreTime: number;
-  LeanAimingTime: number;
-  LinearCurveShotsToNormalize: string;
-  LinearCurveStartShot: string;
-  MaxAmmo: number;
-  MaxDeadNPCLoadedAmmoCount: number;
-  MaxHeatingValue: number;
-  MaxJamChance: number;
-  MaxJamDurabilityThreshold: number;
-  MechModulatorRTPCParameter: string;
-  MinDeadNPCLoadedAmmoCount: number;
-  MinJamChance: number;
-  MinJamDurabilityThreshold: number;
-  NumberOfShotsBeforeDelay: number;
-  OffsetAimingConditionSID: string;
-  OffsetAimingFOVModifier: number;
-  OffsetAimingOffSound: string;
-  OffsetAimingOnSound: string;
-  OffsetAimingTime: number;
-  OffsetAimingWeaponFOVCurve: string;
-  PerBulletHeatingValue: number;
-  PerBulletReloadingAmmoCount: number;
-  PostShotDelay: number;
-  PreinstalledAttachmentsItemPrototypeSIDs: {
-    AttachSID: string;
-    bHiddenInInventory: boolean;
-  }[];
-  ProjectileSpawnOffset: number;
-  RecoilInterval: number;
-  RecoilParams: {
-    CameraAimRecoilPatternLoopStartKeyIndex: number;
-    CameraHipRecoilPatternLoopStartKeyIndex: number;
-    CameraRecoilPatternBlendCurve: string;
-    CameraRecoilPatternPath: string;
-    RecoilMaxPitch: number;
-    RecoilPatternInterval: number;
-    RecoilRadius: number;
-    ShootingStateParams: {
-      AimModifiers: {
-        AimCrouchModifier: number;
-        AimFullCrouchModifier: number;
-        AimModifier: number;
-      };
-      HealthPointsModifiers: {
-        HealthPercentThreshold: number;
-        HealthPointsModifier: number;
-      };
-      HipModifiers: {
-        HipCrouchModifier: number;
-        HipFullCrouchModifier: number;
-        HipJumpModifier: number;
-        HipModifier: number;
-      };
-      MovementSpeedModifiers: {
-        MovementSpeedModifier: number;
-      };
-      OffsetAimModifiers: {
-        OffsetAimCrouchModifier: number;
-        OffsetAimFullCrouchModifier: number;
-        OffsetAimModifier: number;
-      };
-      RadiusExtensionModifiers: {
-        MaxRadiusExtensionModifier: number;
-        PerIterationRadiusExtensionModifier: number;
-        RadiusExtensionBulletCount: number;
-      };
-      RadiusNormalizationModifiers: {
-        RadiusNormalizationDelay: number;
-        RadiusNormalizationInterval: number;
-      };
-    };
-  };
-  ReloadTypes: EAnimationReloadTypes[];
-  SID: string;
-  ShootCameraShakePrototypeSID: string;
-  ShootingAnimationNumberToSkip: number;
-  ShouldOverrideCooldownAfterShots: boolean;
-  ShowCrosshair: boolean;
-  ShowEquipmentTime: number;
-  SilencerRTPCParameter: string;
-  SingleBulletReloadTimeMultiplier: number;
-  SpeedCoef: number;
-  TacticalReloadTimeMultiplier: number;
-  ToggleOffsetAimingConditionSID: string;
-  UnloadTime: number;
-  UpgradePrototypeSIDs: string[];
-  WeaponDurabilityCurve: string;
-  WeaponInWorldUnloadSound: string;
-  WeaponJamEvent: string;
-  WeaponJamParams: {
-    FullJamTime: number;
-    JamChanceCoef: number;
-  }[];
-  WeaponReloadTimePerAttachment: {
-    AttachPrototypeSID: string;
-    FullReloadTimeMultiplier: number;
-    SingleBulletReloadTimeMultiplier: number;
-    TacticalReloadTimeMultiplier: number;
-    TwinAuxReloadTimeMultiplier: number;
-    TwinReloadTimeMultiplier: number;
-    TwinTacticalAuxReloadTimeMultiplier: number;
-    TwinTacticalReloadTimeMultiplier: number;
-    UnloadTime: number;
-  }[];
-  WeaponStaticMeshParts: {
-    Materials: {
-      MaterialPath: string;
-      MaterialSlot: number;
-    }[];
-    MeshPath: string;
-    SocketName: string;
-  }[];
-  WeaponType: EWeaponType;
-  WeaponTypeSoundSwitch: string;
-  bSpawnShell: boolean;
-}>;
-
-export type WeaponPrototype = GetStructType<{
-  BaseDurability: number;
-  Cost: number;
-  EffectPrototypeSIDs: string[];
-  GeneralWeaponSetup: string;
-  Icon: string;
-  IsQuestItem: boolean;
-  ItemGridHeight: number;
-  ItemGridWidth: number;
-  ItemSlotType: EInventoryEquipmentSlot;
-  ItemTypeSwitchValue: string;
-  LocalizationSID: string;
-  MaxStackCount: number;
-  MeleeWeaponSID: string;
-  MeshInWorldPrototypeSID: string;
-  MeshPrototypeSID: string;
-  NPCWeaponAttributes: string;
-  PhysicsInteractionPrototypeSID: string;
-  PlayerWeaponAttributes: string;
-  PreinstalledUpgrades: string[];
-  SID: string;
-  SectionSettings: {
-    BottomPosition: number;
-    LeftPosition: number;
-    ModuleLineDirection: ELineDirection;
-    RightPoition: number;
-    SectionIsEnabled: boolean;
-    TopPosition: number;
-    UpgradeLineDirection: ELineDirection;
-    UpgradeTargetPartType: EUpgradeTargetPartType;
-  }[];
-  Type: EItemType;
+export type ContextualActionNodePrototypeWeightsItem = GetStructType<{
   Weight: number;
 }>;
-
-export type WeatherChainPrototype = GetStructType<{
-  SID: string;
-  SourceWeather: EWeather;
-  TargetWeather: EWeather;
-  TransitionSteps: {
-    WeatherChains: {
-      WeatherTransitionTimeMultiplier: number;
-      WeatherType: EWeather;
-    }[];
-    WeatherChainWeight: number;
-  }[];
-}>;
-
-export type WeatherPrototype = GetStructType<{
-  AltitudeCurveIndex: number;
-  SID: string;
-  WeatherParams: {
-    AutoExposureBias: number;
-    Bloom: {
-      BloomIntensity: number;
-      BloomThreshold: number;
-    };
-    CloudLuminanceMultiplier: number;
-    Clouds: {
-      CNContrast: number;
-
-      CNDecay: number;
-      CNDensity: number;
-
-      CNDetailAmount: number;
-      CNDetailContrast: number;
-
-      CNMaxDensity: number;
-      CNSize: number;
-
-      CiNAmount: number;
-      CiNContrast: number;
-
-      CiNDensity: number;
-      CinSubShape: number;
-
-      CirrusContrast: number;
-      CirrusDecay: number;
-
-      CirrusDensity: number;
-      CloudSpeed: number;
-
-      CloudSpeedXY: Vec2;
-      CloudsPhaseShift: number;
-
-      CloudsTile: number;
-      Color1: RGBA;
-
-      Color2: RGBA;
-      GlobalDensity: number;
-
-      StratusAmount: number;
-      StratusContrast: number;
-
-      StratusDetailAmount: number;
-      StratusDetailContrast: number;
-
-      VTCloudDetailScale: number;
-      VTCloudScale: number;
-
-      VolumetricMSContribution: number;
-      VolumetricMSEccentricity: number;
-
-      VolumetricMSOcclusion: number;
-      VolumetricPhaseBlend: number;
-
-      VolumetricPhaseG: number;
-      VolumetricPhaseG2: number;
-    };
-    ColorGrading: {
-      ColorContrast: Vec4;
-      ColorGain: Vec4;
-      ColorGamma: Vec4;
-      ColorOffset: Vec4;
-      ColorSaturation: Vec4;
-      Highlights: {
-        ColorContrast: Vec4;
-        ColorCorrectionHighlightsMin: number;
-        ColorGain: Vec4;
-        ColorGamma: Vec4;
-        ColorOffset: Vec4;
-        ColorSaturation: Vec4;
-      };
-      Midtones: {
-        ColorContrast: Vec4;
-        ColorGain: Vec4;
-        ColorGamma: Vec4;
-        ColorOffset: Vec4;
-        ColorSaturation: Vec4;
-      };
-      Shadows: {
-        ColorContrast: Vec4;
-        ColorCorrectionShadowsMax: number;
-        ColorGain: Vec4;
-        ColorGamma: Vec4;
-        ColorOffset: Vec4;
-        ColorSaturation: Vec4;
-      };
-    };
-    Film: {
-      FilmBlackClip: number;
-      FilmChannelMixerBlue: RGBA;
-      FilmChannelMixerGreen: RGBA;
-      FilmChannelMixerRed: RGBA;
-      FilmContrast: number;
-      FilmDynamicRange: number;
-      FilmHealAmount: number;
-      FilmSaturation: number;
-      FilmShadowTint: RGBA;
-      FilmShadowTintAmount: number;
-      FilmShadowTintBlend: number;
-      FilmShoulder: number;
-      FilmSlope: number;
-      FilmToe: number;
-      FilmToeAmount: number;
-      FilmWhiteClip: number;
-      FilmWhitePoint: RGBA;
-    };
-    FogDensity: number;
-    FogHeightFalloff: number;
-    FogHeightOffset: number;
-    FogInscatteringColor: RGBA;
-    Moon: {
-      BloomMaxBrightness: number;
-      BloomScale: number;
-      BloomThreshold: number;
-      Intensity: number;
-      Temperature: number;
-      VolumetricScatteringIntensity: number;
-    };
-    MoonPhase: number;
-    MoonScale: Vec3;
-    SecondFogDensity: number;
-    SecondFogHeightFalloff: number;
-    SkyAtmosphere: {
-      AerialPespectiveViewDistanceScale: number;
-
-      HeightFogContribution: number;
-      MieAbsorption: RGBA;
-
-      MieAbsorptionScale: number;
-      MieAnisotropy: number;
-
-      MieExponentialDistribution: number;
-      MieScattering: RGBA;
-
-      MieScatteringScale: number;
-      MultiScatteringFactor: number;
-
-      OtherAbsorption: RGBA;
-      OtherAbsorptionScale: number;
-
-      RayleighExponentialDistribution: number;
-      RayleighScattering: RGBA;
-
-      RayleighScatteringScale: number;
-
-      SkyLuminanceFactor: RGBA;
-    };
-    SkyLight: {
-      Intensity: number;
-      MinOcclusion: number;
-      OcclusionExponent: number;
-      VolumetricScatteringIntensity: number;
-    };
-    SoundCue: string;
-    Sun: {
-      BloomMaxBrightness: number;
-      BloomScale: number;
-      BloomThreshold: number;
-      Intensity: number;
-      Temperature: number;
-      VolumetricScatteringIntensity: number;
-    };
-    SunMoonDiskLuminanceMultiplier: number;
-    Time: number;
-    VolumetricFogAlbedo: RGBA;
-    VolumetricFogEmissive: RGBA;
-    VolumetricFogExtinctionScale: number;
-  }[];
-  WeatherTransitions: {
-    bIsDirectTransition: boolean;
-    BlendChance: number;
-    Timer24Normalized: number;
-    WeatherPrototypeSID: string;
-  }[];
-}>;
-
-export type WeatherSelectionPrototype = GetStructType<
-  {
-    EmissionPrototypeSID: string;
-    Priority: number;
-    SID: string;
-  } & {
-    [k in WeatherSelection]: {
-      bAllowInDialogueTransition: boolean;
-      BlendWeight: number;
-      BlendWeightIncrease: number;
-      MaximumCooldownWeatherAmount: number;
-      MaximumRepeatAmount: number;
-      WeatherDurationMax: number;
-      WeatherDurationMin: number;
-    };
-  }
->;
-
-export type Achievement = GetStructType<
-  {
-    Goal: number;
-    SID: string;
-  }[] & {
-    AcceptableInterval: number;
-    AnomalyPrototypeSID: string;
-    ArmorSIDs: string[];
-    BleedingThreshold: number;
-    Calibers: EAmmoCaliber[];
-    DrunkennessThreshold: number;
-    DrunknessThreshold: number;
-    FoodSet: {
-      SID: string;
-    }[];
-    HeadshotDistance: number;
-    HungerThreshold: number;
-    Items: string[];
-    MarkerTypes: EMarkerType[];
-    MinHeight: number;
-    MinSquadSize: number;
-    MutantSID: string;
-    MutantsSID: string[];
-    NumberOfWeapons: number;
-    PsyThreshold: number;
-    RadiationThreshold: number;
-    RequiredCount: number;
-    SleepinessThreshold: number;
-    TargetSID: string;
-    TimeWindow: number;
-  }
->;
-
-export type AIGlobal = GetStructType<{
-  ALifeSettings: {
-    OfflineCombatAreaLifetimeSeconds: number;
-  };
-  AllowCorpseProcessForQuestAgent: boolean;
-  AllowWeaponPickupBasedOnPrice: boolean;
-  AllowWeaponPickupWhenLooting: boolean;
-  AnomalyRestrictionsSettings: {
-    AnomalyRestrictionsIgnoreChanceZombie: number;
-    AnomalyRestrictionsUpdateIntervalSeconds: number;
-  };
-  AudioRoomLoudnessMultiplierList: {
-    LoudnessMultiplier: number;
-    Type: EAudioRoomPresetBandwidth;
-  }[];
-  CharacterPoseSettings: {
-    NoiseCoef: number;
-    Pose: EStateTag;
-    VisibilityCoef: number;
-  }[];
-  CombatTacticsSettings: {
-    CombatTacticsParamsPerFactions: Record<
-      Faction,
-      {
-        ChangeChance: number;
-        ConfidenceToAttack: number;
-        ConfidenceToRetreat: number;
-        UpdateIntervalSecondsMax: number;
-        UpdateIntervalSecondsMin: number;
-      }
-    >;
-  };
-  ContextualActionSettings: {
-    ContextualActionGameGraphPathActuationDistance: number;
-    ContextualActionInterruptAnimationScaleWhenThreatened: number;
-    ContextualActionSearchDistance: number;
-    ContextualActionSearchFriendDistance: number;
-    DistanceToEquipWeaponBeforeContextualAction: number;
-    DistanceToHideWeaponBeforeContextualAction: number;
-    DistanceToTurnOffFlashlightBeforeContextualActionSquared: number;
-    DistanceToTurnOnFlashlightBeforeContextualActionSquared: number;
-  };
-  CorpseBehaviorFactionRestrictions: string[];
-  CoverSettings: {
-    MinBehindTreeCoverHeight: string;
-    MinGenericCoverHeight: string;
-    MinGenericCoverWidth: string;
-    MinHighCoverHeight: string;
-    MinLowCoverHeight: string;
-    MinSmartWidth: string;
-  };
-  DangerAreaSettings: {
-    DangerAreaCostMultiplier: number;
-    DangerAreaLifetimeDistance: number;
-    DangerAreaLifetimeSeconds: number;
-    DangerAreaMaxNum: number;
-    DangerAreaOverlapsForRestriction: number;
-    DangerAreaPlayerDamageAccumulationSeconds: number;
-    DangerAreaRadius: number;
-  };
-  DeadBodyToConsiderAsThreatDuration: number;
-  DistanceToSwitchToWalkIn: number;
-  DistanceToSwitchToWalkOut: number;
-  FlashlightInteractDuration: number;
-  FlashlightTimeOfDayOff: number;
-  FlashlightTimeOfDayOn: number;
-  FlashlightUseSettings: {
-    FlashlightMeshDespawnDelay: number;
-    FlashlightMeshDespawnNPCToCameraAngleThreshold: number;
-    FlashlightMeshDespawnPlayerCameraFOVDistance: number;
-    FlashlightMinStateTime: number;
-    FlashlightUseLuminanceThresholdDayOff: number;
-    FlashlightUseLuminanceThresholdDayOn: number;
-    FlashlightUseTracePoints: {
-      RelativeLocation: {
-        X: number;
-        Y: number;
-        Z: number;
-      };
-    }[];
-    MaxFlashlightAgentProcessPerUpdate: number;
-    MaxFlashlightsUsedSimultaneously: number;
-    MaxFlashlightUseTracesPerUpdate: number;
-  };
-  FocusLocationSelectionSettings: {
-    FocusLocationStartLookingEarlyOffset: number;
-  };
-  ForceRunInsteadSprintDistanceFromPathStart: number;
-  ForceRunInsteadSprintDistanceToNextPortal: number;
-  ForceRunInsteadSprintDistanceToPathEnd: number;
-  ForceRunInsteadSprintPortalRotationAngleThreshold: number;
-  HearingSensorSettings: {
-    NonEnemySoundHearingCoef: number;
-    SoundVisionValidationThreshold: number;
-  };
-  HideWeaponWarningBarkDelay: string;
-  LuminanceSettings: {
-    BaseLuminance: number;
-    EnvironmentLuminanceCoefficients: {
-      RoomBaseCoefficients: {
-        Coefficient: number;
-        RoomType: EAudioRoomPresetBandwidth;
-      }[];
-      TimeOfDayBaseLuminance: {
-        Luminance: number;
-        TimeFrom: number;
-        TimeTill: number;
-      }[];
-      WeatherLuminanceCoefficients: {
-        Coefficient: number;
-        WeatherType: EWeather;
-      }[];
-    };
-    LightLuminanceByTimeOfDayCurve: string;
-    LightSourceLuminanceMultiplier: number;
-    MaxLightGatheringRadius: number;
-    MaxLuminanceAgentProcessPerUpdate: number;
-    MaxLuminanceTracesPerUpdate: number;
-    MinAmbientLuminanceToSkipTraces: number;
-    ShadowLuminanceByTimeOfDayCurve: string;
-    ShadowOffsetByTimeOfDayCurve: string;
-  };
-  MaterialTranslucencyList: {
-    Materials: {
-      SID: string;
-    }[];
-    Translucency: number;
-  }[];
-  MaxAgentsCount: number;
-  MaxHideWeaponWarningFollowDistance: string;
-  MinALifeDespawnDistance: number;
-  MinALifeSpawnDistance: number;
-  MutantCorpseProcessFactionPerRank: {
-    AllowedRanks: EAgentRankMask[];
-    Faction: string;
-  }[];
-  OfflineUsingGameGraphMoveFactor: number;
-  PhysMatSettings: {
-    CharacterNoiseCoef: number;
-    MaterialType: EPhysicalMaterialType;
-  }[];
-  PlayerFlashlightVisionSettings: {
-    FlashlightMaxVisionScorePerSecond: number;
-    FlashlightMinVisionScorePerSecond: number;
-    FlashlightVisionConeHalfAngle: number;
-    FlashlightVisionConeLength: number;
-    NumTracePointsPerVisionUpdate: number;
-  };
-  PreyLighterOffVisibilityCoef: number;
-  PreyLighterOnVisibilityCoef: number;
-  ReactionOnEmissionSettings: {
-    DistanceToAvoidPreparingForEmission: number;
-    DistanceToShelterToWalk: number;
-    InvulnerableAfterEmissionStart: number;
-    MinCoveredDistanceToChangeMovementType: number;
-    ReceivedDamageTimeToEnterCombatDuringEmission: number;
-    ReceivedDamageToEnterCombatDuringEmission: number;
-    SheltersSearchDistance: number;
-    TransitionAlphaToPrepareForEmission: number;
-  };
-  RegionRank: {
-    MaxRank: ERank;
-    MinRank: ERank;
-    Region: ERegion;
-  }[];
-  SID: string;
-  SoundEventTypeSpreadSpeedList: {};
-  ThreatsSettings: {
-    CorpseSmellAfterDeathTimeout: number;
-    EnemyReportDelaySeconds: number;
-    FlairIdentifyAsEnemyOutsideFrontZoneMultiplier: number;
-    LootingCorpsesDeathTimeInterval: number;
-    ThreatReportDelaySeconds: number;
-  };
-  ThrowGrenadeSettings: {
-    AvailableGrenadesPerFaction: Record<Faction, Record<Rank, number>>;
-  };
-  TimeToSkipLairPeacefulSpawnAfterMemberDies: number;
-  TouchSensorSettings: {
-    TouchDistanceThreshold: number;
-    TouchNonEnemyPlayerLookAtTime: number;
-    TouchNonEnemyPlayerReactionTime: number;
-    TouchSensorCooldown: number;
-  };
-  WeaponAttachmentsModifiersList: {
-    HearingDistanceModifier: number;
-    ThreatPointsMultiplier: number;
-    WeaponAttachmentSID: string;
-  }[];
-  WeaponLootDistance: number;
-  WeatherSettings: {
-    FlairCoef: number;
-    HearingDistanceCoef: number;
-    VisibilityCoef: number;
-    WeatherSID: string;
-  }[];
-}>;
-
-export type AssetLibrary = GetStructType<{
-  AkEffectShareSet: {
-    Full: string;
-    Medium: string;
-    Narrow: string;
-  };
-  AKRtpc: {
-    CutsceneRTPCParameter: string;
-    DeathRTPCParameter: string;
-    DialogueRTPCParameter: string;
-    DialogueVolumeRTPCParameter: string;
-    DisableCopyrightedMusicRTPCParameter: string;
-    EffectsVolumeRTPCParameter: string;
-    MainVolumeRTPCParameter: string;
-    MusicVolumeRTPCParameter: string;
-    MuteAllRTPCParameter: string;
-  };
-  AnimationBlueprints: {
-    BoltAnimationBlueprint: string;
-    InjectorAnimationBlueprint: string;
-    KnifeAnimationBlueprint: string;
-    PDAAnimationBlueprint: string;
-  };
-  AnomalyBlueprint: string;
-  Blueprint: {
-    Bolt: string;
-    LevelTreesCollection: string;
-    Lever: string;
-    SceneCaptureCube: string;
-    TripleLever: string;
-  };
-  CharacterBlueprint: {
-    Player: string;
-  };
-  CurveFloat: {
-    AimingWeaponDirtCurve: string;
-    AimingWeaponFOVCurve: string;
-    AmbientSoundCurve: string;
-    CrouchCurve: string;
-    DefaultDoorCurveBothWays: string;
-    DefaultLeverCurve: string;
-    DefaultLeverCurveReverse: string;
-    EndTranslationWorldMapCurve: string;
-    FadeoutScreenCurve: string;
-    FlailAlphaCurve: string;
-    InteractProgressBarCurve: string;
-    LadderEnterCurve: string;
-    LandPredictionAlphaCurve: string;
-    MusicSoundCurve: string;
-    StartTranslationWorldMapCurve: string;
-    TranslationWorldMapCurve: string;
-    ZoomCameraCurve: string;
-  };
-  InteractableBlueprint: {
-    ItemContainer: string;
-    SkeletalItemContainer: string;
-  };
-  ItemIcons: {};
-  Material: {};
-  MaterialInstanceConstant: {
-    BoltMaterialPath: string;
-    Clouds: string;
-    PDAMaterial: string;
-  };
-  MaterialParameterCollection: {
-    Foliage: string;
-    FOV: string;
-    MPC_PPM: string;
-  };
-  NavModifiers: string;
-  NiagaraSystems: {
-    TwinkleIdle: string;
-    TwinkleInterract: string;
-  };
-  NPCSpawnerBlueprint: string;
-  ParticleSystems: {
-    BodyExplodeParticle: string;
-  };
-  ProjectileBlueprint: {
-    BP_A000D: string;
-    BP_A000DTP: string;
-  };
-  SkeletalMesh: {
-    BoltSkeletal: string;
-    GuitarSkeletal: string;
-    InjectorSkeletal: string;
-    InjectorSkeleton: string;
-    KnifeSkeletal: string;
-    PDASkeletal: string;
-    SK_ful_sta_01: string;
-  };
-  StaticMesh: {
-    BoxTrigger: string;
-    CylinderShape: string;
-    CylinderTrigger: string;
-    SphereTrigger: string;
-  };
-  Texture2D: string;
-  TextureRenderTarget2D: {};
-  UIIcons: {};
-  UIWidgetBlueprint: {
-    AttachSelectorClass: string;
-    BackgroundBlurViewClass: string;
-    DebugHUDWidgetClass: string;
-    DialogWidgetClass: string;
-    FadeoutScreenWidgetClass: string;
-    FastDialogClass: string;
-    GamePauseMenuClass: string;
-    GuitarPlayWidgetClass: string;
-    HUDWidgetClass: string;
-    InspectArtifactWidgetClass: string;
-    InteractWidgetClass: string;
-    InventoryWidgetClass: string;
-    ItemSelectorClass: string;
-    MainMenuWidgetClass: string;
-    MarkerCompassWidgetClass: string;
-    MarkerIconsDataTable: string;
-    PDAClass: string;
-    PlayVideoWidgetClass: string;
-    RightClickMenuWidgetClass: string;
-    SleepWidgetClass: string;
-    SubtitleClass: string;
-    TradeWidgetClass: string;
-    UpgradesWidgetClass: string;
-    WorldMapHubMarkerClass: string;
-    WorldMapMarcerClass: string;
-    WorldMapPlayerMarkerClass: string;
-    WorldMapRegionMarkerClass: string;
-  };
-}>;
-
-export type AutoSaveVariable = GetStructType<{
-  AutoSaveIntervalTime: number;
-  AutoSaveOnFailRetryIntervalTime: number;
-}>;
-
-export type BrokenConfigWhiteList = GetStructType<{}>;
-
-export type CameraManagerConstant = GetStructType<
-  {
-    FlagValue: EPostProcessEffectType;
-    MaterialObjectPath: string;
-  }[]
->;
 
 export type CookedMapsList = GetStructType<{
   FilePath: string;
@@ -7798,22 +2817,22 @@ export type CookedMapsList = GetStructType<{
 }>;
 
 export type CoreVariable = GetStructType<{
-  ALifeGridUpdateDelay: number;
-  ALifeGridVisionRadius: number;
   AccumulateNPCToPlayerDamageSeconds: number;
   ActorCrouchHeight: number;
-  AgentSpawnNavMeshQueryDistance: number;
   AgentsDecalsPoolSize: number;
+  AgentSpawnNavMeshQueryDistance: number;
   AimAlphaParamName: string;
   AimAssistBoneLocationOffset: number;
   AimAssistMaxOverlapsThreshold: number;
   AimAssistMinOverlapsThreshold: number;
-  AimAssistSnappingBones: string[];
+  AimAssistSnappingBones: SingletonConstantBandits;
   AimFOVRestoreTime: number;
-  AimSocketName: string;
   AimingWeaponDirtCurve: string;
+  AimSocketName: string;
   AirPoltergeistSurfaceMaterial: string;
   AlifeCorpsesHardcap: number;
+  ALifeGridUpdateDelay: number;
+  ALifeGridVisionRadius: number;
   AnomalyAkComponentOffset: number;
   ArmorDeflectDamageCoefHuman: number;
   ArmorDeflectDamageCoefMutant: number;
@@ -7821,39 +2840,28 @@ export type CoreVariable = GetStructType<{
   ArmorDeflectMinChance: number;
   ArmorDifferenceCoef: number;
   ArmorDurabilityParamsCoef: number;
-  ArtifactOffsetFromAnomalyBorder: Vec3;
+  ArtifactOffsetFromAnomalyBorder: SpawnActorPrototypeVector;
   ArtifactSpawnAttemptsCount: number;
   ArtifactSpawnDistanceDelta: number;
   ArtifactSpawnHeightToNavmesh: number;
-  ArtifactSpawnPityStructs: {
-    AttemptsCount: number;
-    Rank: ERank;
-    RarityLuckIncrease: {
-      LuckIncrease: number;
-      Rarity: EArtifactRarity;
-    }[];
-  }[];
+  ArtifactSpawnPityStructs: CoreVariableArtifactSpawnPityStructs;
   ArtifactStrafeMinDistance: number;
   ArtifactSurfaceMaterial: string;
   AsphaltSurfaceMaterial: string;
   AttentionConeAngle: number;
-  AudioRoomPresetBandwidth: {
-    Close: string;
-    Custom: string;
-    HalfOpen: string;
-    Isolated: string;
-    None: string;
-    Open: string;
-    PsyDome: string;
-  };
+  AudioRoomPresetBandwidth: CoreVariableAudioRoomPresetBandwidth;
   AutoInteractionDistance: number;
   AutonomicTutorialWidgetClass: string;
-  BP_DeveloperSpectator: string;
   BackgroundBlurViewClass: string;
+  bALifeTick: boolean;
   BaseActorHeight: number;
   BaseLookUpRate: number;
   BaseRepairCostModifier: number;
   BaseTurnRate: number;
+  bAutoEquipArtifacts: boolean;
+  bEnableDisassembleUI: boolean;
+  bEnableHideInformationUI: boolean;
+  bEnableWaterElement: boolean;
   BleedingChanceNonPenetrationMod: number;
   BleedingChanceStackMaxSize: number;
   BleedingPointsNonPenetrationMod: number;
@@ -7865,17 +2873,18 @@ export type CoreVariable = GetStructType<{
   BoltCrosshairType: ECrosshairType;
   BoltLifetime: number;
   BoltPrototypeSID: string;
-  BoltSkeletalMeshes: string[];
-  BoltStaticMeshes: string[];
+  BoltSkeletalMeshes: SpawnActorPrototypeIgnoreCollisionActors;
+  BoltStaticMeshes: SpawnActorPrototypeIgnoreCollisionActors;
   BoneSurfaceMaterial: string;
-  BoneToHitAreaMap: {
-    Head: string[];
-    Legs: string[];
-    Torso: string[];
-  };
+  BoneToHitAreaMap: CoreVariableBoneToHitAreaMap;
+  BP_DeveloperSpectator: string;
   BreadSurfaceMaterial: string;
+  bResetArtifactLuckOnPickup: boolean;
   BrickSurfaceMaterial: string;
   BrokenGlassSurfaceMaterial: string;
+  bShouldSaveDefaultLanguage: boolean;
+  bStartWithLoadedWeapon: boolean;
+  bStartWithMenu: boolean;
   CalmDamageFromPlayerCoef: number;
   CeramicSurfaceMaterial: string;
   ChanceToGetHealOverTimeWhenWounded: string;
@@ -7926,31 +2935,14 @@ export type CoreVariable = GetStructType<{
   CorpseOnlineTime: number;
   CorpseRagdollQuestProtectionCheckTime: number;
   CorpseRagdollQuestProtectionEnableTime: number;
+  CorpsesDecalsPoolSize: number;
   CorpseSeenOnlineTime: number;
   CorpseTimeout: number;
-  CorpsesDecalsPoolSize: number;
   CriticalDamageSoundCooldown: number;
   CriticalEffectStartUI: number;
   CriticalShotDamageSound: string;
   CutsceneFOVDefault: number;
-  DamageInteractVFXs: {
-    Burn: {
-      VFXLifeTime: number;
-      VFXPath: string;
-    };
-    ChemicalBurn: {
-      VFXLifeTime: number;
-      VFXPath: string;
-    };
-    Shock: {
-      VFXLifeTime: number;
-      VFXPath: string;
-    };
-    SteamBurn: {
-      VFXLifeTime: number;
-      VFXPath: string;
-    };
-  };
+  DamageInteractVFXs: CoreVariableDamageInteractVFXs;
   DawnStartTime: number;
   DayStartTime: number;
   DeadBodyDragAnimationRagdollTransitionSpeed: number;
@@ -7962,10 +2954,7 @@ export type CoreVariable = GetStructType<{
   DefaultItemGeneratorTemplate: string;
   DefaultLeverCurve: string;
   DefaultLeverCurveReverse: string;
-  DefaultMapSize: {
-    X: number;
-    Y: number;
-  };
+  DefaultMapSize: SpawnActorPrototypeFreeformTriggerVerticesItem;
   DefaultMouseSensitivityModifier: number;
   DefaultSaveLanguage: ELocalizationLanguage;
   DefaultState: string;
@@ -7998,39 +2987,36 @@ export type CoreVariable = GetStructType<{
   DropItemSFX: string;
   DurabilityRound: number;
   DynamicParticlesDataTable: string;
-  EffectsOnDestructWindowApplied: string[];
-  EffectsRemovedOnHealWounded: string[];
+  EffectsOnDestructWindowApplied: SpawnActorPrototypeIgnoreCollisionActors;
+  EffectsRemovedOnHealWounded: SingletonConstantZombie;
   EmissionCrowsFallFX: string;
   EmissionNeutralityTimer: number;
-  EmissionStartLocation: {
-    X: number;
-    Y: number;
-  };
+  EmissionStartLocation: SpawnActorPrototypeFreeformTriggerVerticesItem;
   EnergeticOveruseParameter: string;
   EveningStartTime: number;
   ExplosionArmorDifferenceCoef: number;
-  FOVDefault: number;
   FactionRelationUpdateDelay: number;
   FadeoutScreenWidgetClass: string;
-  FastDialogClass: string;
   FastbackState: string;
+  FastDialogClass: string;
   FaustCloneCorpseTimeout: number;
   FaustCloneCountCap: number;
   FinalCreditsWithVideoClass: string;
   FirstTimeSettingsState: string;
-  FlashlightCombatUseChance: Record<Rank, number>;
+  FlashlightCombatUseChance: AIGlobalArmy;
   FlashlightDialogIntensityLerpTime: number;
   FlashlightDialogIntensityPercent: number;
   FleshClothSurfaceMaterial: string;
   FleshCorpsesSurfaceMaterial: string;
-  FleshIshPhysicalMaterials: EPhysicalMaterialType[];
+  FleshIshPhysicalMaterials: CoreVariableFleshIshPhysicalMaterials;
   FleshMetalSurfaceMaterial: string;
   FleshRubberSurfaceMaterial: string;
   FleshSurfaceMaterial: string;
-  FootStepsDecalsPoolSize: number;
   FootstepsDecalFadeOutTime: number;
+  FootStepsDecalsPoolSize: number;
   ForestGrassSurfaceMaterial: string;
   ForestPineSurfaceMaterial: string;
+  FOVDefault: number;
   FullDynamicRangeState: string;
   GameLoadingScreenStart: string;
   GameLoadingScreenStop: string;
@@ -8053,15 +3039,15 @@ export type CoreVariable = GetStructType<{
   GuitarPlayThreatLoudness: number;
   GuitarPlayWidgetClass: string;
   GuitarSkeletal: string;
-  HPThresholdToKill: number;
-  HUDWidgetClass: string;
   HandlessFOVAimModifier: number;
   HelmetDurabilityParamsCoef: number;
   HoldPreventFromDefaultInteractionPercent: number;
   HpThresholdToHealWound: number;
-  IKTraceDistance: number;
+  HPThresholdToKill: number;
+  HUDWidgetClass: string;
   IdleState: string;
   IdleSwayInterpolationSpeed: number;
+  IKTraceDistance: number;
   ImpactParticleVFXCritName: string;
   ImpactParticleVFXHeadshotName: string;
   ImpactParticleVFXNpcSizeName: string;
@@ -8074,10 +3060,10 @@ export type CoreVariable = GetStructType<{
   InhaleExhaleTimeMin: number;
   InspectArtifactWidgetClass: string;
   InteractDotsWidgetClass: string;
-  InteractWidgetClass: string;
   InteractionDotsInnerConeAngle: number;
   InteractionDotsOuterConeAngle: number;
   InteractionDotsTraceRadius: number;
+  InteractWidgetClass: string;
   InventoryPenaltyLessWeight: number;
   InventorySPDrainCoef: number;
   InventorySPOverweightDrainCoef: number;
@@ -8088,13 +3074,7 @@ export type CoreVariable = GetStructType<{
   ItemDropDistance: number;
   ItemDropHeight: number;
   ItemDurabilityStackDifference: number;
-  ItemInfoAffectingEffects: {
-    AffectingEffectTypes: {
-      EffectType: EEffectType;
-      Multiplier: number;
-    }[];
-    ItemInfoType: EItemInfoType;
-  }[];
+  ItemInfoAffectingEffects: CoreVariableItemInfoAffectingEffects;
   ItemSelectorClass: string;
   ItemSelectorTimeDilationCoefficient: number;
   JumpFromLadderRepulseForce: number;
@@ -8113,22 +3093,15 @@ export type CoreVariable = GetStructType<{
   LeavesSurfaceMaterial: string;
   LevelTreesCollection: string;
   LightningBallAnomalyAppearanceTime: number;
-  LimpEffectSIDToThresholdMap: {
-    EffectSID: string;
-    Threshold: number;
-  }[];
+  LimpEffectSIDToThresholdMap: CoreVariableLimpEffectSIDToThresholdMap;
   LoadingScreenWidgetClass: string;
   LocationAmbientState: string;
-  LookGamepadInputCurves: string[];
+  LookGamepadInputCurves: SingletonConstantBandits;
   LookUpGamepadInputCurve: string;
   LootMutantDeadBodySound: string;
   LootNPCDeadBodySound: string;
   LowDurabilityThreshold: number;
-  LowerRightLocation: Vec2;
-  MPC_Environment: string;
-  MPC_FOV: string;
-  MPC_Foliage: string;
-  MPC_PPM: string;
+  LowerRightLocation: SpawnActorPrototypeFreeformTriggerVerticesItem;
   MainMenuState: string;
   MainMenuWidgetClass: string;
   MarkerCompassWidgetClass: string;
@@ -8151,8 +3124,8 @@ export type CoreVariable = GetStructType<{
   MeatSurfaceMaterial: string;
   MediumDynamicRangeState: string;
   MediumEffectStartUI: number;
-  MeshSoundPlacerDataTable: string;
   MeshesDecalsPoolSize: number;
+  MeshSoundPlacerDataTable: string;
   MetalGridSurfaceMaterial: string;
   MetalSolidSurfaceMaterial: string;
   MetalThinSurfaceMaterial: string;
@@ -8165,12 +3138,13 @@ export type CoreVariable = GetStructType<{
   MotionOffState: string;
   MotionOnState: string;
   MoveGamepadInputCurve: string;
-  MoveGamepadInputCurves: string[];
-  MovementVFXArmorScale: {
-    ArmorProtectionValue: number;
-    ArmorScale: EArmorScale;
-  }[];
+  MoveGamepadInputCurves: SingletonConstantBandits;
+  MovementVFXArmorScale: CoreVariableMovementVFXArmorScale;
   MovementVFXFootStepDecalLifetime: number;
+  MPC_Environment: string;
+  MPC_Foliage: string;
+  MPC_FOV: string;
+  MPC_PPM: string;
   MusicManagerCombatEnemyAttackActionLifetimeSeconds: number;
   MusicManagerCombatScoreThreshold: number;
   MusicVolumeSlider: string;
@@ -8179,22 +3153,15 @@ export type CoreVariable = GetStructType<{
   MutantLootContainerInteractRange: number;
   MutantLootInteractHeightMax: number;
   MutantLootInteractHeightMin: number;
-  MutantLootParams: {
-    AgentType: EAgentType;
-    CutDecalBoneName: string;
-    CutRadiusModifier: number;
-  }[];
+  MutantLootParams: CoreVariableMutantLootParams;
   NarrowDynamicRangeState: string;
   NarrowTraceInteractionRadius: number;
   NewDLCPopupDisplayTime: number;
   NewDLCPopupWidgetClass: string;
-  NiagaraProviderUpdateTimings: {
-    ProviderType: ENiagaraProviderType;
-    UpdateTime: number;
-  }[];
+  NiagaraProviderUpdateTimings: CoreVariableNiagaraProviderUpdateTimings;
   NightStartTime: number;
-  NoMusicAmbientState: string;
   NoiseIndicatorMaxHearingDistance: number;
+  NoMusicAmbientState: string;
   ObjPhysicsHitSqareMinVelocity: number;
   ObjPhysicsHitTimeDelay: number;
   ObjRadiationSphereMaxRadius: number;
@@ -8208,8 +3175,6 @@ export type CoreVariable = GetStructType<{
   OpticCutoutRadiusParamName: string;
   OpticCutoutSocketName: string;
   OpticCutoutThresholdParamName: string;
-  PDAAnimationBlueprint: string;
-  PDAClass: string;
   PaperSurfaceMaterial: string;
   ParticleTraceLength: number;
   PathToInputActionAssets: string;
@@ -8217,60 +3182,26 @@ export type CoreVariable = GetStructType<{
   PathToWaterObstructionTestTraceDist: number;
   PauseMenuOff_SFX: string;
   PauseMenuOn_SFX: string;
+  PDAAnimationBlueprint: string;
+  PDAClass: string;
   PermissibleAngleOfRotation: number;
   PersonalRelationUpdateDelay: number;
   PerspectiveThirdPersonRTPC: string;
-  PhysicalMaterialFrictionCoefficients: {
-    FrictionCoefficient: number;
-    PhysicalMaterialType: EPhysicalMaterialType;
-  }[];
-  PlacesOfInterest: (Vec3 & {
-    SID: SID;
-  })[];
+  PhysicalMaterialFrictionCoefficients: CoreVariablePhysicalMaterialFrictionCoefficients;
+  PlacesOfInterest: CoreVariablePlacesOfInterest;
   PlasticSurfaceMaterial: string;
-  PlayVideoState: string;
-  PlayVideoWidgetClass: string;
   PlayerAudioLogVolumeDecreaseTime: number;
   PlayerBedSleepTime: number;
   PlayerDeathState: string;
   PlayerMeleeArmorDifferenceCoef: number;
   PlayerPrototypeSID: string;
-  PlayerStartingCoords: Vec3;
+  PlayerStartingCoords: SpawnActorPrototypeVector;
   PlayerStartingMoney: number;
+  PlayVideoState: string;
+  PlayVideoWidgetClass: string;
   PopupClass: string;
   PopupViewClass: string;
-  PossessedWeaponFireIntervals: {
-    A012: {
-      FireInterval: number;
-    };
-    A045: {
-      FireInterval: number;
-    };
-    A762NATO: {
-      FireInterval: number;
-    };
-    A762Sniper: {
-      FireInterval: number;
-    };
-    A918: {
-      FireInterval: number;
-    };
-    A919: {
-      FireInterval: number;
-    };
-    AGA: {
-      FireInterval: number;
-    };
-    AHEDP: {
-      FireInterval: number;
-    };
-    APG7V: {
-      FireInterval: number;
-    };
-    AVOG: {
-      FireInterval: number;
-    };
-  };
+  PossessedWeaponFireIntervals: CoreVariablePossessedWeaponFireIntervals;
   ProjectileDecalFadeOutTime: number;
   ProjectileDecalLifeSpan: number;
   ProjectileDecalLifeSpanOnCorpse: number;
@@ -8282,21 +3213,11 @@ export type CoreVariable = GetStructType<{
   PuddleSurfaceMaterial: string;
   PutDeadBodyDistance: number;
   RadiationCurveIconAnim: string;
-  RadiationInnerOffsetPresetValues: {
-    Preset: ERadiationInnerOffsetPreset;
-    Value: number;
-  }[];
+  RadiationInnerOffsetPresetValues: CoreVariableRadiationInnerOffsetPresetValues;
   RadiationPostEffectSID: string;
-  RadiationPresetValues: {
-    EffectPrototypeSIDs: string[];
-    GeigerRadiationIntensity: number;
-    PostProcessRadiationIntensity: number;
-    Preset: ERadiationPreset;
-    RadiationPerSecondValue: number;
-    RadioactivityValue: number;
-  }[];
-  RadioRange: number;
+  RadiationPresetValues: CoreVariableRadiationPresetValues;
   RadioactivityParameter: string;
+  RadioRange: number;
   RadiusSearchPlaceToSit: number;
   RadiusSearchTargetToLook: number;
   RadiusWithAmountOfActorWithSimulation: number;
@@ -8307,17 +3228,14 @@ export type CoreVariable = GetStructType<{
   RegenerateItemsOnRankUpdateRadius: number;
   RegenerateItemsOnRankUpdateTimer: number;
   RegionAmbientState: string;
-  ReputationRepairCostModifiers: {
-    Modifier: number;
-    RelationLevel: ERelationLevel;
-  }[];
+  ReputationRepairCostModifiers: CoreVariableReputationRepairCostModifiers;
   RestoreBackupClass: string;
   RightClickMenuWidgetClass: string;
   RockSurfaceMaterial: string;
   RubberSurfaceMaterial: string;
   SandSurfaceMaterial: string;
   ScopeMaterialInWorld: string;
-  SignalStrength: number[];
+  SignalStrength: CoreVariableSignalStrength;
   SimulatePhysicsDistance: number;
   SkeletalItemContainer: string;
   SkipHintClass: string;
@@ -8327,10 +3245,7 @@ export type CoreVariable = GetStructType<{
   SlowRunThreshold: number;
   SplashTutorialWidgetClass: string;
   StaminaFallingDamageCoef: number;
-  StaminaRegenStateCoefs: {
-    StateTag: EStateTag;
-    Value: number;
-  }[];
+  StaminaRegenStateCoefs: CoreVariableStaminaRegenStateCoefs;
   StaminaWeightCurve: string;
   StartCombatCooldown: number;
   StartDay: number;
@@ -8343,10 +3258,7 @@ export type CoreVariable = GetStructType<{
   StaticItemContainer: string;
   StaticParticlesDataTable: string;
   StrikeAnomalyArmorDifferenceCoef: number;
-  StrikeGrenadeResistCoefs: {
-    GrenadeDamageResist: number;
-    ProtectionStrike: number;
-  }[];
+  StrikeGrenadeResistCoefs: CoreVariableStrikeGrenadeResistCoefs;
   SubtitleClass: string;
   SystemNotificationSpecificReward: string;
   TargetToLookViewingAngle: number;
@@ -8385,13 +3297,10 @@ export type CoreVariable = GetStructType<{
   UnkillableNPCWoundedStateResurrectionTime: number;
   UntouchedDespawnItemTime: number;
   UpdatePopupClass: string;
+  UpgradesWidgetClass: string;
   UpgradeTooltipWidgetClass: string;
   UpgradeWidgetClass: string;
-  UpgradesWidgetClass: string;
-  UpperLeftLocation: {
-    X: number;
-    Y: number;
-  };
+  UpperLeftLocation: SpawnActorPrototypeFreeformTriggerVerticesItem;
   UseMutantLootWithoutWidget: boolean;
   VegetableSurfaceMaterial: string;
   VideoLoadingScreenWidgetClass: string;
@@ -8423,11 +3332,7 @@ export type CoreVariable = GetStructType<{
   WeaponInfoMaxPiercing: number;
   WeaponInfoMinFireInterval: number;
   WeatherTimeCoefficientCurvePath: string;
-  WeightAzimuthArrayPsyPhantom: {
-    MaxAngle: number;
-    MinAngle: number;
-    Weight: number;
-  }[];
+  WeightAzimuthArrayPsyPhantom: CoreVariableWeightAzimuthArrayPsyPhantom;
   WetnessDryingConstValue: number;
   WetnessProximityUpdateDistance: number;
   WetnessTraceHeight: number;
@@ -8444,29 +3349,187 @@ export type CoreVariable = GetStructType<{
   WorldMapRegionTexture: string;
   WorldMapScene: string;
   WorldMapTexture: string;
-  WorldWindDirectionInitial: {
-    X: number;
-    Y: number;
-  };
-  WoundCausingDamageSourceTypes: EDamageSource[];
-  WoundHitAreasThresholds: {
-    Default: number;
-    Head: number;
-    Legs: number;
-    Torso: number;
-  };
+  WorldWindDirectionInitial: SpawnActorPrototypeFreeformTriggerVerticesItem;
+  WoundCausingDamageSourceTypes: CoreVariableWoundCausingDamageSourceTypes;
   WoundedHealHoldInteractTime: number;
   WoundedStateHealthRegen: number;
+  WoundHitAreasThresholds: CoreVariableWoundHitAreasThresholds;
   ZombieFactionUIDName: string;
-  bALifeTick: boolean;
-  bAutoEquipArtifacts: boolean;
-  bEnableDisassembleUI: boolean;
-  bEnableHideInformationUI: boolean;
-  bEnableWaterElement: boolean;
-  bResetArtifactLuckOnPickup: boolean;
-  bShouldSaveDefaultLanguage: boolean;
-  bStartWithLoadedWeapon: boolean;
-  bStartWithMenu: boolean;
+}>;
+
+export type CoreVariableA012 = GetStructType<{
+  FireInterval: number;
+}>;
+
+export type CoreVariableAffectingEffectTypes = GetStructType<
+  CoreVariableAffectingEffectTypesItem[]
+>;
+
+export type CoreVariableAffectingEffectTypesItem = GetStructType<{
+  EffectType: EEffectType;
+  Multiplier: number;
+}>;
+
+export type CoreVariableArtifactSpawnPityStructs = GetStructType<
+  CoreVariableArtifactSpawnPityStructsItem[]
+>;
+
+export type CoreVariableArtifactSpawnPityStructsItem = GetStructType<{
+  AttemptsCount: number;
+  Rank: ERank;
+  RarityLuckIncrease: CoreVariableRarityLuckIncrease;
+}>;
+
+export type CoreVariableAudioRoomPresetBandwidth = GetStructType<{
+  Close: string;
+  Custom: string;
+  HalfOpen: string;
+  Isolated: string;
+  None: string;
+  Open: string;
+  PsyDome: string;
+}>;
+
+export type CoreVariableBoneToHitAreaMap = GetStructType<{
+  Head: SpawnActorPrototypeSignals;
+  Legs: QuestNodePrototypeTargetQuestGuids;
+  Torso: SingletonConstantBandits;
+}>;
+
+export type CoreVariableBurn = GetStructType<{
+  VFXLifeTime: number;
+  VFXPath: string;
+}>;
+
+export type CoreVariableDamageInteractVFXs = GetStructType<{
+  Burn: CoreVariableBurn;
+  ChemicalBurn: CoreVariableBurn;
+  Shock: CoreVariableBurn;
+  SteamBurn: CoreVariableBurn;
+}>;
+
+export type CoreVariableFleshIshPhysicalMaterials = GetStructType<
+  EPhysicalMaterialType[]
+>;
+
+export type CoreVariableItemInfoAffectingEffects = GetStructType<
+  CoreVariableItemInfoAffectingEffectsItem[]
+>;
+
+export type CoreVariableItemInfoAffectingEffectsItem = GetStructType<{
+  AffectingEffectTypes: CoreVariableAffectingEffectTypes;
+  ItemInfoType: EItemInfoType;
+}>;
+
+export type CoreVariableLimpEffectSIDToThresholdMap = GetStructType<
+  CoreVariableLimpEffectSIDToThresholdMapItem[]
+>;
+
+export type CoreVariableLimpEffectSIDToThresholdMapItem = GetStructType<{
+  EffectSID: string;
+  Threshold: number;
+}>;
+
+export type CoreVariableMovementVFXArmorScale = GetStructType<
+  CoreVariableMovementVFXArmorScaleItem[]
+>;
+
+export type CoreVariableMovementVFXArmorScaleItem = GetStructType<{
+  ArmorProtectionValue: number;
+  ArmorScale: EArmorScale;
+}>;
+
+export type CoreVariableMutantLootParams = GetStructType<
+  CoreVariableMutantLootParamsItem[]
+>;
+
+export type CoreVariableMutantLootParamsItem = GetStructType<{
+  AgentType: EAgentType;
+  CutDecalBoneName: string;
+  CutRadiusModifier: number;
+}>;
+
+export type CoreVariableNiagaraProviderUpdateTimings = GetStructType<
+  CoreVariableNiagaraProviderUpdateTimingsItem[]
+>;
+
+export type CoreVariableNiagaraProviderUpdateTimingsItem = GetStructType<{
+  ProviderType: ENiagaraProviderType;
+  UpdateTime: number;
+}>;
+
+export type CoreVariablePhysicalMaterialFrictionCoefficients = GetStructType<
+  CoreVariablePhysicalMaterialFrictionCoefficientsItem[]
+>;
+
+export type CoreVariablePhysicalMaterialFrictionCoefficientsItem =
+  GetStructType<{
+    FrictionCoefficient: number;
+    PhysicalMaterialType: EPhysicalMaterialType;
+  }>;
+
+export type CoreVariablePlacesOfInterest = GetStructType<
+  CoreVariablePlacesOfInterestItem[]
+>;
+
+export type CoreVariablePlacesOfInterestItem = GetStructType<{
+  SID: string;
+  X: number;
+  Y: number;
+  Z: number;
+}>;
+
+export type CoreVariablePossessedWeaponFireIntervals = GetStructType<{
+  A012: CoreVariableA012;
+  A045: CoreVariableA012;
+  A762NATO: CoreVariableA012;
+  A762Sniper: CoreVariableA012;
+  A918: CoreVariableA012;
+  A919: CoreVariableA012;
+  AGA: CoreVariableA012;
+  AHEDP: CoreVariableA012;
+  APG7V: CoreVariableA012;
+  AVOG: CoreVariableA012;
+}>;
+
+export type CoreVariableRadiationInnerOffsetPresetValues = GetStructType<
+  CoreVariableRadiationInnerOffsetPresetValuesItem[]
+>;
+
+export type CoreVariableRadiationInnerOffsetPresetValuesItem = GetStructType<{
+  Preset: ERadiationInnerOffsetPreset;
+  Value: number;
+}>;
+
+export type CoreVariableRadiationPresetValues = GetStructType<
+  CoreVariableRadiationPresetValuesItem[]
+>;
+
+export type CoreVariableRadiationPresetValuesItem = GetStructType<{
+  EffectPrototypeSIDs: SpawnActorPrototypeIgnoreCollisionActors;
+  GeigerRadiationIntensity: number;
+  PostProcessRadiationIntensity: number;
+  Preset: ERadiationPreset;
+  RadiationPerSecondValue: number;
+  RadioactivityValue: number;
+}>;
+
+export type CoreVariableRarityLuckIncrease = GetStructType<
+  CoreVariableRarityLuckIncreaseItem[]
+>;
+
+export type CoreVariableRarityLuckIncreaseItem = GetStructType<{
+  LuckIncrease: number;
+  Rarity: EArtifactRarity;
+}>;
+
+export type CoreVariableReputationRepairCostModifiers = GetStructType<
+  CoreVariableReputationRepairCostModifiersItem[]
+>;
+
+export type CoreVariableReputationRepairCostModifiersItem = GetStructType<{
+  Modifier: number;
+  RelationLevel: ERelationLevel;
 }>;
 
 export type CoreVariablesCustom = GetStructType<{
@@ -8482,45 +3545,2065 @@ export type CoreVariablesCustom = GetStructType<{
   TriggerDebugDrawDistance: number;
 }>;
 
+export type CoreVariableSignalStrength = GetStructType<number[]>;
+
+export type CoreVariableStaminaRegenStateCoefs = GetStructType<
+  CoreVariableStaminaRegenStateCoefsItem[]
+>;
+
+export type CoreVariableStaminaRegenStateCoefsItem = GetStructType<{
+  StateTag: EStateTag;
+  Value: number;
+}>;
+
+export type CoreVariableStrikeGrenadeResistCoefs = GetStructType<
+  CoreVariableStrikeGrenadeResistCoefsItem[]
+>;
+
+export type CoreVariableStrikeGrenadeResistCoefsItem = GetStructType<{
+  GrenadeDamageResist: number;
+  ProtectionStrike: number;
+}>;
+
+export type CoreVariableWeightAzimuthArrayPsyPhantom = GetStructType<
+  CoreVariableWeightAzimuthArrayPsyPhantomItem[]
+>;
+
+export type CoreVariableWeightAzimuthArrayPsyPhantomItem = GetStructType<{
+  MaxAngle: number;
+  MinAngle: number;
+  Weight: number;
+}>;
+
+export type CoreVariableWoundCausingDamageSourceTypes = GetStructType<
+  EDamageSource[]
+>;
+
+export type CoreVariableWoundHitAreasThresholds = GetStructType<{
+  Default: number;
+  Head: number;
+  Legs: number;
+  Torso: number;
+}>;
+
+export type CorpseClueStashPrototype = GetStructType<{
+  AdditionalSearchRadius: number;
+  AddSpawnChance: number;
+  BaseSpawnChance: number;
+  CorpseClueData: CorpseClueStashPrototypeCorpseClueData;
+  Region: ERegion;
+  SID: string;
+}>;
+
+export type CorpseClueStashPrototypeCorpseClueData = GetStructType<
+  CorpseClueStashPrototypeCorpseClueDataItem[]
+>;
+
+export type CorpseClueStashPrototypeCorpseClueDataItem = GetStructType<{
+  Rank: ERank;
+  RankClue: CorpseClueStashPrototypeRankClue;
+}>;
+
+export type CorpseClueStashPrototypeRankClue = GetStructType<
+  CorpseClueStashPrototypeRankClueItem[]
+>;
+
+export type CorpseClueStashPrototypeRankClueItem = GetStructType<{
+  Rank: ERank;
+  Weight: string;
+}>;
+
+export type CorpsePrototype = GetStructType<{
+  AllowedAttachSuffixes: SingletonConstantZombie;
+  BlockAttachSuffixes: SpawnActorPrototypeIgnoreCollisionActors;
+  BloodPoolMaterial: string;
+  BloodPoolSeverity: number;
+  BonesToHit: QuestNodePrototypeTargetQuestGuids;
+  CauseOfDeath: ECauseOfDeath;
+  DecalsMaterialSID: string;
+  HitsCount: number;
+  Pose: string;
+  Severity: number;
+  SID: string;
+}>;
+
+export type CoverEvaluatorPrototype = GetStructType<{
+  AdvanceCoeff: number;
+  BaseValue: number;
+  CanUseCovers: boolean;
+  DangerousCoverZoneCoeff: number;
+  DefaultCoverSettings: CoverEvaluatorPrototypeDefaultCoverSettings;
+  EnemyCoverageCoeff: string;
+  ExplosiveSafeDistanceAddend: number;
+  ExplosivesCoverageCoeff: number;
+  ExplosivesCoverSettings: CoverEvaluatorPrototypeDefaultCoverSettings;
+  FormationCoeff: number;
+  FrequentlyUsedCoverCoeff: number;
+  FrequentlyUsedNoCoverCoeff: number;
+  LocationInDangerCoverThreshold: number;
+  LocationInDangerExplosiveThreshold: number;
+  LocationInDangerNoCoverThreshold: number;
+  LowGroundCoeff: number;
+  MaxCoverageByType: CoverEvaluatorPrototypeMaxCoverageByType;
+  MaxCoverSegmentCoverageBase: number;
+  MaxCoverSegmentCoveragePlayer: number;
+  MaxPathLength: number;
+  NewLocationAdvantageCoeff: string;
+  NewLocationAdvantageCoeffsOverride: CoverEvaluatorPrototypeNewLocationAdvantageCoeffsOverride;
+  PathLengthExponentBase: number;
+  RestrictionDistance: number;
+  ShouldApproachEnemy: boolean;
+  SID: string;
+  SquadMembersInDirectionCoeff: number;
+  WeaponDistanceCoeff: number;
+}>;
+
+export type CoverEvaluatorPrototypeDefaultCoverSettings = GetStructType<{
+  bUseCombatEffectiveFireDistance: boolean;
+  bUseDistanceEvaluators: boolean;
+  FrontLineHalfAngle: number;
+  FrontlineInfluence: number;
+  MaxDistanceToAlly: number;
+  MaxDistanceToEnemy: number;
+  MinDistanceToEnemy: number;
+}>;
+
+export type CoverEvaluatorPrototypeMaxCoverageByType = GetStructType<{
+  BehindTreeCover: number;
+  Generic: number;
+  High: number;
+  Low: number;
+  NoCover: number;
+  NoShootingPosition: number;
+}>;
+
+export type CoverEvaluatorPrototypeNewLocationAdvantageCoeffsOverride =
+  GetStructType<{
+    NoCover: number;
+  }>;
+
 export type Credit = GetStructType<{
-  Roles: {
-    Names: (number | string)[];
-    RoleNameSID: string;
-  }[];
+  Roles: CreditRoles;
   SectionNameSID: string;
 }>;
 
-export type GameLoadingVariable = GetStructType<{
-  LoadingStepsProgress: {
-    Complete: number;
-    FinishingUp: number;
-    InitializingManagers: number;
-    LoadingManagersData: number;
-    LoadingModelsData: number;
-    LoadingNecessaryActors: number;
-    LoadingStart: number;
-    SpawningPlaceholders: number;
-  };
+export type CreditNames = GetStructType<string[]>;
+
+export type CreditRoles = GetStructType<CreditRolesItem[]>;
+
+export type CreditRolesItem = GetStructType<{
+  Names: CreditNames;
+  RoleNameSID: string;
 }>;
 
+export type DailySchedulePrototype = GetStructType<{
+  ScheduleIntervals: DailySchedulePrototypeScheduleIntervals;
+  SID: string;
+}>;
+
+export type DailySchedulePrototypeAvailableNeeds = GetStructType<
+  EContextualActionNeeds[]
+>;
+
+export type DailySchedulePrototypeScheduleIntervals = GetStructType<
+  DailySchedulePrototypeScheduleIntervalsItem[]
+>;
+
+export type DailySchedulePrototypeScheduleIntervalsItem = GetStructType<{
+  AvailableNeeds: DailySchedulePrototypeAvailableNeeds;
+  IntervalEndTime: string;
+  IntervalStartTime: string;
+}>;
+
+export type DamageSourcePrototype = GetStructType<{
+  AudioSwitch: string;
+  bIsLooped: boolean;
+  bWithoutSFX: boolean;
+  CriticalHitAudioEventPath: string;
+  PlayAudioEvent: string;
+  PlayerVoiceoverEventPath: string;
+  SID: string;
+  StopAudioEvent: string;
+  VoiceOverAccumulationTime: number;
+  VoiceOverCooldown: number;
+  VoiceOverNeededDamage: number;
+}>;
+
+export type DebugItemGeneratorPrototype = GetStructType<{
+  ItemGenerator: DebugItemGeneratorPrototypeItemGenerator;
+  SID: string;
+}>;
+
+export type DebugItemGeneratorPrototypeItemGenerator = GetStructType<
+  DebugItemGeneratorPrototypeItemGeneratorItem[]
+>;
+
+export type DebugItemGeneratorPrototypeItemGeneratorItem = GetStructType<{
+  Category: EItemGenerationCategory;
+  PlayerRank: ERank;
+  PossibleItems: DebugItemGeneratorPrototypePossibleItems;
+}>;
+
+export type DebugItemGeneratorPrototypePossibleItems = GetStructType<
+  DebugItemGeneratorPrototypePossibleItemsItem[]
+>;
+
+export type DebugItemGeneratorPrototypePossibleItemsItem = GetStructType<{
+  AmmoMaxCount: number;
+  AmmoMinCount: number;
+  Chance: number;
+  ItemPrototypeSID: string;
+  MaxCount: number;
+  MaxDurability: number;
+  MinCount: number;
+  MinDurability: number;
+  Weight: number;
+}>;
+
+export type DestructibleObjectPrototype = GetStructType<{
+  bAllowPhaseSkipping: boolean;
+  bHasSpaceRestrictor: boolean;
+  Blueprint: string;
+  bSimulatePhysics: boolean;
+  DestructAudioEvent: string;
+  ExplosionPrototypeSID: string;
+  FallingVelocityThreshold: number;
+  ID: number;
+  ImpulseOverride: number;
+  ImpulseToDamageCoef: number;
+  MassMultiplier: number;
+  MaxDamageForLoudness: number;
+  MinDamageForLoudness: number;
+  ObjectPhaseSettings: DestructibleObjectPrototypeObjectPhaseSettings;
+  OriginalMesh: string;
+  PhysicsInteractionPrototypeSID: string;
+  SID: string;
+  TileOffsetMax: number;
+  TileOffsetMin: number;
+  VFXVariation: number;
+  WindowDestructVFX: string;
+}>;
+
+export type DestructibleObjectPrototypeAssetOptions = GetStructType<
+  DestructibleObjectPrototypeAssetOptionsItem[]
+>;
+
+export type DestructibleObjectPrototypeAssetOptionsItem = GetStructType<{
+  AssetPath: string;
+  AssetWeight: number;
+}>;
+
+export type DestructibleObjectPrototypeDestructibleActions = GetStructType<
+  DestructibleObjectPrototypeDestructibleActionsItem[]
+>;
+
+export type DestructibleObjectPrototypeDestructibleActionsItem = GetStructType<{
+  ActionCompletionDelay: number;
+  ActionType: EDestructionActionType;
+  AssetOptions: string;
+}>;
+
+export type DestructibleObjectPrototypeIgnoredDamageTypes = GetStructType<
+  EDamageType[]
+>;
+
+export type DestructibleObjectPrototypeObjectPhaseSettings = GetStructType<
+  DestructibleObjectPrototypeObjectPhaseSettingsItem[]
+>;
+
+export type DestructibleObjectPrototypeObjectPhaseSettingsItem = GetStructType<{
+  DamageDestroyThreshold: number;
+  DamageIgnoranceThreshold: number;
+  DestructibleActions: DestructibleObjectPrototypeDestructibleActions;
+  IgnoredDamageTypes: DestructibleObjectPrototypeIgnoredDamageTypes;
+}>;
+
+export type DetectorPrototype = GetStructType<{
+  AnimBlueprint: string;
+  AnomalyDetectionRadius: number;
+  AnomalyTexturePaths: DetectorPrototypeAnomalyTexturePaths;
+  ArtifactSignalCurve: string;
+  ArtifactTexturePath: string;
+  CanvasMaterialPath: string;
+  Cost: number;
+  DangerLevelSoundParameter: string;
+  DefaultArtifactRadius: number;
+  DetectorType: EDetectorType;
+  DetectorWorkCurve: string;
+  DetectorWorkRadius: string;
+  DetectorWorkSFX: string;
+  DisplayUpdateInterval: number;
+  ExclusionAnomalyList: QuestNodePrototypeTargetQuestGuids;
+  ExclusionArtifactList: SpawnActorPrototypeLairCoreVolumes;
+  Icon: string;
+  ItemSlotType: EInventoryEquipmentSlot;
+  ItemTypeSwitchValue: string;
+  MaxStackCount: number;
+  MeshInWorldPrototypeSID: string;
+  MeshPrototypeSID: string;
+  MinDetectRadius: number;
+  PhysicsInteractionPrototypeSID: string;
+  RadiusDivider: number;
+  RenderTargetResolution: number;
+  ShowArtifactRadius: string;
+  SID: string;
+  SonarRadius: number;
+  SpriteMaterialPath: string;
+  Type: EItemType;
+  Weight: number;
+}>;
+
+export type DetectorPrototypeAnomalyTexturePaths = GetStructType<
+  DetectorPrototypeAnomalyTexturePathsItem[]
+>;
+
+export type DetectorPrototypeAnomalyTexturePathsItem = GetStructType<{
+  AnomalyElementType: EAnomalyElementType;
+  SpriteTexturePath: string;
+}>;
+
+export type DialogChainPrototype = GetStructType<{
+  CanBeInterrupted: boolean;
+  CanInterruptByCombat: boolean;
+  CanInterruptByEmission: boolean;
+  ContinueAfterInterrupt: boolean;
+  DialogMembers: DialogChainPrototypeDialogMembers;
+  DialogOnTheGo: boolean;
+  DLC: string;
+  ID: number;
+  IsInteractive: boolean;
+  IsPCDialogMember: boolean;
+  SID: string;
+  StartingDialogPrototypeSID: string;
+}>;
+
+export type DialogChainPrototypeDialogMembers = GetStructType<
+  DialogChainPrototypeDialogMembersItem[]
+>;
+
+export type DialogChainPrototypeDialogMembersItem = GetStructType<{
+  DialogMemberName: string;
+  OptionalMember: boolean;
+}>;
+
+export type DialogPoolPrototype = GetStructType<{
+  AvailableDialogs: DialogPoolPrototypeAvailableDialogs;
+  DialogEventType: EDialogEventType;
+  DialogMemberRestrictions: DialogPoolPrototypeDialogMemberRestrictions;
+  OptionalMembersCount: number;
+  RequiredMembersCount: number;
+  RequiresGroup: boolean;
+  SID: string;
+}>;
+
+export type DialogPoolPrototypeAvailableDialogs = GetStructType<string[]>;
+
+export type DialogPoolPrototypeDialogMemberRestrictions = GetStructType<{
+  "0": DialogPoolPrototypeDialogMemberRestrictionsItem;
+  ExcludedFactions: DialogPoolPrototypeExcludedFactions;
+  ExcludedObjPrototypes: DialogPoolPrototypeExcludedObjPrototypes;
+  FactionRestrictions: DialogPoolPrototypeFactionRestrictions;
+  ObjPrototypeRestrictions: DialogPoolPrototypeObjPrototypeRestrictions;
+}>;
+
+export type DialogPoolPrototypeDialogMemberRestrictionsItem = GetStructType<{
+  FactionRestrictions: DialogPoolPrototypeFactionRestrictions;
+}>;
+
+export type DialogPoolPrototypeExcludedFactions = GetStructType<{
+  "0": string;
+  "1": string;
+  "2": string;
+  Faction: string;
+}>;
+
+export type DialogPoolPrototypeExcludedObjPrototypes = GetStructType<{
+  "0": string;
+  "1": string;
+  "10": string;
+  "2": string;
+  "3": string;
+  "4": string;
+  "5": string;
+  "6": string;
+  "7": string;
+  "8": string;
+  "9": string;
+  NPCPrototypeSID: string;
+}>;
+
+export type DialogPoolPrototypeFactionRestrictions = GetStructType<{
+  "0": string;
+  "1": string;
+  Faction: string;
+}>;
+
+export type DialogPoolPrototypeObjPrototypeRestrictions = GetStructType<{
+  "0": string;
+  NPCPrototypeSID: string;
+}>;
+
+export type DialogPrototype = GetStructType<{
+  Actions: DialogPrototypeActions;
+  AKEventName: string;
+  AKEventSubPath: string;
+  Animation: string;
+  AnswerText: string;
+  AssetsSubPath: string;
+  BlendExpForEaseInOut: number;
+  BrokenGameDataFilter: EBrokenGameDataFilter;
+  CanBeInterrupted: boolean;
+  Conditions: DialogPrototypeConditions;
+  DialogActionParam: string;
+  DialogActions: string;
+  DialogAnswerActions: DialogPrototypeDialogAnswerActions;
+  DialogChainPrototypeSID: string;
+  DialogMemberIndex: number;
+  DialogMemberName: string;
+  DialogMembersAnimations: DialogPrototypeDialogMembersAnimations;
+  DialogPriority: EDialogPriority;
+  FaceAnimationAssetName: string;
+  FaceAnimationSubPath: string;
+  HasVOInSequence: boolean;
+  Icon: string;
+  ID: number;
+  LocalizedSequences: DialogPrototypeLocalizedSequences;
+  LookAtObjSID: string;
+  LoopSequence: boolean;
+  MainReply: boolean;
+  NextDialogOptions: DialogPrototypeNextDialogOptions;
+  NextDialogSID: string;
+  NodePrototypeVersion: number;
+  PreblendSequence: boolean;
+  PreblendTime: number;
+  RotationTime: number;
+  SelfLocation: string;
+  ShowDialogWindow: boolean;
+  ShowNextDialogOptionsAsAnswers: boolean;
+  SID: string;
+  Sound: string;
+  SpeechDuration: number;
+  TargetLocation: string;
+  Text: string;
+  TopicAvailabilityConditions: DialogPrototypeTopicAvailabilityConditions;
+  Unskippable: boolean;
+  VisibleOnFailedCondition: boolean;
+  VoiceModulatorPrototypeID: string;
+  WaitForSequenceToFinish: boolean;
+}>;
+
+export type DialogPrototypeActions = GetStructType<
+  DialogPrototypeActionsItem[]
+>;
+
+export type DialogPrototypeActionsItem = GetStructType<{
+  DialogAction: EDialogAction;
+  DialogActionParam: string;
+}>;
+
+export type DialogPrototypeConditions = GetStructType<
+  DialogPrototypeConditionsItem[]
+>;
+
+export type DialogPrototypeConditionsItem = GetStructType<
+  (
+    | DialogPrototypeConditionsItemItem
+    | EConditionComparance
+    | EQuestConditionType
+    | number
+    | string
+  )[]
+>;
+
+export type DialogPrototypeConditionsItemItem = GetStructType<{
+  bTriggersByAnybody: boolean;
+  ChangeValueMode: EChangeValueMode;
+  CompletedNodeLauncherNames: SpawnActorPrototypeIgnoreCollisionActors;
+  ConditionComparance: EConditionComparance;
+  ConditionType: EQuestConditionType;
+  DialogMemberIndex: number;
+  EmissionPrototypeSID: string;
+  Equipment: EMainHandEquipmentType;
+  Faction: string;
+  FastTravelPrototypeSID: string;
+  GlobalVariablePrototypeSID: string;
+  ItemPrototypeSID: DialogPrototypeItemPrototypeSID;
+  ItemsCount: DialogPrototypeDialogActionParam;
+  JournalEntity: EJournalEntity;
+  JournalQuestSID: string;
+  JournalQuestStageSID: string;
+  JournalState: EJournalState;
+  LinkedNodePrototypeSID: string;
+  LocationIndex: number;
+  Money: DialogPrototypeDialogActionParam;
+  NodeState: EQuestNodeState;
+  NotePrototypeSID: string;
+  NumericValue: number;
+  RandomProbability: number;
+  Rank: ERank;
+  ReactType: ETriggerReact;
+  Relationships: ERelationLevel;
+  RequiredSquadMembers: ERequiredSquadMembers;
+  TargetCharacter: string;
+  TargetContextualActionPlaceholder: string;
+  TargetItemContainer: string;
+  TargetNode: string;
+  TargetNPC: string;
+  TargetPlaceholder: string;
+  TargetPoint: SpawnActorPrototypeVector;
+  Trigger: string;
+  VariableValue: boolean;
+  Weather: EWeather;
+  WithEquipped: boolean;
+  WithInventory: boolean;
+}>;
+
+export type DialogPrototypeDialogActionParam = GetStructType<{
+  VariableType: EGlobalVariableType;
+  VariableValue: number;
+}>;
+
+export type DialogPrototypeDialogActions = GetStructType<
+  DialogPrototypeDialogActionsItem[]
+>;
+
+export type DialogPrototypeDialogActionsItem = GetStructType<{
+  ChangeValueMode: EChangeValueMode;
+  ConsumablePrototypeSID: DialogPrototypeItemPrototypeSID;
+  DialogAction: EDialogAction;
+  DialogActionParam: DialogPrototypeDialogActionParam;
+  GlobalVariablePrototypeSID: string;
+  ItemsCount: DialogPrototypeDialogActionParam;
+  VariableValue: number;
+  WithEquipped: boolean;
+}>;
+
+export type DialogPrototypeDialogAnimations = GetStructType<
+  DialogPrototypeDialogAnimationsItem[]
+>;
+
+export type DialogPrototypeDialogAnimationsItem = GetStructType<{
+  DialogAnimationType: EDialogAnimationType;
+  GestureTiming: DialogPrototypeGestureTiming;
+}>;
+
+export type DialogPrototypeDialogAnswerActions = GetStructType<
+  DialogPrototypeDialogActionsItem[]
+>;
+
+export type DialogPrototypeDialogMembersAnimations = GetStructType<
+  DialogPrototypeDialogMembersAnimationsItem[]
+>;
+
+export type DialogPrototypeDialogMembersAnimationsItem = GetStructType<{
+  DialogAnimations: string;
+  EmotionalState: EEmotionalFaceMasks;
+  LookAtTarget: number;
+}>;
+
+export type DialogPrototypeFalse = GetStructType<{
+  NextDialogSID: string;
+  Terminate: boolean;
+}>;
+
+export type DialogPrototypeGeneral_PC_DeclineFastTravel_Random = GetStructType<{
+  AnswerTo: number;
+  AvailableFromStart: boolean;
+  NextDialogSID: string;
+  VisibleOnFailedCondition: boolean;
+}>;
+
+export type DialogPrototypeGestureTiming = GetStructType<(number | string)[]>;
+
+export type DialogPrototypeItemPrototypeSID = GetStructType<{
+  VariableType: EGlobalVariableType;
+  VariableValue: string;
+}>;
+
+export type DialogPrototypeLocalizedSequences = GetStructType<string[]>;
+
+export type DialogPrototypeNextDialogOptions = GetStructType<
+  (
+    | DialogPrototypeFalse
+    | DialogPrototypeGeneral_PC_DeclineFastTravel_Random
+    | DialogPrototypeNextDialogOptionsItem
+    | DialogPrototypeTrue
+  )[]
+>;
+
+export type DialogPrototypeNextDialogOptionsItem = GetStructType<{
+  AnswerTo: number;
+  AvailableFromStart: boolean;
+  Conditions: DialogPrototypeConditions;
+  ExcludeBy: string;
+  ImportantChoiceBranch: EScenarioBranch;
+  IncludeBy: string;
+  MainReply: boolean;
+  NextDialogSID: string;
+  Terminate: boolean;
+  VisibleOnFailedCondition: boolean;
+}>;
+
+export type DialogPrototypeTopicAvailabilityConditions = GetStructType<
+  DialogPrototypeTopicAvailabilityConditionsItem[]
+>;
+
+export type DialogPrototypeTopicAvailabilityConditionsItem = GetStructType<
+  (
+    | DialogPrototypeTopicAvailabilityConditionsItemItem
+    | EConditionComparance
+    | EQuestConditionType
+    | boolean
+    | string
+  )[]
+>;
+
+export type DialogPrototypeTopicAvailabilityConditionsItemItem = GetStructType<{
+  bTriggersByAnybody: boolean;
+  ConditionComparance: EConditionComparance;
+  ConditionType: EQuestConditionType;
+  EmissionPrototypeSID: string;
+  Faction: string;
+  IncludePartialOverload: boolean;
+  ItemPrototypeSID: DialogPrototypeItemPrototypeSID;
+  ItemsCount: DialogPrototypeDialogActionParam;
+  Money: DialogPrototypeDialogActionParam;
+  NumericValue: number;
+  Rank: ERank;
+  ReactType: ETriggerReact;
+  Relationships: ERelationLevel;
+  RequiredSquadMembers: ERequiredSquadMembers;
+  TargetCharacter: string;
+  TargetContextualActionPlaceholder: string;
+  TargetNPC: string;
+  TargetPoint: SpawnActorPrototypeVector;
+  ThreatAwareness: EThreatAwareness;
+  Trigger: string;
+  WithEquipped: boolean;
+  WithInventory: boolean;
+}>;
+
+export type DialogPrototypeTrue = GetStructType<{
+  Conditions: DialogPrototypeConditions;
+  NextDialogSID: string;
+  Terminate: boolean;
+}>;
+
+export type DifficultyPrototype = GetStructType<{
+  AccumulatedDamageReductionCurveWeightMax: number;
+  AccumulatedDamageReductionCurveWeightMaxDistance: number;
+  AccumulatedDamageReductionCurveWeightMin: number;
+  AccumulatedDamageReductionIncludesHealedHealth: boolean;
+  AdditionalMechanicsEffects: SingletonConstantBandits;
+  AgentCooldownMultipliers: DifficultyPrototypeAgentCooldownMultipliers;
+  AllowedSaveTypes: DifficultyPrototypeAllowedSaveTypes;
+  Ammo_Cost: number;
+  Anomaly_Damage: number;
+  Armor_Anomaly: number;
+  Armor_Cost: number;
+  Armor_Durability: number;
+  Armor_PSY: number;
+  Armor_Radiation: number;
+  Armor_Strike_Add: number;
+  Artifact_Cost: number;
+  AutosaveAfterQuests: DifficultyPrototypeAutosaveAfterQuests;
+  BlockSettings: boolean;
+  bShouldDisableCompass: boolean;
+  bShouldDisableCrosshair: boolean;
+  bShouldDisableDeadBodyMarkers: boolean;
+  bShouldDisableStashMarkers: boolean;
+  BuyCondition: number;
+  Consumable_Cost: number;
+  CorpseSmartLoot: DifficultyPrototypeCorpseSmartLoot;
+  DefaultAimAssistPresetType: EAimAssistPresetType;
+  DescriptionSID: string;
+  Effect_Bleeding: number;
+  Effect_Degen_Bleeding: number;
+  Effect_Satiety: number;
+  Effect_Sleepiness: number;
+  Explosion_BaseDamage: number;
+  HipAccuracyMultiplier: number;
+  Mutant_AttackCooldown: number;
+  Mutant_BaseDamage: number;
+  NightVisionGoggles_Cost: number;
+  NPC_Armor_Strike_Add: number;
+  NPC_AttackCooldown: number;
+  NPC_HP: number;
+  NPC_Weapon_BaseDamage: number;
+  NPC_Weapon_Rank_Add: number;
+  PlayerWeapon_HeadshotMultiplier: number;
+  PsyPhantomNPCOverrides: DifficultyPrototypePsyPhantomNPCOverrides;
+  Radiation_AccumulationSpeed: number;
+  Regen_HP: number;
+  Repair_Cost: number;
+  Reward_MainLine_Money: number;
+  Reward_SideLine_Money: number;
+  SellCondition: number;
+  ShowWarningPopup: boolean;
+  SID: string;
+  TitleSID: string;
+  TotalSaveLimits: DifficultyPrototypeTotalSaveLimits;
+  Upgrade_Cost: number;
+  Weapon_BaseDamage: number;
+  Weapon_Cost: number;
+  Weapon_Durability: number;
+  Weapon_DurabilityDamage: number;
+  Weapon_JammingMultiplier: number;
+  Weapon_Rank_Add: number;
+  Weather_Emission_Weight: number;
+  Weather_Storm_Weight: number;
+}>;
+
+export type DifficultyPrototypeAgentCooldownMultipliers = GetStructType<
+  DifficultyPrototypeAgentCooldownMultipliersItem[]
+>;
+
+export type DifficultyPrototypeAgentCooldownMultipliersItem = GetStructType<{
+  AgentPrototypeSID: string;
+  CooldownMultipliers: DifficultyPrototypeCooldownMultipliers;
+}>;
+
+export type DifficultyPrototypeAllowedSaveTypes = GetStructType<ESaveType[]>;
+
+export type DifficultyPrototypeAutosaveAfterQuests = GetStructType<string[]>;
+
+export type DifficultyPrototypeCooldownMultipliers = GetStructType<
+  DifficultyPrototypeCooldownMultipliersItem[]
+>;
+
+export type DifficultyPrototypeCooldownMultipliersItem = GetStructType<{
+  CooldownMultiplier: number;
+  CooldownTag: string;
+}>;
+
+export type DifficultyPrototypeCorpseSmartLoot = GetStructType<{
+  GeneralNPC: string;
+}>;
+
+export type DifficultyPrototypePsyPhantomNPCOverrides = GetStructType<
+  DifficultyPrototypePsyPhantomNPCOverridesItem[]
+>;
+
+export type DifficultyPrototypePsyPhantomNPCOverridesItem = GetStructType<{
+  bPsyNPCApplyBleeding: boolean;
+  OverrideEffectPrototypeSID: string;
+  PSYDelayBeforeNewSpawnCycleModifier: number;
+  PsyNPCDurabilityDamageMultiplier: number;
+  PsyPhantomNPCCountMultiplier: number;
+}>;
+
+export type DifficultyPrototypeTotalSaveLimits = GetStructType<
+  DifficultyPrototypeTotalSaveLimitsItem[]
+>;
+
+export type DifficultyPrototypeTotalSaveLimitsItem = GetStructType<{
+  Limit: number;
+  SubType: ESaveSubType;
+}>;
+
+export type DoorPrototype = GetStructType<{
+  bConsumeItemCountOnOpen: number;
+  Blueprint: string;
+  bOpenInBothSides: boolean;
+  ID: number;
+  LockedByGlobalVariable: DoorPrototypeLockedByGlobalVariable;
+  LockedByItemPrototype: DoorPrototypeLockedByItemPrototype;
+  LockedByScenarioFlag: DoorPrototypeLockedByScenarioFlag;
+  OpenCurve: string;
+  SID: string;
+}>;
+
+export type DoorPrototypeLockedByGlobalVariable = GetStructType<
+  UpgradePrototypeRequiredGlobalVariablesItem[]
+>;
+
+export type DoorPrototypeLockedByItemPrototype = GetStructType<
+  DoorPrototypeLockedByItemPrototypeItem[]
+>;
+
+export type DoorPrototypeLockedByItemPrototypeItem = GetStructType<{
+  ItemCount: number;
+  ItemPrototypeSID: string;
+}>;
+
+export type DoorPrototypeLockedByScenarioFlag = GetStructType<
+  UpgradePrototypeRequiredGlobalVariablesItem[]
+>;
+
+export type EffectBoolProviderPrototype = GetStructType<{
+  bPlayerTarget: boolean;
+  EffectSID: string;
+  SID: string;
+  Type: EBoolProviderType;
+}>;
+
+export type EffectFloatProviderPrototype = GetStructType<{
+  ConditionSID: string;
+  FalseValueSID: string;
+  SID: string;
+  TrueValueSID: string;
+  Type: EFloatProviderType;
+  Value: number;
+}>;
+
+export type EffectPrototype = GetStructType<{
+  AffectedStaminaActionTypes: EffectPrototypeAffectedStaminaActionTypes;
+  AmmoType: EAmmoType;
+  AmmoTypeProjectiles: EffectPrototypeAmmoTypeProjectiles;
+  ApplyExtraEffectPrototypeSIDs: UpgradePrototypeEffectPrototypeSIDs;
+  ApplyToMainHandedEquipment: boolean;
+  ArmorPiercing: number;
+  ArtifactEquipmentSlots: EffectPrototypeArtifactEquipmentSlots;
+  AssetPath: string;
+  AttachmentItemPrototypeSID: string;
+  AttachType: EAttachType;
+  AvailableObjPrototypes: DialogPrototypeLocalizedSequences;
+  AxisType: EInputAxisType;
+  bEnable: boolean;
+  bIsLooped: boolean;
+  bIsPermanent: boolean;
+  bIsSmooth: boolean;
+  BlockAnimationTypes: EffectPrototypeBlockAnimationTypes;
+  bStartEffect: boolean;
+  bUpdateValueEachTickNPC: boolean;
+  bUpdateValueEachTickPlayer: boolean;
+  Caliber: EAmmoCaliber;
+  CameraShakeEffectSubtype: ECameraShakeEffectSubtype;
+  CameraShakePrototypeSID: string;
+  CauseOfDeath: ECauseOfDeath;
+  Charges: number;
+  ConditionComparance: EConditionComparance;
+  ConditionSID: string;
+  DamageSource: EDamageSource;
+  DamageType: EDamageType;
+  Delay: number;
+  DelayBeforeNewSpawnCycleMax: number;
+  DelayBeforeNewSpawnCycleMin: number;
+  DelayMax: number;
+  DelayMin: number;
+  DialogBlendInDuration: number;
+  DialogBlendOutDuration: number;
+  DialogIntensityMultiplier: number;
+  DragImpulseRangeNPC: SpawnActorPrototypeMaxSpawnQuantity;
+  DuplicationType: EDuplicateResolveType;
+  DurabilityDamageRange: SpawnActorPrototypeMaxSpawnQuantity;
+  Duration: number;
+  EffectCurvePath: string;
+  EffectLevel: string;
+  EffectModifiers: EffectPrototypeEffectModifiers;
+  EffectsToBlockIDs: QuestNodePrototypeTargetQuestGuids;
+  FalseEffectSID: string;
+  FireIntervals: CoreVariableSignalStrength;
+  FireTypes: EffectPrototypeFireTypes;
+  GadgetTypes: SpawnActorPrototypeSignals;
+  Hint: boolean;
+  Icon: string;
+  InstantFirstCharge: boolean;
+  InterpolationTime: number;
+  InventoryEquipmentSlot: EInventoryEquipmentSlot;
+  IsCurvePercent: boolean;
+  IsSaveable: boolean;
+  LocalizationSID: string;
+  MaxSpawnPhantoms: number;
+  MaxSpeed: number;
+  MechanicsEffect: EffectPrototypeMechanicsEffect;
+  MechanicsSourceEffectSID: string;
+  MinSpawnPhantoms: number;
+  MinSpeed: number;
+  Money: number;
+  OverrideWeaponPattern: string;
+  Param1: string;
+  PhantomPhantomMaxDistance: number;
+  PhantomPhantomMinDistance: number;
+  PhantomPlayerMaxDistance: number;
+  PhantomPlayerMinDistance: number;
+  Positive: EBeneficial;
+  ProcessorSID: string;
+  PsyNPCType: EPsyNPCType;
+  Radius: number;
+  ShouldIgnoreArmor: boolean;
+  ShouldPauseByDialog: boolean;
+  ShowUpgradeEffect: boolean;
+  ShowUpgradeEffectValue: boolean;
+  SID: string;
+  SoundEffectSubtype: ESoundEffectSubtype;
+  StopEffectSID: string;
+  Tag: string;
+  TargetValue: number;
+  TeleportGroupSID: string;
+  TeleportType: EGSCTeleportType;
+  Text: string;
+  TimeBetwenDespawnPhantomMax: number;
+  TimeBetwenDespawnPhantomMin: number;
+  TimeBetwenSpawnPhantomMax: number;
+  TimeBetwenSpawnPhantomMin: number;
+  TimePerCharge: number;
+  TimePerChargeMax: number;
+  TimePerChargeMin: number;
+  TrueEffectSID: string;
+  Type: EEffectType;
+  UseOnlyOnPlayer: boolean;
+  ValueMax: string;
+  ValueMin: string;
+  ValueProviderSID: string;
+  VitalType: EVitalType;
+  XAxisMaxValue: number;
+  XAxisMinValue: number;
+  YAxisMaxValue: number;
+  YAxisMinValue: number;
+}>;
+
+export type EffectPrototypeAffectedStaminaActionTypes = GetStructType<
+  EStaminaAction[]
+>;
+
+export type EffectPrototypeAmmoTypeProjectiles = GetStructType<
+  WeaponGeneralSetupPrototypeAmmoTypeProjectilesItem[]
+>;
+
+export type EffectPrototypeApplicableEffects = GetStructType<
+  EffectPrototypeApplicableEffectsItem[]
+>;
+
+export type EffectPrototypeApplicableEffectsItem = GetStructType<{
+  EffectSID: string;
+  RemoveOnTransition: boolean;
+}>;
+
+export type EffectPrototypeArtifactEquipmentSlots = GetStructType<
+  EInventoryEquipmentSlot[]
+>;
+
+export type EffectPrototypeBlockAnimationTypes = GetStructType<EActionType[]>;
+
+export type EffectPrototypeConditionEffects = GetStructType<{
+  BigSleepiness: EffectPrototypeStrongHunger;
+  DeadlyRadiation: EffectPrototypeStrongHunger;
+  Disabled: EffectPrototypeStrongHunger;
+  DisableHungerNegative: EffectPrototypeNoBleeding;
+  DisableRadiationNegative: EffectPrototypeNoBleeding;
+  DisableSleepinessNegative: EffectPrototypeNoBleeding;
+  FullHP: EffectPrototypeStrongHunger;
+  HighFallHeight: EffectPrototypeStrongHunger;
+  HighOverDrunkness: EffectPrototypeStrongHunger;
+  LightRadiation: EffectPrototypeStrongHunger;
+  LightRadiation_2: EffectPrototypeStrongHunger;
+  Low: EffectPrototypeStrongHunger;
+  LowBleeding: EffectPrototypeStrongHunger;
+  LowDrunkness: EffectPrototypeStrongHunger;
+  LowFallHeight: EffectPrototypeStrongHunger;
+  LowHPThreshold: EffectPrototypeStrongHunger;
+  LowHunger: EffectPrototypeStrongHunger;
+  LowSleepiness: EffectPrototypeStrongHunger;
+  LowSPThreshold: EffectPrototypeStrongHunger;
+  Medium: EffectPrototypeStrongHunger;
+  MediumBleeding: EffectPrototypeStrongHunger;
+  MediumDrunkness: EffectPrototypeStrongHunger;
+  MediumHunger: EffectPrototypeStrongHunger;
+  MediumRadiation: EffectPrototypeStrongHunger;
+  MediumSleepiness: EffectPrototypeStrongHunger;
+  No: EffectPrototypeNoBleeding;
+  NoBleeding: EffectPrototypeNoBleeding;
+  NoDrunkness: EffectPrototypeNoBleeding;
+  None: EffectPrototypeNoBleeding;
+  NoOverDrunkness: EffectPrototypeNoBleeding;
+  NormalHPThreshold: EffectPrototypeNoBleeding;
+  NormalSP: EffectPrototypeNoBleeding;
+  NoSleepiness: EffectPrototypeNoBleeding;
+  PhaseFour: EffectPrototypeStrongHunger;
+  PhaseOne: EffectPrototypeStrongHunger;
+  PhaseThree: EffectPrototypeStrongHunger;
+  PhaseTwo: EffectPrototypeStrongHunger;
+  RadiationLevel10: EffectPrototypeStrongHunger;
+  RadiationLevel4: EffectPrototypeStrongHunger;
+  RadiationLevel5: EffectPrototypeStrongHunger;
+  RadiationLevel6: EffectPrototypeStrongHunger;
+  RadiationLevel7: EffectPrototypeStrongHunger;
+  RadiationLevel8: EffectPrototypeStrongHunger;
+  RadiationLevel9: EffectPrototypeStrongHunger;
+  SmallSleepiness: EffectPrototypeStrongHunger;
+  Strong: EffectPrototypeStrongHunger;
+  StrongBleeding: EffectPrototypeStrongHunger;
+  StrongDrunkness: EffectPrototypeStrongHunger;
+  StrongHunger: EffectPrototypeStrongHunger;
+  StrongHungerNegative: EffectPrototypeStrongHunger;
+  StrongRadiation: EffectPrototypeStrongHunger;
+  StrongRadiationNegative: EffectPrototypeStrongHunger;
+  StrongSleepiness: EffectPrototypeStrongHunger;
+  StrongSleepinessNegative: EffectPrototypeStrongHunger;
+  VeryLowHunger: EffectPrototypeStrongHunger;
+  VeryLowSleepiness: EffectPrototypeNoBleeding;
+  Weak: EffectPrototypeStrongHunger;
+}>;
+
+export type EffectPrototypeEffectModifiers = GetStructType<
+  EffectPrototypeEffectModifiersItem[]
+>;
+
+export type EffectPrototypeEffectModifiersItem = GetStructType<{
+  DurationMultiplier: number;
+  EffectPrototypeSID: string;
+  ValueMultiplier: number;
+}>;
+
+export type EffectPrototypeFireTypes = GetStructType<EFireType[]>;
+
+export type EffectPrototypeMechanicsEffect = GetStructType<{
+  ConditionComparance: EConditionComparance;
+  ConditionEffects: EffectPrototypeConditionEffects;
+  StartMechanicsValue: number;
+  StopMechanicsValue: number;
+  VitalBarType: EVitalType;
+}>;
+
+export type EffectPrototypeNoBleeding = GetStructType<{
+  ApplicableEffects: string;
+  ConditionValue: number;
+}>;
+
+export type EffectPrototypeStrongHunger = GetStructType<{
+  ApplicableEffects: EffectPrototypeApplicableEffects;
+  ConditionValue: number;
+}>;
+
+export type EffectSourcePriorityPrototype = GetStructType<{
+  SID: string;
+  SourcePriorities: EffectSourcePriorityPrototypeSourcePriorities;
+}>;
+
+export type EffectSourcePriorityPrototypeSourcePriorities = GetStructType<
+  EffectSourcePriorityPrototypeSourcePrioritiesItem[]
+>;
+
+export type EffectSourcePriorityPrototypeSourcePrioritiesItem = GetStructType<{
+  EffectSource: EEffectSource;
+  Priority: number;
+}>;
+
+export type EmissionPrototype = GetStructType<{
+  AIEvents: EmissionPrototypeAIEvents;
+  AppliedEffects: SpawnActorPrototypeSignals;
+  Assets: EmissionPrototypeAssets;
+  DamageSettings: EmissionPrototypeDamageSettings;
+  MaxEmissionKillDelayALife: number;
+  MaxReactionOnEmissionTimeALife: number;
+  MaxReactionOnEmissionTimeQuest: number;
+  MinEmissionKillDelayALife: number;
+  MinReactionOnEmissionTimeALife: number;
+  MinReactionOnEmissionTimeQuest: number;
+  OriginX: number;
+  OriginY: number;
+  SID: string;
+  Stages: EmissionPrototypeStages;
+  StartEmissionOnRedSkyDuringTranisition: boolean;
+}>;
+
+export type EmissionPrototypeAIEvents = GetStructType<
+  EmissionPrototypeAIEventsItem[]
+>;
+
+export type EmissionPrototypeAIEventsItem = GetStructType<{
+  AIEventStartTime: number;
+  AIEventType: EEmissionAIEvent;
+}>;
+
+export type EmissionPrototypeAssets = GetStructType<{
+  ActiveEmissionIntensitySoundParameter: string;
+  ActiveEmissionSound: string;
+  ActiveSecondEmissionSound: string;
+  EmissionDamageCurve: string;
+  EmissionVFX: string;
+  EndEmissionSound: string;
+  GeneratorsEndSequence: string;
+  GeneratorsIdleSequence: string;
+  GeneratorsStartSequence: string;
+  StartEmissionSound: string;
+}>;
+
+export type EmissionPrototypeDamageSettings = GetStructType<{
+  EmissionDamageBlendTime: number;
+}>;
+
+export type EmissionPrototypeStages = GetStructType<
+  EmissionPrototypeStagesItem[]
+>;
+
+export type EmissionPrototypeStagesItem = GetStructType<{
+  PhaseDuration: number;
+  PhaseStartTime: number;
+  StageID: EEmissionStage;
+}>;
+
+export type EnemyEvaluatorPrototype = GetStructType<{
+  ChangeEnemyCooldown: number;
+  CloseCombatMaxPenaltyDistance: number;
+  DamageAccumulationDurationSeconds: number;
+  DamageAccumulationMaxValue: string;
+  DamageAccumulationMinValue: string;
+  DistanceCoeff: number;
+  NoAddedDamageCoeff: number;
+  NotPlayerCoeff: number;
+  NPCSelectedAsEnemyValue: number;
+  NPCSelectedAsTargetByOtherCoeff: number;
+  PlayerSelectedAsEnemyValue: number;
+  PlayerSelectedAsTargetByOtherCoeff: number;
+  RangedCombatMaxPenaltyDistance: number;
+  RangeSearchPathToEnemies: number;
+  SID: string;
+}>;
+
+export type ExplosionPrototype = GetStructType<{
+  ArmorPenetrationNPC: number;
+  ArmorPenetrationPlayer: number;
+  ConcussionEffects: SpawnActorPrototypeIgnoreCollisionActors;
+  ConcussionRadius: number;
+  DamageArmorNPC: number;
+  DamageArmorPlayer: number;
+  DamageDestructible: number;
+  DamageNPC: number;
+  DamagePlayer: number;
+  DamageSource: EDamageSource;
+  DefaultEffectSIDs: SpawnActorPrototypeIgnoreCollisionActors;
+  ExplosionAkSFX: string;
+  ExplosionDamageCurve: string;
+  ExplosionDefectAkSFX: string;
+  ExplosionDefectNiagaraSystemVFX: string;
+  ExplosionInAirNiagaraSystemVFX: string;
+  ExplosionNiagaraSystemVFX: string;
+  ExplosionParticleTraceSize: number;
+  ExplosionUnderwaterNiagaraSystemVFX: string;
+  ExplosionWaterDepthRTPC: string;
+  ForceFeedbackRadius: number;
+  ImpactPhysicalMaterialPrototypeSID: string;
+  ImpulseDamageCurve: string;
+  ImpulsePower: number;
+  ImpulseRadius: number;
+  NPCConcussionEffects: SpawnActorPrototypeIgnoreCollisionActors;
+  PhysicalMaterialEffects: ExplosionPrototypePhysicalMaterialEffects;
+  Radius: number;
+  SID: string;
+}>;
+
+export type ExplosionPrototypePhysicalMaterialEffects = GetStructType<
+  ExplosionPrototypePhysicalMaterialEffectsItem[]
+>;
+
+export type ExplosionPrototypePhysicalMaterialEffectsItem = GetStructType<{
+  EffectSIDs: SpawnActorPrototypeIgnoreCollisionActors;
+  PhysicalMaterialType: EPhysicalMaterialType;
+}>;
+
+export type FaceBlockingBlendMaskPrototype = GetStructType<{
+  AllowedBlendShapes: FaceBlockingBlendMaskPrototypeAllowedBlendShapes;
+  BlockingMasks: FaceBlockingBlendMaskPrototypeBlockingMasks;
+  bShouldDisableAllBlendShapes: boolean;
+  ForHairQualityUseGroomBlocking: number;
+  GroomBlockingMappingPrototypeSID: string;
+  SID: string;
+}>;
+
+export type FaceBlockingBlendMaskPrototypeAllowedBlendShapes = GetStructType<
+  string[]
+>;
+
+export type FaceBlockingBlendMaskPrototypeBlockingMasks = GetStructType<
+  FaceBlockingBlendMaskPrototypeBlockingMasksItem[]
+>;
+
+export type FaceBlockingBlendMaskPrototypeBlockingMasksItem = GetStructType<{
+  BlockingWeight: number;
+  MaskType: EFaceBlockingBlendMasks;
+}>;
+
+export type FactionActionRestrictionPrototype = GetStructType<{
+  Factions: FactionActionRestrictionPrototypeFactions;
+  ID: number;
+  SID: string;
+}>;
+
+export type FactionActionRestrictionPrototypeFactions = GetStructType<string[]>;
+
+export type FastTravelLocationPrototype = GetStructType<{
+  BlockingGlobalVariables: FastTravelLocationPrototypeBlockingGlobalVariables;
+  LocationCategory: string;
+  Name: string;
+  PlayerLocation: FastTravelLocationPrototypePlayerLocation;
+  RequiredGlobalVariables: FastTravelLocationPrototypeRequiredGlobalVariables;
+  SID: string;
+}>;
+
+export type FastTravelLocationPrototypeBlockingGlobalVariables = GetStructType<
+  FastTravelLocationPrototypeRequiredGlobalVariablesItem[]
+>;
+
+export type FastTravelLocationPrototypePlayerLocation = GetStructType<{
+  X: number;
+  Y: number;
+  Yaw: number;
+  Z: number;
+}>;
+
+export type FastTravelLocationPrototypeRequiredGlobalVariables = GetStructType<
+  FastTravelLocationPrototypeRequiredGlobalVariablesItem[]
+>;
+
+export type FastTravelLocationPrototypeRequiredGlobalVariablesItem =
+  GetStructType<{
+    GlobalVariablePrototypeSID: string;
+    GlobalVariableValue: number;
+  }>;
+
+export type FastTravelPrototype = GetStructType<{
+  DiscountCoefficients: FastTravelPrototypeDiscountCoefficients;
+  GuideDelay: number;
+  Locations: FastTravelPrototypeLocations;
+  MaxAccumulatedPointsForVitals: FastTravelPrototypeMaxAccumulatedPointsForVitals;
+  OverweightLock: EOverweightLock;
+  SID: string;
+}>;
+
+export type FastTravelPrototypeDiscountCoefficients = GetStructType<{
+  GlobalVariableCoefficient: FastTravelPrototypeGlobalVariableCoefficient;
+  RankDiscountCoefficient: AIGlobalArmy;
+  ReputationDiscountCoefficient: FastTravelPrototypeReputationDiscountCoefficient;
+}>;
+
+export type FastTravelPrototypeGlobalVariableCoefficient = GetStructType<
+  FastTravelPrototypeGlobalVariableCoefficientItem[]
+>;
+
+export type FastTravelPrototypeGlobalVariableCoefficientItem = GetStructType<{
+  DiscountCoefficient: number;
+  GlobalVariablePrototypeSID: string;
+  TargetValue: number;
+}>;
+
+export type FastTravelPrototypeLocations = GetStructType<
+  FastTravelPrototypeLocationsItem[]
+>;
+
+export type FastTravelPrototypeLocationsItem = GetStructType<{
+  CurrentFastTravelLocationPrototypeSID: string;
+  DestinationFastTravelLocationPrototypeSID: string;
+  Name: string;
+  RequiredItems: string;
+  RequiredMoney: number;
+}>;
+
+export type FastTravelPrototypeMaxAccumulatedPointsForVitals = GetStructType<{
+  Bleeding: number;
+  Hunger: number;
+  Radiation: number;
+}>;
+
+export type FastTravelPrototypeReputationDiscountCoefficient = GetStructType<{
+  Disaffection: number;
+  Enemy: number;
+  Friend: number;
+  Neutral: number;
+}>;
+
+export type FastTravelPrototypeRequiredItems = GetStructType<
+  FastTravelPrototypeRequiredItemsItem[]
+>;
+
+export type FastTravelPrototypeRequiredItemsItem = GetStructType<{
+  RequiredItemPrototypeSID: string;
+  RequiredItemsCount: number;
+}>;
+
+export type FlairSensorPrototype = GetStructType<{
+  DetectionSpeed: number;
+  DistancePenaltyCurve: string;
+  FlairLocatedMultiplier: number;
+  FrontDetectionSpeed: number;
+  FrontSensingAngle: number;
+  FrontSensingRadius: number;
+  IsActive: boolean;
+  LoseFlairFreezetime: number;
+  LosePointsPerSecond: number;
+  MaxFlairPoints: number;
+  MinCombatSignificantFlairScore: number;
+  MinSignificantFlairScore: number;
+  ProcessingCorpseMultiplier: number;
+  RelaxMultiplier: number;
+  SensingRadius: number;
+  SID: string;
+}>;
+
+export type FlashlightPrototype = GetStructType<{
+  BrokenCooldownSeconds: number;
+  DroppedBeforeBurnOutPauseTimeSeconds: number;
+  DroppedBurnOutTimeSeconds: number;
+  EffectSIDs: SpawnActorPrototypeIgnoreCollisionActors;
+  ExtraLightDistanceBasedParameters: FlashlightPrototypeExtraLightDistanceBasedParameters;
+  FlashlightPriority: EFlashlightPriority;
+  HeadBoneNameToCheckHitToFlashlight: string;
+  ID: number;
+  PathToFlashlightBurnOutAudioEvent: string;
+  PathToFlashlightTurnOffAudioEvent: string;
+  PathToFlashlightTurnOnAudioEvent: string;
+  PathToInnerRadiusCurve: string;
+  PathToOuterRadiusCurve: string;
+  RadiusChangeSpeed: number;
+  SID: string;
+  SocketNamesMeshes: FlashlightPrototypeSocketNamesMeshes;
+}>;
+
+export type FlashlightPrototypeAdditionalMeshes = GetStructType<
+  FlashlightPrototypeAdditionalMeshesItem[]
+>;
+
+export type FlashlightPrototypeAdditionalMeshesItem = GetStructType<{
+  MeshPath: string;
+  OffsetRotator: SpawnActorPrototypeRotation;
+  OffsetVector: SpawnActorPrototypeVector;
+}>;
+
+export type FlashlightPrototypeExtraLightDistanceBasedParameters =
+  GetStructType<FlashlightPrototypeExtraLightDistanceBasedParametersItem[]>;
+
+export type FlashlightPrototypeExtraLightDistanceBasedParametersItem =
+  GetStructType<{
+    AttenuationRadius: number;
+    Distance: number;
+    Intencity: number;
+    OuterConeAngle: number;
+  }>;
+
+export type FlashlightPrototypeMeshOffsetParams = GetStructType<{
+  OffsetRotator: SpawnActorPrototypeRotation;
+  OffsetVector: SpawnActorPrototypeVector;
+}>;
+
+export type FlashlightPrototypeRelatedMeshes = GetStructType<string[]>;
+
+export type FlashlightPrototypeSocketNamesMeshes = GetStructType<
+  FlashlightPrototypeSocketNamesMeshesItem[]
+>;
+
+export type FlashlightPrototypeSocketNamesMeshesItem = GetStructType<{
+  AdditionalMeshes: FlashlightPrototypeAdditionalMeshes;
+  MeshOffsetParams: FlashlightPrototypeMeshOffsetParams;
+  MeshPath: string;
+  RelatedMeshes: FlashlightPrototypeRelatedMeshes;
+  SocketName: string;
+  SpotlightOffsetParams: FlashlightPrototypeSpotlightOffsetParams;
+}>;
+
+export type FlashlightPrototypeSpotlightOffsetParams = GetStructType<{
+  OffsetRotator: SpawnActorPrototypeRotation;
+  OffsetVector: SpawnActorPrototypeVector;
+  SocketName: string;
+}>;
+
+export type FloatProviderPrototype = GetStructType<{
+  bPlayerTarget: boolean;
+  ConditionSID: string;
+  DelayMax: number;
+  DelayMin: number;
+  FalseValueSID: string;
+  FirstProviderSID: string;
+  ParamType: EObjFloatParams;
+  ProviderSIDs: SpawnActorPrototypeSignals;
+  SecondProviderSID: string;
+  SID: string;
+  TimeFModValue: number;
+  TrueValueSID: string;
+  Type: EFloatProviderType;
+  Value: number;
+  ValueProviderSID: string;
+  VitalType: EVitalType;
+  WeatherParam: EWeatherParam;
+}>;
+
+export type GameLoadingVariable = GetStructType<{
+  LoadingStepsProgress: SaveLoadVariableLoadingStepsProgress;
+}>;
+
+export type GDItemPrototype = GetStructType<{
+  Cost: number;
+  Icon: string;
+  IsQuestItem: boolean;
+  IsQuestItemPrototype: boolean;
+  ItemGridHeight: number;
+  ItemGridWidth: number;
+  LocalizationSID: string;
+  MeshPrototypeSID: string;
+  SID: string;
+  Type: EItemType;
+  Weight: number;
+}>;
+
+export type GeneralNPCObjPrototype = GetStructType<{
+  Abilities: GeneralNPCObjPrototypeAbilities;
+  AdvanceParameters: GeneralNPCObjPrototypeAdvanceParameters;
+  AimAssistParamsSID: string;
+  Anim: EObjAnim;
+  ArmorDifferenceCoefMeleeAttacks: number;
+  ArmorDifferenceCoefProjectiles: number;
+  Blueprint: string;
+  BoneDamageCoefficients: GeneralNPCObjPrototypeBoneDamageCoefficients;
+  CamperFeatureData: ObjPrototypeCamperFeatureData;
+  CanBeKnockedDown: boolean;
+  CombatParameters: GeneralNPCObjPrototypeCombatParameters;
+  CustomMeshGeneratorPrototypeSID: string;
+  DoorTransitionSettings: GeneralNPCObjPrototypeDoorTransitionSettings;
+  EscapeParameters: GeneralNPCObjPrototypeEscapeParameters;
+  EvadeParameters: GeneralNPCObjPrototypeEvadeParameters;
+  Faction: string;
+  FlairSensorPrototypeSID: string;
+  FlankParameters: GeneralNPCObjPrototypeFlankParameters;
+  FlashlightPrototypeSID: string;
+  HumanAmbushParameters: GeneralNPCObjPrototypeHumanAmbushParameters;
+  IgnoreEmission: boolean;
+  IsAffectingByMaxAttaches: boolean;
+  IsZombie: boolean;
+  ItemGeneratorPrototypeSID: string;
+  Mass: number;
+  MeshGeneratorPrototypeSID: string;
+  MovementParams: GeneralNPCObjPrototypeMovementParams;
+  NeedsPresetSID: string;
+  NPCPrototypeSID: string;
+  NPCType: ENPCType;
+  OfflineCombatWeight: number;
+  Protection: ArmorPrototypeProtection;
+  ReactOnApproachWithWeapon: boolean;
+  SequentialAbilities: SpawnActorPrototypeSignals;
+  SequentialAbilitiesActionData: ObjPrototypeSequentialAbilitiesActionData;
+  SID: string;
+  SpawnPhantomParams: GeneralNPCObjPrototypeSpawnPhantomParams;
+  SuppressiveFireParameters: GeneralNPCObjPrototypeSuppressiveFireParameters;
+  SyncParameters: ObjPrototypeSyncParameters;
+  TradePrototypeSID: string;
+  Type: EObjType;
+  VitalParams: GeneralNPCObjPrototypeVitalParams;
+}>;
+
+export type GeneralNPCObjPrototypeAbilities = GetStructType<
+  Record<HumanAbilityName, ObjPrototypeBlindDog_RunAttack_Left>
+>;
+
+export type GeneralNPCObjPrototypeAdvanceParameters = GetStructType<{
+  DurationSeconds: number;
+  MaxDistance: number;
+  Montage: string;
+}>;
+
+export type GeneralNPCObjPrototypeAnimationData = GetStructType<
+  GeneralNPCObjPrototypeAnimationDataItem[]
+>;
+
+export type GeneralNPCObjPrototypeAnimationDataItem = GetStructType<{
+  Montage: string;
+  Type: EEvadeActionType;
+}>;
+
+export type GeneralNPCObjPrototypeBoneDamageCoefficients = GetStructType<
+  ObjPrototypeBoneDamageCoefficientsItem[]
+>;
+
+export type GeneralNPCObjPrototypeCombatParameters = GetStructType<{
+  CheckEnemyTime: number;
+  CoverEvaluatorSID: string;
+  DamageThresholdToChangeLocation: number;
+  EarlyExitReloadTime: number;
+  EnemyCouldBeVisibleMaxDistance: number;
+  LoseEnemyVisibilityTime: number;
+  MaxTimeInBadShootingPosition: number;
+  NearbyDistanceWeaponNotReady: number;
+  NearbyDistanceWeaponReady: number;
+  RetreatToCoverDistance: number;
+}>;
+
+export type GeneralNPCObjPrototypeDefault = GetStructType<{
+  Animation: string;
+  StartDistance: number;
+}>;
+
+export type GeneralNPCObjPrototypeDoorTransitionSettings = GetStructType<{
+  Default: GeneralNPCObjPrototypeDefault;
+  OneHandedWeaponCombat: GeneralNPCObjPrototypeDefault;
+  OneHandedWeaponRelax: GeneralNPCObjPrototypeDefault;
+  TwoHandedWeaponCombat: GeneralNPCObjPrototypeDefault;
+  TwoHandedWeaponRelax: GeneralNPCObjPrototypeDefault;
+}>;
+
+export type GeneralNPCObjPrototypeEscapeParameters = GetStructType<{
+  AttackEscapeDelay: number;
+  EscapeRadius: number;
+  FailureChance: string;
+  InterruptEscapeAfterEnemyLostDelay: number;
+  InterruptEscapeDelay: number;
+  SquadLostFractionToEscape: string;
+}>;
+
+export type GeneralNPCObjPrototypeEvadeParameters = GetStructType<{
+  AcceptableAngle: number;
+  AccumulatedDamage: number;
+  AnimationData: GeneralNPCObjPrototypeAnimationData;
+  ApproachDistance: number;
+  DamageDetectionSeconds: number;
+  RequiredAmmoThreshold: string;
+}>;
+
+export type GeneralNPCObjPrototypeFlankParameters = GetStructType<{
+  ActivationDelaySeconds: number;
+  CostScale: number;
+  DamageDetectionSeconds: number;
+  ExtraSlotChance: string;
+  ExtraSlotTime: number;
+  FrontZone: GeneralNPCObjPrototypeFrontZone;
+  Height: number;
+  MaxAccumulatedDamage: number;
+  MaxAdvancedLocationSelectionDuration: number;
+  MaxPathCost: number;
+  MaxPathLength: number;
+  MaxSuccessDistance: number;
+  MinPathLength: number;
+  MinPathOffsetFromTarget: number;
+  MinSuccessDistance: number;
+  ScaleFactor: number;
+}>;
+
+export type GeneralNPCObjPrototypeFrontZone = GetStructType<
+  SpawnActorPrototypeFreeformTriggerVerticesItem[]
+>;
+
+export type GeneralNPCObjPrototypeHumanAmbushParameters = GetStructType<{
+  ApproachableDistance: number;
+  EntryDelay: number;
+  PathLengthThreshold: number;
+  PathUpdateInterval: number;
+}>;
+
+export type GeneralNPCObjPrototypeMovementParams = GetStructType<{
+  AirControlCoef: number;
+  BaseLookUpRate: number;
+  BaseTurnRate: number;
+  CanDash: boolean;
+  ClimbSpeedCoef: number;
+  CrouchSpeed: number;
+  JumpSpeedCoef: number;
+  LimpSpeedCoef: number;
+  LowCrouchSpeed: number;
+  MaxSlowdownValue: number;
+  MoveBackCrouchCoef: number;
+  MoveBackLowCrouchCoef: number;
+  MovementSpeedCoef: number;
+  RunBackCoef: number;
+  RunDiagonalBackCoef: number;
+  RunSpeed: number;
+  SprintSpeed: number;
+  StaggerAngle: number;
+  WalkBackCoef: number;
+  WalkDiagonalBackCoef: number;
+  WalkSpeed: number;
+  WalkTransitionCoef: number;
+}>;
+
+export type GeneralNPCObjPrototypeSpawnPhantomParams = GetStructType<{
+  DelayBeforeMovement: number;
+  PhantomAllowedEquipItems: SpawnActorPrototypeIgnoreCollisionActors;
+  PhantomAttackAbilityTag: string;
+  PhantomBlueprint: string;
+}>;
+
+export type GeneralNPCObjPrototypeSuppressiveFireParameters = GetStructType<{
+  LookAtBoneName: string;
+  MaxAccumulatedDamage: number;
+  MaxTimeToLoseTarget: number;
+  TraceDistance: number;
+}>;
+
+export type GeneralNPCObjPrototypeVitalParams = GetStructType<{
+  DegenBleeding: number;
+  DegenPsyPoints: number;
+  DegenRadiation: number;
+  DegenSuppressionPoints: number;
+  MaxHP: number;
+  MaxSP: number;
+  RegenHP: number;
+  RegenHPDelayTimeSeconds: number;
+}>;
+
+export type GenericLairPrototype = GetStructType<{
+  Preset: GenericLairPrototypePreset;
+  SID: string;
+}>;
+
+export type GenericLairPrototypeBlinddog = GetStructType<{
+  Faction: string;
+  MinQuantityPerArchetype: number;
+  SpawnSettingsPerPlayerRanks: GenericLairPrototypeSpawnSettingsPerPlayerRanks;
+  SpawnWeight: number;
+}>;
+
+export type GenericLairPrototypeMilitaries = GetStructType<{
+  Faction: string;
+  SpawnSettingsPerPlayerRanks: GenericLairPrototypeSpawnSettingsPerPlayerRanks;
+}>;
+
+export type GenericLairPrototypeNewbie = GetStructType<{
+  InitialSpawnQuantityPercent: number;
+  InitialSpawnQuantityRespawnTimeSeconds: number;
+  MaxSpawnQuantity: number;
+  MaxSpawnQuantityRespawnTimeSeconds: number;
+  SpawnSettingsPerArchetypes: GenericLairPrototypeSpawnSettingsPerArchetypes;
+  WipeRespawnTimeoutSeconds: number;
+}>;
+
+export type GenericLairPrototypePossibleInhabitantFactions = GetStructType<
+  Record<Faction, GenericLairPrototypeMilitaries>
+>;
+
+export type GenericLairPrototypePreset = GetStructType<{
+  ALifeLairsSearchRadius: number;
+  GameTimeOfflineToRerollLairData: number;
+  InitialInhabitantFaction: string;
+  IsALifePoint: boolean;
+  LairType: ELairType;
+  PossibleInhabitantFactions: GenericLairPrototypePossibleInhabitantFactions;
+  RestingLairInstantSpawnScenarioChance: number;
+  RestingLairLongDelaySpawnMax: number;
+  RestingLairLongDelaySpawnMin: number;
+  RestingLairMaxNPCCount: number;
+  RestingLairMinNPCCount: number;
+  RestingLairShortDelayedSpawnScenarioChance: number;
+  RestingLairShortDelaySpawnMax: number;
+  RestingLairShortDelaySpawnMin: number;
+}>;
+
+export type GenericLairPrototypeSpawnSettingsPerArchetypes = GetStructType<
+  Record<Archetype, GenericLairPrototypeBlinddog>
+>;
+
+export type GenericLairPrototypeSpawnSettingsPerPlayerRanks = GetStructType<{
+  Experienced: GenericLairPrototypeNewbie;
+  Master: GenericLairPrototypeNewbie;
+  Newbie: GenericLairPrototypeNewbie;
+  Veteran: GenericLairPrototypeNewbie;
+}>;
+
+export type GreetingsPopupPrototype = GetStructType<{
+  Background: string;
+  EditionBitFlag: number;
+  LocalizationSID: string;
+  SID: string;
+}>;
+
+export type GrenadePrototype = GetStructType<{
+  ArmorDamage: number;
+  ArmorPiercing: number;
+  BaseComfort: number;
+  Blueprint: string;
+  Cost: number;
+  CrosshairType: ECrosshairType;
+  EffectApplyDistanceCoefficient: number;
+  ExplosionPrototypeSID: string;
+  GrenadeAnimBlueprint: string;
+  GrenadeExplosionHandLethal: string;
+  GrenadeExplosionHandNonlethal: string;
+  GrenadeExplosionLethalThreshold: string;
+  GrenadeType: EGrenadeType;
+  Icon: string;
+  ImpulseStrength: number;
+  InnerDamage: number;
+  ItemTypeSwitchValue: string;
+  MeshInWorldPrototypeSID: string;
+  MeshPrototypeSID: string;
+  NPCWeaponAttributes: string;
+  OuterDamage: number;
+  OuterWoundingRadius: number;
+  PhysicsInteractionPrototypeSID: string;
+  RollVelocityThreshold: number;
+  SafeTimeAfterThrow: number;
+  SID: string;
+  SkeletalMeshPrototypeSID: string;
+  StaticMeshPrototypeSID: string;
+  TimeToExplode: number;
+  Type: EItemType;
+  Weight: number;
+}>;
+
+export type GroomBlockingMappingPrototype = GetStructType<{
+  BlockingGrooms: SpawnActorPrototypeLairCoreVolumes;
+  BlockingGroomSIDs: GroomBlockingMappingPrototypeBlockingGroomSIDs;
+  SID: string;
+}>;
+
+export type GroomBlockingMappingPrototypeBlockingGroomSIDs = GetStructType<
+  string[]
+>;
+
+export type GroomGeneratorPrototype = GetStructType<{
+  Category: GroomGeneratorPrototypeCategory;
+  SID: string;
+}>;
+
+export type GroomGeneratorPrototypeAdditionalGrooms = GetStructType<
+  GroomGeneratorPrototypeAdditionalGroomsItem[]
+>;
+
+export type GroomGeneratorPrototypeAdditionalGroomsItem = GetStructType<{
+  GroomBindingPath: string;
+  GroomPath: string;
+  MaterialPath: string;
+  Materials: GroomGeneratorPrototypeMaterials;
+}>;
+
+export type GroomGeneratorPrototypeCategory = GetStructType<
+  GroomGeneratorPrototypeCategoryItem[]
+>;
+
+export type GroomGeneratorPrototypeCategoryItem = GetStructType<{
+  CategoryName: string;
+  FromHairQualityUseVariationReplacementMap: number;
+  VariationReplacementMap: GroomGeneratorPrototypeVariationReplacementMap;
+  Variations: GroomGeneratorPrototypeVariations;
+}>;
+
+export type GroomGeneratorPrototypeCustomData = GetStructType<
+  (GroomGeneratorPrototypeCustomDataItem | GroomGeneratorPrototypeShortHair)[]
+>;
+
+export type GroomGeneratorPrototypeCustomDataItem = GetStructType<{
+  Distribution: ECustomDataDistribution;
+  MaterialGroup: string;
+  ParameterID: number;
+  Variations: GroomGeneratorPrototypeVariations;
+}>;
+
+export type GroomGeneratorPrototypeMaterialInstanceParameters = GetStructType<
+  AttachMeshPrototypeMaterialInstanceParametersItem[]
+>;
+
+export type GroomGeneratorPrototypeMaterials = GetStructType<
+  GroomGeneratorPrototypeMaterialsItem[]
+>;
+
+export type GroomGeneratorPrototypeMaterialsItem = GetStructType<{
+  CustomData: GroomGeneratorPrototypeCustomData;
+  MaterialGroup: string;
+  MaterialSlot: number;
+  Variations: GroomGeneratorPrototypeVariations;
+}>;
+
+export type GroomGeneratorPrototypeShortHair = GetStructType<{
+  Distribution: ECustomDataDistribution;
+  MaterialGroup: string;
+  Variations: GroomGeneratorPrototypeVariations;
+}>;
+
+export type GroomGeneratorPrototypeVariationReplacementMap = GetStructType<
+  GroomGeneratorPrototypeVariationReplacementMapItem[]
+>;
+
+export type GroomGeneratorPrototypeVariationReplacementMapItem = GetStructType<{
+  From: number;
+  To: number;
+}>;
+
+export type GroomGeneratorPrototypeVariations = GetStructType<
+  GroomGeneratorPrototypeVariationsItem[]
+>;
+
+export type GroomGeneratorPrototypeVariationsItem = GetStructType<{
+  AdditionalGrooms: GroomGeneratorPrototypeAdditionalGrooms;
+  bHasCustomData: boolean;
+  CustomData: GroomGeneratorPrototypeCustomData;
+  FromHairQualityRenderTextureInsteadOfGroom: number;
+  GroomBindingPath: string;
+  GroomPath: string;
+  GroomSID: string;
+  MaterialInstanceParameters: GroomGeneratorPrototypeMaterialInstanceParameters;
+  MaterialPath: string;
+  Materials: GroomGeneratorPrototypeMaterials;
+  ParameterValue: number;
+  VariationIndex: number;
+  Weight: number;
+}>;
+
+export type HappyHoursPrototype = GetStructType<{
+  HappyHoursRanges: HappyHoursPrototypeHappyHoursRanges;
+  ID: number;
+  SID: string;
+}>;
+
+export type HappyHoursPrototypeHappyHoursRanges = GetStructType<
+  HappyHoursPrototypeHappyHoursRangesItem[]
+>;
+
+export type HappyHoursPrototypeHappyHoursRangesItem = GetStructType<{
+  HappyHoursCheckDeviation: number;
+  HappyHoursDeviation: number;
+  HappyHoursTime: number;
+}>;
+
+export type HearingSensorPrototype = GetStructType<{
+  HearingVolumeThreshold: string;
+  ID: number;
+  SID: string;
+  SoundEvents: HearingSensorPrototypeSoundEvents;
+}>;
+
+export type HearingSensorPrototypeSoundEvents = GetStructType<
+  HearingSensorPrototypeSoundEventsItem[]
+>;
+
+export type HearingSensorPrototypeSoundEventsItem = GetStructType<{
+  HearingDistance: number;
+  Type: ESoundEventType;
+}>;
+
+export type ImpactPhysicalMaterialPrototype = GetStructType<{
+  ImpactPhysicalMaterialsResources: ImpactPhysicalMaterialPrototypeImpactPhysicalMaterialsResources;
+  SID: string;
+}>;
+
+export type ImpactPhysicalMaterialPrototypeImpactPhysicalMaterialsResources =
+  GetStructType<
+    ImpactPhysicalMaterialPrototypeImpactPhysicalMaterialsResourcesItem[]
+  >;
+
+export type ImpactPhysicalMaterialPrototypeImpactPhysicalMaterialsResourcesItem =
+  GetStructType<{
+    AdditionalRoll: number;
+    bRandomizeRoll: boolean;
+    ImpactParticle: string;
+    ImpactParticleSize: number;
+    ImpactSurfaceDecals: SingletonConstantBandits;
+    ImpactSurfaceDecalSize: SpawnActorPrototypeVector;
+    MaterialCoefficient: number;
+    PhysicalMaterialType: EPhysicalMaterialType;
+  }>;
+
+export type InfotopicPrototype = GetStructType<{
+  BlockingFactions: InfotopicPrototypeBlockingFactions;
+  BlockingGlobalVariables: InfotopicPrototypeBlockingGlobalVariables;
+  BlockingNPCs: InfotopicPrototypeBlockingNPCs;
+  BlockingRegions: InfotopicPrototypeRequiredRegions;
+  BlockingReputations: InfotopicPrototypeBlockingReputations;
+  BlockingZoneSIDs: InfotopicPrototypeBlockingZoneSIDs;
+  ID: number;
+  InfotopicDialogs: InfotopicPrototypeInfotopicDialogs;
+  LairSearchRadius: number;
+  RandomWeight: number;
+  RequiredFactions: InfotopicPrototypeRequiredFactions;
+  RequiredGlobalVariables: InfotopicPrototypeRequiredGlobalVariables;
+  RequiredLairs: InfotopicPrototypeRequiredLairs;
+  RequiredNPCs: InfotopicPrototypeRequiredNPCs;
+  RequiredRegions: InfotopicPrototypeRequiredRegions;
+  RequiredReputations: InfotopicPrototypeRequiredReputations;
+  RequiredZoneSIDs: InfotopicPrototypeRequiredZoneSIDs;
+  SID: string;
+  ZoneSearchRadius: number;
+}>;
+
+export type InfotopicPrototypeBlockingFactions = GetStructType<string[]>;
+
+export type InfotopicPrototypeBlockingGlobalVariables = GetStructType<
+  FastTravelLocationPrototypeRequiredGlobalVariablesItem[]
+>;
+
+export type InfotopicPrototypeBlockingNPCs = GetStructType<{
+  BlockingNPCObjPrototypeSID: string;
+}>;
+
+export type InfotopicPrototypeBlockingReputations = GetStructType<
+  InfotopicPrototypeRequiredReputationsItem[]
+>;
+
+export type InfotopicPrototypeBlockingZoneSIDs = GetStructType<{
+  ZonePlaceholder: string;
+}>;
+
+export type InfotopicPrototypeInfotopicDialogs = GetStructType<string[]>;
+
+export type InfotopicPrototypeRequiredFactions = GetStructType<string[]>;
+
+export type InfotopicPrototypeRequiredGlobalVariables = GetStructType<
+  FastTravelLocationPrototypeRequiredGlobalVariablesItem[]
+>;
+
+export type InfotopicPrototypeRequiredLairs = GetStructType<{
+  Faction: string;
+}>;
+
+export type InfotopicPrototypeRequiredNPCs = GetStructType<string[]>;
+
+export type InfotopicPrototypeRequiredRegions = GetStructType<ERegion[]>;
+
+export type InfotopicPrototypeRequiredReputations = GetStructType<
+  InfotopicPrototypeRequiredReputationsItem[]
+>;
+
+export type InfotopicPrototypeRequiredReputationsItem = GetStructType<{
+  Faction: string;
+  Reputation: ERelationLevel;
+}>;
+
+export type InfotopicPrototypeRequiredZoneSIDs = GetStructType<string[]>;
+
 export type InputManagerConstant = GetStructType<{
-  Actions: {
-    ActionName: EInputKey;
-    TimeThresholdHold: number;
-  }[];
+  Actions: InputManagerConstantActions;
   ControllerType: EInputController;
 }>;
 
+export type InputManagerConstantActions = GetStructType<
+  SingletonConstantActionsItem[]
+>;
+
+export type InputMappingContextPrototype = GetStructType<{
+  AssetPath: string;
+  CleanupInputSystemOnRemove: boolean;
+  IgnorePreviousPressedKeysOnCapture: boolean;
+  IgnorePreviousPressedKeysOnRemove: boolean;
+  MappingId: EMappingContext;
+  Priority: EInputMappingContextPriority;
+  SID: string;
+}>;
+
+export type ItemContainerPrototype = GetStructType<{
+  Blueprint: string;
+  bOpeningInventory: boolean;
+  CachePrototypeID: string;
+  EmptyMeshPrototypeSID: string;
+  ForcePhysics: boolean;
+  ItemContainerType: EItemContainerType;
+  MeshPrototypeSID: string;
+  RespawnTimeSeconds: number;
+  SID: string;
+  StashCloseEvent: string;
+  StashOpenEvent: string;
+  StashTypeSoundSwitch: string;
+}>;
+
+export type ItemGeneratorPrototype = GetStructType<{
+  GeneratedItems: SpawnActorPrototypeIgnoreCollisionActors;
+  ID: number;
+  ItemGenerator: ItemGeneratorPrototypeItemGenerator;
+  MoneyGenerator: QuestRewardsPrototypeMoneyGenerator;
+  RefreshTime: string;
+  SID: string;
+  SpecificRewardSound: EUISound;
+}>;
+
+export type ItemGeneratorPrototypeHead = GetStructType<{
+  bAllowSameCategoryGeneration: boolean;
+  Category: EItemGenerationCategory;
+  PlayerRank: ERank;
+  PossibleItems: ItemGeneratorPrototypePossibleItems;
+}>;
+
+export type ItemGeneratorPrototypeItemGenerator = GetStructType<
+  (ItemGeneratorPrototypeHead | ItemGeneratorPrototypeItemGeneratorItem)[]
+>;
+
+export type ItemGeneratorPrototypeItemGeneratorItem = GetStructType<{
+  bAllowSameCategoryGeneration: boolean;
+  Category: EItemGenerationCategory;
+  Diff: EGameDifficulty;
+  PlayerRank: ERank;
+  PossibleItems: ItemGeneratorPrototypePossibleItems;
+  RefreshTime: string;
+  ReputationThreshold: number;
+}>;
+
+export type ItemGeneratorPrototypePossibleItems = GetStructType<
+  ItemGeneratorPrototypePossibleItemsItem[]
+>;
+
+export type ItemGeneratorPrototypePossibleItemsItem = GetStructType<{
+  AmmoMaxcount: number;
+  AmmoMaxCount: number;
+  AmmoMinCount: number;
+  Attaches: ItemGeneratorPrototypeUpgrades;
+  bRequireAmmo: boolean;
+  bRequireWeapon: boolean;
+  bUnloadedWeapon: boolean;
+  Chance: number;
+  ItemGeneratorPrototypeSID: string;
+  ItemPrototypeSID: string;
+  MaxCount: number;
+  MaxDurability: number;
+  MinCount: number;
+  MinDurability: number;
+  Upgrades: ItemGeneratorPrototypeUpgrades;
+  weight: number;
+  Weight: number;
+}>;
+
+export type ItemGeneratorPrototypeUpgrades = GetStructType<{
+  Chance: number;
+  MaxCount: number;
+  MinCount: number;
+  PossibleItems: string;
+}>;
+
+export type ItemPrototype = GetStructType<{
+  BaseDurability: number;
+  ConsumeOnUse: boolean;
+  Cost: number;
+  DestroyOnPickup: boolean;
+  EffectOnPickPrototypeSIDs: SpawnActorPrototypeIgnoreCollisionActors;
+  EffectPrototypeSIDs: SpawnActorPrototypeIgnoreCollisionActors;
+  EffectsDisplayTypes: AIGlobalSoundEventTypeSpreadSpeedList;
+  FittingWeaponsSIDs: AIGlobalSoundEventTypeSpreadSpeedList;
+  HasPhysics: boolean;
+  Hint: string;
+  Icon: string;
+  IconBig: string;
+  IgnoreEquippedWeight: boolean;
+  Invisible: boolean;
+  InvisibleInPlayerInventory: boolean;
+  ItemGridHeight: number;
+  ItemGridWidth: number;
+  ItemSlotType: EInventoryEquipmentSlot;
+  ItemTypeSwitchValue: string;
+  MaxStackCount: number;
+  MeshPrototypeSID: string;
+  PhysicsInteractionPrototypeSID: string;
+  SectionPositions: SpawnActorPrototypeIgnoreCollisionActors;
+  ShouldShowEffects: SpawnActorPrototypeIgnoreCollisionActors;
+  SID: string;
+  SortGroup: ESortGroup;
+  SortPriority: number;
+  Type: EItemType;
+  Usable: boolean;
+  Weight: number;
+}>;
+
+export type JournalQuestPrototype = GetStructType<{
+  Description: string;
+  Descriptions: SingletonConstantZombie;
+  Image: string;
+  ImagePath: string;
+  LocationSID: string;
+  MainQuest: boolean;
+  Name: string;
+  Region: ERegion;
+  RewardTypes: string;
+  SID: string;
+  Stages: string;
+}>;
+
+export type JournalQuestPrototypeStage = GetStructType<{
+  Description: string;
+  Optional: boolean;
+  SID: string;
+}>;
+
+export type JournalQuestPrototypeRewardTypes = GetStructType<
+  EQuestRewardType[]
+>;
+
+export type JournalQuestPrototypeStages = GetStructType<
+  Record<string, JournalQuestPrototypeStage>
+>;
+
 export type KeyboardLayoutPreset = GetStructType<{
-  Aiming: {
-    bIsPlayerMappable: boolean;
-    DefaultID: number;
-    InputActionSID: string;
-    Key: string;
-    OldKey: string;
-    PlayerMappableOption: string;
-    Triggers: EPlayerActionInputTrigger[];
-  }[];
+  Aiming: KeyboardLayoutPresetAiming;
   AttachSelector: string;
   Bolt: string;
   Codelock: string;
@@ -8531,40 +5614,14 @@ export type KeyboardLayoutPreset = GetStructType<{
   DialogueOnTheGo: string;
   EditSafeZone: string;
   EULA: string;
-  Exploration: {
-    DefaultID: number;
-    InputActionSID: string;
-    Key: string;
-    Modifiers: EPlayerActionInputModifier[];
-    OldKey: string;
-    PlayerMappableOption: string;
-    Triggers: EPlayerActionInputTrigger[];
-    bIsPlayerMappable: boolean;
-  }[];
+  Exploration: KeyboardLayoutPresetExploration;
   Grenade: string;
   Guitar: string;
   ImportantChoice: string;
-  InspectArtifact: {
-    bIsPlayerMappable: boolean;
-    DefaultID: number;
-    InputActionSID: string;
-    Key: string;
-    OldKey: string;
-    PlayerMappableOption: string;
-    Triggers: EPlayerActionInputTrigger[];
-  }[];
+  InspectArtifact: KeyboardLayoutPresetInspectArtifact;
   Interactivity: string;
   Inventory: string;
-  ItemSelector: {
-    DefaultID: number;
-    InputActionSID: string;
-    Key: string;
-    Modifiers: EPlayerActionInputModifier[];
-    OldKey: string;
-    PlayerMappableOption: string;
-    Triggers: EPlayerActionInputTrigger[];
-    bIsPlayerMappable: boolean;
-  }[];
+  ItemSelector: KeyboardLayoutPresetItemSelector;
   Journal: string;
   Knife: string;
   Ladder: string;
@@ -8597,202 +5654,3708 @@ export type KeyboardLayoutPreset = GetStructType<{
   UpgradesPopup: string;
 }>;
 
-export type NPCName = GetStructType<{
-  any_rank: {
-    FirstNames: string[];
-    LastNames: string[];
-  };
-  experienced: {
-    FirstNames: string[];
-    LastNames: string[];
-  };
-  master: {
-    FirstNames: string[];
-    LastNames: string[];
-  };
-  newbie: {
-    FirstNames: string[];
-    LastNames: string[];
-  };
-  veteran: {
-    FirstNames: string[];
-    LastNames: string[];
-  };
+export type KeyboardLayoutPresetAiming = GetStructType<
+  KeyboardLayoutPresetInventoryItem[]
+>;
+
+export type KeyboardLayoutPresetAttachSelector = GetStructType<
+  KeyboardLayoutPresetExplorationItem[]
+>;
+
+export type KeyboardLayoutPresetCodelock = GetStructType<
+  KeyboardLayoutPresetInventoryItem[]
+>;
+
+export type KeyboardLayoutPresetDialogue = GetStructType<
+  KeyboardLayoutPresetInventoryItem[]
+>;
+
+export type KeyboardLayoutPresetDialogueOnTheGo = GetStructType<
+  KeyboardLayoutPresetInventoryItem[]
+>;
+
+export type KeyboardLayoutPresetEditSafeZone = GetStructType<
+  KeyboardLayoutPresetInventoryItem[]
+>;
+
+export type KeyboardLayoutPresetEULA = GetStructType<
+  KeyboardLayoutPresetInventoryItem[]
+>;
+
+export type KeyboardLayoutPresetExploration = GetStructType<
+  KeyboardLayoutPresetExplorationItem[]
+>;
+
+export type KeyboardLayoutPresetExplorationItem = GetStructType<{
+  bIsPlayerMappable: boolean;
+  DefaultID: number;
+  InputActionSID: string;
+  Key: string;
+  Modifiers: KeyboardLayoutPresetModifiers;
+  OldKey: string;
+  PlayerMappableOption: string;
+  Triggers: KeyboardLayoutPresetTriggers;
 }>;
+
+export type KeyboardLayoutPresetGuitar = GetStructType<
+  KeyboardLayoutPresetExplorationItem[]
+>;
+
+export type KeyboardLayoutPresetImportantChoice = GetStructType<
+  KeyboardLayoutPresetInventoryItem[]
+>;
+
+export type KeyboardLayoutPresetInspectArtifact = GetStructType<
+  KeyboardLayoutPresetInventoryItem[]
+>;
+
+export type KeyboardLayoutPresetInventory = GetStructType<
+  KeyboardLayoutPresetInventoryItem[]
+>;
+
+export type KeyboardLayoutPresetInventoryItem = GetStructType<{
+  bIsPlayerMappable: boolean;
+  DefaultID: number;
+  InputActionSID: string;
+  Key: string;
+  OldKey: string;
+  PlayerMappableOption: string;
+  Triggers: KeyboardLayoutPresetTriggers;
+}>;
+
+export type KeyboardLayoutPresetItemSelector = GetStructType<
+  KeyboardLayoutPresetExplorationItem[]
+>;
+
+export type KeyboardLayoutPresetJournal = GetStructType<
+  KeyboardLayoutPresetInventoryItem[]
+>;
+
+export type KeyboardLayoutPresetLadder = GetStructType<
+  KeyboardLayoutPresetInventoryItem[]
+>;
+
+export type KeyboardLayoutPresetMap = GetStructType<
+  KeyboardLayoutPresetInventoryItem[]
+>;
+
+export type KeyboardLayoutPresetMenu = GetStructType<
+  KeyboardLayoutPresetInventoryItem[]
+>;
+
+export type KeyboardLayoutPresetMenuSettings = GetStructType<
+  KeyboardLayoutPresetExplorationItem[]
+>;
+
+export type KeyboardLayoutPresetModifiers = GetStructType<
+  EPlayerActionInputModifier[]
+>;
+
+export type KeyboardLayoutPresetNote = GetStructType<
+  KeyboardLayoutPresetInventoryItem[]
+>;
+
+export type KeyboardLayoutPresetPDATutorial = GetStructType<
+  KeyboardLayoutPresetInventoryItem[]
+>;
+
+export type KeyboardLayoutPresetPlayerContextualAction = GetStructType<
+  KeyboardLayoutPresetInventoryItem[]
+>;
+
+export type KeyboardLayoutPresetPopup = GetStructType<
+  KeyboardLayoutPresetInventoryItem[]
+>;
+
+export type KeyboardLayoutPresetStackSplitMenu = GetStructType<
+  KeyboardLayoutPresetInventoryItem[]
+>;
+
+export type KeyboardLayoutPresetTrade = GetStructType<
+  KeyboardLayoutPresetInventoryItem[]
+>;
+
+export type KeyboardLayoutPresetTriggers = GetStructType<
+  EPlayerActionInputTrigger[]
+>;
+
+export type KeyboardLayoutPresetUpgrades = GetStructType<
+  KeyboardLayoutPresetInventoryItem[]
+>;
+
+export type KeyboardLayoutPresetUpgradesPopup = GetStructType<
+  KeyboardLayoutPresetInventoryItem[]
+>;
+
+export type KeyItemPrototype = GetStructType<{
+  LocalizationSID: string;
+  PhysicsInteractionPrototypeSID: string;
+  SID: string;
+  Weight: number;
+}>;
+
+export type LairPrototype = GetStructType<{
+  ID: number;
+  Preset: LairPrototypePreset;
+  SID: string;
+}>;
+
+export type LairPrototypeNewbie = GetStructType<{
+  InitialSpawnQuantityPercent: number;
+  InitialSpawnQuantityRespawnTimeSeconds: number;
+  MaxSpawnQuantity: number;
+  MaxSpawnQuantityRespawnTimeSeconds: number;
+  SpawnSettingsPerArchetypes: LairPrototypeSpawnSettingsPerArchetypes;
+  WipeRespawnTimeoutSeconds: number;
+}>;
+
+export type LairPrototypePossibleInhabitantFactions = GetStructType<
+  LairPrototypePossibleInhabitantFactionsItem[]
+>;
+
+export type LairPrototypePossibleInhabitantFactionsItem = GetStructType<{
+  Faction: string;
+  SpawnSettingsPerPlayerRanks: LairPrototypeSpawnSettingsPerPlayerRanks;
+}>;
+
+export type LairPrototypePreset = GetStructType<{
+  InitialInhabitantFaction: string;
+  IsALifePoint: boolean;
+  PossibleInhabitantFactions: LairPrototypePossibleInhabitantFactions;
+}>;
+
+export type LairPrototypeSpawnSettingsPerArchetypes = GetStructType<{
+  GeneralNPC_Duty_CloseCombat: GenericLairPrototypeBlinddog;
+}>;
+
+export type LairPrototypeSpawnSettingsPerPlayerRanks = GetStructType<{
+  Experienced: LairPrototypeNewbie;
+  Master: LairPrototypeNewbie;
+  Newbie: LairPrototypeNewbie;
+  Veteran: LairPrototypeNewbie;
+}>;
+
+export type LevelStreamingPrototype = GetStructType<{
+  HiddenLevels: SpawnActorPrototypeSignals;
+  ID: number;
+  SID: string;
+}>;
+
+export type LR_MeshGeneratorPrototype = GetStructType<{
+  Attachments: LR_MeshGeneratorPrototypeAttachments;
+  CustomData: LR_MeshGeneratorPrototypeCustomData;
+  Groom: LR_MeshGeneratorPrototypeGroom;
+  Materials: LR_MeshGeneratorPrototypeMaterials;
+  ParentMeshGeneratorSID: string;
+  SID: string;
+}>;
+
+export type LR_MeshGeneratorPrototypeAttaches = GetStructType<
+  MeshGeneratorPrototypeAttachesItem[]
+>;
+
+export type MeshGeneratorPrototypeAttachesItem = GetStructType<{
+  BlockingBodyMeshes: QuestMeshGeneratorPrototypeBlockingBodyMeshes;
+  BlockingGroomSIDs: UpgradePrototypeEffectPrototypeSIDs;
+  BlockingSlots: SpawnActorPrototypeNavModifierVolumes;
+  BodyMeshSID: string;
+  Weight: number;
+}>;
+
+export type LR_MeshGeneratorPrototypeAttachments = GetStructType<
+  Record<MeshAttachment, LR_MeshGeneratorPrototypeAttachmentsItem>
+>;
+
+export type LR_MeshGeneratorPrototypeAttachmentsItem = GetStructType<{
+  Attaches: LR_MeshGeneratorPrototypeAttaches;
+  IsSkeletal: boolean;
+  Name: string;
+  OffsetX: number;
+  OffsetY: number;
+  OffsetZ: number;
+  RotationPitch: number;
+  RotationRoll: number;
+  RotationYaw: number;
+  ScaleX: number;
+  ScaleY: number;
+  ScaleZ: number;
+  SlotName: string;
+  SocketName: string;
+}>;
+
+export type LR_MeshGeneratorPrototypeBodyArmor = GetStructType<{
+  Attaches: LR_MeshGeneratorPrototypeAttaches;
+  SlotName: string;
+}>;
+
+export type LR_MeshGeneratorPrototypeCustomData = GetStructType<{
+  "0": LR_MeshGeneratorPrototypeCustomDataItem;
+  Chevron_index: LR_MeshGeneratorPrototypeCustomDataItem;
+  Damage: LR_MeshGeneratorPrototypeCustomDataItem;
+  DamageIndex_01: LR_MeshGeneratorPrototypeCustomDataItem;
+  DamageIndex_02: LR_MeshGeneratorPrototypeCustomDataItem;
+  DamagePoss_01: LR_MeshGeneratorPrototypeCustomDataItem;
+  DamagePoss_02: LR_MeshGeneratorPrototypeCustomDataItem;
+  DamageRotation_Index_01: LR_MeshGeneratorPrototypeCustomDataItem;
+  DamageRotation_Index_02: LR_MeshGeneratorPrototypeCustomDataItem;
+  DamageScale_Index_01: LR_MeshGeneratorPrototypeCustomDataItem;
+  DamageScale_Index_02: LR_MeshGeneratorPrototypeCustomDataItem;
+  DefectIntensity_Index: LR_MeshGeneratorPrototypeCustomDataItem;
+  Defects: LR_MeshGeneratorPrototypeCustomDataItem;
+  Dirt: LR_MeshGeneratorPrototypeCustomDataItem;
+  Dirt_Intensity: LR_MeshGeneratorPrototypeCustomDataItem;
+  Teeth: LR_MeshGeneratorPrototypeCustomDataItem;
+  TeethColor: LR_MeshGeneratorPrototypeCustomDataItem;
+}>;
+
+export type LR_MeshGeneratorPrototypeCustomDataItem = GetStructType<{
+  Distribution: ECustomDataDistribution;
+  MaterialGroup: string;
+  Variations: LR_MeshGeneratorPrototypeVariations;
+}>;
+
+export type LR_MeshGeneratorPrototypeGroom = GetStructType<
+  LR_MeshGeneratorPrototypeGroomItem[]
+>;
+
+export type LR_MeshGeneratorPrototypeGroomItem = GetStructType<{
+  CategoryName: string;
+  Variations: LR_MeshGeneratorPrototypeVariations;
+}>;
+
+export type LR_MeshGeneratorPrototypeMaterials = GetStructType<
+  LR_MeshGeneratorPrototypeMaterialsItem[]
+>;
+
+export type LR_MeshGeneratorPrototypeMaterialsItem = GetStructType<{
+  MaterialGroup: string;
+  Variations: LR_MeshGeneratorPrototypeVariations;
+}>;
+
+export type LR_MeshGeneratorPrototypeVariations = GetStructType<
+  (
+    | LR_MeshGeneratorPrototypeVariationsItem
+    | QuestMeshGeneratorPrototypeVariationsItem
+  )[]
+>;
+
+export type LR_MeshGeneratorPrototypeVariationsItem = GetStructType<{
+  bBlockedInVisualizer: boolean;
+  VariationIndex: number;
+  Weight: number;
+}>;
+
+export type MarkerPrototype = GetStructType<{
+  Description: string;
+  HubRadius: number;
+  InitDiscoverState: string;
+  MarkerExploreDistance: number;
+  MarkerRadius: number;
+  MarkerRevealDistance: number;
+  MarkType: EMarkerType;
+  RegionType: ERegion;
+  SID: string;
+  Title: string;
+  WorldPosition: SpawnActorPrototypeVector;
+}>;
+
+export type MeleeWeaponPrototype = GetStructType<{
+  ArmorDamage: number;
+  ArmorPiercing: number;
+  Bleeding: number;
+  BleedingChanceIncrement: number;
+  CrosshairType: ECrosshairType;
+  Damage: number;
+  DamageModifiers: MeleeWeaponPrototypeDamageModifiers;
+  HeavyAttackImpactSoundEvent: string;
+  HitDetectionAngle: number;
+  HitDetectionDistance: number;
+  HitDetectionRadius: number;
+  ImpactPhysicalMaterialPrototypeSID: string;
+  ImpulseModifiers: MeleeWeaponPrototypeDamageModifiers;
+  ImpulseStrength: number;
+  LightAttackImpactSoundEvent: string;
+  ShouldIgnoreArmor: boolean;
+  SID: string;
+  SourceEffects: MeleeWeaponPrototypeSourceEffects;
+  TargetEffects: MeleeWeaponPrototypeTargetEffects;
+}>;
+
+export type MeleeWeaponPrototypeDamageModifiers = GetStructType<{
+  HandOccupied: number;
+  StrongAttack: number;
+}>;
+
+export type MeleeWeaponPrototypeSourceEffects = GetStructType<
+  MeleeWeaponPrototypeTargetEffectsItem[]
+>;
+
+export type MeleeWeaponPrototypeTargetEffects = GetStructType<
+  MeleeWeaponPrototypeTargetEffectsItem[]
+>;
+
+export type MeleeWeaponPrototypeTargetEffectsItem = GetStructType<{
+  Chance: number;
+  EffectPrototypeSID: string;
+}>;
+
+export type MeshGeneratorPrototype = GetStructType<{
+  Attachments: MeshGeneratorPrototypeAttachments;
+  CustomData: MeshGeneratorPrototypeCustomData;
+  Groom: MeshGeneratorPrototypeGroom;
+  Materials: MeshGeneratorPrototypeMaterials;
+  ParentMeshGeneratorSID: string;
+  QualityPresetsMeshGenerators: MeshGeneratorPrototypeQualityPresetsMeshGenerators;
+  SID: string;
+}>;
+
+export type MeshGeneratorPrototypeAttaches = GetStructType<
+  MeshGeneratorPrototypeAttachesItem[]
+>;
+
+export type MeshGeneratorPrototypeAttachments = GetStructType<
+  Record<MeshAttachment, MeshGeneratorPrototypeAttachmentsItem>
+>;
+
+export type MeshGeneratorPrototypeAttachmentsItem = GetStructType<{
+  Attaches: MeshGeneratorPrototypeAttaches;
+  IsSkeletal: boolean;
+  Name: string;
+  OffsetX: number;
+  OffsetY: number;
+  OffsetZ: number;
+  RotationPitch: number;
+  RotationRoll: number;
+  RotationYaw: number;
+  ScaleX: number;
+  ScaleY: number;
+  ScaleZ: number;
+  SlotName: string;
+  SocketName: string;
+}>;
+
+export type MeshGeneratorPrototypeCustomData = GetStructType<{
+  "0": MeshGeneratorPrototypeCustomDataItem;
+  Chevron_index: MeshGeneratorPrototypeCustomDataItem;
+  Damage: MeshGeneratorPrototypeCustomDataItem;
+  DamageIndex_01: MeshGeneratorPrototypeCustomDataItem;
+  DamageIndex_02: MeshGeneratorPrototypeCustomDataItem;
+  DamagePoss_01: MeshGeneratorPrototypeCustomDataItem;
+  DamagePoss_02: MeshGeneratorPrototypeCustomDataItem;
+  DamageRotation_Index_01: MeshGeneratorPrototypeCustomDataItem;
+  DamageRotation_Index_02: MeshGeneratorPrototypeCustomDataItem;
+  DamageScale_Index_01: MeshGeneratorPrototypeCustomDataItem;
+  DamageScale_Index_02: MeshGeneratorPrototypeCustomDataItem;
+  DefectIntensity_Index: MeshGeneratorPrototypeCustomDataItem;
+  Defects: MeshGeneratorPrototypeCustomDataItem;
+  Dirt: MeshGeneratorPrototypeCustomDataItem;
+  Dirt_Intensity: MeshGeneratorPrototypeCustomDataItem;
+  Teeth: MeshGeneratorPrototypeCustomDataItem;
+  TeethColor: MeshGeneratorPrototypeCustomDataItem;
+}>;
+
+export type MeshGeneratorPrototypeCustomDataItem = GetStructType<{
+  Distribution: ECustomDataDistribution;
+  MaterialGroup: string;
+  Variations: MeshGeneratorPrototypeVariations;
+}>;
+
+export type MeshGeneratorPrototypeGroom = GetStructType<
+  MeshGeneratorPrototypeGroomItem[]
+>;
+
+export type MeshGeneratorPrototypeGroomItem = GetStructType<{
+  CategoryName: string;
+  Variations: MeshGeneratorPrototypeVariations;
+}>;
+
+export type MeshGeneratorPrototypeMaterials = GetStructType<
+  MeshGeneratorPrototypeMaterialsItem[]
+>;
+
+export type MeshGeneratorPrototypeMaterialsItem = GetStructType<{
+  MaterialGroup: string;
+  Variations: MeshGeneratorPrototypeVariations;
+}>;
+
+export type MeshGeneratorPrototypeQualityPresetsMeshGenerators = GetStructType<
+  MeshGeneratorPrototypeQualityPresetsMeshGeneratorsItem[]
+>;
+
+export type MeshGeneratorPrototypeQualityPresetsMeshGeneratorsItem =
+  GetStructType<{
+    MeshGeneratorSID: string;
+    QualityPresetIndex: number;
+  }>;
+
+export type MeshGeneratorPrototypeVariations = GetStructType<
+  (
+    | LR_MeshGeneratorPrototypeVariationsItem
+    | QuestMeshGeneratorPrototypeVariationsItem
+  )[]
+>;
+
+export type MeshPrototype = GetStructType<{
+  AdditionalMeshes: MeshPrototypeAdditionalMeshes;
+  ID: number;
+  MaterialPath: string;
+  Materials: MeshPrototypeMaterials;
+  MeshPath: string;
+  MeshType: EMeshSubType;
+  Pitch: number;
+  Roll: number;
+  ScaleX: number;
+  ScaleY: number;
+  ScaleZ: number;
+  SID: string;
+  SizeX: number;
+  SizeY: number;
+  SizeZ: number;
+  Yaw: number;
+}>;
+
+export type MeshPrototypeAdditionalMeshes = GetStructType<
+  MeshPrototypeAdditionalMeshesItem[]
+>;
+
+export type MeshPrototypeAdditionalMeshesItem = GetStructType<{
+  MeshPath: string;
+  MeshPrototypeSID: string;
+}>;
+
+export type MeshPrototypeMaterials = GetStructType<
+  WeaponGeneralSetupPrototypeMaterialsItem[]
+>;
+
+export type MisansceneNodePrototype = GetStructType<{
+  ActorID: number;
+  ActorSID: string;
+  ActorsSID: SpawnActorPrototypeIgnoreCollisionActors;
+  Chances: CoreVariableSignalStrength;
+  Connections: MisansceneNodePrototypeConnections;
+  MisansceneSID: string;
+  NodeType: EMisansceneNodeType;
+  Repetitions: number;
+  SID: string;
+  TargetGuid: string;
+}>;
+
+export type MisansceneNodePrototypeConnections = GetStructType<{
+  Input: QuestNodePrototypeTargetQuestGuids;
+  Output: SingletonConstantZombie;
+}>;
+
+export type MoneyPrototype = GetStructType<{
+  Cost: number;
+  DestroyOnPickup: boolean;
+  EffectOnPickPrototypeSIDs: SpawnActorPrototypeIgnoreCollisionActors;
+  EffectPrototypeSIDs: SpawnActorPrototypeIgnoreCollisionActors;
+  Icon: string;
+  InvisibleInPlayerInventory: boolean;
+  LocalizationSID: string;
+  MeshInWorldPrototypeSID: string;
+  MeshPrototypeSID: string;
+  PhysicsInteractionPrototypeSID: string;
+  SID: string;
+  Type: EItemType;
+  Weight: number;
+}>;
+
+export type MovementFXPrototype = GetStructType<{
+  BackFootSoundEvent: string;
+  DashVFXPath: string;
+  FootstepFX: MovementFXPrototypeFootstepFX;
+  FrontFootSoundEvent: string;
+  ID: number;
+  InteractLadderMetal: string;
+  InteractLadderWood: string;
+  InteractSoundEvent: MovementFXPrototypeInteractSoundEvent;
+  MovementTypeJogging: string;
+  MovementTypeRun: string;
+  MovementTypeSprint: string;
+  MovementTypeWalk: string;
+  PhysicsSoundSID: string;
+  PlayerCrouchEvent: string;
+  PlayerJumpEvent: string;
+  PlayerLandingEvent: string;
+  PlayerLowCrouchEvent: string;
+  PlayerStandEvent: string;
+  SID: string;
+  WaterMovement: MovementFXPrototypeWaterMovement;
+}>;
+
+export type MovementFXPrototypeFootstepFX = GetStructType<
+  MovementFXPrototypeFootstepFXItem[]
+>;
+
+export type MovementFXPrototypeFootstepFXItem = GetStructType<
+  MovementFXPrototypeFootstepFXItemItem[]
+>;
+
+export type MovementFXPrototypeFootstepFXItemItem = GetStructType<{
+  BackFootDecal: string;
+  FrontFootDecal: string;
+  ImpactParticle: string;
+  ImpactParticleRunSprint: string;
+  ImpactSurfaceDecalSize: SpawnActorPrototypeVector;
+  PhysicalMaterialType: EPhysicalMaterialType;
+}>;
+
+export type MovementFXPrototypeInteractSoundEvent = GetStructType<
+  MovementFXPrototypeInteractSoundEventItem[]
+>;
+
+export type MovementFXPrototypeInteractSoundEventItem = GetStructType<{
+  InteractionFX: EInteractFXType;
+  SoundEvent: string;
+}>;
+
+export type MovementFXPrototypeWaterMovement = GetStructType<{
+  ImpactSpawnIntervalSeconds: number;
+  JumpWaterImpact: string;
+  MovingThroughLowWaterImpactRunSprint: string;
+  MovingThroughLowWaterImpactWalk: string;
+  MovingThroughWaterImpact: string;
+}>;
+
+export type MovementSensorPrototype = GetStructType<{
+  DetectionRadius: number;
+  DetectionSpeed: number;
+  DistancePenaltyCurve: string;
+  Enabled: boolean;
+  IdentificationThreshold: number;
+  MinObjectSpeedRange: SpawnActorPrototypeFreeformTriggerVerticesItem;
+  SID: string;
+}>;
+
+export type MusicManagerPrototype = GetStructType<{
+  CombatTracks: MusicManagerPrototypeCombatTracks;
+  SID: string;
+}>;
+
+export type MusicManagerPrototypeCombatTracks = GetStructType<
+  MusicManagerPrototypeCombatTracksItem[]
+>;
+
+export type MusicManagerPrototypeCombatTracksItem = GetStructType<{
+  TrackSwitchValue: string;
+}>;
+
+export type MutantLootPrototype = GetStructType<{
+  Cost: number;
+  DestroyOnPickup: boolean;
+  Icon: string;
+  Invisible: boolean;
+  ItemGridHeight: number;
+  ItemGridWidth: number;
+  ItemTypeSwitchValue: string;
+  LocalizationSID: string;
+  MeshPrototypeSID: string;
+  PhysicsInteractionPrototypeSID: string;
+  SID: string;
+  Type: EItemType;
+  Weight: number;
+}>;
+
+export type NightVisionGogglesPrototype = GetStructType<{
+  ActiveEffectSIDs: NightVisionGogglesPrototypeActiveEffectSIDs;
+  Cost: number;
+  Icon: string;
+  Icon1x1: string;
+  Invisible: boolean;
+  ItemSlotType: EInventoryEquipmentSlot;
+  ItemTypeSwitchValue: string;
+  LocalizationSID: string;
+  MaxStackCount: number;
+  MeshPrototypeSID: string;
+  NPCGogglesPrototypeSID: string;
+  PhysicsInteractionPrototypeSID: string;
+  SID: string;
+  TurnOffAudioEvent: string;
+  TurnOnAudioEvent: string;
+  Type: EItemType;
+  Weight: number;
+}>;
+
+export type NightVisionGogglesPrototypeActiveEffectSIDs = GetStructType<
+  string[]
+>;
+
+export type NotePrototype = GetStructType<{
+  AudiologChainPrototypeSID: string;
+  CustomIconPath: string;
+  ID: number;
+  NoteType: ENoteType;
+  SID: string;
+  Text: string;
+  Title: string;
+}>;
+
+export type NotificationEventPrototype = GetStructType<{
+  FactionBasedSoundEventInformation: NotificationEventPrototypeFactionBasedSoundEventInformation;
+  ID: number;
+  MaxNotificationEventOccurencePerSecond: number;
+  MaxSoundSpreadingDistance: number;
+  SID: string;
+  Type: ENotificationEventType;
+}>;
+
+export type NotificationEventPrototypeFactionBasedSoundEventInformation =
+  GetStructType<
+    NotificationEventPrototypeFactionBasedSoundEventInformationItem[]
+  >;
+
+export type NotificationEventPrototypeFactionBasedSoundEventInformationItem =
+  GetStructType<{
+    Faction: string;
+    FactionDetectionRadius: number;
+  }>;
+
+export type NPCName = GetStructType<{
+  any_rank: NPCNamenewbie;
+  experienced: NPCNamenewbie;
+  master: NPCNamenewbie;
+  newbie: NPCNamenewbie;
+  veteran: NPCNamenewbie;
+}>;
+
+export type NPCNameFirstNames = GetStructType<string[]>;
+
+export type NPCNameLastNames = GetStructType<string[]>;
+
+export type NPCNamenewbie = GetStructType<{
+  FirstNames: NPCNameFirstNames;
+  LastNames: NPCNameLastNames;
+}>;
+
+export type NPCNeedsPresetPrototype = GetStructType<{
+  GoalNeeds: NPCNeedsPresetPrototypeGoalNeeds;
+  Needs: NPCNeedsPresetPrototypeNeeds;
+  NeedsResolvers: NPCNeedsPresetPrototypeNeedsResolvers;
+  SID: string;
+}>;
+
+export type NPCNeedsPresetPrototypeExpansionResolverFactory = GetStructType<{
+  MaxSquadSize: number;
+  MinSquadSize: number;
+}>;
+
+export type NPCNeedsPresetPrototypeGoalNeeds = GetStructType<
+  (NPCNeedsPresetPrototypeGoalNeedsItem | boolean)[]
+>;
+
+export type NPCNeedsPresetPrototypeGoalNeedsItem = GetStructType<{
+  InitialNeedValue: number;
+  MaxIncreasePerMinute: number;
+  MinIncreasePerMinute: number;
+  NeedSatisfactionThreshold: number;
+  NeedTag: string;
+}>;
+
+export type NPCNeedsPresetPrototypeNeeds = GetStructType<
+  NPCNeedsPresetPrototypeNeedsItem[]
+>;
+
+export type NPCNeedsPresetPrototypeNeedsItem = GetStructType<{
+  IncreaseRateMax: number;
+  IncreaseRateMin: number;
+  MaxCount: number;
+  NeedType: EContextualActionNeeds;
+  Radius: number;
+}>;
+
+export type NPCNeedsPresetPrototypeNeedsResolvers = GetStructType<
+  (NPCNeedsPresetPrototypeNeedsResolversItem | boolean)[]
+>;
+
+export type NPCNeedsPresetPrototypeNeedsResolversItem = GetStructType<{
+  ExpansionResolverFactory: NPCNeedsPresetPrototypeExpansionResolverFactory;
+  IdentificationTag: string;
+  OnCompleted: NPCNeedsPresetPrototypeOnCompleted;
+  ResolverFactory: string;
+  ReuniteWithLairResolverFactory: NPCNeedsPresetPrototypeExpansionResolverFactory;
+}>;
+
+export type NPCNeedsPresetPrototypeOnCompleted = GetStructType<
+  NPCNeedsPresetPrototypeOnCompletedItem[]
+>;
+
+export type NPCNeedsPresetPrototypeOnCompletedItem = GetStructType<{
+  NeedTag: string;
+  SatisfactionAmount: number;
+}>;
+
+export type NPCNightVisionSetupPrototype = GetStructType<{
+  AllowedAttachSuffixes: SpawnActorPrototypeIgnoreCollisionActors;
+  BlockAttachSuffixes: NPCNightVisionSetupPrototypeBlockAttachSuffixes;
+  ID: number;
+  IncompatibleSuffixes: QuestNodePrototypeDialogMembers;
+  MaterialEmissiveMultOverride: number;
+  PointLightOffsets: NPCNightVisionSetupPrototypePointLightOffsets;
+  SID: string;
+  SocketNamesMeshes: NPCNightVisionSetupPrototypeSocketNamesMeshes;
+  SpotlightBrightnessOverride: number;
+}>;
+
+export type NPCNightVisionSetupPrototypeBlockAttachSuffixes = GetStructType<
+  string[]
+>;
+
+export type NPCNightVisionSetupPrototypeMeshOffsetParams = GetStructType<
+  NPCNightVisionSetupPrototypeMeshOffsetParamsItem[]
+>;
+
+export type NPCNightVisionSetupPrototypeMeshOffsetParamsItem = GetStructType<{
+  MeshPath: string;
+  OffsetRotator: SpawnActorPrototypeRotation;
+  OffsetVector: SpawnActorPrototypeVector;
+}>;
+
+export type NPCNightVisionSetupPrototypePointLightOffsets = GetStructType<
+  NPCNightVisionSetupPrototypePointLightOffsetsItem[]
+>;
+
+export type NPCNightVisionSetupPrototypePointLightOffsetsItem = GetStructType<{
+  PointLightOffsetRotator: SpawnActorPrototypeRotation;
+  PointLightOffsetVector: SpawnActorPrototypeVector;
+}>;
+
+export type NPCNightVisionSetupPrototypeRelatedMeshes = GetStructType<{
+  "0": string;
+  "1": string;
+  "10": string;
+  "11": string;
+  "2": string;
+  "3": string;
+  "4": string;
+  "5": string;
+  "6": string;
+  "7": string;
+  "8": string;
+  "9": string;
+  RelatedMeshAsset: string;
+}>;
+
+export type NPCNightVisionSetupPrototypeSocketNamesMeshes = GetStructType<
+  NPCNightVisionSetupPrototypeSocketNamesMeshesItem[]
+>;
+
+export type NPCNightVisionSetupPrototypeSocketNamesMeshesItem = GetStructType<{
+  HelmetAttachmentMesh: string;
+  HelmetAttachmentOffsetRotator: SpawnActorPrototypeRotation;
+  HelmetAttachmentOffsetVector: SpawnActorPrototypeVector;
+  MeshOffsetParams: NPCNightVisionSetupPrototypeMeshOffsetParams;
+  RelatedMeshes: NPCNightVisionSetupPrototypeRelatedMeshes;
+  SocketName: string;
+}>;
+
+export type NPCPrototype = GetStructType<{
+  BusyCommentDialogChain: string;
+  BuyCoefficient: number;
+  ByeDialogChain: string;
+  CallPlayerCommentDialogChain: string;
+  DefeatCommentDialogChain: string;
+  DefeatTopicDialogChain: string;
+  FastTravelPrototypeSID: string;
+  HelloDialogChain: string;
+  Money: number;
+  NameTextKey: string;
+  NPCMarker: string;
+  NPCType: ENPCType;
+  QuestNPC: boolean;
+  ResumeCommentDialogChain: string;
+  SellCoefficient: number;
+  SID: string;
+  Skills: SpawnActorPrototypeIgnoreCollisionActors;
+  ThreshHoldItemCondition: number;
+  TradeTopicDialogChain: string;
+  TravelTopicDialogChain: string;
+  UpdateMarkerOnMap: boolean;
+  Upgrades: NPCPrototypeUpgrades;
+  UpgradeTopicDialogChain: string;
+  UseGeneratedName: boolean;
+  VoiceEN: string;
+  VoiceUA: string;
+}>;
+
+export type NPCPrototypeUpgrades = GetStructType<NPCPrototypeUpgradesItem[]>;
+
+export type NPCPrototypeUpgradesItem = GetStructType<{
+  Enabled: boolean;
+  UpgradePrototypeSID: string;
+}>;
+
+export type NPCSpawnerPrototype = GetStructType<{
+  Blueprint: string;
+  MinPopulationCountToRefresh: number;
+  ObjPrototypeSIDs: SingletonConstantBandits;
+  QuantityMaxInSquad: number;
+  QuantityMinInSquad: number;
+  SID: string;
+  SpawnRadius: number;
+}>;
+
+export type NPCWeaponAttributesPrototype = GetStructType<{
+  AIParameters: NPCWeaponAttributesPrototypeAIParameters;
+  AnimBlueprint: string;
+  MuzzleSocketName: string;
+  ParticlesBasedOnHeating: NPCWeaponAttributesPrototypeParticlesBasedOnHeating;
+  ShellShutterSocketName: string;
+  SID: string;
+}>;
+
+export type NPCWeaponAttributesPrototypeAIParameters = GetStructType<{
+  BehaviorTypes: NPCWeaponAttributesPrototypeBehaviorTypes;
+}>;
+
+export type NPCWeaponAttributesPrototypeBehaviorTypes = GetStructType<{
+  Experienced: NPCWeaponAttributesPrototypeExperienced;
+  Master: NPCWeaponAttributesPrototypeExperienced;
+  Newbie: NPCWeaponAttributesPrototypeNewbie;
+  Veteran: NPCWeaponAttributesPrototypeExperienced;
+  Zombie: NPCWeaponAttributesPrototypeExperienced;
+}>;
+
+export type NPCWeaponAttributesPrototypeExperienced = GetStructType<{
+  CharacterWeaponSettingsSID: string;
+  CombatEffectiveFireDistanceMax: number;
+  CombatEffectiveFireDistanceMin: number;
+  Long: NPCWeaponAttributesPrototypeLong;
+  Medium: NPCWeaponAttributesPrototypeLong;
+  NonAutomaticWeaponShotDelay: number;
+  Short: NPCWeaponAttributesPrototypeLong;
+}>;
+
+export type NPCWeaponAttributesPrototypeLong = GetStructType<{
+  IgnoreDispersionMaxShots: number;
+  IgnoreDispersionMinShots: number;
+  MaxSecondsDelay: number;
+  MaxShots: number;
+  MinSecondsDelay: number;
+  MinShots: number;
+}>;
+
+export type NPCWeaponAttributesPrototypeNewbie = GetStructType<{
+  CharacterWeaponSettingsSID: string;
+  CombatEffectiveFireDistanceMax: number;
+  CombatEffectiveFireDistanceMin: number;
+  Long: NPCWeaponAttributesPrototypeLong;
+  Medium: NPCWeaponAttributesPrototypeLong;
+  NonAutomaticWeaponShotDelay: number;
+  Short: NPCWeaponAttributesPrototypeLong;
+}>;
+
+export type NPCWeaponAttributesPrototypeParticlesBasedOnHeating = GetStructType<
+  NPCWeaponAttributesPrototypeParticlesBasedOnHeatingItem[]
+>;
+
+export type NPCWeaponAttributesPrototypeParticlesBasedOnHeatingItem =
+  GetStructType<{
+    PostShooting: NPCWeaponAttributesPrototypeShooting;
+    Shooting: NPCWeaponAttributesPrototypeShooting;
+    VFXGroupName: string;
+  }>;
+
+export type NPCWeaponAttributesPrototypeShooting = GetStructType<{
+  MinHeatingValueToAppear: number;
+  PFXPath: string;
+  SocketName: string;
+}>;
+
+export type NPCWeaponSettingsPrototype = GetStructType<{
+  ArmorDamage: number;
+  ArmorPiercing: number;
+  BaseBleeding: number;
+  BaseDamage: number;
+  BulletDropHeight: number;
+  ChanceBleedingPerShot: string;
+  CombatSynchronizationScore: NPCWeaponSettingsPrototypeCombatSynchronizationScore;
+  DispersionRadius: number;
+  DispersionRadiusMultiplierByDistanceCurve: string;
+  DispersionRadiusZombieAddend: number;
+  DistanceDropOffLength: number;
+  DurabilityDamagePerShot: number;
+  FireDistanceDropOff: number;
+  MinBulletDistanceDamageModifier: number;
+  SID: string;
+  StaggerEffectPrototypeSID: string;
+}>;
+
+export type NPCWeaponSettingsPrototypeCombatSynchronizationScore =
+  GetStructType<CombatSynchronizationPrototypeSynchronizationPrimitivesItem[]>;
+
+export type ObjAimAssistParamsPrototype = GetStructType<{
+  BoneClusters: ObjAimAssistParamsPrototypeBoneClusters;
+  SID: string;
+}>;
+
+export type ObjAimAssistParamsPrototypeBoneClusters = GetStructType<
+  ObjAimAssistParamsPrototypeBoneClustersItem[]
+>;
+
+export type ObjAimAssistParamsPrototypeBoneClustersItem = GetStructType<{
+  AdditionalBones: NightVisionGogglesPrototypeActiveEffectSIDs;
+  MainBone: string;
+  VisibilityBone: string;
+}>;
+
+export type ObjCrouchParamsPrototype = GetStructType<{
+  CrouchEffectSIDs: SpawnActorPrototypeIgnoreCollisionActors;
+  SID: string;
+}>;
+
+export type ObjCustomAbilityDialogPrototype = GetStructType<{
+  AbilityDialogues: ObjCustomAbilityDialogPrototypeAbilityDialogues;
+  SID: string;
+}>;
+
+export type ObjCustomAbilityDialogPrototypeAbilityDialogues = GetStructType<
+  ObjCustomAbilityDialogPrototypeAbilityDialoguesItem[]
+>;
+
+export type ObjCustomAbilityDialogPrototypeAbilityDialoguesItem =
+  GetStructType<{
+    AbilityTag: string;
+    DialogueSIDs: SpawnActorPrototypeIgnoreCollisionActors;
+  }>;
+
+export type ObjEffectMaxParamsPrototype = GetStructType<{
+  MaxEffectValues: ObjEffectMaxParamsPrototypeMaxEffectValues;
+  SID: string;
+}>;
+
+export type ObjEffectMaxParamsPrototypeMaxEffectValues = GetStructType<
+  ObjEffectMaxParamsPrototypeMaxEffectValuesItem[]
+>;
+
+export type ObjEffectMaxParamsPrototypeMaxEffectValuesItem = GetStructType<{
+  EffectSID: EEffectType;
+  MaxValue: number;
+}>;
+
+export type ObjHoldBreathParamsPrototype = GetStructType<{
+  HoldBreathCooldown: number;
+  HoldBreathDrainPerSecond: number;
+  HoldBreathMaxStamina: number;
+  HoldBreathRegenPerSecond: string;
+  HoldBreathStaminaThreshold: number;
+  PostHoldBreathParameters: ObjHoldBreathParamsPrototypePostHoldBreathParameters;
+  SID: string;
+}>;
+
+export type ObjHoldBreathParamsPrototypePostHoldBreathParameters =
+  GetStructType<ObjHoldBreathParamsPrototypePostHoldBreathParametersItem[]>;
+
+export type ObjHoldBreathParamsPrototypePostHoldBreathParametersItem =
+  GetStructType<{
+    EffectPrototypeSIDs: SpawnActorPrototypeLairCoreVolumes;
+    Threshold: number;
+  }>;
+
+export type ObjOnHitParamsPrototype = GetStructType<{
+  DamageTypeEffects: ObjOnHitParamsPrototypeDamageTypeEffects;
+  DirectionalDamageEffects: ObjOnHitParamsPrototypeDirectionalDamageEffects;
+  SID: string;
+}>;
+
+export type ObjOnHitParamsPrototypeDamageTypeEffects = GetStructType<
+  ObjOnHitParamsPrototypeDamageTypeEffectsItem[]
+>;
+
+export type ObjOnHitParamsPrototypeDamageTypeEffectsItem = GetStructType<{
+  DamageType: EDamageType;
+  Effects: ObjOnHitParamsPrototypeEffects;
+}>;
+
+export type ObjOnHitParamsPrototypeDirectionalDamageEffects = GetStructType<
+  ObjOnHitParamsPrototypeDirectionalDamageEffectsItem[]
+>;
+
+export type ObjOnHitParamsPrototypeDirectionalDamageEffectsItem = GetStructType<
+  ObjOnHitParamsPrototypeDirectionalDamageEffectsItemItem[]
+>;
+
+export type ObjOnHitParamsPrototypeDirectionalDamageEffectsItemItem =
+  GetStructType<{
+    EffectSID: string;
+    MaxDamage: number;
+    MaxEffectValueModifier: number;
+    MinDamage: number;
+    MinEffectValueModifier: number;
+  }>;
+
+export type ObjOnHitParamsPrototypeEffects = GetStructType<
+  ObjOnHitParamsPrototypeEffectsItem[]
+>;
+
+export type ObjOnHitParamsPrototypeEffectsItem = GetStructType<{
+  AccumulationTime: number;
+  EffectSID: string;
+  MaxDamage: number;
+  MaxEffectValueModifier: number;
+  MinDamage: number;
+  MinEffectValueModifier: number;
+}>;
+
+export type ObjPrototype = GetStructType<{
+  Abilities: ObjPrototypeAbilities;
+  AdvanceParameters: ObjPrototypeAdvanceParameters;
+  AgentBehaviourParameters: ObjPrototypeAgentBehaviourParameters;
+  AgentType: EAgentType;
+  AimAssistParamsSID: string;
+  AIVisionTargetParams: ObjPrototypeAIVisionTargetParams;
+  Anim: EObjAnim;
+  AnomalyDetectorPrototypeSID: string;
+  AnomalyRestrictionsIgnoreChance: number;
+  ApplicableMechanicsEffects: ObjPrototypeApplicableMechanicsEffects;
+  ArmorDifferenceCoefMeleeAttacks: number;
+  ArmorDifferenceCoefProjectiles: number;
+  AttackParams: ObjPrototypeAttackParams;
+  BlinkTeleportActionData: ObjPrototypeBlinkTeleportActionData;
+  Blueprint: string;
+  BoneBleedingCoefficients: ObjPrototypeBoneBleedingCoefficients;
+  BoneDamageCoefficients: ObjPrototypeBoneDamageCoefficients;
+  BoneDamageMap: ObjPrototypeBoneDamageMap;
+  CamperFeatureData: ObjPrototypeCamperFeatureData;
+  CanBeKnockedDown: boolean;
+  CanDailyScheduleBeOverride: boolean;
+  CanPeekOut: boolean;
+  CanProcessCorpses: boolean;
+  ChangeCombatLocationActionData: ObjPrototypeChangeCombatLocationActionData;
+  ChargeActionData: ObjPrototypeChargeActionData;
+  ChaserFeatureData: ObjPrototypeChaserFeatureData;
+  ClawAttackAnyAngleData: ObjPrototypeClawAttackAnyAngleData;
+  ClawAttackData: ObjPrototypeClawAttackData;
+  CombatParameters: ObjPrototypeCombatParameters;
+  CombatSummonFeatureData: ObjPrototypeCombatSummonFeatureData;
+  CriticalDamageAccumulationPeriod: number;
+  CriticalDamageCoefThreshold: number;
+  CriticalDamageCooldownMax: number;
+  CriticalDamageCooldownMin: number;
+  CriticalDamageThreshold: number;
+  CrouchParamsSID: string;
+  CustomAbilityDialogSID: string;
+  CustomMeshGeneratorPrototypeSID: string;
+  DailyScheduleSID: string;
+  DamageAccumulatedToRetreat: number;
+  DamageAccumulationDurationSeconds: number;
+  DashParameters: ObjPrototypeDashParameters;
+  DeathHandlerFeatureData: ObjPrototypeDeathHandlerFeatureData;
+  DeathHitImpulseMultiplier: number;
+  DeathVelocityImpulseMultiplier: number;
+  DisableMovementWeightThreshold: ObjPrototypeDisableMovementWeightThreshold;
+  DoorTransitionSettings: ObjPrototypeDoorTransitionSettings;
+  EffectMaxParamsSID: string;
+  EnemyValidationActionParams: ObjPrototypeEnemyValidationActionParams;
+  EscapeIsolatedNavmeshActionData: ObjPrototypeEscapeIsolatedNavmeshActionData;
+  EscapeParameters: GeneralNPCObjPrototypeEscapeParameters;
+  EvadeParameters: ObjPrototypeEvadeParameters;
+  Faction: string;
+  FactoryClassName: string;
+  FlairParams: ObjPrototypeFlairParams;
+  FlairSensorPrototypeSID: string;
+  FlankParameters: ObjPrototypeFlankParameters;
+  FlankThreatActionData: ObjPrototypeFlankThreatActionData;
+  FlashlightPrototypeSID: string;
+  FlyThroughData: ObjPrototypeFlyThroughData;
+  HearingSensorPrototypeSID: string;
+  HideWeaponWarning: ObjPrototypeHideWeaponWarning;
+  Hint: string;
+  HoldBreathParamsSID: string;
+  HumanAmbushParameters: ObjPrototypeHumanAmbushParameters;
+  HumanInteractionParameters: ObjPrototypeHumanInteractionParameters;
+  HumanLookAtParameters: ObjPrototypeHumanLookAtParameters;
+  Icon: string;
+  ID: number;
+  IgnoreDamageType: EIgnoreDamageType;
+  IgnoreEmission: boolean;
+  IgnoreWoundedRestriction: boolean;
+  ImpactVFXSize: number;
+  InstanceDamageData: ObjPrototypeInstanceDamageData;
+  InvisibilityFeatureData: ObjPrototypeInvisibilityFeatureData;
+  IsAffectingByMaxActorWithSimulation: boolean;
+  IsAffectingByMaxAttaches: boolean;
+  IsZombie: boolean;
+  ItemGeneratorPrototypeSID: string;
+  JumpActionData: ObjPrototypeJumpActionData;
+  JumpAttackData: ObjPrototypeJumpAttackData;
+  JumpToEnemyActionData: ObjPrototypeJumpToEnemyActionData;
+  KickAttackData: ObjPrototypeShockwaveAttackData;
+  LongJumpAttackData: ObjPrototypeLongJumpAttackData;
+  Mass: number;
+  MaxDialogInteractDistance: number;
+  MaxReactionTimeToExplosion: number;
+  MeleeAttackData: AbilityPrototypeAttackConditions;
+  Mesh: EObjMesh;
+  MeshGeneratorPrototypeSID: string;
+  MinDialogInteractDistance: number;
+  MinReactionTimeToExplosion: number;
+  MovementParams: ObjPrototypeMovementParams;
+  MovementSensorSID: string;
+  MovementVFXPrototypeSID: string;
+  MoveToEnemyActionData: ObjPrototypeMoveToEnemyActionData;
+  MusicManagerCombatScore: number;
+  MutantAmbushParameters: ObjPrototypeMutantAmbushParameters;
+  MutantCoverSelectorFeatureData: ObjPrototypeMutantCoverSelectorFeatureData;
+  MutantEscapeParameters: ObjPrototypeMutantEscapeParameters;
+  NeedsPresetSID: string;
+  npc_size: number;
+  NPCPrototypeSID: string;
+  NPCType: ENPCType;
+  OfflineCombatWeight: number;
+  OnHitParamsSID: string;
+  PathFailedContextualAction: string;
+  PeacefulChatterFeatureData: ObjPrototypePeacefulChatterFeatureData;
+  PostResurrectionEffects: SpawnActorPrototypeSignals;
+  PrepareForAttackActionData: ObjPrototypePrepareForAttackActionData;
+  PrepareForEmissionContextualAction: string;
+  ProcessCorpseObjectFeatureData: ObjPrototypeProcessCorpseObjectFeatureData;
+  ProcessCorpseSubjectFeatureData: ObjPrototypeProcessCorpseSubjectFeatureData;
+  Protection: ObjPrototypeProtection;
+  ReactOnApproachWithWeapon: boolean;
+  ReactOnNonEnemySounds: boolean;
+  RepairCostModifier: number;
+  RetreatActionData: ObjPrototypeRetreatActionData;
+  RetreatDuration: number;
+  RetreatRadius: number;
+  RoarActionData: ObjPrototypeRoarActionData;
+  RunAttackData: ObjPrototypeRunAttackData;
+  SearchpointDetectorPrototypeSID: string;
+  SequentialAbilities: SingletonConstantBandits;
+  SequentialAbilitiesActionData: ObjPrototypeSequentialAbilitiesActionData;
+  ShieldActionData: ObjPrototypeShieldActionData;
+  ShieldFeatureData: ObjPrototypeShieldFeatureData;
+  ShockwaveAttackData: ObjPrototypeShockwaveAttackData;
+  ShortJumpAttackData: ObjPrototypeJumpAttackData;
+  ShouldAvoidDangerPolygons: boolean;
+  ShouldGenerateStashClues: boolean;
+  ShouldHideUnequippedPrimaryWeapon: boolean;
+  ShouldRenderTextureInsteadOfGroom: boolean;
+  ShouldTriggerAnomalies: boolean;
+  SID: string;
+  SideJumpActionData: ObjPrototypeSideJumpActionData;
+  SimulateBattleParams: ObjPrototypeSimulateBattleParams;
+  SkeletalMeshTraceBoneMap: ObjPrototypeSkeletalMeshTraceBoneMap;
+  SleepinessActivationDistance: number;
+  SleepinessDeactivationDistance: number;
+  SleepParamsSID: string;
+  SpaceRestrictorTag: string;
+  SpawnPhantomParams: ObjPrototypeSpawnPhantomParams;
+  SpendStaminaInSafeZone: boolean;
+  StaminaPerAction: ObjPrototypeStaminaPerAction;
+  StaminaPerActionLightOverweight: ObjPrototypeStaminaPerActionLightOverweight;
+  StealthKillParams: ObjPrototypeStealthKillParams;
+  StealthKillUnavailable: boolean;
+  StealthParams: ObjPrototypeStealthParams;
+  SuppressiveFireParameters: ObjPrototypeSuppressiveFireParameters;
+  SyncParameters: ObjPrototypeSyncParameters;
+  Text: string;
+  ThreatPrototypeSID: string;
+  ThrowActionData: ObjPrototypeThrowActionData;
+  TradePrototypeSID: string;
+  TremblingWhileEmissionContextualAction: string;
+  Type: EObjType;
+  UnkillableByALife: boolean;
+  UseGroomReplacement: boolean;
+  VaultingParams: ObjPrototypeVaultingParams;
+  VFXSize: number;
+  VisionScannerPrototypeSID: string;
+  VitalParams: ObjPrototypeVitalParams;
+  WaterContactInfo: ObjPrototypeWaterContactInfo;
+  WeatherParamsSID: string;
+  WeightParamsSID: string;
+  ZombieBehaviourParameters: ObjPrototypeZombieBehaviourParameters;
+  ZombieHearingSensorPrototypeSID: string;
+  ZombieLayingIdleTime: number;
+  ZombieVisionScannerPrototypeSID: string;
+}>;
+
+export type ObjPrototypeAbilities = GetStructType<
+  Record<ObjectAbilityName, ObjPrototypeBlindDog_RunAttack_Left>
+>;
+
+export type ObjPrototypeAdvanceParameters = GetStructType<{
+  MaxAdvanceDurationSeconds: number;
+  MaxDistanceToEnemy: number;
+}>;
+
+export type ObjPrototypeAgentBehaviourParameters = GetStructType<{
+  WeaponHandling: ObjPrototypeWeaponHandling;
+}>;
+
+export type ObjPrototypeAIVisionTargetParams = GetStructType<{
+  FriendlyTracePoints: ObjPrototypeFriendlyTracePoints;
+  TracePoints: ObjPrototypeTracePoints;
+}>;
+
+export type ObjPrototypeAnimationData = GetStructType<
+  GeneralNPCObjPrototypeAnimationDataItem[]
+>;
+
+export type ObjPrototypeApplicableMechanicsEffects = GetStructType<string[]>;
+
+export type ObjPrototypeAttackParams = GetStructType<{
+  FireDispersionParams: ObjPrototypeFireDispersionParams;
+  ForceDistance: number;
+  MeleeAttackAcceptanceDistance: number;
+  MeleeAttackHeight: number;
+  MeleeAttackRadius: number;
+  MeleeDamage: number;
+  MutantAttackParams: ObjPrototypeMutantAttackParams;
+}>;
+
+export type ObjPrototypeAttacksConditions = GetStructType<
+  ObjPrototypeAttacksConditionsItem[]
+>;
+
+export type ObjPrototypeAttacksConditionsItem = GetStructType<{
+  AbilityTag: string;
+  StartAttackMaxAngle: number;
+  StartAttackMaxAngleToEnemyDirection: number;
+  StartAttackMinAngle: number;
+  StartAttackMinAngleToEnemyDirection: number;
+}>;
+
+export type ObjPrototypeBlindDog_RunAttack_Left = GetStructType<{
+  ActivationTag: string;
+  SID: string;
+}>;
+
+export type ObjPrototypeBlinkTeleportActionData = GetStructType<{
+  bStartAmbushOnBlink: boolean;
+  FinishAmbushTime: ObjPrototypeFinishAmbushTime;
+}>;
+
+export type ObjPrototypeBlockingMovement = GetStructType<EStateTag[]>;
+
+export type ObjPrototypeBoneBleedingCoefficients = GetStructType<
+  ObjPrototypeBoneDamageCoefficientsItem[]
+>;
+
+export type ObjPrototypeBoneDamageCoefficients = GetStructType<
+  ObjPrototypeBoneDamageCoefficientsItem[]
+>;
+
+export type ObjPrototypeBoneDamageCoefficientsItem = GetStructType<{
+  DamageBone: EDamageBone;
+  DamageCoef: number;
+}>;
+
+export type ObjPrototypeBoneDamageMap = GetStructType<{
+  "0": ObjPrototypeBoneDamageMapItem;
+  "1": ObjPrototypeBoneDamageMapItem;
+}>;
+
+export type ObjPrototypeBoneDamageMapItem = GetStructType<{
+  CapsuleNames: QuestNodePrototypeDialogMembers;
+  DamageBone: EDamageBone;
+}>;
+
+export type ObjPrototypeCamperFeatureData = GetStructType<{
+  CamperRadius: number;
+  SyncTokenTag: string;
+  TimeToAssumeAsCamper: number;
+}>;
+
+export type ObjPrototypeChangeCombatLocationActionData = GetStructType<{
+  MoveToLocationFinishedAcceptableDistance: number;
+  SearchSimpleLocationRadius: number;
+}>;
+
+export type ObjPrototypeChargeActionData = GetStructType<{
+  AcceptableRadiusToTheEnd: number;
+  DistToRunAfterTarget: number;
+  Enabled: boolean;
+  MaxDistToTarget: number;
+  MinDistToTarget: number;
+  SyncTag: string;
+}>;
+
+export type ObjPrototypeChaserFeatureData = GetStructType<{
+  ChaserRadius: number;
+  Enabled: boolean;
+  RemainingHPToAssumeAsChaser: number;
+  TimeToAssumeAsChaser: number;
+}>;
+
+export type ObjPrototypeClawAttackAnyAngleData = GetStructType<{
+  AttacksConditions: ObjPrototypeAttacksConditions;
+  AttackSyncTag: string;
+  Enabled: boolean;
+  HitOffset: number;
+  StartAttackMaxDistance: number;
+  StartAttackMinDistance: number;
+}>;
+
+export type ObjPrototypeClawAttackData = GetStructType<{
+  AbilityTag: string;
+  AttacksConditions: ObjPrototypeAttacksConditions;
+  AttackSyncTag: string;
+  Cooldown_Failed: number;
+  Cooldown_SeriesFailed: number;
+  Enabled: boolean;
+  HitOffset: number;
+  MaxZDiff: number;
+  OrderActionMaxAngle: number;
+  OrderActionMinAngle: number;
+  StartAttackMaxAngle: number;
+  StartAttackMaxAngleToEnemyDirection: number;
+  StartAttackMaxDistance: number;
+  StartAttackMaxDistanceTargetReachable: number;
+  StartAttackMinAngle: number;
+  StartAttackMinAngleToEnemyDirection: number;
+  StartAttackMinDistance: number;
+}>;
+
+export type ObjPrototypeCombatBehaviour = GetStructType<{
+  AddedShootingDistanceOnTheGo: number;
+  MaxShootingAngle: number;
+  MaxShootingStationaryDistance: number;
+  MinShootingStationaryDistance: number;
+}>;
+
+export type ObjPrototypeCombatParameters = GetStructType<{
+  CheckEnemyTime: number;
+  CoverEvaluatorSID: string;
+  DamageThresholdToChangeLocation: number;
+  EarlyExitReloadTime: number;
+  EnemyCouldBeVisibleMaxDistance: number;
+  LoseEnemyVisibilityTime: number;
+  MaxTimeInBadShootingPosition: number;
+  NearbyDistanceWeaponNotReady: number;
+  NearbyDistanceWeaponReady: number;
+  RetreatToCoverDistance: number;
+  UseFrontLineSearchPoint: boolean;
+}>;
+
+export type ObjPrototypeCombatSummonFeatureData = GetStructType<{
+  bCheckLocationsBeforeStart: boolean;
+  SummonAbilityTag: string;
+}>;
+
+export type ObjPrototypeDashParameters = GetStructType<{
+  CollisionPreset: string;
+  Montage: string;
+  MovementSound: string;
+  MovementVFX: string;
+}>;
+
+export type ObjPrototypeDeathHandlerFeatureData = GetStructType<{
+  EffectsOnPlayer: ObjPrototypeEffectsOnPlayer;
+}>;
+
+export type ObjPrototypeDisableMovementWeightThreshold = GetStructType<
+  ObjPrototypeDisableMovementWeightThresholdItem[]
+>;
+
+export type ObjPrototypeDisableMovementWeightThresholdItem = GetStructType<{
+  BlockingMovement: ObjPrototypeBlockingMovement;
+  WeightStatus: EWeightStatus;
+}>;
+
+export type ObjPrototypeDistanceConditions = GetStructType<{
+  StartAttackMaxDistance: number;
+  StartAttackMinDistance: number;
+}>;
+
+export type ObjPrototypeDoorTransitionSettings = GetStructType<{
+  Default: GeneralNPCObjPrototypeDefault;
+}>;
+
+export type ObjPrototypeDualCurveEffects = GetStructType<
+  ObjPrototypeDualCurveEffectsItem[]
+>;
+
+export type ObjPrototypeDualCurveEffectsItem = GetStructType<{
+  DepthCurveMovingDeeper: string;
+  DepthCurveMovingShallower: string;
+  EffectSID: string;
+}>;
+
+export type ObjPrototypeEffectsOnPlayer = GetStructType<
+  MeleeWeaponPrototypeTargetEffectsItem[]
+>;
+
+export type ObjPrototypeEnemyValidationActionParams = GetStructType<{
+  GenerateValidationLocations: boolean;
+  GroupSpreadingMinDistance: number;
+  MinAdditionalValidationPoints: number;
+  MinDistanceToValidationPoint: number;
+  MinValidationTimeAtLocation: number;
+  PointsSpreadDistance: number;
+  PossibleContextualActions: SpawnActorPrototypeIgnoreCollisionActors;
+  WaitForContextualAction: boolean;
+}>;
+
+export type ObjPrototypeEscapeIsolatedNavmeshActionData = GetStructType<{
+  AbilityActivationTag: string;
+  bEnabled: boolean;
+  JumpDistance: number;
+}>;
+
+export type ObjPrototypeEvadeParameters = GetStructType<{
+  AnimationData: ObjPrototypeAnimationData;
+  MovementVFX: string;
+}>;
+
+export type ObjPrototypeExampleAttack = GetStructType<{
+  ArmorPiercing: number;
+  AttackRootMotionTravelDistance: number;
+  Bleeding: number;
+  BleedingChanceIncrement: number;
+  Damage: number;
+  DamageSource: EDamageSource;
+  Effects: SpawnActorPrototypeSignals;
+  MaxAttackAngle: number;
+  MinAttackDistance: number;
+  MutantAttackType: EMutantAttackType;
+}>;
+
+export type ObjPrototypeFatiguePerAction = GetStructType<{
+  Climb: number;
+  Crouch: number;
+  Jump: number;
+  Run: number;
+  Sprint: number;
+  Walk: number;
+}>;
+
+export type ObjPrototypeFinishAmbushTime = GetStructType<{
+  MaxTime: number;
+  MinTime: number;
+}>;
+
+export type ObjPrototypeFireDispersionParams = GetStructType<{
+  CrouchMoveCoef: number;
+  Default: number;
+  DefaultAim: number;
+  Jump: number;
+  LowCrouchCoef: number;
+  VelocityFactor: number;
+}>;
+
+export type ObjPrototypeFlairParams = GetStructType<{
+  IsActive: boolean;
+  SensingRadius: number;
+}>;
+
+export type ObjPrototypeFlankParameters = GetStructType<{
+  ActivationDelaySeconds: number;
+  CostScale: number;
+  DamageDetectionSeconds: number;
+  ExtraSlotChance: string;
+  ExtraSlotTime: number;
+  FrontZone: ObjPrototypeFrontZone;
+  Height: number;
+  MaxAccumulatedDamage: number;
+  MaxPathLength: number;
+  MinPathLength: number;
+  ScaleFactor: number;
+  SprintDistance: number;
+  WalkDistance: number;
+}>;
+
+export type ObjPrototypeFlankThreatActionData = GetStructType<{
+  FlankMaxAngle: number;
+  FlankMaxRadius: number;
+  FlankMinAngle: number;
+  FlankMinRadius: number;
+}>;
+
+export type ObjPrototypeFlyThroughData = GetStructType<{
+  AbilityTag: string;
+  AttackSyncTag: string;
+  Enabled: boolean;
+  JumpMoveMontage: string;
+  MaxJumpHeight: number;
+  MinJumpHeight: number;
+  StartAttackMaxAngle: number;
+  StartAttackMaxAngleToEnemyDirection: number;
+  StartAttackMaxDistance: number;
+  StartAttackMinAngle: number;
+  StartAttackMinAngleToEnemyDirection: number;
+  StartAttackMinDistance: number;
+}>;
+
+export type ObjPrototypeFriendlyTracePoints = GetStructType<
+  ObjPrototypeFriendlyTracePointsItem[]
+>;
+
+export type ObjPrototypeFriendlyTracePointsItem = GetStructType<{
+  BaseScorePerSecond: number;
+  BoneName: string;
+  Label: string;
+}>;
+
+export type ObjPrototypeFrontZone = GetStructType<
+  SpawnActorPrototypeFreeformTriggerVerticesItem[]
+>;
+
+export type ObjPrototypeHideWeaponWarning = GetStructType<{
+  BarkDelay: number;
+  CalmDownTime: number;
+  DetectionDistance: number;
+  FollowDistance: number;
+  IgnoreAfterCombatTime: number;
+  RequiredCombatAction: EThreatActionType;
+  RequiredThreatAction: EThreatActionType;
+  WarningAttemptsBeforeAlert: number;
+}>;
+
+export type ObjPrototypeHumanAmbushParameters = GetStructType<{
+  EntryDelay: string;
+}>;
+
+export type ObjPrototypeHumanInteractionParameters = GetStructType<{
+  HealingWoundedDistance: number;
+}>;
+
+export type ObjPrototypeHumanLookAtParameters = GetStructType<{
+  LookAtCooldown: number;
+  LookAtDistance: number;
+  MaxlookAtTime: number;
+  MinlookAtTime: number;
+  PerformGreetingBark: boolean;
+}>;
+
+export type ObjPrototypeInstanceDamageData = GetStructType<{
+  ArmorDamage: number;
+  ArmorPiercing: number;
+  AttackEffects: AIGlobalSoundEventTypeSpreadSpeedList;
+  Bleeding: number;
+  BleedingChanceIncrement: number;
+  bShouldIgnoreArmor: boolean;
+  Damage: number;
+  DamageSource: EDamageSource;
+  DamageType: EDamageType;
+  NPCDamageMultiplier: number;
+}>;
+
+export type ObjPrototypeInteractionData = GetStructType<
+  ObjPrototypeInteractionDataItem[]
+>;
+
+export type ObjPrototypeInteractionDataItem = GetStructType<{
+  AllowedCorpses: QuestNodePrototypeDialogMembers;
+  ApproachLocationOffset: number;
+  ContextualAction: string;
+}>;
+
+export type ObjPrototypeInvisibilityEffects = GetStructType<
+  MeleeWeaponPrototypeTargetEffectsItem[]
+>;
+
+export type ObjPrototypeInvisibilityFeatureData = GetStructType<{
+  EnterInvisibilityAbility: string;
+  InvisibilityDeadChangeDurationSeconds: number;
+  InvisibilityEffects: ObjPrototypeInvisibilityEffects;
+  InvisibilityEffectsThreshold: number;
+  InvisibilityLossFromDamage: number;
+  ToInvisibleSeconds: number;
+  ToVisibleSeconds: number;
+}>;
+
+export type ObjPrototypeJumpActionData = GetStructType<{
+  JumpDistance: number;
+  MinDistanceToTarget: number;
+  MinJumpDistance: number;
+  ReducedPathCoefToJump: number;
+}>;
+
+export type ObjPrototypeJumpAttack = GetStructType<{
+  ArmorPiercing: number;
+  AttackRootMotionTravelDistance: number;
+  Bleeding: number;
+  BleedingChanceIncrement: number;
+  Cooldown: number;
+  Damage: number;
+  DamageSource: EDamageSource;
+  Effects: SpawnActorPrototypeSignals;
+  MaxAttackAngle: number;
+  MinAttackDistance: number;
+  MutantAttackType: EMutantAttackType;
+}>;
+
+export type ObjPrototypeJumpAttackData = GetStructType<{
+  AbilityTag: string;
+  AttackSyncTag: string;
+  Enabled: boolean;
+  JumpOffset: number;
+  StartAttackMaxAngle: number;
+  StartAttackMaxAngleToEnemyDirection: number;
+  StartAttackMaxDistance: number;
+  StartAttackMinAngle: number;
+  StartAttackMinAngleToEnemyDirection: number;
+  StartAttackMinDistance: number;
+}>;
+
+export type ObjPrototypeJumpToEnemyActionData = GetStructType<{
+  AbilityActivationTag: string;
+  AngleRandomization: number;
+  bEnabled: boolean;
+  bInRadiusOnly: boolean;
+  JumpDistance: number;
+  MinDist: number;
+  PredictionTime: number;
+  RandomRadius: number;
+  ReducedPathCoefToJump: number;
+}>;
+
+export type ObjPrototypeLongJumpAttackData = GetStructType<{
+  AbilityTag: string;
+  AttackSyncTag: string;
+  Enabled: boolean;
+  JumpOffset: number;
+  JumpPredictionSeconds: number;
+  MaxWarpingAngle: number;
+  StartAttackMaxAngle: number;
+  StartAttackMaxAngleToEnemyDirection: number;
+  StartAttackMaxDistance: number;
+  StartAttackMinAngle: number;
+  StartAttackMinAngleToEnemyDirection: number;
+  StartAttackMinDistance: number;
+}>;
+
+export type ObjPrototypeMovementParams = GetStructType<{
+  AimLookUpCoef: number;
+  AimSpeedCoef: number;
+  AimTurnCoef: number;
+  AirControlCoef: number;
+  BaseLookUpRate: number;
+  BaseTurnRate: number;
+  CanDash: boolean;
+  ClimbSpeedCoef: number;
+  CrouchSpeed: number;
+  FatiguePerAction: ObjPrototypeFatiguePerAction;
+  JoggingSpeed: number;
+  JumpSpeedCoef: number;
+  LimpSpeedCoef: number;
+  LowCrouchSpeed: number;
+  MaxSlowdownValue: number;
+  MoveBackCrouchCoef: number;
+  MoveBackLowCrouchCoef: number;
+  MovementSpeedCoef: number;
+  RunBackCoef: number;
+  RunDiagonalBackCoef: number;
+  RunSpeed: number;
+  SprintSpeed: number;
+  StaggerAngle: number;
+  WalkBackCoef: number;
+  WalkDiagonalBackCoef: number;
+  WalkSpeed: number;
+  WalkTransitionCoef: number;
+}>;
+
+export type ObjPrototypeMoveToEnemyActionData = GetStructType<{
+  BackStabSyncTag: string;
+  BecomeVisibleDistance: number;
+  Cooldown_MaxAttacksFinished: number;
+  Cooldown_MaxDuration: number;
+  Cooldown_TargetReached: number;
+  EndPathAcceprableDistance: number;
+  EndPathAcceptableDistance: number;
+  MaxActionDuration: number;
+  MaxAttacksFinished: number;
+  MaxOutOfNavmeshDistance: number;
+  MaxPotentialJumpHeight: number;
+  MovementType: EMovementBehaviour;
+  MoveToEnemySyncTag: string;
+  PathBuilderVelocities: ObjPrototypePathBuilderVelocities;
+  PotentialHitPointMaxHeightDiff: number;
+}>;
+
+export type ObjPrototypeMutantAmbushParameters = GetStructType<{
+  AdditionalVisibilityTraceBones: SpawnActorPrototypeSignals;
+  AttackAttemptsBeforeAmbush: number;
+  bCheckTraceForFinishAction: boolean;
+  bEnabled: boolean;
+  bSpawnLockOnInitialize: boolean;
+  DangerAreaLifetime: number;
+  DangerAreaRadius: number;
+  FinishRadius: number;
+  LockLocationDefaultRadius: number;
+  RemoveLockDistance: number;
+}>;
+
+export type ObjPrototypeMutantAttackParams = GetStructType<{
+  ExampleAttack: ObjPrototypeExampleAttack;
+  JumpAttack: ObjPrototypeJumpAttack;
+}>;
+
+export type ObjPrototypeMutantCoverSelectorFeatureData = GetStructType<{
+  bReturnAnyCoverIfNoValidFound: boolean;
+  CosThresholdForCovers: number;
+  EffectiveDistanceToEnemy: number;
+  ExplorationRadius: SpawnActorPrototypeMaxSpawnQuantity;
+  IgnoreCoversNearLastCoverDist: number;
+  MinDistanceToEnemy: number;
+  MinimalCoverSize: number;
+  MinResampleDelay: number;
+  ReceivedDamageToResample: number;
+  ReceivedDamageToResampleTime: number;
+  ResampleCooldown: number;
+  SafeDistanceToEnemy: number;
+  SafeDistanceToExplosives: number;
+}>;
+
+export type ObjPrototypeMutantEscapeParameters = GetStructType<{
+  AttackEscapeDelay: number;
+  AttackRadius: number;
+  EscapeRadius: number;
+  FailureChance: string;
+  InterruptEscapeAfterEnemyLostDelay: number;
+  InterruptEscapeDelay: number;
+  SquadLostFractionToEscape: string;
+}>;
+
+export type ObjPrototypePathBuilderVelocities = GetStructType<
+  ObjPrototypePathBuilderVelocitiesItem[]
+>;
+
+export type ObjPrototypePathBuilderVelocitiesItem = GetStructType<{
+  AngularVelocity: number;
+  LinearVelocity: number;
+}>;
+
+export type ObjPrototypePeacefulChatterFeatureData = GetStructType<{
+  EndChatterRadius: number;
+  StartChatterRadius: number;
+}>;
+
+export type ObjPrototypePerBoneIgnoreDispersionModifiers = GetStructType<
+  ObjPrototypePerBoneIgnoreDispersionModifiersItem[]
+>;
+
+export type ObjPrototypePerBoneIgnoreDispersionModifiersItem = GetStructType<{
+  BoneLabel: string;
+  Max: number;
+  Min: number;
+}>;
+
+export type ObjPrototypePrepareForAttackActionData = GetStructType<{
+  AngleShiftOnRebuild: number;
+  CircularPathFinishedAcceptableDistance: number;
+  DistanceDifferenceToRebuild: number;
+  ExpensiveCircleRadiusCoef: number;
+  MaxCircleRadius: number;
+  MaxCircleRadiusChangeTime: number;
+  MaxDistanceToLocationAfterCircular: number;
+  MinCircleRadius: number;
+  MinCircleRadiusChangeTime: number;
+  MinDistanceToLocationAfterCircular: number;
+  MovementType: EMovementBehaviour;
+  MoveToLocationFinishedAcceptableDistance: number;
+  OwnerRotationCoef: number;
+  RadiusRandomizationStep: number;
+  TargetBackCoef: number;
+}>;
+
+export type ObjPrototypeProcessCorpseObjectFeatureData = GetStructType<{
+  CorpseInteractionBoneName: string;
+  CorpseInteractionDistance: number;
+}>;
+
+export type ObjPrototypeProcessCorpseSubjectFeatureData = GetStructType<{
+  CorpseInteractionApproachMaxPathLength: number;
+  CorpseInteractionTimeout: number;
+  InteractionData: ObjPrototypeInteractionData;
+}>;
+
+export type ObjPrototypeProtection = GetStructType<{
+  Burn: number;
+  ChemicalBurn: number;
+  Explosion: number;
+  Fall: number;
+  None: number;
+  PSY: number;
+  Radiation: number;
+  Shock: number;
+  Shot: number;
+  Strike: number;
+}>;
+
+export type ObjPrototypeRetreatActionData = GetStructType<{
+  AbilityTagToTrigger: string;
+  DamageAccumulatedToRetreat: number;
+  DamageAccumulationDurationSeconds: number;
+  EndPathAcceptableDistance: number;
+  HealthPercentToRetreat: number;
+  MinRetreatActivationRadius: number;
+  MovementType: EMovementBehaviour;
+  OwnerSummoned_KillOnRetreatEnd: boolean;
+  RetreatCooldown: number;
+  RetreatRadius: number;
+}>;
+
+export type ObjPrototypeRoarActionData = GetStructType<{
+  AbilityActionTag: string;
+  bEnaable: boolean;
+  Enabled: boolean;
+  HPTriggerThreshold: number;
+  StartAttackMaxAngle: number;
+  StartAttackMaxAngleToEnemyDirection: number;
+  StartAttackMaxDistance: number;
+  StartAttackMinAngle: number;
+  StartAttackMinAngleToEnemyDirection: number;
+  StartAttackMinDistance: number;
+  SyncTag: string;
+}>;
+
+export type ObjPrototypeRunAttackData = GetStructType<{
+  AttackSyncTag: string;
+  HitOffset: number;
+  LeftAttackAbiltiyTag: string;
+  MaxWarpingAngle: number;
+  OrderActionMaxAngle: number;
+  OrderActionMinAngle: number;
+  RightAttackAbiltiyTag: string;
+  RunAttackDistance: number;
+  StartAttackMaxAngle: number;
+  StartAttackMaxAngleToEnemyDirection: number;
+  StartAttackMaxDistance: number;
+  StartAttackMinAngle: number;
+  StartAttackMinAngleToEnemyDirection: number;
+  StartAttackMinDistance: number;
+}>;
+
+export type ObjPrototypeSequentialAbilitiesActionData = GetStructType<{
+  bOrientsToTarget: boolean;
+}>;
+
+export type ObjPrototypeShieldActionData = GetStructType<{
+  AbilityTag: string;
+  Enabled: boolean;
+  MaxAngleToEnemy: number;
+  MaxDistance: number;
+  MinDistance: number;
+  SyncTag: string;
+}>;
+
+export type ObjPrototypeShieldFeatureData = GetStructType<{
+  AbilityActivationTag: string;
+  DamageAccumulationThreshold: number;
+  DamageAccumulationTime: number;
+}>;
+
+export type ObjPrototypeShockwaveAttackData = GetStructType<{
+  AbilityTag: string;
+  AttackSyncTag: string;
+  StartAttackMaxAngle: number;
+  StartAttackMaxAngleToEnemyDirection: number;
+  StartAttackMaxDistance: number;
+  StartAttackMinAngle: number;
+  StartAttackMinAngleToEnemyDirection: number;
+  StartAttackMinDistance: number;
+}>;
+
+export type ObjPrototypeSideJumpActionData = GetStructType<{
+  Cooldown: number;
+  DamageAccumulatedToActivate: number;
+  JumpMoveMontages: SpawnActorPrototypeSignals;
+  StartAttackMaxAngle: number;
+  StartAttackMaxAngleToEnemyDirection: number;
+  StartAttackMaxDistance: number;
+  StartAttackMinAngle: number;
+  StartAttackMinAngleToEnemyDirection: number;
+  StartAttackMinDistance: number;
+  TimeSinceLastAbilityEndedTimestampToActivateCooldown: number;
+}>;
+
+export type ObjPrototypeSimulateBattleParams = GetStructType<{
+  SimulateCombatDamageModifier: number;
+  SimulateCombatSpreadModifier: number;
+}>;
+
+export type ObjPrototypeSingleCurveEffects = GetStructType<
+  ObjPrototypeSingleCurveEffectsItem[]
+>;
+
+export type ObjPrototypeSingleCurveEffectsItem = GetStructType<{
+  DepthCurve: string;
+  EffectSID: string;
+}>;
+
+export type ObjPrototypeSkeletalMeshTraceBoneMap = GetStructType<
+  ObjPrototypeSkeletalMeshTraceBoneMapItem[]
+>;
+
+export type ObjPrototypeSkeletalMeshTraceBoneMapItem = GetStructType<{
+  Bone: EObjSkeletalMeshTraceBone;
+  BoneName: string;
+}>;
+
+export type ObjPrototypeSpawnPhantomParams = GetStructType<{
+  DelayBeforeMovement: number;
+  DistanceConditions: ObjPrototypeDistanceConditions;
+  EffectsOnOverlap: SpawnActorPrototypeSignals;
+  PermanentEffects: SingletonConstantZombie;
+  PhantomAttackAbilityTag: string;
+  PhantomBlueprint: string;
+}>;
+
+export type ObjPrototypeStaminaDisableThresholds = GetStructType<
+  ObjPrototypeStaminaDisableThresholdsItem[]
+>;
+
+export type ObjPrototypeStaminaDisableThresholdsItem = GetStructType<{
+  RegenerationDelay: number;
+  StateTags: QuestObjPrototypeStateTags;
+  Threshold: number;
+}>;
+
+export type ObjPrototypeStaminaPerAction = GetStructType<{
+  Climb: number;
+  Crouch: number;
+  Jogging: number;
+  Jump: number;
+  LowCrouch: number;
+  MeleeButstock: number;
+  MeleeNormal: number;
+  MeleeStrong: number;
+  Run: number;
+  Sprint: number;
+  Vault: number;
+  Walk: number;
+}>;
+
+export type ObjPrototypeStaminaPerActionLightOverweight = GetStructType<{
+  Climb: number;
+  Crouch: number;
+  Jump: number;
+  LowCrouch: number;
+  MeleeButstock: number;
+  MeleeNormal: number;
+  MeleeStrong: number;
+  Run: number;
+  Sprint: number;
+  Vault: number;
+  Walk: number;
+}>;
+
+export type ObjPrototypeStealthKillParams = GetStructType<{
+  AvailabilityDelayTimeSeconds: string;
+  BodyTraceOffset: number;
+  BodyTraceRadius: number;
+  HeadTraceRadius: number;
+  MaxAngleFromBack: number;
+  ShouldHaveEnoughSpace: boolean;
+  SnapBackOffsetSitting: number;
+  SnapBackOffsetSittingOnGround: number;
+  SnapBackOffsetStanding: number;
+  SnapDownOffsetSitting: number;
+  SnapDownOffsetSittingOnGround: number;
+  SnapDownOffsetStanding: number;
+  SpaceTraceHeightModifier: number;
+  SpaceTraceOffsetModifier: number;
+  SpaceTraceRadiusModifier: number;
+  StealthKillDistance: number;
+  TargetPositionMaxOffsetAbove: number;
+  TargetPositionMaxOffsetBelow: number;
+}>;
+
+export type ObjPrototypeStealthParams = GetStructType<{
+  FlashLightCoef: number;
+  NoiseCrouchCoef: number;
+  NoiseJumpCoef: number;
+  NoiseObstacleCoef: number;
+  VisibilityCrouchCoef: number;
+  VisibilityJumpCoef: number;
+  VisibilityObstacleBodyCoef: number;
+  VisibilityObstacleHeadCoef: number;
+  VisibilitySizeFactor: number;
+}>;
+
+export type ObjPrototypeSuppressiveFireParameters = GetStructType<{
+  LookAtBoneName: string;
+  MaxAccumulatedDamage: number;
+  MaxTimeToLoseTarget: number;
+  NeedVisualConfirmation: boolean;
+  TraceDistance: number;
+}>;
+
+export type ObjPrototypeSyncParameters = GetStructType<{
+  AdvanceSyncTag: string;
+  AttackSyncTag: string;
+  EvadeSyncTag: string;
+  FlankSyncTag: string;
+  MovementSyncTag: string;
+  SuppressiveFireSyncTag: string;
+}>;
+
+export type ObjPrototypeThrowActionData = GetStructType<{
+  AbilityTag: string;
+  Enabled: boolean;
+  MaxAngleToEnemy: number;
+  MaxDistance: number;
+  MinDistance: number;
+}>;
+
+export type ObjPrototypeTracePoints = GetStructType<
+  ObjPrototypeTracePointsItem[]
+>;
+
+export type ObjPrototypeTracePointsItem = GetStructType<{
+  BaseScorePerSecond: number;
+  BoneName: string;
+  Label: string;
+  RelativeLocation: SpawnActorPrototypeVector;
+}>;
+
+export type ObjPrototypeVaultingParams = GetStructType<{
+  AboveObstaclesCheckHeight: number;
+  DepthTraceRadiusModifier: number;
+  FrontSearchRadiusModifier: number;
+  HeightBetweenObjects: number;
+  IsAllowed: boolean;
+  LandingCorrectionAdditionalSize: number;
+  LandingMaxSlope: number;
+  LandingMinHeight: number;
+  MaxAngle: number;
+  MaxLandingDetectionIterations: number;
+  MaxLandingOffset: number;
+  MaxObstacleHeight: number;
+  MaxTestDistance: number;
+  MaxWindowDetectionIterations: number;
+  MinForwardAxisInputValue: number;
+  MinObstacleHeight: number;
+  StartDistance: number;
+  StartWithSprintPressed: boolean;
+  VaultOverCrouchingHeight: number;
+  VaultOverLandOffset: number;
+  VaultOverMaxDepth: number;
+  VaultOverStandingHeight: number;
+  WidthBetweenObjects: number;
+  WindowBackTraceHeightModifier: number;
+  WindowBackTraceRadiusModifier: number;
+}>;
+
+export type ObjPrototypeVitalParams = GetStructType<{
+  DegenBleeding: number;
+  DegenDrunknessPoints: number;
+  DegenPsyPoints: number;
+  DegenRadiation: number;
+  DegenSuppressionDelayTimeSeconds: number;
+  DegenSuppressionPoints: number;
+  MaxBleeding: number;
+  MaxConcussionPoints: number;
+  MaxDrunknessPoints: number;
+  MaxFP: number;
+  MaxHP: number;
+  MaxHungerPoints: number;
+  MaxOverDrunknessPoints: number;
+  MaxRadiation: number;
+  MaxSleepinessPoints: number;
+  MaxSP: number;
+  MaxSuppressionPoints: number;
+  MaxThirstPoints: number;
+  RegenFP: number;
+  RegenHealthModifier: number;
+  RegenHP: number;
+  RegenHPDelayTimeSeconds: number;
+  RegenHungerPoints: number;
+  RegenPoppyFieldSleepiness: number;
+  RegenSleepinessPoints: string;
+  RegenSP: number;
+  RegenThirstPoints: number;
+  StaminaDisableThresholds: ObjPrototypeStaminaDisableThresholds;
+}>;
+
+export type ObjPrototypeWaterContactInfo = GetStructType<{
+  DualCurveEffects: ObjPrototypeDualCurveEffects;
+  ShallowSoundSwitch: string;
+  SingleCurveEffects: ObjPrototypeSingleCurveEffects;
+  StepVFXMaxBodyWaterImmersionDepth: number;
+  WaterDepthRTPC: string;
+  WaterImmersionLevels: ObjPrototypeWaterImmersionLevels;
+}>;
+
+export type ObjPrototypeWaterImmersionLevels = GetStructType<
+  ObjPrototypeWaterImmersionLevelsItem[]
+>;
+
+export type ObjPrototypeWaterImmersionLevelsItem = GetStructType<{
+  Effects: SpawnActorPrototypeSignals;
+  LevelSoundSwitch: string;
+  MinDepthThreshold: number;
+  WaterLevel: EWaterImmersionLevel;
+}>;
+
+export type ObjPrototypeWeaponHandling = GetStructType<{
+  FarFireQueueDelaySeconds: number;
+  FireQueueDelayRandomizationFactor: number;
+  MaxFireCountQueueScaler: number;
+  MinFireCountQueueScaler: number;
+  NearFireQueueDelaySeconds: number;
+  PerBoneIgnoreDispersionModifiers: ObjPrototypePerBoneIgnoreDispersionModifiers;
+  SwitchWeaponIfNoAmmo: boolean;
+}>;
+
+export type ObjPrototypeWeaponHandlingOverride = GetStructType<{
+  FarFireQueueDelaySeconds: number;
+  MaxFireCountQueueScaler: number;
+  MinFireCountQueueScaler: number;
+  NearFireQueueDelaySeconds: number;
+  SwitchWeaponIfNoAmmo: boolean;
+}>;
+
+export type ObjPrototypeZombieAllowedEquipItems = GetStructType<{
+  GunAK74_ST: ERank;
+  GunAKU_PP: ERank;
+  GunBucket_PP: ERank;
+  GunD12_SG: ERank;
+  GunDnipro_ST: ERank;
+  GunFora_ST: ERank;
+  GunG37_ST: ERank;
+  GunGrim_ST: ERank;
+  GunGvintar_ST: ERank;
+  GunIntegral_PP: ERank;
+  GunKharod_ST: ERank;
+  GunKora_HG: ERank;
+  GunLavina_ST: ERank;
+  GunM16_ST: ERank;
+  GunObrez_SG: ERank;
+  GunRam2_SG: ERank;
+  GunSPSA_SG: ERank;
+  GunThreeLine_SP: ERank;
+  GunTOZ_SG: ERank;
+  GunViper_PP: ERank;
+  GunZubr_PP: ERank;
+}>;
+
+export type ObjPrototypeZombieBehaviourParameters = GetStructType<{
+  CombatBehaviour: ObjPrototypeCombatBehaviour;
+  WeaponHandlingOverride: ObjPrototypeWeaponHandlingOverride;
+  ZombieAllowedEquipItems: ObjPrototypeZombieAllowedEquipItems;
+}>;
+
+export type ObjSleepParamsPrototype = GetStructType<{
+  AllowSleepThreshold: number;
+  bAllowEmissionSleep: boolean;
+  CantSleepEffectSIDs: QuestNodePrototypeTargetQuestGuids;
+  MinSleepHours: number;
+  PostSleepEffectSIDs: SingletonConstantZombie;
+  PostSleepMultiplierEffectSIDs: SpawnActorPrototypeIgnoreCollisionActors;
+  SID: string;
+  SleepEffectSIDs: SingletonConstantBandits;
+  SleepHoursMultiplier: number;
+}>;
+
+export type ObjWeatherParamsPrototype = GetStructType<{
+  SID: string;
+  WeatherAppliedEffectSIDs: ObjWeatherParamsPrototypeWeatherAppliedEffectSIDs;
+}>;
+
+export type ObjWeatherParamsPrototypeWeatherAppliedEffectSIDs = GetStructType<{
+  LightRainy: SpawnActorPrototypeIgnoreCollisionActors;
+  Rainy: SpawnActorPrototypeIgnoreCollisionActors;
+  Thundery: SpawnActorPrototypeIgnoreCollisionActors;
+}>;
+
+export type ObjWeightParamsPrototype = GetStructType<{
+  InventoryPenaltyLessWeight: number;
+  MaxInventoryMass: number;
+  SID: string;
+  WeightEffectParams: ObjWeightParamsPrototypeWeightEffectParams;
+}>;
+
+export type ObjWeightParamsPrototypeWeightEffectParams = GetStructType<
+  ObjWeightParamsPrototypeWeightEffectParamsItem[]
+>;
+
+export type ObjWeightParamsPrototypeWeightEffectParamsItem = GetStructType<{
+  EffectPrototypeSIDs: SingletonConstantZombie;
+  Threshold: number;
+}>;
+
+export type OffsetAimingBoolProviderPrototype = GetStructType<{
+  ProviderSID: string;
+  ProviderSIDs: SpawnActorPrototypeSignals;
+  SID: string;
+  Type: EBoolProviderType;
+}>;
+
+export type PackOfItemsGroupPrototype = GetStructType<{
+  ID: number;
+  PackOfItemsSettings: PackOfItemsGroupPrototypePackOfItemsSettings;
+  SID: string;
+}>;
+
+export type PackOfItemsGroupPrototypeItems = GetStructType<
+  PackOfItemsGroupPrototypeItemsItem[]
+>;
+
+export type PackOfItemsGroupPrototypeItemsItem = GetStructType<{
+  ItemPrototypeSID: string;
+  MinDurability: number;
+  Weight: number;
+}>;
+
+export type PackOfItemsGroupPrototypePackOfItemsSettings = GetStructType<
+  PackOfItemsGroupPrototypePackOfItemsSettingsItem[]
+>;
+
+export type PackOfItemsGroupPrototypePackOfItemsSettingsItem = GetStructType<{
+  Items: PackOfItemsGroupPrototypeItems;
+  MaxDurability: number;
+  MinDurability: number;
+  PlayerRank: ERank;
+}>;
+
+export type PassiveDetectorPrototype = GetStructType<{
+  DangerLevelSoundParameter: string;
+  DetectorRadius: string;
+  DetectorWorkCurve: string;
+  DetectorWorkSFX: string;
+  ExclusionAnomalyList: SpawnActorPrototypeNavModifierVolumes;
+  ID: number;
+  SID: string;
+  SignalCurve: string;
+  Type: EPassiveDetectorType;
+}>;
+
+export type PDATutorialPrototype = GetStructType<{
+  ExclusiveGamepadType: string;
+  Id: number;
+  Images: GroomBlockingMappingPrototypeBlockingGroomSIDs;
+  InputMappings: PDATutorialPrototypeInputMappings;
+  ItemSIDs: SingletonConstantBandits;
+  MasterDifficultyEquivalentSid: string;
+  RelevantPDANoteTutorial: string;
+  SID: string;
+  TextSid: string;
+  TutorialCategory: EPDATutorialCategory;
+  TutorialDetailsSID: string;
+  TutorialNameSID: string;
+  VisibleDifficulties: PDATutorialPrototypeVisibleDifficulties;
+}>;
+
+export type PDATutorialPrototypeInputMappings = GetStructType<
+  PDATutorialPrototypeInputMappingsItem[]
+>;
+
+export type PDATutorialPrototypeInputMappingsItem = GetStructType<{
+  GamepadInputAction: string;
+  InputAction: string;
+  InputMappingContext: EMappingContext;
+  PCInputMappingNames: QuestNodePrototypeTargetQuestGuids;
+  ShouldAnimate: boolean;
+}>;
+
+export type PDATutorialPrototypeVisibleDifficulties = GetStructType<
+  EGameDifficulty[]
+>;
+
+export type PhysicsInteractionPrototype = GetStructType<{
+  ApplyImpulseToHitLocationFromPlayer: boolean;
+  DamageToVelocityMultiplier: number;
+  DraggingParameterSwitch: string;
+  HitDamageThreshold: number;
+  HitParameterSwitch: string;
+  HitVelocityThreshold: number;
+  MaxDraggingRollingVelocityThreshold: number;
+  MaxDraggingVelocityVolume: number;
+  MaxHitVelocityVolume: number;
+  MaxRollingVelocityVolume: number;
+  MaxSoundDistance: number;
+  MaxTimeout: number;
+  MinDraggingRollingVelocityThreshold: number;
+  MinDraggingVelocityVolume: number;
+  MinHitVelocityVolume: number;
+  MinRollingVelocityVolume: number;
+  MinTimeout: number;
+  PhysicalObjectAudioEventPlay: string;
+  PhysicalObjectAudioEventStop: string;
+  PhysicalObjectContinuousSpeedRTPC: string;
+  PhysicalObjectInstantSpeedRTPC: string;
+  PlayerPushImpulse: number;
+  RollingParameterSwitch: string;
+  SID: string;
+  WaterAngularDampingModifier: number;
+  WaterContactAudioEvent: string;
+  WaterContactNiagaraSystemVFX: string;
+  WaterDepthRTPC: string;
+  WaterImpulseReduction: number;
+  WaterLinearDampingModifier: number;
+  WaterParticleSpeedThreshold: number;
+}>;
+
+export type PlayerMeshGeneratorPrototype = GetStructType<{
+  Attachments: PlayerMeshGeneratorPrototypeAttachments;
+  SID: string;
+}>;
+
+export type PlayerMeshGeneratorPrototypeAttaches = GetStructType<
+  MeshGeneratorPrototypeAttachesItem[]
+>;
+
+export type PlayerMeshGeneratorPrototypeAttachments = GetStructType<{
+  BodyArmor: PlayerMeshGeneratorPrototypeBodyArmor;
+}>;
+
+export type PlayerMeshGeneratorPrototypeBodyArmor = GetStructType<{
+  Attaches: PlayerMeshGeneratorPrototypeAttaches;
+  SlotName: string;
+}>;
+
+export type PlayerWeaponAttributesPrototype = GetStructType<{
+  AnimBlueprint: string;
+  DefaultWeaponSettingsSID: string;
+  DisplayBP: string;
+  ParticlesBasedOnHeating: PlayerWeaponAttributesPrototypeParticlesBasedOnHeating;
+  ShellShutterSocketName: string;
+  SID: string;
+}>;
+
+export type PlayerWeaponAttributesPrototypeParticlesBasedOnHeating =
+  GetStructType<PlayerWeaponAttributesPrototypeParticlesBasedOnHeatingItem[]>;
+
+export type PlayerWeaponAttributesPrototypeParticlesBasedOnHeatingItem =
+  GetStructType<{
+    PostShooting: NPCWeaponAttributesPrototypeShooting;
+    Shooting: NPCWeaponAttributesPrototypeShooting;
+    VFXGroupName: string;
+  }>;
+
+export type PlayerWeaponSettingsPrototype = GetStructType<{
+  Accuracy: number;
+  AccuracyUI: number;
+  ArmorDamage: number;
+  ArmorPiercing: number;
+  BaseBleeding: number;
+  BaseComfort: number;
+  BaseDamage: number;
+  BulletDropHeight: number;
+  BulletDropLength: number;
+  ChanceBleedingPerShot: string;
+  CoverPiercing: number;
+  DamageUI: number;
+  DispersionRadius: number;
+  DistanceDropOffLength: number;
+  DurabilityDamagePerShot: number;
+  EffectiveFireDistanceMax: number;
+  EffectiveFireDistanceMin: number;
+  FireDistanceDropOff: number;
+  FireLoudness: number;
+  HandlingUI: number;
+  MinBulletDistanceArmorPiercingModifier: number;
+  MinBulletDistanceDamageModifier: number;
+  RangeUI: number;
+  RateOfFireUI: number;
+  SID: string;
+}>;
+
+export type PostEffectFloatProviderPrototype = GetStructType<{
+  PostProcessParamSID: string;
+  SID: string;
+  Type: EFloatProviderType;
+}>;
+
+export type PostEffectProcessorPrototype = GetStructType<{
+  bAddIntensity: boolean;
+  bInverted: boolean;
+  DuplicateResolveType: EDuplicateResolveType;
+  Intensity: number;
+  IntensityProviderSID: string;
+  LerpInDuration: number;
+  LerpOutDuration: number;
+  NegativeInterpSpeed: number;
+  ParamSID: string;
+  PeakDuration: number;
+  PositiveInterpSpeed: number;
+  ProviderSIDs: SpawnActorPrototypeSignals;
+  SID: string;
+  SpeedProviderSID: string;
+  Type: EPostEffectProcessorType;
+}>;
+
+export type PostProcessMaterialPrototype = GetStructType<{
+  HDRMaterialPath: string;
+  MaterialPath: string;
+  Priority: number;
+  SID: string;
+}>;
+
+export type PostProcessParamPrototype = GetStructType<{
+  MaterialSID: string;
+  ParameterName: string;
+  SID: string;
+}>;
+
+export type ProjectilePrototype = GetStructType<{
+  BlueprintFP: string;
+  BlueprintTP: string;
+  bUseImpactReflectionMethod: boolean;
+  EffectPrototypeSIDs: SpawnActorPrototypeIgnoreCollisionActors;
+  FlybyDotProductThreshold: number;
+  FlybySound: string;
+  ImpactBloodDecalMinSize: number;
+  ImpactBloodDecals: SingletonConstantZombie;
+  ImpactBloodDecalSize: SpawnActorPrototypeVector;
+  ImpactEffectsMinDistance: number;
+  ImpactPhysicalMaterialPrototypeSID: string;
+  ImpactSound: string;
+  MaxFlybyDistance: number;
+  MaxFlyDistance: number;
+  MaxSuppressionDistance: number;
+  MinExplodeDistance: number;
+  PenetrationSpawnChance: number;
+  PenetrationTraceLenght: number;
+  SID: string;
+  Speed: number;
+  SuppressionCenterBone: string;
+  SuppressionEffectSIDs: SpawnActorPrototypeIgnoreCollisionActors;
+  SuppressionMinSpeed: number;
+  TimeOfVisibilityEnabling: number;
+}>;
+
+export type PsyMeshGeneratorPrototype = GetStructType<{
+  Attachments: PsyMeshGeneratorPrototypeAttachments;
+  SID: string;
+}>;
+
+export type PsyMeshGeneratorPrototypeAttaches = GetStructType<
+  PsyMeshGeneratorPrototypeAttachesItem[]
+>;
+
+export type PsyMeshGeneratorPrototypeAttachesItem = GetStructType<{
+  BlockingSlots: SingletonConstantZombie;
+  BodyMeshSID: string;
+  Weight: number;
+}>;
+
+export type PsyMeshGeneratorPrototypeAttachments = GetStructType<{
+  "0": PsyMeshGeneratorPrototypeBodyArmor;
+  "1": PsyMeshGeneratorPrototypeBodyArmor;
+  "2": PsyMeshGeneratorPrototypeBodyArmor;
+  "3": PsyMeshGeneratorPrototypeBodyArmor;
+  "4": PsyMeshGeneratorPrototypeBodyArmor;
+  BodyArmor: PsyMeshGeneratorPrototypeBodyArmor;
+  Cap: PsyMeshGeneratorPrototypeBodyArmor;
+  Face: PsyMeshGeneratorPrototypeBodyArmor;
+  Faust_Body: PsyMeshGeneratorPrototypeBodyArmor;
+  Faust_Clo: PsyMeshGeneratorPrototypeBodyArmor;
+  Faust_Face: PsyMeshGeneratorPrototypeBodyArmor;
+  Faust_Fbe: PsyMeshGeneratorPrototypeBodyArmor;
+  Faust_Lhi: PsyMeshGeneratorPrototypeBodyArmor;
+  Fbe: PsyMeshGeneratorPrototypeBodyArmor;
+  Fbe_a: PsyMeshGeneratorPrototypeBodyArmor;
+  Fbe_a_b: PsyMeshGeneratorPrototypeBodyArmor;
+  Fbe_b: PsyMeshGeneratorPrototypeBodyArmor;
+  Fbe_c: PsyMeshGeneratorPrototypeBodyArmor;
+  Fbe_c_d_e: PsyMeshGeneratorPrototypeBodyArmor;
+  Fbe_g_h: PsyMeshGeneratorPrototypeBodyArmor;
+  Han: PsyMeshGeneratorPrototypeBodyArmor;
+  Hands: PsyMeshGeneratorPrototypeBodyArmor;
+  Hea: PsyMeshGeneratorPrototypeBodyArmor;
+  Lhi: PsyMeshGeneratorPrototypeBodyArmor;
+  Rhi: PsyMeshGeneratorPrototypeBodyArmor;
+  Tor: PsyMeshGeneratorPrototypeBodyArmor;
+}>;
+
+export type PsyMeshGeneratorPrototypeBodyArmor = GetStructType<{
+  Attaches: PsyMeshGeneratorPrototypeAttaches;
+  SlotName: string;
+}>;
+
+export type QuestAnomalyPrototype = GetStructType<{
+  AngularDamping: number;
+  AnomalyElementType: EAnomalyElementType;
+  CollisionHeight: number;
+  DefaultHeightOffset: number;
+  ExplosionActiveTime: number;
+  ID: number;
+  LiftForce: number;
+  LinearDamping: number;
+  ObjectMaxSize: number;
+  PushForce: number;
+  Radius: number;
+  SID: string;
+  Type: EAnomalyType;
+  VelocityThreshold: number;
+}>;
+
+export type QuestArtifactPrototype = GetStructType<
+  (
+    | EAnomalyElementType
+    | EArtifactRarity
+    | EArtifactType
+    | SpawnActorPrototypeIgnoreCollisionActors
+    | boolean
+    | number
+    | string
+  )[]
+>;
+
+export type QuestArtifactSpawnerPrototype = GetStructType<{
+  Experienced: QuestArtifactSpawnerPrototypeNewbie;
+  ID: number;
+  ListOfArtifacts: SpawnActorPrototypeIgnoreCollisionActors;
+  Master: QuestArtifactSpawnerPrototypeNewbie;
+  Newbie: QuestArtifactSpawnerPrototypeNewbie;
+  SID: string;
+  UseListOfArtifacts: boolean;
+  Veteran: QuestArtifactSpawnerPrototypeNewbie;
+}>;
+
+export type QuestArtifactSpawnerPrototypeNewbie = GetStructType<{
+  Count: number;
+  MaxCooldown: number;
+  MinCooldown: number;
+  Radius: number;
+  RarityChance: QuestArtifactSpawnerPrototypeRarityChance;
+  SpawnChanceBase: number;
+  SpawnChanceBonus: number;
+}>;
+
+export type QuestArtifactSpawnerPrototypeRarityChance = GetStructType<{
+  Common: number;
+  Epic: number;
+  Rare: number;
+  Uncommon: number;
+}>;
+
+export type QuestItemGeneratorPrototype = GetStructType<{
+  ID: number;
+  ItemGenerator: QuestItemGeneratorPrototypeItemGenerator;
+  RefreshTime: string;
+  SID: string;
+}>;
+
+export type QuestItemGeneratorPrototypeItemGenerator = GetStructType<{
+  "0": QuestItemGeneratorPrototypeItemGeneratorItem;
+  "1": QuestItemGeneratorPrototypeItemGeneratorItem;
+  "2": QuestItemGeneratorPrototypeItemGeneratorItem;
+  "3": QuestItemGeneratorPrototypeItemGeneratorItem;
+  "4": QuestItemGeneratorPrototypeItemGeneratorItem;
+  "5": QuestItemGeneratorPrototypeItemGeneratorItem;
+  "6": QuestItemGeneratorPrototypeItemGeneratorItem;
+  "7": QuestItemGeneratorPrototypeItemGeneratorItem;
+  BodyArmor: QuestItemGeneratorPrototypeItemGeneratorItem;
+  Consumable: QuestItemGeneratorPrototypeItemGeneratorItem;
+  Head: QuestItemGeneratorPrototypeItemGeneratorItem;
+  WeaponPistol: QuestItemGeneratorPrototypeItemGeneratorItem;
+  WeaponPrimary: QuestItemGeneratorPrototypeItemGeneratorItem;
+}>;
+
+export type QuestItemGeneratorPrototypeItemGeneratorItem = GetStructType<{
+  bAllowSameCategoryGeneration: boolean;
+  Category: EItemGenerationCategory;
+  PlayerRank: ERank;
+  PossibleItems: QuestItemGeneratorPrototypePossibleItems;
+}>;
+
+export type QuestItemGeneratorPrototypePossibleItems = GetStructType<
+  QuestItemGeneratorPrototypePossibleItemsItem[]
+>;
+
+export type QuestItemGeneratorPrototypePossibleItemsItem = GetStructType<{
+  AmmoMaxcount: number;
+  AmmoMaxCount: number;
+  AmmoMinCount: number;
+  bRequireWeapon: string;
+  Chance: number;
+  ItemGeneratorPrototypeSID: string;
+  ItemPrototypeSID: string;
+  MaxCount: number;
+  MaxDurability: number;
+  MinCount: number;
+  MinDurability: number;
+  Upgrades: QuestItemGeneratorPrototypeUpgrades;
+  Weight: number;
+}>;
+
+export type QuestItemGeneratorPrototypeUpgrades = GetStructType<{
+  Chance: number;
+  MinCount: number;
+  PossibleItems: string;
+}>;
+
+export type QuestItemPrototype = GetStructType<{
+  AlternativeEffectPrototypeSIDs: QuestNodePrototypeTargetQuestGuids;
+  AnomalyElementType: EAnomalyElementType;
+  ArchiartifactType: EArchiartifactType;
+  ArtifactType: EArtifactType;
+  ArtifactTypeSwitch: string;
+  Blueprint: string;
+  Cost: number;
+  DetectorRequired: boolean;
+  EffectPrototypeSIDs: QuestNodePrototypeTargetQuestGuids;
+  EffectsDisplayTypes: QuestItemPrototypeEffectsDisplayTypes;
+  Icon: string;
+  Icon1x1: string;
+  Invisible: boolean;
+  InvisibleInPlayerInventory: boolean;
+  IsQuestItem: boolean;
+  IsQuestItemPrototype: boolean;
+  ItemGridHeight: number;
+  ItemGridWidth: number;
+  JumpAmount: number;
+  JumpDelay: number;
+  JumpDistance: number;
+  JumpForce: number;
+  JumpHeight: number;
+  JumpSeriesDelay: number;
+  JumpSpeedCoef: number;
+  LandingForce: number;
+  LifeTime: number;
+  LocalizationSID: string;
+  MaxStackCount: number;
+  MeshInWorldPrototypeSID: string;
+  MeshPath: string;
+  MeshPrototypeSID: string;
+  Name: string;
+  PlayerDistance: number;
+  Rarity: EArtifactRarity;
+  RequireWeight: boolean;
+  ReturnDistanceValue: number;
+  ShouldShowEffects: QuestItemPrototypeShouldShowEffects;
+  ShouldTriggerAnomalies: boolean;
+  SID: string;
+  SoundStateTransitionOnHide: string;
+  SoundStateTransitionOnShow: string;
+  StaticMeshPrototypeSID: string;
+  Strafe: boolean;
+  Type: EItemType;
+  Weight: number;
+}>;
+
+export type QuestItemPrototypeEffectsDisplayTypes = GetStructType<
+  EEffectDisplayType[]
+>;
+
+export type QuestItemPrototypeShouldShowEffects = GetStructType<boolean[]>;
+
+export type QuestMeshGeneratorPrototype = GetStructType<{
+  Attachments: QuestMeshGeneratorPrototypeAttachments;
+  CustomData: QuestMeshGeneratorPrototypeCustomData;
+  Groom: QuestMeshGeneratorPrototypeGroom;
+  Materials: QuestMeshGeneratorPrototypeMaterials;
+  MergedMesh: string;
+  ParentMeshGeneratorSID: string;
+  SID: string;
+}>;
+
+export type QuestMeshGeneratorPrototypeAttaches = GetStructType<
+  QuestMeshGeneratorPrototypeAttachesItem[]
+>;
+
+export type QuestMeshGeneratorPrototypeAttachesItem = GetStructType<{
+  BlockingBodyMeshes: QuestMeshGeneratorPrototypeBlockingBodyMeshes;
+  BlockingGrooms: SpawnActorPrototypeLairCoreVolumes;
+  BlockingGroomSIDs: GroomBlockingMappingPrototypeBlockingGroomSIDs;
+  BlockingSlots: SpawnActorPrototypeLairTerritoryVolumes;
+  BodyMeshSID: string;
+  Weight: number;
+}>;
+
+export type QuestMeshGeneratorPrototypeAttachments = GetStructType<
+  QuestMeshGeneratorPrototypeAttachmentsItem[]
+>;
+
+export type QuestMeshGeneratorPrototypeAttachmentsItem = GetStructType<{
+  Attaches: QuestMeshGeneratorPrototypeAttaches;
+  SlotName: string;
+}>;
+
+export type QuestMeshGeneratorPrototypeBlockingBodyMeshes = GetStructType<
+  string[]
+>;
+
+export type QuestMeshGeneratorPrototypeCustomData = GetStructType<
+  QuestMeshGeneratorPrototypeCustomDataItem[]
+>;
+
+export type QuestMeshGeneratorPrototypeCustomDataItem = GetStructType<{
+  Distribution: ECustomDataDistribution;
+  MaterialGroup: string;
+  Variations: QuestMeshGeneratorPrototypeVariations;
+}>;
+
+export type QuestMeshGeneratorPrototypeGroom = GetStructType<
+  QuestMeshGeneratorPrototypeGroomItem[]
+>;
+
+export type QuestMeshGeneratorPrototypeGroomItem = GetStructType<{
+  CategoryName: string;
+  Variations: QuestMeshGeneratorPrototypeVariations;
+}>;
+
+export type QuestMeshGeneratorPrototypeMaterials = GetStructType<
+  QuestMeshGeneratorPrototypeMaterialsItem[]
+>;
+
+export type QuestMeshGeneratorPrototypeMaterialsItem = GetStructType<{
+  MaterialGroup: string;
+  Variations: QuestMeshGeneratorPrototypeVariations;
+}>;
+
+export type QuestMeshGeneratorPrototypeVariations = GetStructType<
+  QuestMeshGeneratorPrototypeVariationsItem[]
+>;
+
+export type QuestMeshGeneratorPrototypeVariationsItem = GetStructType<{
+  VariationIndex: number;
+  Weight: number;
+}>;
+
+export type QuestNodePrototype = GetStructType<{
+  AbilityPrototypeSID: string;
+  AchievementSID: string;
+  Activate: boolean;
+  ActorBoneName: string;
+  AddToPlayerStash: boolean;
+  AIThreatState: number;
+  AKEventPath: string;
+  ApplyRestrictionType: EApplyRestrictionType;
+  AssetsToLoad: string;
+  AttractionPointType: EAttractionPointType;
+  AudioLocalizedAssetsToLoad: QuestNodePrototypeAudioLocalizedAssetsToLoad;
+  BehaviorType: EBehaviorType;
+  BenchRuns: number;
+  BlendExpForEaseInOut: number;
+  BrokenGameDataFilter: EBrokenGameDataFilter;
+  bTriggersByAnybody: boolean;
+  CallPlayer: boolean;
+  CallPlayerRadius: number;
+  CameraHeight: number;
+  CanBeInterrupted: boolean;
+  CanBeIterrupted: boolean;
+  CanBeTeleported: boolean;
+  CanExitAnytime: boolean;
+  ChangeValueMode: EChangeValueMode;
+  CircleRadius: number;
+  CollisionChannel: number;
+  Conditions: QuestNodePrototypeConditions;
+  ConsoleCommand: string;
+  ContaineredQuestPrototypeSID: string;
+  ContextualActionLookAtPlayerRange: number;
+  ContextualActionRange: number;
+  Continue: boolean;
+  ContinueThroughRadio: boolean;
+  ContinueWhileCombatComments: string;
+  ContinueWhileMovingComments: string;
+  CustomRestPlaceSelection: boolean;
+  CustomSleepPlaceSelection: boolean;
+  DataLayerCombination: string;
+  DataLayerName: string;
+  Description: string;
+  DialogChainPrototypeSID: string;
+  DialogMembers: QuestNodePrototypeDialogMembers;
+  DialogObjectLocation: QuestNodePrototypeDialogObjectLocation;
+  DialogToStart: string;
+  DisabledEvents: string;
+  DisableFlashlightControl: boolean;
+  Discovered: boolean;
+  Duration: number;
+  EffectLocation: SpawnActorPrototypeVector;
+  EffectPath: string;
+  EffectPrototypeSID: string;
+  EmissionPrototypeSID: string;
+  EndHour: number;
+  EnteringDuration: number;
+  EquipItems: boolean;
+  EquipmentItemSID: string;
+  EquipmentTypeFilter: EMainHandEquipmentType;
+  Event: EDialogEventType;
+  EventType: EQuestEventType;
+  ExcludeAllNodesInContainer: boolean;
+  ExpectedItemsCount: number;
+  Explored: boolean;
+  Faction: string;
+  FadeTime: number;
+  FailureByCombat: boolean;
+  FailureByEmission: boolean;
+  FailureByHumanKil: boolean;
+  FailureByMutantKill: boolean;
+  FailureByPlayerEncounter: boolean;
+  FailureByPlayerKill: boolean;
+  FailureByTargetLost: boolean;
+  FailureByThreat: boolean;
+  FinishBattleComments: string;
+  FinishOnAKEvent: boolean;
+  FirstTargetSID: string;
+  FlashlightAction: EFlashlightAction;
+  FleeType: EFleeType;
+  FollowStartRange: number;
+  FollowStopRange: number;
+  Force: boolean;
+  ForceDespawn: boolean;
+  ForceEmission: boolean;
+  FullAmount: boolean;
+  FullSquad: boolean;
+  GlobalVariablePrototypeSID: string;
+  GoalPriority: EGoalPriority;
+  GoalTargetQuestGuid: string;
+  GuardOpponentFactions: SpawnActorPrototypeSignals;
+  GuardTargetGuid: string;
+  GuardType: EGuardType;
+  GuardZoneShapesGuids: string;
+  HealingType: EHealingType;
+  HideViewType: EHideViewType;
+  HitProducer: string;
+  HitReceiver: string;
+  IdlePosition: SpawnActorPrototypeVector;
+  IgnoreAnomalyFields: boolean;
+  IgnoreCombat: boolean;
+  IgnoreDamageType: EIgnoreDamageType;
+  IgnoreEmission: boolean;
+  IgnoreEnabledCheck: boolean;
+  IgnoreRadiationFeilds: boolean;
+  IgnoreThreat: boolean;
+  ImagePath: string;
+  ImmediatelyIdentifyEnemy: boolean;
+  IncludeWoundedEvent: boolean;
+  InfotopicLastPhrases: QuestNodePrototypeInfotopicLastPhrases;
+  InGameHours: number;
+  InGameMinutes: number;
+  InitialPitch: number;
+  InitialYaw: number;
+  InteractableQuestGuid: string;
+  IsComment: boolean;
+  IsDataLayerEnabled: boolean;
+  IsFinalVideo: boolean;
+  ItemGeneratorSID: string;
+  ItemPrototypeSID: string;
+  ItemsCount: number;
+  ItemSID: string;
+  JournalAction: EJournalAction;
+  JournalEntity: EJournalEntity;
+  JournalQuestDescriptionIndex: number;
+  JournalQuestSID: string;
+  JournalQuestStageSID: string;
+  LastPhrases: QuestNodePrototypeLastPhrases;
+  Launchers: QuestNodePrototypeLaunchers;
+  LaunchOnQuestStart: boolean;
+  LeaveAnomalyZoneComments: string;
+  LinkedNodePrototypeSID: string;
+  LoadingScreenType: ELoadingDestination;
+  LocalizedSequences: DialogPrototypeLocalizedSequences;
+  Location: string;
+  LookAt: SpawnActorPrototypeVector;
+  LookAtActorFName: string;
+  LookAtLocation: SpawnActorPrototypeVector;
+  LookAtPlaceholder: string;
+  LoopSequence: boolean;
+  MainQuest: boolean;
+  MarkerDescription: string;
+  Markers: string;
+  MarkerSID: string;
+  MasterAKEventForLoad: string;
+  MaxAcceptanceDistance: number;
+  MeshGeneratorSID: string;
+  MinAcceptanceDistance: number;
+  MinFleeTime: number;
+  MinimalReputationLevel: ERelationLevel;
+  MinPanicTime: number;
+  MoveFrom: string;
+  MovementPose: EAIMovementPose;
+  MovementType: EMovementBehaviour;
+  MoveQuestItems: boolean;
+  MoveTo: string;
+  MoveToFailureRange: number;
+  MoveToPath: string;
+  MoveToPlayer: boolean;
+  MoveToSuccessRange: number;
+  NameSID: string;
+  NavAreaClass: string;
+  NavModifier: string;
+  NewDescription: number;
+  NewTechnicianSkill: string;
+  NewTitle: number;
+  NewZoneState: boolean;
+  NodePrototypeVersion: number;
+  NodesToCleanUpResults: ObjPrototypeApplicableMechanicsEffects;
+  NodeType: EQuestNodeType;
+  NotePrototypeSID: string;
+  NPCToStartDialog: number;
+  OutputPinNames: QuestNodePrototypeOutputPinNames;
+  OverrideDialogTopic: EOverrideDialogTopic;
+  OverrideScenarioGroupSID: string;
+  OwnedHub: string;
+  Params: QuestNodePrototypeParams;
+  PatrolCycleCount: number;
+  PatrolPlaceholderGUID: string;
+  PauseEmission: boolean;
+  PDATutorialNoteSID: string;
+  PersonalRestriction: QuestNodePrototypePersonalRestriction;
+  PinWeights: QuestNodePrototypePinWeights;
+  PistolDurabilityPercent: number;
+  PlayerLeavesWhileCombatComments: string;
+  PlayerLeavesWhileMovingComments: string;
+  PlayWhenReceived: boolean;
+  PostEffectProcessorSID: string;
+  PostProcessParamValue: number;
+  PreblendSequence: boolean;
+  PreblendTime: number;
+  PresetName: string;
+  PrimaryWeaponDurabilityPercent: number;
+  Priority: number;
+  ProfileCsv: boolean;
+  QuestItem: boolean;
+  QuestItemGeneratorSID: string;
+  QuestSID: string;
+  Radius: number;
+  ReachAnomalyZoneComments: string;
+  ReachPointComments: QuestNodePrototypeReachPointComments;
+  ReactionTime: number;
+  ReactOnApproachWithWeapon: boolean;
+  ReactOnNonEnemySounds: boolean;
+  ReactType: ETriggerReact;
+  RelationshipValue: number;
+  Remove: boolean;
+  Repeatable: boolean;
+  RepeatableStayAnimation: boolean;
+  ReplaceInventory: boolean;
+  RequiredInputs: string;
+  RequiredSquadMembers: ERequiredSquadMembers;
+  RestLocation: SpawnActorPrototypeVector;
+  RestrictDeadBodyDespawn: boolean;
+  RestrictDeadBodyLootInteraction: boolean;
+  RestrictDeadBodyMovementInteraction: boolean;
+  RestrictDefeatStateInteraction: boolean;
+  RestrictDefeatStateMovementInteraction: boolean;
+  RestrictDialogInteractions: boolean;
+  RestrictedFaction: QuestNodePrototypeRestrictedFaction;
+  RotationAfterMoveTo: SpawnActorPrototypeAnomaliesLocationRotationItem;
+  RotationFreemoveEdge: number;
+  RotationStopEdge: number;
+  RotationTime: number;
+  SaveTypes: QuestNodePrototypeSaveTypes;
+  ScreenText: string;
+  SecondaryWeaponDurabilityPercent: number;
+  SecondTargetSID: string;
+  SeekPlayer: boolean;
+  SelectedDaysOfWeek: number;
+  SelfLocation: string;
+  SequentialAbilityModificationMode: EModifyAbilitySequenceQuestNodeMode;
+  SequentialAbilityPriority: number;
+  SetFactionRelationshipAsPersonal: boolean;
+  SetQuestActive: boolean;
+  ShootingPosition: SpawnActorPrototypeVector;
+  ShootTargetLocation: SpawnActorPrototypeVector;
+  ShotsQueueCount: number;
+  ShouldBeKilled: string;
+  ShouldBlendViaFade: boolean;
+  ShouldLockPersonalRelationship: boolean;
+  ShouldTargetPistol: boolean;
+  ShouldTargetPrimaryWeapon: boolean;
+  ShouldTargetSecondaryWeapon: boolean;
+  SID: string;
+  SignalReceiverGuid: string;
+  SignalSenderGuid: string;
+  SimulateBattle: boolean;
+  SleepLocation: SpawnActorPrototypeVector;
+  SoundLocation: SpawnActorPrototypeVector;
+  SoundPath: string;
+  SpawnHidden: boolean;
+  SpawnNodeExcludeType: ESpawnNodeExcludeType;
+  SpecificItemDespawn: boolean;
+  Squad: string;
+  StageID: EEmissionStage;
+  StartBattleComments: string;
+  StartDelay: number;
+  StartForcedDialog: boolean;
+  StartHour: number;
+  StartPointID: number;
+  StartQuest: boolean;
+  StayAnimation: string;
+  StayContextualAction: string;
+  TalkThroughRadio: QuestNodePrototypeTalkThroughRadio;
+  TargetFaction: string;
+  TargetLocation: SpawnActorPrototypeVector;
+  TargetLocations: QuestNodePrototypeTargetLocations;
+  TargetMoneyAmount: number;
+  TargetQuestGuid: string;
+  TargetQuestGuids: QuestNodePrototypeTargetQuestGuids;
+  TargetRank: ERank;
+  TeleportLocationAndRotation: SpawnActorPrototypeAnomaliesLocationRotationItem;
+  TeleportType: EGSCTeleportType;
+  ThreatSensor: number;
+  ThreatsReactRange: number;
+  TimerRate: number;
+  TimeToStartNextNodeBeforeEnd: number;
+  TimeToUseAbility: number;
+  TrackBeforeActive: boolean;
+  TransitionTime: number;
+  TriggerAction: number;
+  TriggerQuestGuid: string;
+  TutorialHeadLocalizedSID: string;
+  TutorialSID: string;
+  TutorialTextLocalizedSID: string;
+  UpgradePrototypeSID: string;
+  UpgradeSIDs: QuestNodePrototypeUpgradeSIDs;
+  UseAbilityMovementType: EMovementBehaviour;
+  UseAbilityPrototypeSID: string;
+  UseAbilityTarget: string;
+  UseDefaultEmissionPrototype: boolean;
+  UseDeltaValue: boolean;
+  UsePreset: boolean;
+  UseSecondaryWeapon: boolean;
+  VariableValue: boolean;
+  VideoAssetPath: string;
+  VolumeGuid: string;
+  WaitAllDialogEndingsToFinish: boolean;
+  WaitingPlayer: boolean;
+  WaitingTime: number;
+  WeaponReady: boolean;
+  WeaponState: EWeaponState;
+  Weather: EWeather;
+  WidgetType: number;
+  WithEquipped: boolean;
+  WithInventory: boolean;
+  WoundedOn: boolean;
+}>;
+
+export type QuestNodePrototypeAudioLocalizedAssetsToLoad = GetStructType<
+  QuestNodePrototypeAudioLocalizedAssetsToLoadItem[]
+>;
+
+export type QuestNodePrototypeAudioLocalizedAssetsToLoadItem = GetStructType<
+  string[]
+>;
+
+export type QuestNodePrototypeConditions = GetStructType<
+  (EConditionCheckType | QuestNodePrototypeConditionsItem)[]
+>;
+
+export type QuestNodePrototypeConditionsItem = GetStructType<
+  (
+    | EConditionComparance
+    | EQuestConditionType
+    | QuestNodePrototypeConditionsItemItem
+    | SpawnActorPrototypeVector
+    | boolean
+    | number
+    | string
+  )[]
+>;
+
+export type QuestNodePrototypeConditionsItemItem = GetStructType<{
+  AITarget: string;
+  AmmoRequired: number;
+  AnyBody: boolean;
+  BoolValue: boolean;
+  bTriggersByAnybody: boolean;
+  ChangeValueMode: EChangeValueMode;
+  CompletedNodeLauncherNames: SpawnActorPrototypeSignals;
+  ConditionComparance: EConditionComparance;
+  ConditionType: EQuestConditionType;
+  EffectPrototypeSID: string;
+  EmissionPrototypeSID: string;
+  Equipment: EMainHandEquipmentType;
+  Faction: string;
+  GlobalVariablePrototypeSID: string;
+  ItemPrototypeSID: DialogPrototypeItemPrototypeSID;
+  ItemsCount: DialogPrototypeDialogActionParam;
+  JournalEntity: EJournalEntity;
+  JournalQuestSID: string;
+  JournalQuestStageSID: string;
+  JournalState: EJournalState;
+  LinkedNodePrototypeSID: string;
+  Money: DialogPrototypeDialogActionParam;
+  NodeState: EQuestNodeState;
+  NotePrototypeSID: string;
+  NumericValue: number;
+  PointToLookAt: SpawnActorPrototypeVector;
+  QuickSlotConsumableType: EConsumableType;
+  QuickSlotIndex: number;
+  QuickSlotItemSID: string;
+  Rank: ERank;
+  ReactType: ETriggerReact;
+  Relationships: ERelationLevel;
+  RequiredSquadMembers: ERequiredSquadMembers;
+  TargetCharacter: string;
+  TargetContextualActionPlaceholder: string;
+  TargetCorpsePlaceholder: string;
+  TargetItemContainer: string;
+  TargetNode: string;
+  TargetNPC: string;
+  TargetPlaceholder: string;
+  TargetPoint: SpawnActorPrototypeVector;
+  ThreatAwareness: EThreatAwareness;
+  Trigger: string;
+  VariableValue: number;
+  Weather: EWeather;
+  WithBodyArmor: boolean;
+  WithEquipped: boolean;
+  WithHeadArmor: boolean;
+  WithInventory: boolean;
+}>;
+
+export type QuestNodePrototypeConnections = GetStructType<
+  QuestNodePrototypeConnectionsItem[]
+>;
+
+export type QuestNodePrototypeConnectionsItem = GetStructType<{
+  Name: string;
+  SID: string;
+}>;
+
+export type QuestNodePrototypeDialogMembers = GetStructType<string[]>;
+
+export type QuestNodePrototypeDialogMembersItem = GetStructType<{
+  DialogMemberGuid: string;
+  TalkThroughRadio: boolean;
+}>;
+
+export type QuestNodePrototypeDialogObjectLocation = GetStructType<
+  SpawnActorPrototypeVector[]
+>;
+
+export type QuestNodePrototypeDisabledEvents = GetStructType<
+  EDialogEventType[]
+>;
+
+export type QuestNodePrototypeInfotopicLastPhrases = GetStructType<
+  QuestNodePrototypeInfotopicLastPhrasesItem[]
+>;
+
+export type QuestNodePrototypeInfotopicLastPhrasesItem = GetStructType<{
+  LastPhraseSID: string;
+  NextLaunchedPhraseSID: string;
+}>;
+
+export type QuestNodePrototypeLastPhrases = GetStructType<
+  QuestNodePrototypeLastPhrasesItem[]
+>;
+
+export type QuestNodePrototypeLastPhrasesItem = GetStructType<{
+  FinishNode: boolean;
+  LastPhraseSID: string;
+  NextLaunchedPhraseSID: string;
+}>;
+
+export type QuestNodePrototypeLaunchers = GetStructType<
+  QuestNodePrototypeLaunchersItem[]
+>;
+
+export type QuestNodePrototypeLaunchersItem = GetStructType<{
+  Connections: QuestNodePrototypeConnections;
+  Excluding: boolean;
+}>;
+
+export type QuestNodePrototypeMarkers = GetStructType<
+  QuestNodePrototypeMarkersItem[]
+>;
+
+export type QuestNodePrototypeMarkersItem = GetStructType<{
+  AddOnCondition: boolean;
+  Conditions: QuestNodePrototypeConditions;
+  MarkerLocation: SpawnActorPrototypeVector;
+  MarkerRadius: number;
+  MarkerTargetQuestGuid: string;
+  RemoveOnCondition: boolean;
+  ZoneSubMarkers: string;
+}>;
+
+export type QuestNodePrototypeOutputPinNames = GetStructType<
+  (number | string)[]
+>;
+
+export type QuestNodePrototypeParams = GetStructType<
+  QuestNodePrototypeParamsItem[]
+>;
+
+export type QuestNodePrototypeParamsItem = GetStructType<{
+  ChangeValue: number;
+  ChangeValueMode: EChangeValueMode;
+  IgnoreDamageType: EIgnoreDamageType;
+  ModifiedCharacterParam: EModifiedCharacterParam;
+  Rank: ERank;
+}>;
+
+export type QuestNodePrototypePersonalRestriction = GetStructType<
+  Record<SID, ESpaceRestrictionType>
+>;
+
+export type QuestNodePrototypePinWeights = GetStructType<number[]>;
+
+export type QuestNodePrototypeReachPointComments = GetStructType<
+  QuestNodePrototypeReachPointCommentsItem[]
+>;
+
+export type QuestNodePrototypeReachPointCommentsItem = GetStructType<{
+  DialogMembers: string;
+  ReachPointComment: string;
+  ReachPointLocation: SpawnActorPrototypeVector;
+}>;
+
+export type QuestNodePrototypeRestrictedFaction = GetStructType<{
+  Bandits: ESpaceRestrictionType;
+  FreeStalkers: ESpaceRestrictionType;
+  Humanoid: ESpaceRestrictionType;
+  Monolith: ESpaceRestrictionType;
+  Mutant: ESpaceRestrictionType;
+  Varta: ESpaceRestrictionType;
+}>;
+
+export type QuestNodePrototypeSaveTypes = GetStructType<ESaveType[]>;
+
+export type QuestNodePrototypeTalkThroughRadio = GetStructType<boolean[]>;
+
+export type QuestNodePrototypeTargetLocations = GetStructType<
+  SpawnActorPrototypeVector[]
+>;
+
+export type QuestNodePrototypeTargetQuestGuids = GetStructType<string[]>;
+
+export type QuestNodePrototypeUpgradeSIDs = GetStructType<string[]>;
+
+export type QuestNodePrototypeZoneSubMarkers = GetStructType<
+  QuestNodePrototypeZoneSubMarkersItem[]
+>;
+
+export type QuestNodePrototypeZoneSubMarkersItem = GetStructType<{
+  MarkerLocation: SpawnActorPrototypeVector;
+  MarkerRadiusSquared: number;
+}>;
+
+export type QuestNPCGeneratorPrototype = GetStructType<{
+  ItemGenerator: QuestNPCGeneratorPrototypeItemGenerator;
+  SID: string;
+  SpecificRewardSound: EUISound;
+}>;
+
+export type QuestNPCGeneratorPrototypeItemGenerator = GetStructType<
+  QuestNPCGeneratorPrototypeItemGeneratorItem[]
+>;
+
+export type QuestNPCGeneratorPrototypeItemGeneratorItem = GetStructType<{
+  Category: EItemGenerationCategory;
+  PlayerRank: ERank;
+  PossibleItems: QuestNPCGeneratorPrototypePossibleItems;
+}>;
+
+export type QuestNPCGeneratorPrototypePossibleItems = GetStructType<
+  QuestNPCGeneratorPrototypePossibleItemsItem[]
+>;
+
+export type QuestNPCGeneratorPrototypePossibleItemsItem = GetStructType<{
+  AmmoMaxCount: number;
+  AmmoMinCount: number;
+  bRequireWeapon: boolean;
+  bUnloadedWeapon: boolean;
+  Chance: number;
+  ItemGeneratorPrototypeSID: string;
+  ItemPrototypeSID: string;
+  MaxCount: number;
+  MaxDurability: number;
+  MinCount: number;
+  MinDurability: number;
+  Weight: number;
+}>;
+
+export type QuestObjPrototype = GetStructType<{
+  Abilities: QuestObjPrototypeAbilities;
+  AgentType: EAgentType;
+  AttackParams: QuestObjPrototypeAttackParams;
+  Blueprint: string;
+  CanProcessCorpses: boolean;
+  CustomMeshGeneratorPrototypeSID: string;
+  DialogInteractDistance: number;
+  DuplicateFacialAnimationNPCs: QuestNodePrototypeTargetQuestGuids;
+  Faction: string;
+  FlashlightPrototypeSID: string;
+  Hint: string;
+  ID: number;
+  IgnoreDamageType: EIgnoreDamageType;
+  IgnoreEmission: boolean;
+  IgnoreWoundedRestriction: boolean;
+  InventoryPenaltyLessWeight: number;
+  IsAffectingByMaxActorWithSimulation: boolean;
+  IsAffectingByMaxAttaches: boolean;
+  IsZombie: boolean;
+  ItemGeneratorPrototypeSID: string;
+  MaxDialogInteractDistance: number;
+  MaxInventoryMass: number;
+  Mesh: EObjMesh;
+  MeshGeneratorPrototypeSID: string;
+  MinDialogInteractDistance: number;
+  MovementVFXPrototypeSID: string;
+  NeedsPresetSID: string;
+  NPCPrototypeSID: string;
+  NPCType: ENPCType;
+  Protection: QuestObjPrototypeProtection;
+  Rank: ERank;
+  ReactOnNonEnemySounds: boolean;
+  ShouldEnableAdamAppleAnimations: boolean;
+  ShouldGenerateStashClues: boolean;
+  SID: string;
+  Text: string;
+  TradePrototypeSID: string;
+  UnkillableByALife: boolean;
+  UseGroomReplacement: boolean;
+  VitalParams: QuestObjPrototypeVitalParams;
+}>;
+
+export type QuestObjPrototypeAbilities = GetStructType<{
+  NoDamagePSYAttack: ObjPrototypeBlindDog_RunAttack_Left;
+}>;
+
+export type QuestObjPrototypeAttackParams = GetStructType<{
+  ForceDistance: number;
+  MeleeAttackAcceptanceDistance: number;
+  MeleeAttackHeight: number;
+  MeleeAttackRadius: number;
+  MeleeDamage: number;
+}>;
+
+export type QuestObjPrototypeProtection = GetStructType<{
+  Strike: number;
+}>;
+
+export type QuestObjPrototypeStaminaDisableThresholds = GetStructType<
+  QuestObjPrototypeStaminaDisableThresholdsItem[]
+>;
+
+export type QuestObjPrototypeStaminaDisableThresholdsItem = GetStructType<{
+  RegenerationDelay: number;
+  StateTags: QuestObjPrototypeStateTags;
+  Threshold: number;
+}>;
+
+export type QuestObjPrototypeStateTags = GetStructType<EStateTag[]>;
+
+export type QuestObjPrototypeVitalParams = GetStructType<{
+  DegenFoodPoint: number;
+  DegenPsyPoints: number;
+  DegenStamina: number;
+  DegenWaterPoint: number;
+  MaxFoodPoint: number;
+  MaxFP: number;
+  MaxHP: number;
+  MaxSleepDesirePoint: string;
+  MaxSP: number;
+  MaxWaterPoint: number;
+  RegenFP: number;
+  RegenHP: number;
+  RegenSleepDesirePoint: number;
+  StaminaDisableThresholds: QuestObjPrototypeStaminaDisableThresholds;
+}>;
+
+export type QuestPrototype = GetStructType<{
+  Description: string;
+  DLC: string;
+  Image: string;
+  LocalQuest: boolean;
+  MainQuest: boolean;
+  Name: string;
+  SID: string;
+  StartQuestNodeSID: string;
+}>;
+
+export type QuestRewardsPrototype = GetStructType<{
+  ItemGenerator: QuestRewardsPrototypeItemGenerator;
+  MoneyGenerator: QuestRewardsPrototypeMoneyGenerator;
+  SID: string;
+  SpecificRewardSound: EUISound;
+}>;
+
+export type QuestRewardsPrototypeItemGenerator = GetStructType<
+  QuestRewardsPrototypeItemGeneratorItem[]
+>;
+
+export type QuestRewardsPrototypeItemGeneratorItem = GetStructType<{
+  bAllowSameCategoryGeneration: boolean;
+  Category: EItemGenerationCategory;
+  PossibleItems: QuestRewardsPrototypePossibleItems;
+}>;
+
+export type QuestRewardsPrototypeMoneyGenerator = GetStructType<{
+  MaxCount: number;
+  MinCount: number;
+}>;
+
+export type QuestRewardsPrototypePossibleItems = GetStructType<
+  QuestRewardsPrototypePossibleItemsItem[]
+>;
+
+export type QuestRewardsPrototypePossibleItemsItem = GetStructType<{
+  AmmoMaxCount: number;
+  AmmoMinCount: number;
+  bRequireWeapon: boolean;
+  Chance: number;
+  ItemGeneratorPrototypeSID: string;
+  ItemPrototypeSID: string;
+  MaxCount: number;
+  MaxDurability: number;
+  MinCount: number;
+  MinDurability: number;
+  Upgrades: ItemGeneratorPrototypeUpgrades;
+  Weight: number;
+}>;
+
+export type QuestStashBodyItemGeneratorPrototype = GetStructType<{
+  ItemGenerator: QuestStashBodyItemGeneratorPrototypeItemGenerator;
+  SID: string;
+}>;
+
+export type QuestStashBodyItemGeneratorPrototypeItemGenerator = GetStructType<
+  QuestStashBodyItemGeneratorPrototypeItemGeneratorItem[]
+>;
+
+export type QuestStashBodyItemGeneratorPrototypeItemGeneratorItem =
+  GetStructType<{
+    bAllowSameCategoryGeneration: boolean;
+    Category: EItemGenerationCategory;
+    PlayerRank: ERank;
+    PossibleItems: QuestStashBodyItemGeneratorPrototypePossibleItems;
+  }>;
+
+export type QuestStashBodyItemGeneratorPrototypePossibleItems = GetStructType<
+  QuestStashBodyItemGeneratorPrototypePossibleItemsItem[]
+>;
+
+export type QuestStashBodyItemGeneratorPrototypePossibleItemsItem =
+  GetStructType<{
+    AmmoMaxCount: number;
+    AmmoMinCount: number;
+    Attaches: ItemGeneratorPrototypeUpgrades;
+    bRequireWeapon: boolean;
+    Chance: number;
+    ItemGeneratorPrototypeSID: string;
+    ItemPrototypeSID: string;
+    MaxCount: number;
+    MaxDurability: number;
+    MinCount: number;
+    MinDurability: number;
+    Upgrades: ItemGeneratorPrototypeUpgrades;
+    Weight: number;
+  }>;
 
 export type QuickSaveVariable = GetStructType<{
   QuickSaveOverwriteTime: number;
 }>;
 
 export type ref = GetStructType<
-  {
-    AttachID: string;
-    CapsuleNames: string[];
-    DamageBone: EDamageBone;
-    IconPosX: string;
-    IconPosY: string;
-    Muzzle: string;
-    Socket: string;
-    UpgradeRequired: string;
-  }[]
+  (refBaseCharacterBoneDamageMapItem | refRiflesCompatibleAttachmentItem)[]
 >;
+
+export type refBaseCharacterBoneDamageMapItem = GetStructType<{
+  CapsuleNames: refCapsuleNames;
+  DamageBone: EDamageBone;
+}>;
+
+export type refCapsuleNames = GetStructType<string[]>;
+
+export type refRiflesCompatibleAttachmentItem = GetStructType<{
+  AttachID: string;
+  IconPosX: string;
+  IconPosY: string;
+  Muzzle: string;
+  Socket: string;
+  UpgradeRequired: string;
+}>;
+
+export type RegionMusicPrototype = GetStructType<{
+  AmbientStateMusicSwitchPath: string;
+  MusicState: EMusicState;
+  Region: ERegion;
+  RegionSIDGlobalVariable: string;
+  SID: string;
+}>;
+
+export type RelationPrototype = GetStructType<{
+  CharacterReactions: RelationPrototypeCharacterReactions;
+  ExpansionPolicies: RelationPrototypeExpansionPolicies;
+  FactionReactions: RelationPrototypeFactionReactions;
+  FactionRollbackCooldowns: RelationPrototypeFactionRollbackCooldowns;
+  Factions: RelationPrototypeFactions;
+  FactionsInvolvedDistance: number;
+  HubReputationRollbackCooldownModifier: number;
+  LairReputationRollbackCooldownModifier: number;
+  MinRelationLevelToTrade: ERelationLevel;
+  NegativeReactionsExcludedFactions: RelationPrototypeNegativeReactionsExcludedFactions;
+  PositiveReactionsExcludedFactions: RelationPrototypePositiveReactionsExcludedFactions;
+  RelationLevelRanges: RelationPrototypeRelationLevelRanges;
+  Relations: RelationPrototypeRelations;
+  RelationVersion: number;
+  ReputationRollbackCooldown: number;
+  ReputationRollbackRadius: number;
+  SID: string;
+}>;
+
+export type RelationPrototypeAttackLairRestrictions = GetStructType<
+  Record<`${Faction}->${Faction}`, boolean>
+>;
+
+export type RelationPrototypeCharacterReactions = GetStructType<
+  RelationPrototypeCharacterReactionsItem[]
+>;
+
+export type RelationPrototypeCharacterReactionsItem = GetStructType<
+  Record<`${Reaction}->${Reaction}`, number> & {
+    Type: ERelationChangingEvent;
+  }
+>;
+
+export type RelationPrototypeExpansionPolicies = GetStructType<{
+  AttackLairRestrictions: RelationPrototypeAttackLairRestrictions;
+}>;
+
+export type RelationPrototypeFactionReactions = GetStructType<
+  RelationPrototypeCharacterReactionsItem[]
+>;
+
+export type RelationPrototypeFactionRollbackCooldowns = GetStructType<
+  Record<Faction, number>
+>;
+
+export type RelationPrototypeFactions = GetStructType<Record<Faction, string>>;
+
+export type RelationPrototypeNegativeReactionsExcludedFactions = GetStructType<
+  string[]
+>;
+
+export type RelationPrototypePositiveReactionsExcludedFactions = GetStructType<
+  string[]
+>;
+
+export type RelationPrototypeRelationLevelRanges = GetStructType<
+  RelationPrototypeRelationLevelRangesItem[]
+>;
+
+export type RelationPrototypeRelationLevelRangesItem = GetStructType<{
+  end: number;
+  start: number;
+}>;
+
+export type RelationPrototypeRelations = GetStructType<
+  Record<`${Faction}<->${Faction}`, number>
+>;
+
+export type RestrictorsPrototype = GetStructType<{
+  OfflineRestrictors: RestrictorsPrototypeOfflineRestrictors;
+  SID: string;
+}>;
+
+export type RestrictorsPrototypeOfflineRestrictors = GetStructType<
+  RestrictorsPrototypeOfflineRestrictorsItem[]
+>;
+
+export type RestrictorsPrototypeOfflineRestrictorsItem = GetStructType<{
+  Active: boolean;
+  AreasMask: number;
+  Center: string;
+  Extents: string;
+  GUID: string;
+  Orientation0: string;
+  Orientation1: string;
+  Orientation2: string;
+}>;
 
 export type SaveLoadVariable = GetStructType<{
   BackupPath: string;
   CampaignsLimit: number;
   CampaignsSaveName: string;
-  LoadingStepsProgress: {
-    Complete: number;
-    FinishingUp: number;
-    InitializingManagers: number;
-    LoadingManagersData: number;
-    LoadingModelsData: number;
-    LoadingNecessaryActors: number;
-    LoadingStart: number;
-    SpawningPlaceholders: number;
-  };
+  LoadingStepsProgress: SaveLoadVariableLoadingStepsProgress;
   MinSupportedSaveVersion: number;
   SaveDataPath: string;
   SaveGamesPath: string;
-  SavesLimit: {
-    Auto: number;
-    ExitGame: number;
-    FinishMainQuest: number;
-    HubExit: number;
-    Manual: number;
-    ManualHub: number;
-    Quest: number;
-    Quick: number;
-    StartMainQuest: number;
-  };
+  SavesLimit: SaveLoadVariableSavesLimit;
   SaveThreatBlockRadius: number;
-  SaveTypeCategories: {
-    Subtype: ESaveSubType;
-    Types: ESaveType[];
-  }[];
+  SaveTypeCategories: SaveLoadVariableSaveTypeCategories;
   ThumbnailHeight: number;
   ThumbnailsPath: string;
   ThumbnailWidth: number;
 }>;
 
+export type SaveLoadVariableLoadingStepsProgress = GetStructType<{
+  Complete: number;
+  FinishingUp: number;
+  InitializingManagers: number;
+  LoadingManagersData: number;
+  LoadingModelsData: number;
+  LoadingNecessaryActors: number;
+  LoadingStart: number;
+  SpawningPlaceholders: number;
+}>;
+
+export type SaveLoadVariableSavesLimit = GetStructType<{
+  Auto: number;
+  ExitGame: number;
+  FinishMainQuest: number;
+  HubExit: number;
+  Manual: number;
+  ManualHub: number;
+  Quest: number;
+  Quick: number;
+  StartMainQuest: number;
+}>;
+
+export type SaveLoadVariableSaveTypeCategories = GetStructType<
+  SaveLoadVariableSaveTypeCategoriesItem[]
+>;
+
+export type SaveLoadVariableSaveTypeCategoriesItem = GetStructType<{
+  Subtype: ESaveSubType;
+  Types: SaveLoadVariableTypes;
+}>;
+
+export type SaveLoadVariableTypes = GetStructType<ESaveType[]>;
+
 export type Script = GetStructType<{
   ID: number;
   RepetitionInterval: number;
-  ScriptsArray: (
-    | string
-    | {
-        ScenarioFlagKey: string;
-        ScenarioFlagValue: number;
-        ScriptsSubArray: string[];
-      }
-  )[];
+  ScriptsArray: ScriptScriptsArray;
   SID: string;
 }>;
 
+export type ScriptScriptsArray = GetStructType<
+  (ScriptScriptsArrayItem | string)[]
+>;
+
+export type ScriptScriptsArrayItem = GetStructType<{
+  ScenarioFlagKey: string;
+  ScenarioFlagValue: number;
+  ScriptsSubArray: SpawnActorPrototypeIgnoreCollisionActors;
+}>;
+
 export type SettingsVariablesPC = GetStructType<{
-  "0": {
-    ArriveTangent: number;
-    ArriveTangentWeight: number;
-    LeaveTangent: number;
-    LeaveTangentWeight: number;
-    Time: number;
-    Value: number;
-  };
-  "1": {
-    ArriveTangent: number;
-    ArriveTangentWeight: number;
-    LeaveTangent: number;
-    LeaveTangentWeight: number;
-    Time: number;
-    Value: number;
-  };
-  "2": {
-    ArriveTangent: number;
-    ArriveTangentWeight: number;
-    LeaveTangent: number;
-    LeaveTangentWeight: number;
-    Time: number;
-    Value: number;
-  };
+  "0": SettingsVariablesPCMoveSensitivityCurveKeysItem;
+  "1": SettingsVariablesPCMoveSensitivityCurveKeysItem;
+  "2": SettingsVariablesPCMoveSensitivityCurveKeysItem;
   AimAssistMagnetismModifier: number;
   AimAssistSnappingModifier: number;
   AimAssistStickinessModifier: number;
   AimAssistTrackingModifier: number;
-  LeftThumbstick: {
-    LowerThreshold: number;
-    Type: EDeadZoneType;
-    UpperThreshold: number;
-  };
-  LeftTrigger: {
-    LowerThreshold: number;
-    Type: EDeadZoneType;
-    UpperThreshold: number;
-  };
-  RightThumbstick: {
-    LowerThreshold: number;
-    Type: EDeadZoneType;
-    UpperThreshold: number;
-  };
-  RightTrigger: {
-    LowerThreshold: number;
-    Type: EDeadZoneType;
-    UpperThreshold: number;
-  };
+  LeftThumbstick: SettingsVariablesPCLeftThumbstick;
+  LeftTrigger: SettingsVariablesPCLeftThumbstick;
+  RightThumbstick: SettingsVariablesPCLeftThumbstick;
+  RightTrigger: SettingsVariablesPCLeftThumbstick;
   SnappingAutomaticTargetChangeEnabled: boolean;
   SnappingCameraMovementToleranceEnabled: boolean;
   SnappingCameraRadiusToleranceEnabled: boolean;
   SnappingTime: number;
 }>;
 
+export type SettingsVariablesPCLeftThumbstick = GetStructType<{
+  LowerThreshold: number;
+  Type: EDeadZoneType;
+  UpperThreshold: number;
+}>;
+
+export type SettingsVariablesPCMoveSensitivityCurveKeysItem = GetStructType<{
+  ArriveTangent: number;
+  ArriveTangentWeight: number;
+  LeaveTangent: number;
+  LeaveTangentWeight: number;
+  Time: number;
+  Value: number;
+}>;
+
 export type SettingsVariablesPS5Base = GetStructType<{
-  "0": {
-    ArriveTangent: number;
-    ArriveTangentWeight: number;
-    LeaveTangent: number;
-    LeaveTangentWeight: number;
-    Time: number;
-    Value: number;
-  };
-  "1": {
-    ArriveTangent: number;
-    ArriveTangentWeight: number;
-    LeaveTangent: number;
-    LeaveTangentWeight: number;
-    Time: number;
-    Value: number;
-  };
-  "2": {
-    ArriveTangent: number;
-    ArriveTangentWeight: number;
-    LeaveTangent: number;
-    LeaveTangentWeight: number;
-    Time: number;
-    Value: number;
-  };
+  "0": SettingsVariablesPCMoveSensitivityCurveKeysItem;
+  "1": SettingsVariablesPCMoveSensitivityCurveKeysItem;
+  "2": SettingsVariablesPCMoveSensitivityCurveKeysItem;
   AimAssistMagnetismModifier: number;
   AimAssistSnappingModifier: number;
   AimAssistStickinessModifier: number;
   AimAssistTrackingModifier: number;
-  LeftThumbstick: {
-    LowerThreshold: number;
-    Type: EDeadZoneType;
-    UpperThreshold: number;
-  };
-  LeftTrigger: {
-    LowerThreshold: number;
-    Type: EDeadZoneType;
-    UpperThreshold: number;
-  };
-  RightThumbstick: {
-    LowerThreshold: number;
-    Type: EDeadZoneType;
-    UpperThreshold: number;
-  };
-  RightTrigger: {
-    LowerThreshold: number;
-    Type: EDeadZoneType;
-    UpperThreshold: number;
-  };
+  LeftThumbstick: SettingsVariablesPCLeftThumbstick;
+  LeftTrigger: SettingsVariablesPCLeftThumbstick;
+  RightThumbstick: SettingsVariablesPCLeftThumbstick;
+  RightTrigger: SettingsVariablesPCLeftThumbstick;
   SnappingAutomaticTargetChangeEnabled: boolean;
   SnappingCameraMovementToleranceEnabled: boolean;
   SnappingCameraRadiusToleranceEnabled: boolean;
@@ -8800,54 +9363,17 @@ export type SettingsVariablesPS5Base = GetStructType<{
 }>;
 
 export type SettingsVariablesPS5Pro = GetStructType<{
-  "0": {
-    ArriveTangent: number;
-    ArriveTangentWeight: number;
-    LeaveTangent: number;
-    LeaveTangentWeight: number;
-    Time: number;
-    Value: number;
-  };
-  "1": {
-    ArriveTangent: number;
-    ArriveTangentWeight: number;
-    LeaveTangent: number;
-    LeaveTangentWeight: number;
-    Time: number;
-    Value: number;
-  };
-  "2": {
-    ArriveTangent: number;
-    ArriveTangentWeight: number;
-    LeaveTangent: number;
-    LeaveTangentWeight: number;
-    Time: number;
-    Value: number;
-  };
+  "0": SettingsVariablesPCMoveSensitivityCurveKeysItem;
+  "1": SettingsVariablesPCMoveSensitivityCurveKeysItem;
+  "2": SettingsVariablesPCMoveSensitivityCurveKeysItem;
   AimAssistMagnetismModifier: number;
   AimAssistSnappingModifier: number;
   AimAssistStickinessModifier: number;
   AimAssistTrackingModifier: number;
-  LeftThumbstick: {
-    LowerThreshold: number;
-    Type: EDeadZoneType;
-    UpperThreshold: number;
-  };
-  LeftTrigger: {
-    LowerThreshold: number;
-    Type: EDeadZoneType;
-    UpperThreshold: number;
-  };
-  RightThumbstick: {
-    LowerThreshold: number;
-    Type: EDeadZoneType;
-    UpperThreshold: number;
-  };
-  RightTrigger: {
-    LowerThreshold: number;
-    Type: EDeadZoneType;
-    UpperThreshold: number;
-  };
+  LeftThumbstick: SettingsVariablesPCLeftThumbstick;
+  LeftTrigger: SettingsVariablesPCLeftThumbstick;
+  RightThumbstick: SettingsVariablesPCLeftThumbstick;
+  RightTrigger: SettingsVariablesPCLeftThumbstick;
   SnappingAutomaticTargetChangeEnabled: boolean;
   SnappingCameraMovementToleranceEnabled: boolean;
   SnappingCameraRadiusToleranceEnabled: boolean;
@@ -8855,54 +9381,17 @@ export type SettingsVariablesPS5Pro = GetStructType<{
 }>;
 
 export type SettingsVariablesWin64 = GetStructType<{
-  "0": {
-    ArriveTangent: number;
-    ArriveTangentWeight: number;
-    LeaveTangent: number;
-    LeaveTangentWeight: number;
-    Time: number;
-    Value: number;
-  };
-  "1": {
-    ArriveTangent: number;
-    ArriveTangentWeight: number;
-    LeaveTangent: number;
-    LeaveTangentWeight: number;
-    Time: number;
-    Value: number;
-  };
-  "2": {
-    ArriveTangent: number;
-    ArriveTangentWeight: number;
-    LeaveTangent: number;
-    LeaveTangentWeight: number;
-    Time: number;
-    Value: number;
-  };
+  "0": SettingsVariablesPCMoveSensitivityCurveKeysItem;
+  "1": SettingsVariablesPCMoveSensitivityCurveKeysItem;
+  "2": SettingsVariablesPCMoveSensitivityCurveKeysItem;
   AimAssistMagnetismModifier: number;
   AimAssistSnappingModifier: number;
   AimAssistStickinessModifier: number;
   AimAssistTrackingModifier: number;
-  LeftThumbstick: {
-    LowerThreshold: number;
-    Type: EDeadZoneType;
-    UpperThreshold: number;
-  };
-  LeftTrigger: {
-    LowerThreshold: number;
-    Type: EDeadZoneType;
-    UpperThreshold: number;
-  };
-  RightThumbstick: {
-    LowerThreshold: number;
-    Type: EDeadZoneType;
-    UpperThreshold: number;
-  };
-  RightTrigger: {
-    LowerThreshold: number;
-    Type: EDeadZoneType;
-    UpperThreshold: number;
-  };
+  LeftThumbstick: SettingsVariablesPCLeftThumbstick;
+  LeftTrigger: SettingsVariablesPCLeftThumbstick;
+  RightThumbstick: SettingsVariablesPCLeftThumbstick;
+  RightTrigger: SettingsVariablesPCLeftThumbstick;
   SnappingAutomaticTargetChangeEnabled: boolean;
   SnappingCameraMovementToleranceEnabled: boolean;
   SnappingCameraRadiusToleranceEnabled: boolean;
@@ -8910,54 +9399,17 @@ export type SettingsVariablesWin64 = GetStructType<{
 }>;
 
 export type SettingsVariablesXSS = GetStructType<{
-  "0": {
-    ArriveTangent: number;
-    ArriveTangentWeight: number;
-    LeaveTangent: number;
-    LeaveTangentWeight: number;
-    Time: number;
-    Value: number;
-  };
-  "1": {
-    ArriveTangent: number;
-    ArriveTangentWeight: number;
-    LeaveTangent: number;
-    LeaveTangentWeight: number;
-    Time: number;
-    Value: number;
-  };
-  "2": {
-    ArriveTangent: number;
-    ArriveTangentWeight: number;
-    LeaveTangent: number;
-    LeaveTangentWeight: number;
-    Time: number;
-    Value: number;
-  };
+  "0": SettingsVariablesPCMoveSensitivityCurveKeysItem;
+  "1": SettingsVariablesPCMoveSensitivityCurveKeysItem;
+  "2": SettingsVariablesPCMoveSensitivityCurveKeysItem;
   AimAssistMagnetismModifier: number;
   AimAssistSnappingModifier: number;
   AimAssistStickinessModifier: number;
   AimAssistTrackingModifier: number;
-  LeftThumbstick: {
-    LowerThreshold: number;
-    Type: EDeadZoneType;
-    UpperThreshold: number;
-  };
-  LeftTrigger: {
-    LowerThreshold: number;
-    Type: EDeadZoneType;
-    UpperThreshold: number;
-  };
-  RightThumbstick: {
-    LowerThreshold: number;
-    Type: EDeadZoneType;
-    UpperThreshold: number;
-  };
-  RightTrigger: {
-    LowerThreshold: number;
-    Type: EDeadZoneType;
-    UpperThreshold: number;
-  };
+  LeftThumbstick: SettingsVariablesPCLeftThumbstick;
+  LeftTrigger: SettingsVariablesPCLeftThumbstick;
+  RightThumbstick: SettingsVariablesPCLeftThumbstick;
+  RightTrigger: SettingsVariablesPCLeftThumbstick;
   SnappingAutomaticTargetChangeEnabled: boolean;
   SnappingCameraMovementToleranceEnabled: boolean;
   SnappingCameraRadiusToleranceEnabled: boolean;
@@ -8965,54 +9417,17 @@ export type SettingsVariablesXSS = GetStructType<{
 }>;
 
 export type SettingsVariablesXSX = GetStructType<{
-  "0": {
-    ArriveTangent: number;
-    ArriveTangentWeight: number;
-    LeaveTangent: number;
-    LeaveTangentWeight: number;
-    Time: number;
-    Value: number;
-  };
-  "1": {
-    ArriveTangent: number;
-    ArriveTangentWeight: number;
-    LeaveTangent: number;
-    LeaveTangentWeight: number;
-    Time: number;
-    Value: number;
-  };
-  "2": {
-    ArriveTangent: number;
-    ArriveTangentWeight: number;
-    LeaveTangent: number;
-    LeaveTangentWeight: number;
-    Time: number;
-    Value: number;
-  };
+  "0": SettingsVariablesPCMoveSensitivityCurveKeysItem;
+  "1": SettingsVariablesPCMoveSensitivityCurveKeysItem;
+  "2": SettingsVariablesPCMoveSensitivityCurveKeysItem;
   AimAssistMagnetismModifier: number;
   AimAssistSnappingModifier: number;
   AimAssistStickinessModifier: number;
   AimAssistTrackingModifier: number;
-  LeftThumbstick: {
-    LowerThreshold: number;
-    Type: EDeadZoneType;
-    UpperThreshold: number;
-  };
-  LeftTrigger: {
-    LowerThreshold: number;
-    Type: EDeadZoneType;
-    UpperThreshold: number;
-  };
-  RightThumbstick: {
-    LowerThreshold: number;
-    Type: EDeadZoneType;
-    UpperThreshold: number;
-  };
-  RightTrigger: {
-    LowerThreshold: number;
-    Type: EDeadZoneType;
-    UpperThreshold: number;
-  };
+  LeftThumbstick: SettingsVariablesPCLeftThumbstick;
+  LeftTrigger: SettingsVariablesPCLeftThumbstick;
+  RightThumbstick: SettingsVariablesPCLeftThumbstick;
+  RightTrigger: SettingsVariablesPCLeftThumbstick;
   SnappingAutomaticTargetChangeEnabled: boolean;
   SnappingCameraMovementToleranceEnabled: boolean;
   SnappingCameraRadiusToleranceEnabled: boolean;
@@ -9020,22 +9435,10 @@ export type SettingsVariablesXSX = GetStructType<{
 }>;
 
 export type SingletonConstant = GetStructType<{
-  "0": {
-    Exposure: number;
-    Value: number;
-  };
-  "1": {
-    Exposure: number;
-    Value: number;
-  };
-  "10": {
-    Exposure: number;
-    Value: number;
-  };
-  "11": {
-    Exposure: number;
-    Value: number;
-  };
+  "0": SingletonConstantSpotLightIntensityItem;
+  "1": SingletonConstantSpotLightIntensityItem;
+  "10": SingletonConstantSpotLightIntensityItem;
+  "11": SingletonConstantSpotLightIntensityItem;
   "12": EDialogEventType;
   "13": EDialogEventType;
   "14": EDialogEventType;
@@ -9044,43 +9447,20 @@ export type SingletonConstant = GetStructType<{
   "17": EDialogEventType;
   "18": EDialogEventType;
   "19": EDialogEventType;
-  "2": {
-    Exposure: number;
-    Value: number;
-  };
+  "2": SingletonConstantSpotLightIntensityItem;
   "20": EDialogEventType;
   "21": EDialogEventType;
   "22": EDialogEventType;
-  "3": {
-    Exposure: number;
-    Value: number;
-  };
-  "4": {
-    Exposure: number;
-    Value: number;
-  };
-  "5": {
-    Exposure: number;
-    Value: number;
-  };
-  "6": {
-    Exposure: number;
-    Value: number;
-  };
-  "7": {
-    Exposure: number;
-    Value: number;
-  };
-  "8": {
-    Exposure: number;
-    Value: number;
-  };
-  "9": {
-    Exposure: number;
-    Value: number;
-  };
-  Army: string[];
-  Bandits: string[];
+  "3": SingletonConstantSpotLightIntensityItem;
+  "4": SingletonConstantSpotLightIntensityItem;
+  "5": SingletonConstantSpotLightIntensityItem;
+  "6": SingletonConstantSpotLightIntensityItem;
+  "7": SingletonConstantSpotLightIntensityItem;
+  "8": SingletonConstantSpotLightIntensityItem;
+  "9": SingletonConstantSpotLightIntensityItem;
+  Army: SpawnActorPrototypeLairCoreVolumes;
+  Bandits: SingletonConstantBandits;
+  bDebugLogAssetLoading: boolean;
   CallPlayer: number;
   Chatter: number;
   CloudOpacity: number;
@@ -9115,31 +9495,19 @@ export type SingletonConstant = GetStructType<{
   Combat_Zombie_Attack: number;
   Combat_Zombie_Moan: number;
   DefeatComment: number;
-  Dualshock4: {
-    Actions: {
-      ActionName: EInputKey;
-      TimeThresholdHold: number;
-    }[];
-    ControllerType: EInputController;
-  };
+  Dualshock4: SingletonConstantKeyboard;
   Emission_LeaderEnd: number;
   Emission_LeaderStart: number;
-  FreeStalkers: string[];
+  FreeStalkers: SpawnActorPrototypeLairCoreVolumes;
   Interact_Friendly: number;
   Interact_Neutral: number;
   Interact_NonFriendly: number;
   Joke: number;
-  Keyboard: {
-    Actions: {
-      ActionName: EInputKey;
-      TimeThresholdHold: number;
-    }[];
-    ControllerType: EInputController;
-  };
+  Keyboard: SingletonConstantKeyboard;
   Latitude: number;
   LightSourceFadingDurationHoursOnDayNightChange: number;
   Longitude: number;
-  Monolith: string[];
+  Monolith: SingletonConstantBandits;
   MoonLightMaxBrightness: number;
   NorthOffsetAngle: number;
   NotifyExpireDuration: number;
@@ -9149,7 +9517,7 @@ export type SingletonConstant = GetStructType<{
   Peaceful_DropCorpse: number;
   Peaceful_LootingEnemyCorpse: number;
   Peaceful_LootingFriendlyCorpse: number;
-  PointLight: VecRotTemp;
+  PointLight: SingletonConstantSpotLight;
   ReflectionCubemapMipSize: number;
   ReflectionCubemapResolution: number;
   ReflectionFloorHeight: number;
@@ -9168,18 +9536,10 @@ export type SingletonConstant = GetStructType<{
   ReflectionSphereLocalGridWidth: number;
   ReflectionSpherePoolMaxSize: number;
   ReflectionSphereRadius: number;
-  ReflectionUpdateDistancesSqr: {
-    High: number;
-    Low: number;
-    Medium: number;
-    Minimal: number;
-  };
+  ReflectionUpdateDistancesSqr: SingletonConstantReflectionUpdateDistancesSqr;
   RunOn: number;
-  SpeechEventCooldown: {
-    CooldownSec: number;
-    EventType: ESpeechEventType;
-  }[];
-  SpotLight: VecRotTemp;
+  SpeechEventCooldown: SingletonConstantSpeechEventCooldown;
+  SpotLight: SingletonConstantSpotLight;
   StarsBrightness: number;
   StartDay: number;
   StartHour: number;
@@ -9189,13 +9549,1537 @@ export type SingletonConstant = GetStructType<{
   StartYear: number;
   SunLightMaxBrightness: number;
   TimeZone: number;
-  Zombie: string[];
-  bDebugLogAssetLoading: boolean;
+  Zombie: SingletonConstantZombie;
+}>;
+
+export type SingletonConstantActions = GetStructType<
+  SingletonConstantActionsItem[]
+>;
+
+export type SingletonConstantActionsItem = GetStructType<{
+  ActionName: EInputKey;
+  TimeThresholdHold: number;
+}>;
+
+export type SingletonConstantBandits = GetStructType<string[]>;
+
+export type SingletonConstantKeyboard = GetStructType<{
+  Actions: SingletonConstantActions;
+  ControllerType: EInputController;
+}>;
+
+export type SingletonConstantSpotLight = GetStructType<{
+  Pitch: number;
+  Roll: number;
+  Temperature: number;
+  X: number;
+  Y: number;
+  Yaw: number;
+  Z: number;
+}>;
+
+export type SingletonConstantReflectionUpdateDistancesSqr = GetStructType<{
+  High: number;
+  Low: number;
+  Medium: number;
+  Minimal: number;
+}>;
+
+export type SingletonConstantSpeechEventCooldown = GetStructType<
+  SingletonConstantSpeechEventCooldownItem[]
+>;
+
+export type SingletonConstantSpeechEventCooldownItem = GetStructType<{
+  CooldownSec: number;
+  EventType: ESpeechEventType;
+}>;
+
+export type SingletonConstantSpotLightIntensityItem = GetStructType<{
+  Exposure: number;
+  Value: number;
+}>;
+
+export type SingletonConstantZombie = GetStructType<string[]>;
+
+export type SmartCoverPrototype = GetStructType<{
+  SID: string;
+  WeaponTypes: SmartCoverPrototypeWeaponTypes;
+}>;
+
+export type SmartCoverPrototypeEnterCoverOffsets = GetStructType<
+  SmartCoverPrototypeLookFromCoverOffsetsItem[]
+>;
+
+export type SmartCoverPrototypeLookFromCoverOffsets = GetStructType<
+  SmartCoverPrototypeLookFromCoverOffsetsItem[]
+>;
+
+export type SmartCoverPrototypeLookFromCoverOffsetsItem = GetStructType<{
+  PerCoverTypeOffsets: SmartCoverPrototypePerCoverTypeOffsets;
+  SmartCoverType: ESmartCoverType;
+}>;
+
+export type SmartCoverPrototypePerCoverTypeOffsets = GetStructType<
+  SmartCoverPrototypePerCoverTypeOffsetsItem[]
+>;
+
+export type SmartCoverPrototypePerCoverTypeOffsetsItem = GetStructType<{
+  ActionSide: EAvailableCoverActionsSide;
+  EnterCoverOffsetVector: string;
+  EnterSide: EAvailableCoverActionsSide;
+  EnterTypes: EAvailableCoverEnterTypes;
+  HeadOffset: string;
+  LookOutSide: EAvailableCoverActionsSide;
+  RootOffset: string;
+  WeaponOffset: string;
+}>;
+
+export type SmartCoverPrototypeWeaponTypes = GetStructType<
+  SmartCoverPrototypeWeaponTypesItem[]
+>;
+
+export type SmartCoverPrototypeWeaponTypesItem = GetStructType<{
+  EnterCoverOffsets: SmartCoverPrototypeEnterCoverOffsets;
+  LookFromCoverOffsets: SmartCoverPrototypeLookFromCoverOffsets;
+  WeaponType: EWeaponType;
+}>;
+
+export type SpawnActorPrototype = GetStructType<{
+  ActiveLair: boolean;
+  ALifeLairsSearchRadius: number;
+  ALifeScenariosGroupSID: string;
+  AllowedUserRestriction: string;
+  AllowFactions: string;
+  AllowNightVisionForQuestNPC: boolean;
+  AllowSpawnInShelter: boolean;
+  AllowSpawnOnIsolatedNavMesh: boolean;
+  AmmoCount: number;
+  AnomaliesPresets: SpawnActorPrototypeAnomaliesPresets;
+  AttachmentSID: string;
+  AttachReferences: string;
+  AvrAgentDiameter: number;
+  bDisableTickForWeatherController: boolean;
+  bForceCodePhysicsDisabled: boolean;
+  bForceWeather: boolean;
+  bRandomChancesForSeparateItems: boolean;
+  bRestrictorVolumeEnabled: boolean;
+  BubbleInitialLocation: SpawnActorPrototypeVector;
+  bUseCustomLocation: boolean;
+  bWakeUpOnStart: boolean;
+  CanAttack: boolean;
+  CanBeCaptured: boolean;
+  CanBeWounded: boolean;
+  CanDefend: boolean;
+  CanInteractWithPlayer: boolean;
+  CenterLocationRotation: SpawnActorPrototypeCenterLocationRotation;
+  ClickerAnomalyArtifactJumpPositions: string;
+  CloseDoorRadius: number;
+  ClueVariablePrototypeSID: string;
+  CollisionSize: SpawnActorPrototypeVector;
+  CombatTacticsOverride: ECombatTactics;
+  CompoundAnimationReferences: string;
+  ContextualActionAccessibility: number;
+  ContextualActionPreconditions: string;
+  ContextualActionSID: string;
+  CorpsePrototypeSID: string;
+  CorpseStashSID: string;
+  DamageMultiplier: number;
+  DataLayers: SpawnActorPrototypeIgnoreCollisionActors;
+  DeadPose: string;
+  DecalsMaterialSID: string;
+  DisableCollision: boolean;
+  DisableDespawn: boolean;
+  DisableDrag: boolean;
+  DisableLoot: boolean;
+  DisablePhysics: boolean;
+  DisablePhysicsAndCollision: boolean;
+  DisableRagdollForQuestProtection: boolean;
+  DisableSpawnAndStrafeInThisAnomaly: boolean;
+  DLC: string;
+  Durability: number;
+  EffectPrototypeSIDs: SpawnActorPrototypeIgnoreCollisionActors;
+  ElectroBakedData: SpawnActorPrototypeElectroBakedData;
+  EnableSmartLootIfPossible: boolean;
+  FactionGroup: SpawnActorPrototypeFactionGroup;
+  FogDensity: number;
+  FogDensitySecond: number;
+  FogDensitySecondFogData: number;
+  FreeformTriggerHeight: number;
+  FreeformTriggerVertices: SpawnActorPrototypeFreeformTriggerVertices;
+  GeigerCurve: string;
+  GeigerRadiationIntensity: number;
+  GeigerTriggerOffset: number;
+  GlobalOnlineModifierDistance: number;
+  GlobalOtherOnlineModifierDistance: number;
+  HP: number;
+  HubOwnerGuid: string;
+  ID: number;
+  IgnoreCollisionActors: string;
+  InfiniteRespawn: boolean;
+  InitialInhabitantFaction: string;
+  InLocationRotation: SpawnActorPrototypeInLocationRotation;
+  IsALifePoint: boolean;
+  IsLootedOnDifficulties: string;
+  ItemGeneratorSettings: string;
+  Items: SpawnActorPrototypeItems;
+  ItemSID: string;
+  KillRestrictedFactions: boolean;
+  LairPreferredSpawnType: ELairPreferredSpawnType;
+  LairPrototypeSID: string;
+  LairType: ELairType;
+  LevelName: string;
+  LightningBallLiveBoxExtent: SpawnActorPrototypeVector;
+  LightningBallNavigationPoints: SpawnActorPrototypeLightningBallNavigationPoints;
+  LightningBallPathUsage: boolean;
+  LocationSID: string;
+  LockReceivers: SpawnActorPrototypeLockReceivers;
+  MainInfoTopicOwner: string;
+  MarkerSID: string;
+  MaximumCount: number;
+  MaxRespawnCount: number;
+  MaxSpawnRank: ERank;
+  Mesh: string;
+  MeshPath: string;
+  MinPatrolNeed: number;
+  MinSpawnRank: ERank;
+  MoveSpeedMultiplier: number;
+  NavModifierVolume: string;
+  NavModifierVolumes: SpawnActorPrototypeNavModifierVolumes;
+  NodeCreationVersion: number;
+  NodePrototypeVersion: number;
+  OnlineModifierDistance: number;
+  OverrideArtifactSpawnLocation: string;
+  OverrideFaction: string;
+  OverrideRank: boolean;
+  OwningFaction: string;
+  PackOfItemsPrototypeSID: string;
+  Path: SpawnActorPrototypePath;
+  PatrolPoints: SpawnActorPrototypePatrolPoints;
+  PillowAnomalyBiomeType: EPillowAnomalyBiomeType;
+  PlaceholderActorGuid: string;
+  PlaceholderMapPath: string;
+  PositionX: number;
+  PositionY: number;
+  PositionZ: number;
+  PossibleInhabitantFactions: SpawnActorPrototypePossibleInhabitantFactions;
+  PostEffectProcessorSID: string;
+  PostProcessConfig: string;
+  PostProcessRadiationCycleSpeed: number;
+  PostProcessRadiationIntensity: number;
+  PresetIndex: number;
+  Priority: number;
+  PSYControllerArtifactItemSID: string;
+  PSYControllerArtifactLocation: SpawnActorPrototypeVector;
+  PsyNPCType: EPsyNPCType;
+  RadiationCycleSpeedPostEffectSID: string;
+  RadiationPerSecondValue: number;
+  Radioactivity: ERadiationPreset;
+  RadioactivityValue: number;
+  Rank: ERank;
+  RespawnMembers: boolean;
+  RespawnOnNPCCount: number;
+  RespawnPoints: SingletonConstantBandits;
+  RestrictedFactions: SpawnActorPrototypeRestrictedFactions;
+  RestrictionRadius: number;
+  RotatorAnglePitch: number;
+  RotatorAngleRoll: number;
+  RotatorAngleYaw: number;
+  ScaleX: number;
+  ScaleY: number;
+  ScaleZ: number;
+  ScenariosGroupPriority: EALifeGroupPriorityType;
+  ShouldTraceOnOverlap: boolean;
+  ShowOnCompass: boolean;
+  ShowOnMap: boolean;
+  SID: string;
+  SignalReceivers: SpawnActorPrototypeSignalReceivers;
+  SignalSenders: SpawnActorPrototypeSignalSenders;
+  SimplifiedOverlap: boolean;
+  SpawnedGenericMembers: string;
+  SpawnedPrototypeSID: string;
+  SpawnedSquadMembersCount: number;
+  SpawnInRadius: number;
+  SpawnOnStart: boolean;
+  SpawnType: ESpawnType;
+  SquadMembersQuestSIDs: SpawnActorPrototypeSquadMembersQuestSIDs;
+  StartPresetID: number;
+  StartWaitTime: number;
+  StashPrototypeSID: string;
+  TeleportGroupSID: string;
+  TextAboveActor: string;
+  TileOffsetIndex: number;
+  TriggerShape: ETriggerShape;
+  UnlockDoorTime: number;
+  UnlockReceivers: SpawnActorPrototypeLockReceivers;
+  UpgradeSID: string;
+  VolumeDailySchedulePresetSID: string;
+  Volumes: SpawnActorPrototypeVolumes;
+  VolumeSID: string;
+  VolumetricCoverRestrictions: SpawnActorPrototypeVolumetricCoverRestrictions;
+}>;
+
+export type SpawnActorPrototypeAnomaliesLocationRotation = GetStructType<
+  SpawnActorPrototypeAnomaliesLocationRotationItem[]
+>;
+
+export type SpawnActorPrototypeAnomaliesLocationRotationItem = GetStructType<{
+  Pitch: number;
+  Roll: number;
+  X: number;
+  Y: number;
+  Yaw: number;
+  Z: number;
+}>;
+
+export type SpawnActorPrototypeAnomaliesPresets = GetStructType<
+  SpawnActorPrototypeAnomaliesPresetsItem[]
+>;
+
+export type SpawnActorPrototypeAnomaliesPresetsItem = GetStructType<
+  (SpawnActorPrototypeAnomaliesSpawnData | string)[]
+>;
+
+export type SpawnActorPrototypeAnomaliesSpawnData = GetStructType<
+  SpawnActorPrototypeAnomaliesSpawnDataItem[]
+>;
+
+export type SpawnActorPrototypeAnomaliesSpawnDataItem = GetStructType<{
+  AnomaliesLocationRotation: SpawnActorPrototypeAnomaliesLocationRotation;
+  AnomalySID: string;
+}>;
+
+export type SpawnActorPrototypeAttachReferences = GetStructType<
+  SpawnActorPrototypeAttachReferencesItem[]
+>;
+
+export type SpawnActorPrototypeAttachReferencesItem = GetStructType<{
+  ActorGuid: string;
+  AttachReference: string;
+}>;
+
+export type SpawnActorPrototypeCenterLocationRotation = GetStructType<
+  SpawnActorPrototypeInLocationRotationItemItem[]
+>;
+
+export type SpawnActorPrototypeContextualActionPreconditions = GetStructType<
+  SpawnActorPrototypeContextualActionPreconditionsItem[]
+>;
+
+export type SpawnActorPrototypeContextualActionPreconditionsItem =
+  GetStructType<{
+    AllowedAgentType: number;
+    AllowedFactions: SpawnActorPrototypeIgnoreCollisionActors;
+    AllowedUserRestriction: string;
+    GlobalVariableName: string;
+    IsTargetWeather: boolean;
+    ItemPrototypeSID: string;
+    ShouldBeActive: boolean;
+    ShouldBeTrue: boolean;
+    Type: EContextualActionPreconditionType;
+    Weather: SpawnActorPrototypeWeather;
+  }>;
+
+export type SpawnActorPrototypeDestroyReceiver = GetStructType<{
+  Guid: string;
+}>;
+
+export type SpawnActorPrototypeDestroySender = GetStructType<{
+  Guid: string;
+  Signals: string;
+}>;
+
+export type SpawnActorPrototypeElectroBakedData = GetStructType<
+  SpawnActorPrototypeElectroBakedDataItem[]
+>;
+
+export type SpawnActorPrototypeElectroBakedDataItem = GetStructType<{
+  ElectroNormalVector: string;
+  ElectroTraceEndPoint: string;
+  ElectroTraceStartPoint: string;
+}>;
+
+export type SpawnActorPrototypeFactionGroup = GetStructType<{
+  Factions: SpawnActorPrototypeFactions;
+  LairSID: string;
+}>;
+
+export type SpawnActorPrototypeFactions = GetStructType<
+  SpawnActorPrototypeFactionsItem[]
+>;
+
+export type SpawnActorPrototypeFactionsItem = GetStructType<{
+  Faction: string;
+  SpawnBoxes: SpawnActorPrototypeSpawnBoxes;
+}>;
+
+export type SpawnActorPrototypeFreeformTriggerVertices = GetStructType<
+  SpawnActorPrototypeFreeformTriggerVerticesItem[]
+>;
+
+export type SpawnActorPrototypeFreeformTriggerVerticesItem = GetStructType<{
+  X: number;
+  Y: number;
+}>;
+
+export type SpawnActorPrototypeIgnoreCollisionActors = GetStructType<string[]>;
+
+export type SpawnActorPrototypeInLocationRotation = GetStructType<
+  SpawnActorPrototypeInLocationRotationItem[]
+>;
+
+export type SpawnActorPrototypeInLocationRotationItem = GetStructType<
+  SpawnActorPrototypeInLocationRotationItemItem[]
+>;
+
+export type SpawnActorPrototypeInLocationRotationItemItem = GetStructType<{
+  Rotation: SpawnActorPrototypeRotation;
+  Vector: SpawnActorPrototypeVector;
+}>;
+
+export type SpawnActorPrototypeItemGenerators = GetStructType<
+  SpawnActorPrototypeItemGeneratorsItem[]
+>;
+
+export type SpawnActorPrototypeItemGeneratorSettings = GetStructType<
+  SpawnActorPrototypeItemGeneratorSettingsItem[]
+>;
+
+export type SpawnActorPrototypeItemGeneratorSettingsItem = GetStructType<{
+  ItemGenerators: SpawnActorPrototypeItemGenerators;
+  PlayerRank: ERank;
+}>;
+
+export type SpawnActorPrototypeItemGeneratorsItem = GetStructType<{
+  PrototypeSID: string;
+}>;
+
+export type SpawnActorPrototypeItems = GetStructType<
+  SpawnActorPrototypeItemsItem[]
+>;
+
+export type SpawnActorPrototypeItemsItem = GetStructType<{
+  ChanceToSpawn: number;
+  DisablePhysicsAndCollision: boolean;
+  MaxAmount: number;
+  MinAmount: number;
+  PrototypeSID: string;
+}>;
+
+export type SpawnActorPrototypeLairCoreVolumes = GetStructType<string[]>;
+
+export type SpawnActorPrototypeLairTerritoryVolumes = GetStructType<string[]>;
+
+export type SpawnActorPrototypeLightningBallLocation = GetStructType<
+  SpawnActorPrototypeVector[]
+>;
+
+export type SpawnActorPrototypeLightningBallNavigationPoints = GetStructType<
+  SpawnActorPrototypeLightningBallNavigationPointsItem[]
+>;
+
+export type SpawnActorPrototypeLightningBallNavigationPointsItem =
+  GetStructType<{
+    LightningBallLocation: SpawnActorPrototypeLightningBallLocation;
+    LightningBallNeighborLocations: SpawnActorPrototypeLightningBallNeighborLocations;
+    LightningBallPatrolPoint: boolean;
+  }>;
+
+export type SpawnActorPrototypeLightningBallNeighborLocations = GetStructType<
+  number[]
+>;
+
+export type SpawnActorPrototypeLockReceivers = GetStructType<string[]>;
+
+export type SpawnActorPrototypeMaxSpawnQuantity = GetStructType<{
+  Max: number;
+  Min: number;
+}>;
+
+export type SpawnActorPrototypeMilitaryNewbie = GetStructType<{
+  MinQuantityPerArchetype: number;
+  SpawnWeight: number;
+}>;
+
+export type SpawnActorPrototypeNavModifierVolumes = GetStructType<string[]>;
+
+export type SpawnActorPrototypeNewbie = GetStructType<{
+  InitialSpawnQuantityPercent: number;
+  InitialSpawnQuantityRespawnTimeSeconds: number;
+  MaxSpawnQuantity: number;
+  MaxSpawnQuantityRespawnTimeSeconds: number;
+  SpawnSettingsPerArchetypes: SpawnActorPrototypeSpawnSettingsPerArchetypes;
+  WipeRespawnTimeoutSeconds: number;
+}>;
+
+export type SpawnActorPrototypePath = GetStructType<
+  SpawnActorPrototypePathItem[]
+>;
+
+export type SpawnActorPrototypePathItem = GetStructType<{
+  Location: string;
+  MovementType: EMovementBehaviour;
+}>;
+
+export type SpawnActorPrototypePatrolPointLinks = GetStructType<
+  SpawnActorPrototypePatrolPointLinksItem[]
+>;
+
+export type SpawnActorPrototypePatrolPointLinksItem = GetStructType<{
+  DestinationPointIndex: number;
+  Weight: number;
+}>;
+
+export type SpawnActorPrototypePatrolPoints = GetStructType<
+  SpawnActorPrototypePatrolPointsItem[]
+>;
+
+export type SpawnActorPrototypePatrolPointsItem = GetStructType<{
+  bIsEndPoint: boolean;
+  ContextualActionSearchRadius: number;
+  Location: string;
+  PatrolPointLinks: string;
+  StayTimeMax: number;
+  StayTimeMin: number;
+}>;
+
+export type SpawnActorPrototypePossibleInhabitantFactions = GetStructType<
+  SpawnActorPrototypePossibleInhabitantFactionsItem[]
+>;
+
+export type SpawnActorPrototypePossibleInhabitantFactionsItem = GetStructType<{
+  Faction: string;
+  SpawnSettingsPerPlayerRanks: SpawnActorPrototypeSpawnSettingsPerPlayerRanks;
+}>;
+
+export type SpawnActorPrototypeRestrictedFactions = GetStructType<string[]>;
+
+export type SpawnActorPrototypeRotation = GetStructType<{
+  Pitch: number;
+  Roll: number;
+  Yaw: number;
+}>;
+
+export type SpawnActorPrototypeSignalReceivers = GetStructType<{
+  DestroyReceiver: SpawnActorPrototypeDestroyReceiver;
+}>;
+
+export type SpawnActorPrototypeSignals = GetStructType<string[]>;
+
+export type SpawnActorPrototypeSignalSenders = GetStructType<{
+  DestroySender: SpawnActorPrototypeDestroySender;
+}>;
+
+export type SpawnActorPrototypeSpawnBoxes = GetStructType<
+  SpawnActorPrototypeSpawnBoxesItem[]
+>;
+
+export type SpawnActorPrototypeSpawnBoxesItem = GetStructType<{
+  Extent: string;
+  Location: string;
+}>;
+
+export type SpawnActorPrototypeSpawnedGenericMembers = GetStructType<
+  SpawnActorPrototypeSpawnedGenericMembersItem[]
+>;
+
+export type SpawnActorPrototypeSpawnedGenericMembersItem = GetStructType<{
+  SpawnedPrototypeSID: string;
+  SpawnedSquadMembersCount: number;
+}>;
+
+export type SpawnActorPrototypeSpawnSettingsPerArchetypes = GetStructType<
+  Record<Archetype, GenericLairPrototypeBlinddog>
+>;
+
+export type SpawnActorPrototypeSpawnSettingsPerPlayerRanks = GetStructType<{
+  Experienced: SpawnActorPrototypeNewbie;
+  Master: SpawnActorPrototypeNewbie;
+  Newbie: SpawnActorPrototypeNewbie;
+  Veteran: SpawnActorPrototypeNewbie;
+}>;
+
+export type SpawnActorPrototypeSquadMembersQuestSIDs = GetStructType<string[]>;
+
+export type SpawnActorPrototypeVector = GetStructType<{
+  X: number;
+  Y: number;
+  Z: number;
+}>;
+
+export type SpawnActorPrototypeVolumes = GetStructType<
+  (
+    | SpawnActorPrototypeLairCoreVolumes
+    | SpawnActorPrototypeLairTerritoryVolumes
+    | SpawnActorPrototypeNavModifierVolumes
+    | SpawnActorPrototypeVolumesItem
+  )[]
+>;
+
+export type SpawnActorPrototypeVolumesItem = GetStructType<{
+  bShowMarker: boolean;
+  Center: string;
+  Extents: string;
+  NumOfContextualActions: number;
+  RestrictorVolume: string;
+  Rotator: string;
+  ShowMarker: boolean;
+  SpaceRestrictorOffset: number;
+  Volume: string;
+}>;
+
+export type SpawnActorPrototypeVolumetricCoverRestrictions = GetStructType<{
+  bEnabled: boolean;
+  Volumes: string;
+}>;
+
+export type SpawnActorPrototypeWeather = GetStructType<EWeather[]>;
+
+export type SQ95_GlobalVariablePrototype = GetStructType<{
+  DefaultValue: string;
+  SID: string;
+  Type: EGlobalVariableType;
+}>;
+
+export type StashPrototype = GetStructType<{
+  CustomIconPath: string;
+  ItemGenerators: StashPrototypeItemGenerators;
+  SID: string;
+}>;
+
+export type StashPrototypeAttachParams = GetStructType<
+  StashPrototypeAttachParamsItem[]
+>;
+
+export type StashPrototypeAttachParamsItem = GetStructType<{
+  MaxPrice: number;
+}>;
+
+export type StashPrototypeConsumablesParams = GetStructType<
+  StashPrototypeConsumablesParamsItem[]
+>;
+
+export type StashPrototypeConsumablesParamsItem = GetStructType<{
+  Items: StashPrototypeItems;
+  ItemSetCount: number;
+  MaxSpawnChance: number;
+  MinSpawnChance: number;
+}>;
+
+export type StashPrototypeGrenadesParams = GetStructType<
+  StashPrototypeConsumablesParamsItem[]
+>;
+
+export type StashPrototypeHealthParams = GetStructType<
+  StashPrototypeHealthParamsItem[]
+>;
+
+export type StashPrototypeHealthParamsItem = GetStructType<{
+  Curve: string;
+  Items: StashPrototypeItems;
+  MaxSpawnChance: number;
+  MinSpawnChance: number;
+}>;
+
+export type StashPrototypeItemGenerators = GetStructType<
+  StashPrototypeItemGeneratorsItem[]
+>;
+
+export type StashPrototypeItemGeneratorsItem = GetStructType<{
+  Rank: ERank;
+  SmartLootParams: StashPrototypeSmartLootParams;
+}>;
+
+export type StashPrototypeItems = GetStructType<StashPrototypeItemsItem[]>;
+
+export type StashPrototypeItemsItem = GetStructType<{
+  Chance: number;
+  ItemPrototypeSID: string;
+  MaxCount: number;
+  MinCount: number;
+  Weight: number;
+}>;
+
+export type StashPrototypePistolWeaponParams = GetStructType<
+  StashPrototypePrimaryWeaponParamsItem[]
+>;
+
+export type StashPrototypePrimaryWeaponParams = GetStructType<
+  StashPrototypePrimaryWeaponParamsItem[]
+>;
+
+export type StashPrototypePrimaryWeaponParamsItem = GetStructType<{
+  Items: StashPrototypeItems;
+  MainWeaponAmmoCount: number;
+  MaxSpawnChance: number;
+  MinSpawnChance: number;
+  PriorityCaliber: EAmmoCaliber;
+}>;
+
+export type StashPrototypeSecondaryWeaponParams = GetStructType<
+  StashPrototypePrimaryWeaponParamsItem[]
+>;
+
+export type StashPrototypeSmartLootParams = GetStructType<{
+  AttachParams: StashPrototypeAttachParams;
+  ConsumablesParams: StashPrototypeConsumablesParams;
+  GrenadesParams: StashPrototypeGrenadesParams;
+  HealthParams: StashPrototypeHealthParams;
+  PistolWeaponParams: StashPrototypePistolWeaponParams;
+  PrimaryWeaponParams: StashPrototypePrimaryWeaponParams;
+  SecondaryWeaponParams: StashPrototypeSecondaryWeaponParams;
+}>;
+
+export type TeleportGroupPrototype = GetStructType<{
+  MinTeleportDistance: number;
+  SID: string;
+}>;
+
+export type TeleportPrototype = GetStructType<{
+  EffectPrototypeSIDs: SpawnActorPrototypeSignals;
+  SID: string;
+  TeleportType: EGSCTeleportType;
+}>;
+
+export type TestNPCObjPrototype = GetStructType<{
+  CustomMeshGeneratorPrototypeSID: string;
+  Faction: string;
+  ID: number;
+  NPCPrototypeSID: string;
+  NPCType: ENPCType;
+  SID: string;
+}>;
+
+export type ThreatPrototype = GetStructType<{
+  Actions: ThreatPrototypeActions;
+  AlertedRadius: number;
+  AlertedRadiusExpanded: number;
+  bIdentifyEnemyByThreatLevel: boolean;
+  DefaultThreatValueFreezeTimeSeconds: number;
+  DefaultThreatValueLossPerSecond: number;
+  ID: number;
+  IdentifyAsEnemyRadius: number;
+  IdentifyAsEnemyTime: number;
+  MaxThreatLevelValue: number;
+  MaxThreatLevelValueBeforeIndentification: number;
+  ReachedThrealLevelSpeechCommands: AIGlobalSoundEventTypeSpreadSpeedList;
+  ShowThreatIndicator: boolean;
+  SID: string;
+  ThreatParams: ThreatPrototypeThreatParams;
+}>;
+
+export type ThreatPrototypeActions = GetStructType<
+  ThreatPrototypeActionsItem[]
+>;
+
+export type ThreatPrototypeActionsItem = GetStructType<{
+  ThreatLevelValueMax: number;
+  ThreatLevelValueMin: number;
+  ThreatValueFreezeTimeSeconds: number;
+  ThreatValueLossPerSecond: number;
+  Type: EThreatActionType;
+}>;
+
+export type ThreatPrototypeRelationLevels = GetStructType<ERelationLevel[]>;
+
+export type ThreatPrototypeThreatParams = GetStructType<
+  ThreatPrototypeThreatParamsItem[]
+>;
+
+export type ThreatPrototypeThreatParamsItem = GetStructType<{
+  ConfidenceDropToZeroTimeSeconds: number;
+  RelationLevels: ThreatPrototypeRelationLevels;
+  SoundType: ESoundEventType;
+  ThreatValue: number;
+  Type: EThreatType;
+}>;
+
+export type TradePrototype = GetStructType<{
+  bInfiniteMoney: boolean;
+  BuyDiscounts: TradePrototypeBuyDiscounts;
+  Money: number;
+  RefreshConditionSID: string;
+  SellDiscounts: TradePrototypeSellDiscounts;
+  SID: string;
+  TradeGenerators: TradePrototypeTradeGenerators;
+  TradeTimeLength: number;
+  TradeTimeStart: number;
+}>;
+
+export type TradePrototypeBuyDiscounts = GetStructType<
+  TradePrototypeBuyDiscountsItem[]
+>;
+
+export type TradePrototypeBuyDiscountsItem = GetStructType<{
+  ConditionSID: string;
+  Modifier: number;
+}>;
+
+export type TradePrototypeBuyLimitations = GetStructType<EItemType[]>;
+
+export type TradePrototypeSellDiscounts = GetStructType<
+  TradePrototypeBuyDiscountsItem[]
+>;
+
+export type TradePrototypeTradeGenerators = GetStructType<
+  TradePrototypeTradeGeneratorsItem[]
+>;
+
+export type TradePrototypeTradeGeneratorsItem = GetStructType<{
+  ArmorSellMinDurability: number;
+  BuyLimitations: TradePrototypeBuyLimitations;
+  BuyModifier: number;
+  ConditionSID: string;
+  ItemGeneratorPrototypeSID: string;
+  SellModifier: number;
+  WeaponSellMinDurability: number;
+}>;
+
+export type TradeTestBoolProviderPrototype = GetStructType<{
+  Days: number;
+  Faction: string;
+  Hours: number;
+  ProviderSID: string;
+  ProviderSIDs: SpawnActorPrototypeSignals;
+  Ranks: TradeTestBoolProviderPrototypeRanks;
+  ReputationThreshold: number;
+  SID: string;
+  Type: EBoolProviderType;
+}>;
+
+export type TradeTestBoolProviderPrototypeRanks = GetStructType<ERank[]>;
+
+export type UpdatePopupPrototype = GetStructType<{
+  SaveFileVersion: number;
+  SID: string;
+  TabData: UpdatePopupPrototypeTabData;
+}>;
+
+export type UpdatePopupPrototypeTabData = GetStructType<
+  UpdatePopupPrototypeTabDataItem[]
+>;
+
+export type UpdatePopupPrototypeTabDataItem = GetStructType<{
+  Background: string;
+  ContentData: SpawnActorPrototypeNavModifierVolumes;
+  ContentSID: string;
+  TabBackground: string;
+  TabSID: string;
+}>;
+
+export type UpgradePrototype = GetStructType<{
+  AttachPrototypeSIDs: SingletonConstantZombie;
+  BaseCost: number;
+  BlockingGlobalVariables: UpgradePrototypeBlockingGlobalVariables;
+  BlockingUpgradePrototypeSIDs: SpawnActorPrototypeIgnoreCollisionActors;
+  ConnectionLines: UpgradePrototypeConnectionLines;
+  DiscountCoefficient: number;
+  EffectPrototypeSIDs: UpgradePrototypeEffectPrototypeSIDs;
+  HiddenWihoutItem: boolean;
+  Hint: string;
+  HorizontalPosition: number;
+  Icon: string;
+  ID: number;
+  Image: string;
+  InterchangeableUpgradePrototypeSIDs: SpawnActorPrototypeIgnoreCollisionActors;
+  IsModification: boolean;
+  LocalizationSID: string;
+  RepairCostModifier: number;
+  RequiredGlobalVariables: UpgradePrototypeRequiredGlobalVariables;
+  RequiredItemPrototypeSIDs: SpawnActorPrototypeIgnoreCollisionActors;
+  RequiredUpgradePrototypeSIDs: SpawnActorPrototypeSignals;
+  SID: string;
+  Skills: SpawnActorPrototypeIgnoreCollisionActors;
+  Text: string;
+  UpgradeCancelSound: string;
+  UpgradeModificationSound: string;
+  UpgradeSound: string;
+  UpgradeTargetPart: EUpgradeTargetPartType;
+  VerticalPosition: EUpgradeVerticalPosition;
+}>;
+
+export type UpgradePrototypeBlockingGlobalVariables = GetStructType<
+  UpgradePrototypeRequiredGlobalVariablesItem[]
+>;
+
+export type UpgradePrototypeConnectionLines = GetStructType<
+  EConnectionLineState[]
+>;
+
+export type UpgradePrototypeEffectPrototypeSIDs = GetStructType<string[]>;
+
+export type UpgradePrototypeRequiredGlobalVariables = GetStructType<
+  UpgradePrototypeRequiredGlobalVariablesItem[]
+>;
+
+export type UpgradePrototypeRequiredGlobalVariablesItem = GetStructType<{
+  GlobalVariableSID: string;
+  Value: number;
+}>;
+
+export type UserNotificationPrototype = GetStructType<{
+  ID: number;
+  SID: string;
+  Sound: string;
+  Text: string;
+  Title: string;
+  Type: EUserNotificationType;
+}>;
+
+export type VisionScannerPrototype = GetStructType<{
+  AnglePercentToScorePenaltyCurve: string;
+  CentralVisionDistance: number;
+  DaytimeDistanceAndAnglesVisibilityPercentModificationCurve: string;
+  DistancePercentToScorePenaltyCurve: string;
+  HorizontalVisionHalvedAngleDegrees: number;
+  LoseTracePointDelta: number;
+  LoseVisionAngleExtensionMultiplier: number;
+  LoseVisionDistanceExtensionMultiplier: number;
+  LostVisibilityFreezeTimeSeconds: number;
+  LostVisibilityScorePerSecondLoss: number;
+  LuminanceToDistanceFlashlightPenaltyFactor: number;
+  LuminanceToDistanceIlluminatedPenaltyFactor: number;
+  LuminanceToDistanceNVGPenaltyFactor: number;
+  LuminanceToDistancePenaltyFactor: number;
+  LuminanceToScoreFlashlightPenaltyFactor: number;
+  LuminanceToScoreIlluminatedPenaltyFactor: number;
+  LuminanceToScoreNVGPenaltyFactor: number;
+  LuminanceToScorePenaltyFactor: number;
+  MaxVisibilityScore: number;
+  MinCombatHoldPositionSignificantVisibilityScore: VisionScannerPrototypeMinSignificantVisibilityScore;
+  MinCombatSignificantVisibilityScore: VisionScannerPrototypeMinSignificantVisibilityScore;
+  MinCombatSurpriseEnemyLocationSignificantVisibilityScore: VisionScannerPrototypeMinSignificantVisibilityScore;
+  MinSignificantVisibilityScore: VisionScannerPrototypeMinSignificantVisibilityScore;
+  PeripheralVisionDistance: number;
+  SID: string;
+  SurpriseEnemyLocationDistance: number;
+  TooCloseVisionDistance: number;
+  TooCloseVisionDistanceMultiplier: number;
+  VerticalVisionHalvedAngleDegrees: number;
+}>;
+
+export type VisionScannerPrototypeMinSignificantVisibilityScore = GetStructType<
+  number[]
+>;
+
+export type VisionTickPrototype = GetStructType<{
+  NPCDeadBudget: number;
+  NPCEnemyBudget: number;
+  NPCNotEnemyBudget: number;
+  OtherTargetsBudget: number;
+  PlayerEnemyBudget: number;
+  PlayerFlashlightBudget: number;
+  PlayerNotEnemyBudget: number;
+  PlayerSeesNPCBudget: number;
+  PopulateTargetsDelay: number;
+  SID: string;
+}>;
+
+export type VoiceModulatorPrototype = GetStructType<{
+  AuxBusControlValue: number;
+  AuxBusPath: string;
+  ObjectOffSFX: string;
+  ObjectOnSFX: string;
+  PresetRTPCPath: string;
+  PresetRTPCValue: number;
+  SID: string;
 }>;
 
 export type WaterVariable = GetStructType<
-  {
-    RainyWater: string;
-    RegularWater: string;
-  }[]
+  WaterVariableRainyWaterMaterialsItem[]
 >;
+
+export type WaterVariableRainyWaterMaterialsItem = GetStructType<{
+  RainyWater: string;
+  RegularWater: string;
+}>;
+
+export type WeaponAttributesPrototype = GetStructType<{
+  AimShellShutterSocketName: string;
+  AIParameters: WeaponAttributesPrototypeAIParameters;
+  AnimBlueprint: string;
+  DefaultWeaponSettingsSID: string;
+  MuzzleSocketName: string;
+  ParticlesBasedOnHeating: AIGlobalSoundEventTypeSpreadSpeedList;
+  ShellShutterSocketName: string;
+  SID: string;
+}>;
+
+export type WeaponAttributesPrototypeAIParameters = GetStructType<{
+  BehaviorTypes: WeaponAttributesPrototypeBehaviorTypes;
+}>;
+
+export type WeaponAttributesPrototypeBehaviorTypes = GetStructType<{
+  Experienced: WeaponAttributesPrototypeExperienced;
+  Master: WeaponAttributesPrototypeExperienced;
+  Newbie: WeaponAttributesPrototypeNewbie;
+  Veteran: WeaponAttributesPrototypeExperienced;
+  Zombie: WeaponAttributesPrototypeExperienced;
+}>;
+
+export type WeaponAttributesPrototypeExperienced = GetStructType<{
+  CharacterWeaponSettingsSID: string;
+  CombatEffectiveFireDistanceMax: string;
+  CombatEffectiveFireDistanceMin: string;
+  Long: NPCWeaponAttributesPrototypeLong;
+  Medium: NPCWeaponAttributesPrototypeLong;
+  NonAutomaticWeaponShotDelay: number;
+  Short: NPCWeaponAttributesPrototypeLong;
+}>;
+
+export type WeaponAttributesPrototypeNewbie = GetStructType<{
+  CharacterWeaponSettingsSID: string;
+  CombatEffectiveFireDistanceMax: string;
+  CombatEffectiveFireDistanceMin: string;
+  Long: NPCWeaponAttributesPrototypeLong;
+  Medium: NPCWeaponAttributesPrototypeLong;
+  NonAutomaticWeaponShotDelay: number;
+  Short: NPCWeaponAttributesPrototypeLong;
+}>;
+
+export type WeaponFloatProviderPrototype = GetStructType<{
+  ProviderSIDs: SpawnActorPrototypeSignals;
+  SID: string;
+  Type: EFloatProviderType;
+  Value: number;
+}>;
+
+export type WeaponGeneralSetupPrototype = GetStructType<{
+  AdditionalBulletsAfterReloadingCount: number;
+  AimGamepadAimAssistPresetSID: string;
+  AimingCurve: string;
+  AimingEffects: WeaponGeneralSetupPrototypeAimingEffects;
+  AimingFOVModifier: number;
+  AimingMovementSpeedModifier: number;
+  AimingSound: string;
+  AimingTime: number;
+  AimingWeaponFOVCurve: string;
+  AimMouseAimAssistPresetSID: string;
+  AimVFXSocketMinAlpha: number;
+  AmmoCaliber: EAmmoCaliber;
+  AmmoPerShot: string;
+  AmmoTypeProjectiles: WeaponGeneralSetupPrototypeAmmoTypeProjectiles;
+  BoltActionState: EBoltActionWeaponState;
+  bSpawnShell: boolean;
+  BulletMeshPath: string;
+  BulletsSockets: SpawnActorPrototypeLockReceivers;
+  CameraRecoilPatternBlendCurve: string;
+  CameraRecoilPatternPath: string;
+  CompatibleAttachments: WeaponGeneralSetupPrototypeCompatibleAttachments;
+  CooldownTime: number;
+  CrosshairType: ECrosshairType;
+  DefaultEjectMagazineSocketName: string;
+  DefaultFireType: EFireType;
+  DefaultInsertMagazineSocketName: string;
+  DispersionParams: WeaponGeneralSetupPrototypeDispersionParams;
+  DisplayBP: string;
+  FireEventBreak: string;
+  FireEventLoop: string;
+  FireEventOneShot: string;
+  FireInterval: number;
+  FireIntervalModifiers: WeaponGeneralSetupPrototypeFireIntervalModifiers;
+  FireIntervalRTPCParameter: string;
+  FireQueueCount: number;
+  FireTypes: WeaponGeneralSetupPrototypeFireTypes;
+  FullReloadTimeMultiplier: number;
+  HideEquipmentTime: number;
+  HipGamepadAimAssistPresetSID: string;
+  HipMouseAimAssistPresetSID: string;
+  HoldBreathDrainModifier: number;
+  ItemTypeSwitchValue: string;
+  JamType: EJamType;
+  LastBulletInClipEvent: string;
+  LastClipBulletsCount: number;
+  LastClipBulletsDamageModifier: number;
+  LastShootIdle: boolean;
+  LastTotalBulletsCount: number;
+  LastTotalBulletsDamageModifier: number;
+  LeanAimingRestoreTime: number;
+  LeanAimingTime: number;
+  LinearCurveShotsToNormalize: string;
+  LinearCurveStartShot: string;
+  MaxAmmo: number;
+  MaxDeadNPCLoadedAmmoCount: number;
+  MaxHeatingValue: number;
+  MaxJamChance: number;
+  MaxJamDurabilityThreshold: number;
+  MechModulatorRTPCParameter: string;
+  MinDeadNPCLoadedAmmoCount: number;
+  MinJamChance: number;
+  MinJamDurabilityThreshold: number;
+  NumberOfShotsBeforeDelay: number;
+  OffsetAimingConditionSID: string;
+  OffsetAimingFOVModifier: number;
+  OffsetAimingOffSound: string;
+  OffsetAimingOnSound: string;
+  OffsetAimingTime: number;
+  OffsetAimingWeaponFOVCurve: string;
+  PerBulletHeatingValue: number;
+  PerBulletReloadingAmmoCount: number;
+  PostShotDelay: number;
+  PreinstalledAttachmentsItemPrototypeSIDs: WeaponGeneralSetupPrototypePreinstalledAttachmentsItemPrototypeSIDs;
+  ProjectileSpawnOffset: number;
+  RecoilInterval: number;
+  RecoilParams: WeaponGeneralSetupPrototypeRecoilParams;
+  ReloadTypes: WeaponGeneralSetupPrototypeReloadTypes;
+  ShootCameraShakePrototypeSID: string;
+  ShootingAnimationNumberToSkip: number;
+  ShouldOverrideCooldownAfterShots: boolean;
+  ShowCrosshair: boolean;
+  ShowEquipmentTime: number;
+  SID: string;
+  SilencerRTPCParameter: string;
+  SingleBulletReloadTimeMultiplier: number;
+  SpeedCoef: number;
+  TacticalReloadTimeMultiplier: number;
+  ToggleOffsetAimingConditionSID: string;
+  UnloadTime: number;
+  UpgradePrototypeSIDs: RelationPrototypeNegativeReactionsExcludedFactions;
+  WeaponDurabilityCurve: string;
+  WeaponInWorldUnloadSound: string;
+  WeaponJamEvent: string;
+  WeaponJamParams: WeaponGeneralSetupPrototypeWeaponJamParams;
+  WeaponReloadTimePerAttachment: WeaponGeneralSetupPrototypeWeaponReloadTimePerAttachment;
+  WeaponStaticMeshParts: WeaponGeneralSetupPrototypeWeaponStaticMeshParts;
+  WeaponType: EWeaponType;
+  WeaponTypeSoundSwitch: string;
+}>;
+
+export type WeaponGeneralSetupPrototypeAdditionalMeshes = GetStructType<
+  WeaponGeneralSetupPrototypeAdditionalMeshesItem[]
+>;
+
+export type WeaponGeneralSetupPrototypeAdditionalMeshesItem = GetStructType<{
+  MeshPrototypeSID: string;
+  Socket: string;
+}>;
+
+export type WeaponGeneralSetupPrototypeAimingEffects = GetStructType<{
+  Effects: SpawnActorPrototypeIgnoreCollisionActors;
+  PlayerOnlyEffects: SpawnActorPrototypeIgnoreCollisionActors;
+}>;
+
+export type WeaponGeneralSetupPrototypeAimModifiers = GetStructType<{
+  AimCrouchModifier: number;
+  AimFullCrouchModifier: number;
+  AimModifier: number;
+}>;
+
+export type WeaponGeneralSetupPrototypeAmmoTypeProjectiles = GetStructType<
+  WeaponGeneralSetupPrototypeAmmoTypeProjectilesItem[]
+>;
+
+export type WeaponGeneralSetupPrototypeAmmoTypeProjectilesItem = GetStructType<{
+  AmmoType: EAmmoType;
+  ProjectilePrototypeSID: string;
+}>;
+
+export type WeaponGeneralSetupPrototypeCompatibleAttachments = GetStructType<
+  WeaponGeneralSetupPrototypeCompatibleAttachmentsItem[]
+>;
+
+export type WeaponGeneralSetupPrototypeCompatibleAttachmentsItem =
+  GetStructType<{
+    AdditionalMeshes: WeaponGeneralSetupPrototypeAdditionalMeshes;
+    AdditionalPlankMeshPrototypeSID: string;
+    AdditionalPlankSocket: string;
+    AimMuzzleVFXSocket: string;
+    AimShellShutterVFXSocket: string;
+    AttachPrototypeSID: string;
+    BlockingUpgradeIds: SpawnActorPrototypeIgnoreCollisionActors;
+    BlockingUpgradeIDs: string;
+    IconPosX: number;
+    IconPosY: number;
+    MeshPrototypeSID: string;
+    Muzzle: string;
+    RequiredUpgradeIDs: SpawnActorPrototypeIgnoreCollisionActors;
+    Socket: string;
+    WeaponSpecificIcon: string;
+  }>;
+
+export type WeaponGeneralSetupPrototypeDispersionParams = GetStructType<{
+  FirstShotDispersionRadius: number;
+  ShootingStateParams: WeaponGeneralSetupPrototypeShootingStateParams;
+}>;
+
+export type WeaponGeneralSetupPrototypeFireIntervalModifiers = GetStructType<
+  number[]
+>;
+
+export type WeaponGeneralSetupPrototypeFireTypes = GetStructType<EFireType[]>;
+
+export type WeaponGeneralSetupPrototypeHealthPointsModifiers = GetStructType<{
+  HealthPercentThreshold: number;
+  HealthPointsModifier: number;
+}>;
+
+export type WeaponGeneralSetupPrototypeHipModifiers = GetStructType<{
+  HipCrouchModifier: number;
+  HipFullCrouchModifier: number;
+  HipJumpModifier: number;
+  HipModifier: number;
+}>;
+
+export type WeaponGeneralSetupPrototypeMaterials = GetStructType<
+  WeaponGeneralSetupPrototypeMaterialsItem[]
+>;
+
+export type WeaponGeneralSetupPrototypeMaterialsItem = GetStructType<{
+  MaterialPath: string;
+  MaterialSlot: number;
+}>;
+
+export type WeaponGeneralSetupPrototypeMovementSpeedModifiers = GetStructType<{
+  MovementSpeedModifier: number;
+}>;
+
+export type WeaponGeneralSetupPrototypeOffsetAimModifiers = GetStructType<{
+  OffsetAimCrouchModifier: number;
+  OffsetAimFullCrouchModifier: number;
+  OffsetAimModifier: number;
+}>;
+
+export type WeaponGeneralSetupPrototypePreinstalledAttachmentsItemPrototypeSIDs =
+  GetStructType<
+    WeaponGeneralSetupPrototypePreinstalledAttachmentsItemPrototypeSIDsItem[]
+  >;
+
+export type WeaponGeneralSetupPrototypePreinstalledAttachmentsItemPrototypeSIDsItem =
+  GetStructType<{
+    AttachSID: string;
+    bHiddenInInventory: boolean;
+  }>;
+
+export type WeaponGeneralSetupPrototypeRadiusExtensionModifiers =
+  GetStructType<{
+    MaxRadiusExtensionModifier: number;
+    PerIterationRadiusExtensionModifier: number;
+    RadiusExtensionBulletCount: number;
+  }>;
+
+export type WeaponGeneralSetupPrototypeRadiusNormalizationModifiers =
+  GetStructType<{
+    RadiusNormalizationDelay: number;
+    RadiusNormalizationInterval: number;
+  }>;
+
+export type WeaponGeneralSetupPrototypeRecoilParams = GetStructType<{
+  CameraAimRecoilPatternLoopStartKeyIndex: number;
+  CameraHipRecoilPatternLoopStartKeyIndex: number;
+  CameraRecoilPatternBlendCurve: string;
+  CameraRecoilPatternPath: string;
+  RecoilMaxPitch: number;
+  RecoilPatternInterval: number;
+  RecoilRadius: number;
+  ShootingStateParams: WeaponGeneralSetupPrototypeShootingStateParams;
+}>;
+
+export type WeaponGeneralSetupPrototypeReloadTypes = GetStructType<
+  EAnimationReloadTypes[]
+>;
+
+export type WeaponGeneralSetupPrototypeShootingStateParams = GetStructType<{
+  AimModifiers: WeaponGeneralSetupPrototypeAimModifiers;
+  HealthPointsModifiers: WeaponGeneralSetupPrototypeHealthPointsModifiers;
+  HipModifiers: WeaponGeneralSetupPrototypeHipModifiers;
+  MovementSpeedModifiers: WeaponGeneralSetupPrototypeMovementSpeedModifiers;
+  OffsetAimModifiers: WeaponGeneralSetupPrototypeOffsetAimModifiers;
+  RadiusExtensionModifiers: WeaponGeneralSetupPrototypeRadiusExtensionModifiers;
+  RadiusNormalizationModifiers: WeaponGeneralSetupPrototypeRadiusNormalizationModifiers;
+}>;
+
+export type WeaponGeneralSetupPrototypeWeaponJamParams = GetStructType<
+  WeaponGeneralSetupPrototypeWeaponJamParamsItem[]
+>;
+
+export type WeaponGeneralSetupPrototypeWeaponJamParamsItem = GetStructType<{
+  FullJamTime: number;
+  JamChanceCoef: number;
+}>;
+
+export type WeaponGeneralSetupPrototypeWeaponReloadTimePerAttachment =
+  GetStructType<WeaponGeneralSetupPrototypeWeaponReloadTimePerAttachmentItem[]>;
+
+export type WeaponGeneralSetupPrototypeWeaponReloadTimePerAttachmentItem =
+  GetStructType<{
+    AttachPrototypeSID: string;
+    FullReloadTimeMultiplier: number;
+    SingleBulletReloadTimeMultiplier: number;
+    TacticalReloadTimeMultiplier: number;
+    TwinAuxReloadTimeMultiplier: number;
+    TwinReloadTimeMultiplier: number;
+    TwinTacticalAuxReloadTimeMultiplier: number;
+    TwinTacticalReloadTimeMultiplier: number;
+    UnloadTime: number;
+  }>;
+
+export type WeaponGeneralSetupPrototypeWeaponStaticMeshParts = GetStructType<
+  WeaponGeneralSetupPrototypeWeaponStaticMeshPartsItem[]
+>;
+
+export type WeaponGeneralSetupPrototypeWeaponStaticMeshPartsItem =
+  GetStructType<{
+    Materials: WeaponGeneralSetupPrototypeMaterials;
+    MeshPath: string;
+    SocketName: string;
+  }>;
+
+export type WeaponPrototype = GetStructType<{
+  BaseDurability: number;
+  Cost: number;
+  EffectPrototypeSIDs: SpawnActorPrototypeIgnoreCollisionActors;
+  GeneralWeaponSetup: string;
+  Icon: string;
+  IsQuestItem: boolean;
+  ItemGridHeight: number;
+  ItemGridWidth: number;
+  ItemSlotType: EInventoryEquipmentSlot;
+  ItemTypeSwitchValue: string;
+  LocalizationSID: string;
+  MaxStackCount: number;
+  MeleeWeaponSID: string;
+  MeshInWorldPrototypeSID: string;
+  MeshPrototypeSID: string;
+  NPCWeaponAttributes: string;
+  PhysicsInteractionPrototypeSID: string;
+  PlayerWeaponAttributes: string;
+  PreinstalledUpgrades: FactionActionRestrictionPrototypeFactions;
+  SectionSettings: WeaponPrototypeSectionSettings;
+  SID: string;
+  Type: EItemType;
+  Weight: number;
+}>;
+
+export type WeaponPrototypeSectionSettings = GetStructType<
+  ArmorPrototypeSectionSettingsItem[]
+>;
+
+export type WeatherChainPrototype = GetStructType<{
+  SID: string;
+  SourceWeather: EWeather;
+  TargetWeather: EWeather;
+  TransitionSteps: WeatherChainPrototypeTransitionSteps;
+}>;
+
+export type WeatherChainPrototypeTransitionSteps = GetStructType<
+  WeatherChainPrototypeTransitionStepsItem[]
+>;
+
+export type WeatherChainPrototypeTransitionStepsItem = GetStructType<{
+  WeatherChains: WeatherChainPrototypeWeatherChains;
+  WeatherChainWeight: number;
+}>;
+
+export type WeatherChainPrototypeWeatherChains = GetStructType<
+  WeatherChainPrototypeWeatherChainsItem[]
+>;
+
+export type WeatherChainPrototypeWeatherChainsItem = GetStructType<{
+  WeatherTransitionTimeMultiplier: number;
+  WeatherType: EWeather;
+}>;
+
+export type WeatherPrototype = GetStructType<{
+  AltitudeCurveIndex: number;
+  SID: string;
+  WeatherParams: WeatherPrototypeWeatherParams;
+  WeatherTransitions: WeatherPrototypeWeatherTransitions;
+}>;
+
+export type WeatherPrototypeBloom = GetStructType<{
+  BloomIntensity: number;
+  BloomThreshold: number;
+}>;
+
+export type WeatherPrototypeClouds = GetStructType<{
+  CiNAmount: number;
+  CiNContrast: number;
+  CiNDensity: number;
+  CinSubShape: number;
+  CirrusContrast: number;
+  CirrusDecay: number;
+  CirrusDensity: number;
+  CloudSpeed: number;
+  CloudSpeedXY: SpawnActorPrototypeFreeformTriggerVerticesItem;
+  CloudsPhaseShift: number;
+  CloudsTile: number;
+  CNContrast: number;
+  CNDecay: number;
+  CNDensity: number;
+  CNDetailAmount: number;
+  CNDetailContrast: number;
+  CNMaxDensity: number;
+  CNSize: number;
+  Color1: AudioScattererPrototypeVisualizationColor;
+  Color2: AudioScattererPrototypeVisualizationColor;
+  GlobalDensity: number;
+  StratusAmount: number;
+  StratusContrast: number;
+  StratusDetailAmount: number;
+  StratusDetailContrast: number;
+  VolumetricMSContribution: number;
+  VolumetricMSEccentricity: number;
+  VolumetricMSOcclusion: number;
+  VolumetricPhaseBlend: number;
+  VolumetricPhaseG: number;
+  VolumetricPhaseG2: number;
+  VTCloudDetailScale: number;
+  VTCloudScale: number;
+}>;
+
+export type WeatherPrototypeColorGrading = GetStructType<{
+  ColorContrast: WeatherPrototypeColorSaturation;
+  ColorGain: WeatherPrototypeColorSaturation;
+  ColorGamma: WeatherPrototypeColorSaturation;
+  ColorOffset: WeatherPrototypeColorSaturation;
+  ColorSaturation: WeatherPrototypeColorSaturation;
+  Highlights: WeatherPrototypeHighlights;
+  Midtones: WeatherPrototypeMidtones;
+  Shadows: WeatherPrototypeShadows;
+}>;
+
+export type WeatherPrototypeColorSaturation = GetStructType<{
+  W: number;
+  X: number;
+  Y: number;
+  Z: number;
+}>;
+
+export type WeatherPrototypeFilm = GetStructType<{
+  FilmBlackClip: number;
+  FilmChannelMixerBlue: AudioScattererPrototypeVisualizationColor;
+  FilmChannelMixerGreen: AudioScattererPrototypeVisualizationColor;
+  FilmChannelMixerRed: AudioScattererPrototypeVisualizationColor;
+  FilmContrast: number;
+  FilmDynamicRange: number;
+  FilmHealAmount: number;
+  FilmSaturation: number;
+  FilmShadowTint: AudioScattererPrototypeVisualizationColor;
+  FilmShadowTintAmount: number;
+  FilmShadowTintBlend: number;
+  FilmShoulder: number;
+  FilmSlope: number;
+  FilmToe: number;
+  FilmToeAmount: number;
+  FilmWhiteClip: number;
+  FilmWhitePoint: AudioScattererPrototypeVisualizationColor;
+}>;
+
+export type WeatherPrototypeHighlights = GetStructType<{
+  ColorContrast: WeatherPrototypeColorSaturation;
+  ColorCorrectionHighlightsMin: number;
+  ColorGain: WeatherPrototypeColorSaturation;
+  ColorGamma: WeatherPrototypeColorSaturation;
+  ColorOffset: WeatherPrototypeColorSaturation;
+  ColorSaturation: WeatherPrototypeColorSaturation;
+}>;
+
+export type WeatherPrototypeMidtones = GetStructType<{
+  ColorContrast: WeatherPrototypeColorSaturation;
+  ColorGain: WeatherPrototypeColorSaturation;
+  ColorGamma: WeatherPrototypeColorSaturation;
+  ColorOffset: WeatherPrototypeColorSaturation;
+  ColorSaturation: WeatherPrototypeColorSaturation;
+}>;
+
+export type WeatherPrototypeShadows = GetStructType<{
+  ColorContrast: WeatherPrototypeColorSaturation;
+  ColorCorrectionShadowsMax: number;
+  ColorGain: WeatherPrototypeColorSaturation;
+  ColorGamma: WeatherPrototypeColorSaturation;
+  ColorOffset: WeatherPrototypeColorSaturation;
+  ColorSaturation: WeatherPrototypeColorSaturation;
+}>;
+
+export type WeatherPrototypeSkyAtmosphere = GetStructType<{
+  AerialPespectiveViewDistanceScale: number;
+  HeightFogContribution: number;
+  MieAbsorption: AudioScattererPrototypeVisualizationColor;
+  MieAbsorptionScale: number;
+  MieAnisotropy: number;
+  MieExponentialDistribution: number;
+  MieScattering: AudioScattererPrototypeVisualizationColor;
+  MieScatteringScale: number;
+  MultiScatteringFactor: number;
+  OtherAbsorption: AudioScattererPrototypeVisualizationColor;
+  OtherAbsorptionScale: number;
+  RayleighExponentialDistribution: number;
+  RayleighScattering: AudioScattererPrototypeVisualizationColor;
+  RayleighScatteringScale: number;
+  SkyLuminanceFactor: AudioScattererPrototypeVisualizationColor;
+}>;
+
+export type WeatherPrototypeSkyLight = GetStructType<{
+  Intensity: number;
+  MinOcclusion: number;
+  OcclusionExponent: number;
+  VolumetricScatteringIntensity: number;
+}>;
+
+export type WeatherPrototypeSun = GetStructType<{
+  BloomMaxBrightness: number;
+  BloomScale: number;
+  BloomThreshold: number;
+  Intensity: number;
+  Temperature: number;
+  VolumetricScatteringIntensity: number;
+}>;
+
+export type WeatherPrototypeWeatherParams = GetStructType<
+  WeatherPrototypeWeatherParamsItem[]
+>;
+
+export type WeatherPrototypeWeatherParamsItem = GetStructType<{
+  AutoExposureBias: number;
+  Bloom: WeatherPrototypeBloom;
+  CloudLuminanceMultiplier: number;
+  Clouds: WeatherPrototypeClouds;
+  ColorGrading: WeatherPrototypeColorGrading;
+  Film: WeatherPrototypeFilm;
+  FogDensity: number;
+  FogHeightFalloff: number;
+  FogHeightOffset: number;
+  FogInscatteringColor: AudioScattererPrototypeVisualizationColor;
+  Moon: WeatherPrototypeSun;
+  MoonPhase: number;
+  MoonScale: SpawnActorPrototypeVector;
+  SecondFogDensity: number;
+  SecondFogHeightFalloff: number;
+  SkyAtmosphere: WeatherPrototypeSkyAtmosphere;
+  SkyLight: WeatherPrototypeSkyLight;
+  SoundCue: string;
+  Sun: WeatherPrototypeSun;
+  SunMoonDiskLuminanceMultiplier: number;
+  Time: number;
+  VolumetricFogAlbedo: AudioScattererPrototypeVisualizationColor;
+  VolumetricFogEmissive: AudioScattererPrototypeVisualizationColor;
+  VolumetricFogExtinctionScale: number;
+}>;
+
+export type WeatherPrototypeWeatherTransitions = GetStructType<
+  WeatherPrototypeWeatherTransitionsItem[]
+>;
+
+export type WeatherPrototypeWeatherTransitionsItem = GetStructType<{
+  bIsDirectTransition: boolean;
+  BlendChance: number;
+  Timer24Normalized: number;
+  WeatherPrototypeSID: string;
+}>;
+
+export type WeatherSelectionPrototype = GetStructType<
+  {
+    EmissionPrototypeSID: string;
+    Priority: number;
+    SID: string;
+  } & Record<WeatherSelection, WeatherSelectionPrototypeClearly>
+>;
+
+export type WeatherSelectionPrototypeClearly = GetStructType<{
+  bAllowInDialogueTransition: boolean;
+  BlendWeight: number;
+  BlendWeightIncrease: number;
+  MaximumCooldownWeatherAmount: number;
+  MaximumRepeatAmount: number;
+  WeatherDurationMax: number;
+  WeatherDurationMin: number;
+}>;

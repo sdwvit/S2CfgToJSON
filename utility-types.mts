@@ -1,29 +1,3 @@
-import {
-  EChangeValueMode,
-  EConditionCheckType,
-  EConditionComparance,
-  EContextualActionBodyPart,
-  EContextualActionEffectType,
-  EContextualActionNeeds,
-  EContextualActionNodeType,
-  EContextualActionPreconditionType,
-  ECustomDataDistribution,
-  EGlobalVariableType,
-  EItemGenerationCategory,
-  EJournalEntity,
-  EJournalState,
-  EMainHandEquipmentType,
-  EQuestConditionType,
-  EQuestNodeState,
-  ERank,
-  ERelationLevel,
-  ERepetitions,
-  ERequiredSquadMembers,
-  EThreatAwareness,
-  ETriggerReact,
-  EWeather,
-} from "./enums.mts";
-
 export type WeatherSelection =
   | "CalmBeforeEmission"
   | "Clearly"
@@ -75,6 +49,217 @@ export type Permutations3<A, B, C> = A extends string
   : never;
 
 export type Reaction = "Enemy" | "Disaffection" | "Neutral" | "Friend" | "Self";
+export type Archetype =
+  | "Bayun"
+  | "Blinddog"
+  | "Bloodsucker"
+  | "Boar"
+  | "Burer"
+  | "Chimera"
+  | "Controller"
+  | "Deer"
+  | "Flesh"
+  | "GeneralNPC_Bandit_CloseCombat"
+  | "GeneralNPC_Bandit_Heavy"
+  | "GeneralNPC_Bandit_Recon"
+  | "GeneralNPC_Bandit_Stormtrooper"
+  | "GeneralNPC_Corpus_CloseCombat"
+  | "GeneralNPC_Corpus_Heavy"
+  | "GeneralNPC_Corpus_Recon"
+  | "GeneralNPC_Corpus_Sniper"
+  | "GeneralNPC_Corpus_Stormtrooper"
+  | "GeneralNPC_Digger_CloseCombat"
+  | "GeneralNPC_Digger_Recon"
+  | "GeneralNPC_Digger_Sniper"
+  | "GeneralNPC_Digger_Stormtrooper"
+  | "GeneralNPC_Duty_CloseCombat"
+  | "GeneralNPC_Duty_Heavy"
+  | "GeneralNPC_Duty_Recon"
+  | "GeneralNPC_Duty_Sniper"
+  | "GeneralNPC_Duty_Stormtrooper"
+  | "GeneralNPC_EnemyVarta_CloseCombat"
+  | "GeneralNPC_EnemyVarta_Heavy"
+  | "GeneralNPC_EnemyVarta_Recon"
+  | "GeneralNPC_EnemyVarta_Sniper"
+  | "GeneralNPC_EnemyVarta_Stormtrooper"
+  | "GeneralNPC_Freedom_CloseCombat"
+  | "GeneralNPC_Freedom_Recon"
+  | "GeneralNPC_Freedom_Sniper"
+  | "GeneralNPC_Freedom_Stormtrooper"
+  | "GeneralNPC_IkarVarta_CloseCombat"
+  | "GeneralNPC_IkarVarta_Heavy"
+  | "GeneralNPC_IkarVarta_Recon"
+  | "GeneralNPC_IkarVarta_Sniper"
+  | "GeneralNPC_IkarVarta_Stormtrooper"
+  | "GeneralNPC_MALACHITE_Scientist_Recon"
+  | "GeneralNPC_Mercenaries_CloseCombat"
+  | "GeneralNPC_Mercenaries_Recon"
+  | "GeneralNPC_Mercenaries_Sniper"
+  | "GeneralNPC_Mercenaries_Stormtrooper"
+  | "GeneralNPC_Militaries_CloseCombat"
+  | "GeneralNPC_Militaries_Heavy"
+  | "GeneralNPC_Militaries_Recon"
+  | "GeneralNPC_Militaries_Sniper"
+  | "GeneralNPC_Militaries_Stormtrooper"
+  | "GeneralNPC_Monolith_CloseCombat"
+  | "GeneralNPC_Monolith_Recon"
+  | "GeneralNPC_Monolith_Sniper"
+  | "GeneralNPC_Monolith_Stormtrooper"
+  | "GeneralNPC_Neutral_CloseCombat"
+  | "GeneralNPC_Neutral_Recon"
+  | "GeneralNPC_Neutral_Sniper"
+  | "GeneralNPC_Neutral_Stormtrooper"
+  | "GeneralNPC_NeutralBandit_CloseCombat"
+  | "GeneralNPC_NeutralBandit_Heavy"
+  | "GeneralNPC_NeutralBandit_Recon"
+  | "GeneralNPC_NeutralBandit_Stormtrooper"
+  | "GeneralNPC_NeutralMSOP_CloseCombat"
+  | "GeneralNPC_NeutralMSOP_Heavy"
+  | "GeneralNPC_NeutralMSOP_Recon"
+  | "GeneralNPC_NeutralMSOP_Sniper"
+  | "GeneralNPC_NeutralMSOP_Stormtrooper"
+  | "GeneralNPC_Noon_CloseCombat"
+  | "GeneralNPC_Noon_Recon"
+  | "GeneralNPC_Noon_Stormtrooper"
+  | "GeneralNPC_Scientists_Recon"
+  | "GeneralNPC_Scientists_Stormtrooper"
+  | "GeneralNPC_SIRCAA_Scientist_Recon"
+  | "GeneralNPC_Spark_CloseCombat"
+  | "GeneralNPC_Spark_Recon"
+  | "GeneralNPC_Spark_Sniper"
+  | "GeneralNPC_Spark_Stormtrooper"
+  | "GeneralNPC_SultanBandit_CloseCombat"
+  | "GeneralNPC_SultanBandit_Heavy"
+  | "GeneralNPC_SultanBandit_Recon"
+  | "GeneralNPC_SultanBandit_Stormtrooper"
+  | "GeneralNPC_Varta_CloseCombat"
+  | "GeneralNPC_Varta_Heavy"
+  | "GeneralNPC_Varta_Recon"
+  | "GeneralNPC_Varta_Sniper"
+  | "GeneralNPC_Varta_Stormtrooper"
+  | "GeneralZombie_Bandit_CloseCombat"
+  | "GeneralZombie_Bandit_Heavy"
+  | "GeneralZombie_Bandit_Recon"
+  | "GeneralZombie_Bandit_Stormtrooper"
+  | "GeneralZombie_Corpus_CloseCombat"
+  | "GeneralZombie_Corpus_Heavy"
+  | "GeneralZombie_Corpus_Recon"
+  | "GeneralZombie_Corpus_Sniper"
+  | "GeneralZombie_Corpus_Stormtrooper"
+  | "GeneralZombie_Duty_CloseCombat"
+  | "GeneralZombie_Duty_Heavy"
+  | "GeneralZombie_Duty_Recon"
+  | "GeneralZombie_Duty_Sniper"
+  | "GeneralZombie_Duty_Stormtrooper"
+  | "GeneralZombie_Freedom_CloseCombat"
+  | "GeneralZombie_Freedom_Recon"
+  | "GeneralZombie_Freedom_Sniper"
+  | "GeneralZombie_Freedom_Stormtrooper"
+  | "GeneralZombie_Neutral_CloseCombat"
+  | "GeneralZombie_Neutral_Recon"
+  | "GeneralZombie_Neutral_Sniper"
+  | "GeneralZombie_Neutral_Stormtrooper"
+  | "GuardNPC_Corpus_CloseCombat"
+  | "GuardNPC_Corpus_Heavy"
+  | "GuardNPC_Corpus_Recon"
+  | "GuardNPC_Corpus_Sniper"
+  | "GuardNPC_Corpus_Stormtrooper"
+  | "GuardNPC_Digger_CloseCombat"
+  | "GuardNPC_Digger_Recon"
+  | "GuardNPC_Digger_Sniper"
+  | "GuardNPC_Digger_Stormtrooper"
+  | "GuardNPC_Duty_CloseCombat"
+  | "GuardNPC_Duty_Heavy"
+  | "GuardNPC_Duty_Recon"
+  | "GuardNPC_Duty_Sniper"
+  | "GuardNPC_Duty_Stormtrooper"
+  | "GuardNPC_Freedom_CloseCombat"
+  | "GuardNPC_Freedom_Recon"
+  | "GuardNPC_Freedom_Sniper"
+  | "GuardNPC_Freedom_Stormtrooper"
+  | "GuardNPC_Monolith_CloseCombat"
+  | "GuardNPC_Monolith_Recon"
+  | "GuardNPC_Monolith_Sniper"
+  | "GuardNPC_Monolith_Stormtrooper"
+  | "GuardNPC_Neutral_CloseCombat"
+  | "GuardNPC_Neutral_Recon"
+  | "GuardNPC_Neutral_Sniper"
+  | "GuardNPC_Neutral_Stormtrooper"
+  | "GuardNPC_Noon_CloseCombat"
+  | "GuardNPC_Noon_Recon"
+  | "GuardNPC_Noon_Stormtrooper"
+  | "GuardNPC_SultanBandit_CloseCombat"
+  | "GuardNPC_SultanBandit_Heavy"
+  | "GuardNPC_SultanBandit_Recon"
+  | "GuardNPC_SultanBandit_Stormtrooper"
+  | "GuardNPC_Varta_CloseCombat"
+  | "GuardNPC_Varta_Heavy"
+  | "GuardNPC_Varta_Recon"
+  | "GuardNPC_Varta_Sniper"
+  | "GuardNPC_Varta_Stormtrooper"
+  | "Poltergeist"
+  | "Poltergeist_Electro"
+  | "Poltergeist_Fire"
+  | "Poltergeist_Toxic"
+  | "PseudoDog"
+  | "Pseudogiant"
+  | "Rat"
+  | "Snork"
+  | "Tushkan"
+  | "BanditExperienced"
+  | "BanditMaster"
+  | "BanditNewbie"
+  | "BanditVeteran"
+  | "CorpusExperienced"
+  | "CorpusMaster"
+  | "CorpusNewbie"
+  | "CorpusVeteran"
+  | "DutyExperienced"
+  | "DutyMaster"
+  | "DutyNewbie"
+  | "DutyVeteran"
+  | "FlameExperienced"
+  | "FlameMaster"
+  | "FlameNewbie"
+  | "FlameVeteran"
+  | "FreedomExperienced"
+  | "FreedomMaster"
+  | "FreedomNewbie"
+  | "FreedomVeteran"
+  | "MercenaryExperienced"
+  | "MercenaryMaster"
+  | "MercenaryNewbie"
+  | "MercenaryVeteran"
+  | "MilitaryExperienced"
+  | "MilitaryMaster"
+  | "MilitaryNewbie"
+  | "MilitaryVeteran"
+  | "MonolithExperienced"
+  | "MonolithMaster"
+  | "MonolithNewbie"
+  | "MonolithVeteran"
+  | "NeutralExperienced"
+  | "NeutralMaster"
+  | "NeutralNewbie"
+  | "NeutralVeteran"
+  | "NoonExperienced"
+  | "NoonMaster"
+  | "NoonNewbie"
+  | "NoonVeteran"
+  | "Pseudodog"
+  | "ScientistExperienced"
+  | "ScientistMaster"
+  | "ScientistNewbie"
+  | "ScientistVeteran"
+  | "SparkExperienced"
+  | "SparkMaster"
+  | "SparkNewbie"
+  | "SparkVeteran"
+  | "VartaExperienced"
+  | "VartaMaster"
+  | "VartaNewbie"
+  | "VartaVeteran"
+  | "ZombieCorpusMaster";
 
 export type Faction =
   | "Humanoid"
@@ -168,82 +353,14 @@ export type Faction =
   | "StrelokBoss_Faction"
   | "FaustBoss_Faction";
 
-export type Condition = {
-  AITarget: string;
-  AmmoRequired: number;
-  AnyBody: boolean;
-  BoolValue: boolean;
-  ChangeValueMode: EChangeValueMode;
-  CompletedNodeLauncherNames: string[];
-  ConditionComparance: EConditionComparance;
-  ConditionType: EQuestConditionType;
-  DialogMemberIndex: number;
-  EffectPrototypeSID: string;
-  EmissionPrototypeSID: string;
-  Equipment: EMainHandEquipmentType;
-  Faction: string;
-  GlobalVariablePrototypeSID: string;
-  ItemPrototypeSID: {
-    VariableType: EGlobalVariableType;
-    VariableValue: string;
-  };
-  ItemsCount: {
-    VariableType: EGlobalVariableType;
-    VariableValue: number;
-  };
-  JournalEntity: EJournalEntity;
-  JournalQuestSID: string;
-  JournalQuestStageSID: string;
-  JournalState: EJournalState;
-  LinkedNodePrototypeSID: string;
-  Money: {
-    VariableType: EGlobalVariableType;
-    VariableValue: number;
-  };
-  NodeState: EQuestNodeState;
-  NotePrototypeSID: string;
-  NumericValue: number;
-  PointToLookAt: Vec3;
-  RandomProbability: number;
-  Rank: ERank;
-  ReactType: ETriggerReact;
-  Relationships: ERelationLevel;
-  RequiredSquadMembers: ERequiredSquadMembers;
-  TargetCharacter: string;
-  TargetContextualActionPlaceholder: string;
-  TargetCorpsePlaceholder: string;
-  TargetItemContainer: string;
-  TargetNPC: string;
-  TargetNode: string;
-  TargetPlaceholder: string;
-  TargetPoint: Vec3;
-  ThreatAwareness: EThreatAwareness;
-  Trigger: string;
-  VariableValue: number;
-  Weather: EWeather;
-  WithBodyArmor: boolean;
-  WithEquipped: boolean;
-  WithHeadArmor: boolean;
-  WithInventory: boolean;
-  bTriggersByAnybody: boolean;
-};
-
-export type Conditions = (
-  | EConditionCheckType
-  | (
-      | EConditionComparance
-      | EQuestConditionType
-      | number
-      | string
-      | Vec3
-      | Condition
-    )[]
-)[];
-
-export type Ability =
+export type HumanAbilityName =
   | "Human_CombatPSYAttack"
+  | "Human_MeleeAttack"
   | "Human_MeleeAttack_Agent"
   | "Human_PhantomAttack"
+  | "Human_ThrowGrenade";
+
+export type ObjectAbilityName =
   | "AlertedAbility_BlindDog"
   | "AlertedAbility_Bloodsucker"
   | "AlertedAbility_Boar"
@@ -356,6 +473,7 @@ export type Ability =
   | "GruntAbility"
   | "HowlAbility_BlindDog"
   | "HowlAbility_Pseudog"
+  | "Human_CombatPSYAttack"
   | "Human_MeleeAttack"
   | "Human_ThrowGrenade"
   | "Korshunov_Jump"
@@ -416,17 +534,7 @@ export type Ability =
   | "TrickSoundMockery_Cat"
   | "Tushkan_ClawAttack"
   | "Tushkan_JumpAttack"
-  | "WoundedPSYStrike"
-  | "NoDamagePSYAttack";
-
-export type Vec2 = { X: number; Y: number };
-export type Vec3 = Vec2 & { Z: number };
-export type Vec4 = Vec3 & { W: number };
-
-export type Rot = { Pitch: number; Roll: number; Yaw: number };
-export type VecRot = Vec3 & Rot;
-export type VecRotTemp = VecRot & { Temperature: number };
-export type RGBA = { A: number; B: number; G: number; R: number };
+  | "WoundedPSYStrike";
 
 export type MeshAttachment =
   | "Bbe"
@@ -503,106 +611,4 @@ export type MeshAttachment =
   | "Faust_Fbe"
   | "Faust_Lhi";
 
-export type ItemGeneratorEntry = {
-  Category: EItemGenerationCategory;
-  bAllowSameCategoryGeneration: boolean;
-  PossibleItems: {
-    AmmoMaxCount: number;
-    AmmoMinCount: number;
-    Chance: number;
-    ItemPrototypeSID: string;
-    MaxCount: number;
-    MaxDurability: number;
-    MinCount: number;
-    MinDurability: number;
-    Weight: number;
-    bRequireWeapon: boolean;
-    ItemGeneratorPrototypeSID: string;
-    Upgrades: {
-      Chance: number;
-      MaxCount: number;
-      MinCount: number;
-      PossibleItems: string;
-    };
-  }[];
-};
-
-type GroomVariation = {
-  AdditionalGrooms: GroomVariation[];
-  CustomData: {
-    ShortHair: {
-      Distribution: ECustomDataDistribution;
-      MaterialGroup: string;
-    };
-  };
-  FromHairQualityRenderTextureInsteadOfGroom: number;
-  GroomBindingPath: string;
-  GroomPath: string;
-  GroomSID: string;
-  MaterialPath: string;
-  Materials: {
-    CustomData: {
-      Distribution: ECustomDataDistribution;
-      MaterialGroup: string;
-      ParameterID: number;
-      Variations: {
-        ParameterValue: number;
-        Weight: number;
-        MaterialInstanceParameters: {
-          ParameterName: string;
-          TexturePath: string;
-        }[];
-      }[];
-    }[];
-    MaterialGroup: string;
-    MaterialSlot: number;
-    Variations: {
-      MaterialPath: string;
-      VariationIndex: number;
-      Weight: number;
-    }[];
-  }[];
-  VariationIndex: number;
-  Weight: number;
-  bHasCustomData: boolean;
-};
-
-export type GroomCategory = {
-  CategoryName: string;
-  FromHairQualityUseVariationReplacementMap: number;
-  VariationReplacementMap: {
-    From: number;
-    To: number;
-  }[];
-  Variations: GroomVariation[];
-};
-
 export type FactionGoalType = "Aggressive" | "Defensive" | "Normal";
-
-export type ContextualAction = {
-  AnimationData: { MontagePath: string; MontageSection: string }[];
-  CanInteractWithPlayer: boolean;
-  ConditionalSelectorNodes: ContextualAction[];
-  Effects: string;
-  Interrupt: ContextualAction;
-  IsValidForQuestDialog: boolean;
-  NodeType: EContextualActionNodeType;
-  Preconditions: string;
-  RandomSelectorNodes: ContextualAction[];
-  Repetitions: ERepetitions;
-  RepetitionsCount: number;
-  SequentialSelectorNodes: ContextualAction[];
-  ShouldDisableDialogAnimations: boolean;
-  ShouldPlayerCrouchDuringDialog: boolean;
-  Weights: { Weight: number }[];
-};
-
-export type Protection = {
-  Burn: number;
-  ChemicalBurn: number;
-  Fall: number;
-  PSY: number;
-  Radiation: number;
-  Shock: number;
-  Strike: number;
-};
