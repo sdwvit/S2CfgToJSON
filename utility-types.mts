@@ -1,3 +1,5 @@
+import { GetStructType } from "./Struct.mts";
+
 export type WeatherSelection =
   | "CalmBeforeEmission"
   | "Clearly"
@@ -47,7 +49,7 @@ export type Permutations3<A, B, C> = A extends string
       : Permutations2<A, B>
     : A
   : never;
-
+export type StringArray = string[];
 export type Reaction = "Enemy" | "Disaffection" | "Neutral" | "Friend" | "Self";
 export type Archetype =
   | "Bayun"
