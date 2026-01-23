@@ -196,12 +196,15 @@ import {
 import { GetStructType } from "./Struct.mts";
 import {
   Archetype,
+  Caliber,
+  EffectConditionalEffect,
   Faction,
+  FactionGoalType,
   HumanAbilityName,
-  MeshAttachment,
   ObjectAbilityName,
   Rank,
   Reaction,
+  ScenarioGroup,
   SID,
   StringArray,
   WeaponShootDistance,
@@ -211,14 +214,14 @@ import {
 export type AbilityPrototype = GetStructType<{
   AbilityPreparationTime: number;
   AbilityProbability: string;
-  AbilityTags: SpawnActorPrototypeIgnoreCollisionActors;
+  AbilityTags: NPCPrototypeSkills;
   AbilityType: EAbility;
   ActivateAnomalySyncTag: string;
   ActivationNiagaraPath: string;
   ActivationRadius: number;
   AdjustLocation: boolean;
   AgentToEnemyVisibilityParams: AbilityPrototypeAgentToEnemyVisibilityParams;
-  AgentToWeaponVisibilityParams: AbilityPrototypeAgentToWeaponVisibilityParams;
+  AgentToWeaponVisibilityParams: AbilityPrototypeEnemyVisibilityParams;
   AimingDuration: number;
   AkEvents: AbilityPrototypeAkEvents;
   Anomalies: AbilityPrototypeAnomalies;
@@ -227,11 +230,11 @@ export type AbilityPrototype = GetStructType<{
   ApplyOnPlayer: boolean;
   ArmorDamage: number;
   ArmorPiercing: number;
-  AttachVFXBoneNames: SpawnActorPrototypeSignals;
+  AttachVFXBoneNames: CoreVariableHead;
   AttackCollisionProfile: string;
   AttackConditionName: string;
-  AttackConditions: AbilityPrototypeAttackConditions;
-  AttackParams: AIGlobalSoundEventTypeSpreadSpeedList;
+  AttackConditions: ObjPrototypeMeleeAttackData;
+  AttackParams: AssetLibraryUIIcons;
   AttackSyncTag: string;
   bCanShootLevitatingObject: boolean;
   bIsControllerAttack: boolean;
@@ -250,7 +253,7 @@ export type AbilityPrototype = GetStructType<{
   CanBePerformedOnNPC: boolean;
   CanBePerformedOnPlayer: boolean;
   CanBeTriggeredByAnyEnemy: boolean;
-  CancelAbilitiesWithTag: SpawnActorPrototypeSignals;
+  CancelAbilitiesWithTag: CoreVariableHead;
   CollisionProfileName: string;
   ConditionalCooldowns: AbilityPrototypeConditionalCooldowns;
   CooldownMax: number;
@@ -270,7 +273,7 @@ export type AbilityPrototype = GetStructType<{
   DamageVolumeMultiplier: string;
   DebugTag: string;
   DisarmMode: EThrowQueueDisarmMode;
-  DistanceRange: SpawnActorPrototypeFreeformTriggerVerticesItem;
+  DistanceRange: AbilityPrototypeRadius;
   DPS: number;
   DragDelay: number;
   Duration: number;
@@ -289,15 +292,15 @@ export type AbilityPrototype = GetStructType<{
   GravityForce: number;
   GrenadeSID: string;
   HeavyVolumeThreshold: number;
-  HitDamage: SpawnActorPrototypeFreeformTriggerVerticesItem;
+  HitDamage: AbilityPrototypeRadius;
   HitDetectionAngle: number;
   HitDetectionDistance: number;
   HitReactionStartPhase: EAbilityStatePhase;
   IgnoredCalibersSet: AbilityPrototypeIgnoredCalibersSet;
   LevitationAngularAccelerationRate: number;
   LevitationAngularVelocity: number;
-  LevitationDisplacementFrequency: SpawnActorPrototypeVector;
-  LevitationHeight: SpawnActorPrototypeFreeformTriggerVerticesItem;
+  LevitationDisplacementFrequency: AIGlobalRelativeLocation;
+  LevitationHeight: AbilityPrototypeRadius;
   LevitationSpeed: number;
   LimitAngle: number;
   MaxActivationDistance: string;
@@ -306,7 +309,7 @@ export type AbilityPrototype = GetStructType<{
   MaxDiscoveryRadius: number;
   MaxHeightAboveGround: number;
   MaxIntervalBetweenDamage: number;
-  MaxLevitationDisplacement: SpawnActorPrototypeVector;
+  MaxLevitationDisplacement: AIGlobalRelativeLocation;
   MaxObjCount: number;
   MaxShootDelay: number;
   MaxShotsAmount: number;
@@ -322,10 +325,10 @@ export type AbilityPrototype = GetStructType<{
   MinObjQueueWaitTime: number;
   MinShotsAmount: number;
   MinSoundDist: number;
-  Montages: QuestNodePrototypeTargetQuestGuids;
-  MontagesMove: SpawnActorPrototypeSignals;
+  Montages: CoreVariableLegs;
+  MontagesMove: CoreVariableHead;
   NPCDamageMultiplier: number;
-  OptionalObjTypeList: AIGlobalSoundEventTypeSpreadSpeedList;
+  OptionalObjTypeList: AssetLibraryUIIcons;
   PlayerLookAtBoneName: string;
   PlayerLookAtEnterDuration: number;
   PlayerLookAtPresetName: string;
@@ -334,17 +337,17 @@ export type AbilityPrototype = GetStructType<{
   PsyAbilityAimOffset: AbilityPrototypePsyAbilityAimOffset;
   PsyAttackSyncTag: string;
   PullToOwner: boolean;
-  PullToOwnerRadius: SpawnActorPrototypeFreeformTriggerVerticesItem;
+  PullToOwnerRadius: AbilityPrototypeRadius;
   RadialImpulse: number;
   Radius: number;
-  RemoveCooldownTags: SpawnActorPrototypeLairCoreVolumes;
+  RemoveCooldownTags: SingletonConstantArmy;
   RequiredObjTypeList: AbilityPrototypeRequiredObjTypeList;
   ShieldParams: AbilityPrototypeShieldParams;
   ShiftbyX: number;
   ShouldIgnoreArmor: boolean;
   SID: string;
   SpawnAbilityBackSpawnAttempts: number;
-  SpawnAbilityDistance: SpawnActorPrototypeFreeformTriggerVerticesItem;
+  SpawnAbilityDistance: AbilityPrototypeRadius;
   SpawnAbilityFrontAngle: string;
   SpawnAbilityFrontSpawnAttempts: number;
   SpawnAbilityItemSIDs: AbilityPrototypeSpawnAbilityItemSIDs;
@@ -354,23 +357,23 @@ export type AbilityPrototype = GetStructType<{
   SyncTag: string;
   TargetBone: string;
   ThrowAbilityCorpseTimeToHitSeconds: number;
-  ThrowAbilityDamage: SpawnActorPrototypeFreeformTriggerVerticesItem;
+  ThrowAbilityDamage: AbilityPrototypeRadius;
   ThrowAbilityDamageVolumeMultiplier: string;
-  ThrowAbilityDistance: SpawnActorPrototypeFreeformTriggerVerticesItem;
+  ThrowAbilityDistance: AbilityPrototypeRadius;
   ThrowAbilityFlyingSpeed: number;
   ThrowAbilityHeavyVolumeThreshold: number;
   ThrowAbilityLevitationAngularAccelerationRate: number;
   ThrowAbilityLevitationAngularVelocity: number;
-  ThrowAbilityLevitationDisplacementFrequency: SpawnActorPrototypeVector;
-  ThrowAbilityLevitationHeight: SpawnActorPrototypeFreeformTriggerVerticesItem;
+  ThrowAbilityLevitationDisplacementFrequency: AIGlobalRelativeLocation;
+  ThrowAbilityLevitationHeight: AbilityPrototypeRadius;
   ThrowAbilityLevitationSpeed: number;
-  ThrowAbilityMaxLevitationDisplacement: SpawnActorPrototypeVector;
+  ThrowAbilityMaxLevitationDisplacement: AIGlobalRelativeLocation;
   ThrowAbilityThrowCorpses: boolean;
-  ThrowAbilityThrowDelay: SpawnActorPrototypeFreeformTriggerVerticesItem;
+  ThrowAbilityThrowDelay: AbilityPrototypeRadius;
   ThrowAbilityTimeToHitSeconds: number;
   ThrowAbilityUnpossessSpeedPercent: number;
-  ThrowDelay: SpawnActorPrototypeFreeformTriggerVerticesItem;
-  ThrowInterval: SpawnActorPrototypeFreeformTriggerVerticesItem;
+  ThrowDelay: AbilityPrototypeRadius;
+  ThrowInterval: AbilityPrototypeRadius;
   ThrowProbability: string;
   ThrowSyncTag: string;
   TimeLimit: number;
@@ -386,7 +389,7 @@ export type AbilityPrototype = GetStructType<{
   VitalCooldownCurve: string;
   VitalThreshold: number;
   VitalType: EVitalType;
-  WeaponToEnemyVisibilityParams: AbilityPrototypeAgentToWeaponVisibilityParams;
+  WeaponToEnemyVisibilityParams: AbilityPrototypeEnemyVisibilityParams;
   WeaponVFX: string;
   ZombificationType: EZombificationType;
   ZSpawnOffset: number;
@@ -394,16 +397,8 @@ export type AbilityPrototype = GetStructType<{
 
 export type AbilityPrototypeAgentToEnemyVisibilityParams = GetStructType<{
   CanSeeThroughOcluders: boolean;
-  DistanceRange: SpawnActorPrototypeFreeformTriggerVerticesItem;
+  DistanceRange: AbilityPrototypeRadius;
   VisibilityTestChannel: ECollisionChannel;
-}>;
-
-export type AbilityPrototypeAgentToWeaponVisibilityParams = GetStructType<{
-  CanSeeThroughOcluders: boolean;
-  DistanceRange: SpawnActorPrototypeFreeformTriggerVerticesItem;
-  OwnerEyesOffset: number;
-  VisibilityTestChannel: ECollisionChannel;
-  VisibilityTestRadius: number;
 }>;
 
 export type AbilityPrototypeAkEvents = GetStructType<
@@ -412,7 +407,7 @@ export type AbilityPrototypeAkEvents = GetStructType<
 
 export type AbilityPrototypeAkEventsItem = GetStructType<{
   AkEvent: string;
-  AkSwitches: SpawnActorPrototypeLairCoreVolumes;
+  AkSwitches: SingletonConstantArmy;
 }>;
 
 export type AbilityPrototypeAnomalies = GetStructType<
@@ -424,18 +419,8 @@ export type AbilityPrototypeAnomaliesItem = GetStructType<{
   SID: string;
 }>;
 
-export type AbilityPrototypeAttackConditions = GetStructType<{
-  StartAttackMaxAngle: number;
-  StartAttackMaxAngleToEnemyDirection: number;
-  StartAttackMaxDistance: number;
-  StartAttackMinAngle: number;
-  StartAttackMinAngleToEnemyDirection: number;
-  StartAttackMinDistance: number;
-}>;
-
-export type AbilityPrototypeBonesDamageSet = GetStructType<
-  AbilityPrototypeBonesDamageSetItem[]
->;
+export type AbilityPrototypeBonesDamageSet =
+  GetStructType<AbilityPrototypeBonesDamageSetItem>;
 
 export type AbilityPrototypeBonesDamageSetItem = GetStructType<{
   DamageBone: EDamageBone;
@@ -484,7 +469,7 @@ export type AbilityPrototypeEffectsItem = GetStructType<{
 
 export type AbilityPrototypeEnemyVisibilityParams = GetStructType<{
   CanSeeThroughOcluders: boolean;
-  DistanceRange: SpawnActorPrototypeFreeformTriggerVerticesItem;
+  DistanceRange: AbilityPrototypeRadius;
   OwnerEyesOffset: number;
   VisibilityTestChannel: ECollisionChannel;
   VisibilityTestRadius: number;
@@ -500,17 +485,22 @@ export type AbilityPrototypeIgnoredCalibersSetItem = GetStructType<{
 
 export type AbilityPrototypePossessedWeaponParams = GetStructType<{
   GroundOffset: number;
-  MaxLevitationDisplacement: SpawnActorPrototypeVector;
-  MaxLevitationFrequency: SpawnActorPrototypeVector;
+  MaxLevitationDisplacement: AIGlobalRelativeLocation;
+  MaxLevitationFrequency: AIGlobalRelativeLocation;
   MovementSpeed: number;
   RotationSpeed: number;
-  ShootingDuration: SpawnActorPrototypeMaxSpawnQuantity;
+  ShootingDuration: ObjPrototypeExplorationRadius;
 }>;
 
 export type AbilityPrototypePsyAbilityAimOffset = GetStructType<{
   AnimOffset: string;
   InterpolationSpeed: number;
   MaxAngle: number;
+}>;
+
+export type AbilityPrototypeRadius = GetStructType<{
+  X: number;
+  Y: number;
 }>;
 
 export type AbilityPrototypeRequiredObjTypeList = GetStructType<EObjType[]>;
@@ -547,12 +537,12 @@ export type AbilityPrototypeSummonObjectsItem = GetStructType<{
 
 export type AbilityPrototypeSummonParams = GetStructType<{
   MaxInstancesInGroup: number;
-  SpawnAngleDistribution: SpawnActorPrototypeFreeformTriggerVerticesItem;
-  SpawnAngleInitialOffset: SpawnActorPrototypeFreeformTriggerVerticesItem;
+  SpawnAngleDistribution: AbilityPrototypeRadius;
+  SpawnAngleInitialOffset: AbilityPrototypeRadius;
   SpawnAroundEnemy: boolean;
   SpawnDelay: number;
   SpawnEffects: boolean;
-  SpawnRadius: SpawnActorPrototypeFreeformTriggerVerticesItem;
+  SpawnRadius: AbilityPrototypeRadius;
   SummonObjects: AbilityPrototypeSummonObjects;
   SwapPlaces: boolean;
 }>;
@@ -571,7 +561,7 @@ export type Achievement = GetStructType<
   AchievementAchievementGoalsItem[] & {
     AcceptableInterval: number;
     AnomalyPrototypeSID: string;
-    ArmorSIDs: AchievementMutantsSID;
+    ArmorSIDs: AchievementArmorSIDs;
     BleedingThreshold: number;
     Calibers: AchievementCalibers;
     DrunkennessThreshold: number;
@@ -584,7 +574,7 @@ export type Achievement = GetStructType<
     MinHeight: number;
     MinSquadSize: number;
     MutantSID: string;
-    MutantsSID: AchievementMutantsSID;
+    MutantsSID: AchievementArmorSIDs;
     NumberOfWeapons: number;
     PsyThreshold: number;
     RadiationThreshold: number;
@@ -600,6 +590,8 @@ export type AchievementAchievementGoalsItem = GetStructType<{
   SID: string;
 }>;
 
+export type AchievementArmorSIDs = StringArray;
+
 export type AchievementCalibers = GetStructType<EAmmoCaliber[]>;
 
 export type AchievementFoodSet = GetStructType<AIGlobalMaterialsItem[]>;
@@ -607,8 +599,6 @@ export type AchievementFoodSet = GetStructType<AIGlobalMaterialsItem[]>;
 export type AchievementItems = StringArray;
 
 export type AchievementMarkerTypes = GetStructType<EMarkerType[]>;
-
-export type AchievementMutantsSID = StringArray;
 
 export type AIGlobal = GetStructType<{
   ALifeSettings: AIGlobalALifeSettings;
@@ -620,7 +610,7 @@ export type AIGlobal = GetStructType<{
   CharacterPoseSettings: AIGlobalCharacterPoseSettings;
   CombatTacticsSettings: AIGlobalCombatTacticsSettings;
   ContextualActionSettings: AIGlobalContextualActionSettings;
-  CorpseBehaviorFactionRestrictions: SpawnActorPrototypeIgnoreCollisionActors;
+  CorpseBehaviorFactionRestrictions: NPCPrototypeSkills;
   CoverSettings: AIGlobalCoverSettings;
   DangerAreaSettings: AIGlobalDangerAreaSettings;
   DeadBodyToConsiderAsThreatDuration: number;
@@ -652,7 +642,7 @@ export type AIGlobal = GetStructType<{
   ReactionOnEmissionSettings: AIGlobalReactionOnEmissionSettings;
   RegionRank: AIGlobalRegionRank;
   SID: string;
-  SoundEventTypeSpreadSpeedList: AIGlobalSoundEventTypeSpreadSpeedList;
+  SoundEventTypeSpreadSpeedList: AssetLibraryUIIcons;
   ThreatsSettings: AIGlobalThreatsSettings;
   ThrowGrenadeSettings: AIGlobalThrowGrenadeSettings;
   TimeToSkipLairPeacefulSpawnAfterMemberDies: number;
@@ -713,8 +703,8 @@ export type AIGlobalCharacterPoseSettingsItem = GetStructType<{
 export type AIGlobalCombatTacticsParamsPerFactions = GetStructType<{
   Bandits: AIGlobalBandits;
   Humanoid: AIGlobalBandits;
-  Monolith: AIGlobalMonolith;
-  Mutant: AIGlobalMonolith;
+  Monolith: AIGlobalMutant;
+  Mutant: AIGlobalMutant;
 }>;
 
 export type AIGlobalCombatTacticsSettings = GetStructType<{
@@ -775,7 +765,7 @@ export type AIGlobalFlashlightUseTracePoints = GetStructType<
 >;
 
 export type AIGlobalFlashlightUseTracePointsItem = GetStructType<{
-  RelativeLocation: SpawnActorPrototypeVector;
+  RelativeLocation: AIGlobalRelativeLocation;
 }>;
 
 export type AIGlobalFocusLocationSelectionSettings = GetStructType<{
@@ -815,7 +805,7 @@ export type AIGlobalMaterialTranslucencyListItem = GetStructType<{
   Translucency: number;
 }>;
 
-export type AIGlobalMonolith = GetStructType<{
+export type AIGlobalMutant = GetStructType<{
   ChangeChance: number;
   ConfidenceToAttack: number;
   ConfidenceToRetreat: number;
@@ -868,6 +858,12 @@ export type AIGlobalRegionRankItem = GetStructType<{
   Region: ERegion;
 }>;
 
+export type AIGlobalRelativeLocation = GetStructType<{
+  X: number;
+  Y: number;
+  Z: number;
+}>;
+
 export type AIGlobalRoomBaseCoefficients = GetStructType<
   AIGlobalRoomBaseCoefficientsItem[]
 >;
@@ -876,8 +872,6 @@ export type AIGlobalRoomBaseCoefficientsItem = GetStructType<{
   Coefficient: number;
   RoomType: EAudioRoomPresetBandwidth;
 }>;
-
-export type AIGlobalSoundEventTypeSpreadSpeedList = GetStructType<{}>;
 
 export type AIGlobalThreatsSettings = GetStructType<{
   CorpseSmellAfterDeathTimeout: number;
@@ -950,7 +944,7 @@ export type AimAssistConePrototypeTrackedBones = GetStructType<EDamageBone[]>;
 
 export type AimAssistPresetPrototype = GetStructType<{
   LostTargetTrackingTime: number;
-  MagnetismAimAssistConeSIDs: SpawnActorPrototypeSignals;
+  MagnetismAimAssistConeSIDs: CoreVariableHead;
   MovingTrackingAimAssistConeSID: string;
   SID: string;
   SnappingAimAlphaThreshold: number;
@@ -981,7 +975,7 @@ export type AimAssistWeightsPrototypeWeightRulesItem = GetStructType<{
 }>;
 
 export type ALifeDirectorScenarioPrototype = GetStructType<{
-  ALifeScenarioNPCArchetypesLimitsPerPlayerRank: ALifeScenarioNPCArchetypesLimitsPerPlayerRank;
+  ALifeScenarioNPCArchetypesLimitsPerPlayerRank: ALifeDirectorScenarioPrototypeALifeScenarioNPCArchetypesLimitsPerPlayerRank;
   DefaultALifeLairExpansionToPlayerTimeMax: number;
   DefaultALifeLairExpansionToPlayerTimeMin: number;
   DefaultEmissionScenarioGroup: string;
@@ -995,7 +989,7 @@ export type ALifeDirectorScenarioPrototype = GetStructType<{
   DefaultSpawnDelayMax: number;
   DefaultSpawnDelayMin: number;
   FallbackMaxSpawnCount: number;
-  FallbackNPCTypes: QuestNodePrototypeTargetQuestGuids;
+  FallbackNPCTypes: CoreVariableLegs;
   ProhibitedAgentTypes: ALifeDirectorScenarioPrototypeProhibitedAgentTypes;
   RestrictedObjPrototypeSIDs: ALifeDirectorScenarioPrototypeRestrictedObjPrototypeSIDs;
   ScenarioGroups: ALifeDirectorScenarioPrototypeScenarioGroups;
@@ -1003,9 +997,10 @@ export type ALifeDirectorScenarioPrototype = GetStructType<{
   SID: string;
 }>;
 
-export type ALifeScenarioNPCArchetypesLimitsPerPlayerRank = GetStructType<
-  ALifeDirectorScenarioPrototypeALifeScenarioNPCArchetypesLimitsPerPlayerRankItem[]
->;
+export type ALifeDirectorScenarioPrototypeALifeScenarioNPCArchetypesLimitsPerPlayerRank =
+  GetStructType<
+    ALifeDirectorScenarioPrototypeALifeScenarioNPCArchetypesLimitsPerPlayerRankItem[]
+  >;
 
 export type ALifeDirectorScenarioPrototypeALifeScenarioNPCArchetypesLimitsPerPlayerRankItem =
   GetStructType<{
@@ -1013,16 +1008,16 @@ export type ALifeDirectorScenarioPrototypeALifeScenarioNPCArchetypesLimitsPerPla
     Restrictions: ALifeDirectorScenarioPrototypeRestrictions;
   }>;
 
-export type ALifeDirectorScenarioPrototypeEmission = GetStructType<{
+export type ALifeDirectorScenarioPrototypeHub = GetStructType<{
   PostSpawnDirectorTimeoutMax: number;
   PostSpawnDirectorTimeoutMin: number;
-  ScenarioSIDs: ALifeDirectorScenarioPrototypeScenarios;
+  ScenarioSIDs: ALifeDirectorScenarioPrototypeScenarioSIDs;
   SID: string;
   SpawnDelayMax: number;
   SpawnDelayMin: number;
 }>;
 
-export type ALifeDirectorScenarioPrototypeHumans_AttackEnemyLair_Friendly =
+export type ALifeDirectorScenarioPrototypeMutant_AttackEnemyLair =
   GetStructType<{
     ExpansionSquadNumMax: number;
     ExpansionSquadNumMin: number;
@@ -1050,24 +1045,16 @@ export type ALifeDirectorScenarioPrototypeRestrictionsItem = GetStructType<{
 }>;
 
 export type ALifeDirectorScenarioPrototypeScenarioGroups = GetStructType<{
-  AllScenarios: ALifeDirectorScenarioPrototypeEmission;
-  CaptureLairs: ALifeDirectorScenarioPrototypeEmission;
-  ContextualActions: ALifeDirectorScenarioPrototypeEmission;
-  Emission: ALifeDirectorScenarioPrototypeEmission;
-  EmptyGroup: ALifeDirectorScenarioPrototypeEmission;
-  Global: ALifeDirectorScenarioPrototypeEmission;
-  Global_LesserZone: ALifeDirectorScenarioPrototypeEmission;
-  Hub: ALifeDirectorScenarioPrototypeEmission;
-  HumanVsMutants: ALifeDirectorScenarioPrototypeEmission;
-  HumanVsMutants_LesserZone: ALifeDirectorScenarioPrototypeEmission;
-  Local: ALifeDirectorScenarioPrototypeEmission;
-  Quiet: ALifeDirectorScenarioPrototypeEmission;
-  Swamp_ScenarioGroups: ALifeDirectorScenarioPrototypeEmission;
+  [key in ScenarioGroup]: ALifeDirectorScenarioPrototypeHub;
 }>;
 
-export type ALifeDirectorScenarioPrototypeScenarios = GetStructType<
-  Record<string, ALifeDirectorScenarioPrototypeHumans_AttackEnemyLair_Friendly>
->;
+export type ALifeDirectorScenarioPrototypeScenarios = GetStructType<{
+  [k in string]: ALifeDirectorScenarioPrototypeMutant_AttackEnemyLair;
+}>;
+
+export type ALifeDirectorScenarioPrototypeScenarioSIDs = GetStructType<{
+  [k in string]: ALifeDirectorScenarioPrototypeMutant_AttackEnemyLair;
+}>;
 
 export type ALifeDirectorScenarioPrototypeScenarioSquads = GetStructType<
   ALifeDirectorScenarioPrototypeScenarioSquadsItem[]
@@ -1108,28 +1095,26 @@ export type ALifePopulationManagerFactionPrototype = GetStructType<{
   SID: string;
 }>;
 
-export type ALifePopulationManagerFactionPrototypeAggressive = GetStructType<{
+export type ALifePopulationManagerFactionPrototypeALifeFactionGoals =
+  GetStructType<{
+    [key in FactionGoalType]: ALifePopulationManagerFactionPrototypeNormal;
+  }>;
+
+export type ALifePopulationManagerFactionPrototypeFactions = GetStructType<{
+  [key in Faction]: ALifePopulationManagerFactionPrototypeRat;
+}>;
+
+export type ALifePopulationManagerFactionPrototypeNormal = GetStructType<{
   MaxLairs: number;
   MinLairs: number;
   TacticType: EALifeFactionGoalType;
 }>;
 
-export type ALifePopulationManagerFactionPrototypeALifeFactionGoals =
-  GetStructType<{
-    Aggressive: ALifePopulationManagerFactionPrototypeAggressive;
-    Defensive: ALifePopulationManagerFactionPrototypeAggressive;
-    Normal: ALifePopulationManagerFactionPrototypeAggressive;
-  }>;
-
-export type ALifePopulationManagerFactionPrototypeBandits = GetStructType<{
+export type ALifePopulationManagerFactionPrototypeRat = GetStructType<{
   ALifeFactionGoals: ALifePopulationManagerFactionPrototypeALifeFactionGoals;
   ALifeLairExpansionBattleChance: number;
   Faction: string;
 }>;
-
-export type ALifePopulationManagerFactionPrototypeFactions = GetStructType<
-  Record<Faction, ALifePopulationManagerFactionPrototypeBandits>
->;
 
 export type AmmoPrototype = GetStructType<{
   AimDispersionMod: number;
@@ -1146,8 +1131,8 @@ export type AmmoPrototype = GetStructType<{
   DamageMod: number;
   DamageSource: EDamageSource;
   DispersionMod: number;
-  EffectPrototypeSIDs: SpawnActorPrototypeIgnoreCollisionActors;
-  FittingWeaponsSIDs: SpawnActorPrototypeLairCoreVolumes;
+  EffectPrototypeSIDs: NPCPrototypeSkills;
+  FittingWeaponsSIDs: SingletonConstantArmy;
   FlatnessMod: number;
   FPShellFXPath: string;
   FractionCount: number;
@@ -1265,14 +1250,14 @@ export type AnomalyPrototype = GetStructType<{
   GrenadeLinearVelocityMultiplier: number;
   HuntDistance: number;
   IdleSwitchPath: string;
-  IgnoredProjectileSIDs: SpawnActorPrototypeIgnoreCollisionActors;
-  ImmuneObjPrototypeSIDs: SpawnActorPrototypeIgnoreCollisionActors;
-  InteractionEffectPrototypeSIDs: SingletonConstantBandits;
+  IgnoredProjectileSIDs: NPCPrototypeSkills;
+  ImmuneObjPrototypeSIDs: NPCPrototypeSkills;
+  InteractionEffectPrototypeSIDs: CoreVariableTorso;
   ItemDefaultVelocityMultiplier: number;
   LavaClotTTLMax: number;
   LavaClotTTLMin: number;
-  LavaHitEffectPrototypeSIDs: SpawnActorPrototypeSignals;
-  LavaItemHitEffectPrototypeSIDs: SpawnActorPrototypeIgnoreCollisionActors;
+  LavaHitEffectPrototypeSIDs: CoreVariableHead;
+  LavaItemHitEffectPrototypeSIDs: NPCPrototypeSkills;
   LiftingHeight: number;
   LiftUpTime: number;
   LinearDamping: number;
@@ -1295,12 +1280,12 @@ export type AnomalyPrototype = GetStructType<{
   ParticleSpawnDelay: number;
   ParticleSpawnHeight: number;
   ParticleSpawnPredictionTime: number;
-  PassiveEffectPrototypeSIDs: SpawnActorPrototypeSignals;
+  PassiveEffectPrototypeSIDs: CoreVariableHead;
   PillowVFXLerpDuration: number;
   PlayerSpiralingPower: number;
-  PlayerStanceChangeEffectPrototypeSIDs: AIGlobalSoundEventTypeSpreadSpeedList;
-  PostInteractionEffectPrototypeSIDs: SpawnActorPrototypeIgnoreCollisionActors;
-  PreInteractionEffectPrototypeSIDs: SpawnActorPrototypeIgnoreCollisionActors;
+  PlayerStanceChangeEffectPrototypeSIDs: AssetLibraryUIIcons;
+  PostInteractionEffectPrototypeSIDs: NPCPrototypeSkills;
+  PreInteractionEffectPrototypeSIDs: NPCPrototypeSkills;
   PullForce: number;
   PushImpulse: number;
   PushingForce: number;
@@ -1321,7 +1306,7 @@ export type AnomalyPrototype = GetStructType<{
   ThirdPersonSwitchPath: string;
   TimeToCenter: number;
   ToxicCloudAppearTime: number;
-  ToxicCloudBoxCollision: SpawnActorPrototypeVector;
+  ToxicCloudBoxCollision: AIGlobalRelativeLocation;
   ToxicCloudDisappearChance: number;
   ToxicCloudDisappearCheck: number;
   ToxicCloudDisappearTime: number;
@@ -1361,7 +1346,7 @@ export type AnomalyPrototypeParticlePrototype = GetStructType<{
   CollisionRadiusMin: number;
   DamageRadius: number;
   InitialSpeedInterpolationTime: number;
-  InteractionEffectPrototypeSIDs: SingletonConstantBandits;
+  InteractionEffectPrototypeSIDs: CoreVariableTorso;
   MaxHP: number;
   MaxInitialSpeed: number;
   MaxSpeed: number;
@@ -1386,7 +1371,7 @@ export type ArmorPrototype = GetStructType<{
   bBlockHead: boolean;
   bPreventFromLimping: boolean;
   Cost: number;
-  EffectPrototypeSIDs: SpawnActorPrototypeSignals;
+  EffectPrototypeSIDs: CoreVariableHead;
   Icon: string;
   IncreaseSpeedCoef: number;
   Invisible: boolean;
@@ -1401,7 +1386,7 @@ export type ArmorPrototype = GetStructType<{
   NoiseCoef: number;
   NpcMeshGenerator: ArmorPrototypeNpcMeshGenerator;
   PhysicsInteractionPrototypeSID: string;
-  PreinstalledUpgrades: SpawnActorPrototypeIgnoreCollisionActors;
+  PreinstalledUpgrades: NPCPrototypeSkills;
   Protection: ArmorPrototypeProtection;
   ProtectionNPC: ArmorPrototypeProtection;
   SectionSettings: ArmorPrototypeSectionSettings;
@@ -1474,7 +1459,7 @@ export type ArtifactPrototype = GetStructType<{
   DetectorRequired: boolean;
   DisableCollisionWhenHide: boolean;
   EffectOnPickPrototypeSIDs: ArtifactPrototypeEffectOnPickPrototypeSIDs;
-  EffectPrototypeSIDs: SingletonConstantBandits;
+  EffectPrototypeSIDs: CoreVariableTorso;
   EffectsDisplayTypes: ArtifactPrototypeEffectsDisplayTypes;
   EffectsDuration: number;
   FakeArtifactDissolveSound: string;
@@ -1507,7 +1492,7 @@ export type ArtifactPrototype = GetStructType<{
   MeshPrototypeSID: string;
   MinimalDrunkenness: number;
   MinWeight: number;
-  NegativeEffectPrototypeSIDs: SpawnActorPrototypeIgnoreCollisionActors;
+  NegativeEffectPrototypeSIDs: NPCPrototypeSkills;
   ParticleOnImpact: string;
   ParticleOnShow: string;
   ParticleStateTransitionFadeIn: string;
@@ -1517,7 +1502,7 @@ export type ArtifactPrototype = GetStructType<{
   Persistent: boolean;
   PhysicsInteractionPrototypeSID: string;
   PlayerDistance: number;
-  PositiveEffectPrototypeSIDs: SingletonConstantBandits;
+  PositiveEffectPrototypeSIDs: CoreVariableTorso;
   Radius: number;
   Rarity: EArtifactRarity;
   ReturnDistanceValue: number;
@@ -1528,8 +1513,8 @@ export type ArtifactPrototype = GetStructType<{
   StateTransitionDelay: number;
   Strafe: boolean;
   Type: EItemType;
-  ViewOffset: SpawnActorPrototypeVector;
-  WakeUpEffectSIDs: SpawnActorPrototypeIgnoreCollisionActors;
+  ViewOffset: AIGlobalRelativeLocation;
+  WakeUpEffectSIDs: NPCPrototypeSkills;
   Weight: number;
   WeightDecreaseAmount: number;
   WeightDecreaseDelay: number;
@@ -1549,7 +1534,7 @@ export type ArtifactPrototypeAnomalyDamageDeflectionsItem = GetStructType<{
 
 export type ArtifactPrototypeEffectOnPickPrototypeSIDs = GetStructType<
   string[] & {
-    ViewOffset: SpawnActorPrototypeVector;
+    ViewOffset: AIGlobalRelativeLocation;
   }
 >;
 
@@ -1560,7 +1545,7 @@ export type ArtifactPrototypeEffectsDisplayTypes = GetStructType<
 export type ArtifactPrototypeShouldShowEffects = GetStructType<boolean[]>;
 
 export type ArtifactSpawnerPrototype = GetStructType<
-  { [k in Rank]: QuestArtifactSpawnerPrototypeNewbie } & {
+  { [k in Rank]: ArtifactSpawnerPrototypeMaster } & {
     ExcludeRules: ArtifactSpawnerPrototypeExcludeRules;
     ID: number;
     ListOfArtifacts: ArtifactSpawnerPrototypeListOfArtifacts;
@@ -1576,6 +1561,23 @@ export type ArtifactSpawnerPrototypeExcludeRules = GetStructType<
 
 export type ArtifactSpawnerPrototypeListOfArtifacts = StringArray;
 
+export type ArtifactSpawnerPrototypeMaster = GetStructType<{
+  Count: number;
+  MaxCooldown: number;
+  MinCooldown: number;
+  Radius: number;
+  RarityChance: ArtifactSpawnerPrototypeRarityChance;
+  SpawnChanceBase: number;
+  SpawnChanceBonus: number;
+}>;
+
+export type ArtifactSpawnerPrototypeRarityChance = GetStructType<{
+  Common: number;
+  Epic: number;
+  Rare: number;
+  Uncommon: number;
+}>;
+
 export type AssetLibrary = GetStructType<{
   AkEffectShareSet: AssetLibraryAkEffectShareSet;
   AKRtpc: AssetLibraryAKRtpc;
@@ -1585,8 +1587,8 @@ export type AssetLibrary = GetStructType<{
   CharacterBlueprint: AssetLibraryCharacterBlueprint;
   CurveFloat: AssetLibraryCurveFloat;
   InteractableBlueprint: AssetLibraryInteractableBlueprint;
-  ItemIcons: AIGlobalSoundEventTypeSpreadSpeedList;
-  Material: AIGlobalSoundEventTypeSpreadSpeedList;
+  ItemIcons: AssetLibraryUIIcons;
+  Material: AssetLibraryUIIcons;
   MaterialInstanceConstant: AssetLibraryMaterialInstanceConstant;
   MaterialParameterCollection: AssetLibraryMaterialParameterCollection;
   NavModifiers: string;
@@ -1597,8 +1599,8 @@ export type AssetLibrary = GetStructType<{
   SkeletalMesh: AssetLibrarySkeletalMesh;
   StaticMesh: AssetLibraryStaticMesh;
   Texture2D: string;
-  TextureRenderTarget2D: AIGlobalSoundEventTypeSpreadSpeedList;
-  UIIcons: AIGlobalSoundEventTypeSpreadSpeedList;
+  TextureRenderTarget2D: AssetLibraryUIIcons;
+  UIIcons: AssetLibraryUIIcons;
   UIWidgetBlueprint: AssetLibraryUIWidgetBlueprint;
 }>;
 
@@ -1707,6 +1709,8 @@ export type AssetLibraryStaticMesh = GetStructType<{
   SphereTrigger: string;
 }>;
 
+export type AssetLibraryUIIcons = GetStructType<{}>;
+
 export type AssetLibraryUIWidgetBlueprint = GetStructType<{
   AttachSelectorClass: string;
   BackgroundBlurViewClass: string;
@@ -1750,7 +1754,7 @@ export type AttachMeshPrototype = GetStructType<
     bRenderCustomDepthPass: boolean;
     bShouldUseParentBound: boolean;
     bUseCustomLODSync: boolean;
-    ComponentTags: SpawnActorPrototypeIgnoreCollisionActors;
+    ComponentTags: NPCPrototypeSkills;
     FaceBlockingBlendMaskPrototypeSID: string;
     GroomBlockingMappingPrototypeSID: string;
     GroomPrototypeSID: string;
@@ -1804,10 +1808,10 @@ export type AttachMeshPrototypeBoxCollisions = GetStructType<
 export type AttachMeshPrototypeBoxCollisionsItem = GetStructType<{
   CollisionProfileName: string;
   ComponentName: string;
-  Extent: SpawnActorPrototypeVector;
+  Extent: AIGlobalRelativeLocation;
   PhysicalMaterialPath: string;
   SocketName: string;
-  TransformTranslation: SpawnActorPrototypeVector;
+  TransformTranslation: AIGlobalRelativeLocation;
 }>;
 
 export type AttachMeshPrototypeCapsuleCollisions = GetStructType<
@@ -1822,41 +1826,49 @@ export type AttachMeshPrototypeCapsuleCollisionsItem = GetStructType<{
   Radius: number;
   SocketName: string;
   TransformRotator: SpawnActorPrototypeRotation;
-  TransformTranslation: SpawnActorPrototypeVector;
+  TransformTranslation: AIGlobalRelativeLocation;
 }>;
 
 export type AttachMeshPrototypeCustomData = GetStructType<{
-  Chevron_index: AttachMeshPrototypeDamageIndex_01;
+  Chevron_index: AttachMeshPrototypeTeeth;
   Damage: AttachMeshPrototypeDirt;
-  DamageIndex_01: AttachMeshPrototypeDamageIndex_01;
-  DamageIndex_02: AttachMeshPrototypeDamageIndex_01;
-  DamagePoss_01: AttachMeshPrototypeNormal_Intensity;
-  DamagePoss_02: AttachMeshPrototypeNormal_Intensity;
-  DamageRotation_Index_01: AttachMeshPrototypeNormal_Intensity;
-  DamageRotation_Index_02: AttachMeshPrototypeNormal_Intensity;
-  DamageScale_Index_01: AttachMeshPrototypeNormal_Intensity;
-  DamageScale_Index_02: AttachMeshPrototypeDamageIndex_01;
-  DefectIntensity_Index: AttachMeshPrototypeNormal_Intensity;
+  DamageIndex_01: AttachMeshPrototypeTeeth;
+  DamageIndex_02: AttachMeshPrototypeTeeth;
+  DamagePoss_01: AttachMeshPrototypeDamagePoss_01;
+  DamagePoss_02: AttachMeshPrototypeDamagePoss_01;
+  DamageRotation_Index_01: AttachMeshPrototypeDamagePoss_01;
+  DamageRotation_Index_02: AttachMeshPrototypeDamagePoss_01;
+  DamageScale_Index_01: AttachMeshPrototypeDamagePoss_01;
+  DamageScale_Index_02: AttachMeshPrototypeTeeth;
+  DefectIntensity_Index: AttachMeshPrototypeDamagePoss_01;
   Defects: AttachMeshPrototypeDirt;
   Dirt: AttachMeshPrototypeDirt;
-  Dirt_Intensity: AttachMeshPrototypeSkinTone_Index;
-  FrecklesDensity_Index: AttachMeshPrototypeDamageIndex_01;
-  Normal_Intensity: AttachMeshPrototypeNormal_Intensity;
-  SkinTone_Index: AttachMeshPrototypeSkinTone_Index;
-  Teeth: AttachMeshPrototypeDamageIndex_01;
-  TeethColor: AttachMeshPrototypeDamageIndex_01;
+  Dirt_Intensity: AttachMeshPrototypeDirt_Intensity;
+  FrecklesDensity_Index: AttachMeshPrototypeTeeth;
+  Normal_Intensity: AttachMeshPrototypeDamagePoss_01;
+  SkinTone_Index: AttachMeshPrototypeDirt_Intensity;
+  Teeth: AttachMeshPrototypeTeeth;
+  TeethColor: AttachMeshPrototypeTeeth;
 }>;
 
-export type AttachMeshPrototypeDamageIndex_01 = GetStructType<{
+export type AttachMeshPrototypeDamagePoss_01 = GetStructType<{
   Distribution: ECustomDataDistribution;
   MaterialGroup: string;
   ParameterID: number;
-  Variations: AttachMeshPrototypeVariations;
+  VariationCount: number;
 }>;
 
 export type AttachMeshPrototypeDirt = GetStructType<{
   Distribution: ECustomDataDistribution;
   MaterialGroup: string;
+  Variations: AttachMeshPrototypeVariations;
+}>;
+
+export type AttachMeshPrototypeDirt_Intensity = GetStructType<{
+  Distribution: ECustomDataDistribution;
+  MaterialGroup: string;
+  ParameterID: number;
+  VariationCount: number;
   Variations: AttachMeshPrototypeVariations;
 }>;
 
@@ -1892,18 +1904,10 @@ export type AttachMeshPrototypeMaterialsItem = GetStructType<{
   Variations: AttachMeshPrototypeVariations;
 }>;
 
-export type AttachMeshPrototypeNormal_Intensity = GetStructType<{
+export type AttachMeshPrototypeTeeth = GetStructType<{
   Distribution: ECustomDataDistribution;
   MaterialGroup: string;
   ParameterID: number;
-  VariationCount: number;
-}>;
-
-export type AttachMeshPrototypeSkinTone_Index = GetStructType<{
-  Distribution: ECustomDataDistribution;
-  MaterialGroup: string;
-  ParameterID: number;
-  VariationCount: number;
   Variations: AttachMeshPrototypeVariations;
 }>;
 
@@ -1932,10 +1936,10 @@ export type AttachPrototype = GetStructType<{
   bPermanent: boolean;
   CanHoldBreath: boolean;
   Cost: number;
-  EffectPrototypeSIDs: SpawnActorPrototypeLairCoreVolumes;
+  EffectPrototypeSIDs: SingletonConstantArmy;
   FittingWeaponsSIDs: SpawnActorPrototypeLockReceivers;
   FPParticlesBasedOnHeating: AttachPrototypeFPParticlesBasedOnHeating;
-  HideOnAttachPrototypeIDInstalled: GroomBlockingMappingPrototypeBlockingGroomSIDs;
+  HideOnAttachPrototypeIDInstalled: PDATutorialPrototypeImages;
   Icon: string;
   InventoryActionTime: number;
   IronSight: AttachPrototypeIronSight;
@@ -1962,7 +1966,7 @@ export type AttachPrototype = GetStructType<{
 }>;
 
 export type AttachPrototypeAimingEffects = GetStructType<{
-  PlayerOnlyEffects: SpawnActorPrototypeIgnoreCollisionActors;
+  PlayerOnlyEffects: NPCPrototypeSkills;
 }>;
 
 export type AttachPrototypeFPParticlesBasedOnHeating = GetStructType<
@@ -1970,8 +1974,8 @@ export type AttachPrototypeFPParticlesBasedOnHeating = GetStructType<
 >;
 
 export type AttachPrototypeFPParticlesBasedOnHeatingItem = GetStructType<{
-  PostShooting: NPCWeaponAttributesPrototypeShooting;
-  Shooting: NPCWeaponAttributesPrototypeShooting;
+  PostShooting: AttachPrototypeShooting;
+  Shooting: AttachPrototypeShooting;
   VFXGroupName: string;
 }>;
 
@@ -2019,6 +2023,12 @@ export type AttachPrototypeScope = GetStructType<{
   bOverrideAimingEffects: boolean;
   ChangeZoomScopeSound: string;
   ZoomCoefficients: AttachPrototypeZoomCoefficients;
+}>;
+
+export type AttachPrototypeShooting = GetStructType<{
+  MinHeatingValueToAppear: number;
+  PFXPath: string;
+  SocketName: string;
 }>;
 
 export type AttachPrototypeShootingAttach = GetStructType<{
@@ -2087,14 +2097,7 @@ export type AudioScattererPrototypeListOfBrushesItem = GetStructType<{
   Event2DFadeOutTime: number;
   ListOf3DEvents: AudioScattererPrototypeListOf3DEvents;
   SID: string;
-  VisualizationColor: AudioScattererPrototypeVisualizationColor;
-}>;
-
-export type AudioScattererPrototypeVisualizationColor = GetStructType<{
-  A: number;
-  B: number;
-  G: number;
-  R: number;
+  VisualizationColor: WeatherPrototypeColor1;
 }>;
 
 export type AutoSaveVariable = GetStructType<{
@@ -2119,7 +2122,7 @@ export type BarbedWirePrototype = GetStructType<{
   DamageDelay: number;
   ID: number;
   MovementSpeedDegradeDelay: number;
-  NegativeEffectPrototypeSIDs: SpawnActorPrototypeSignals;
+  NegativeEffectPrototypeSIDs: CoreVariableHead;
   SID: string;
 }>;
 
@@ -2219,7 +2222,7 @@ export type BenchmarkMeshGeneratorPrototypeVariationsItem = GetStructType<{
 
 export type BlueprintPrototype = GetStructType<{
   DestroyOnPickup: boolean;
-  FittingWeaponsSIDs: SpawnActorPrototypeIgnoreCollisionActors;
+  FittingWeaponsSIDs: NPCPrototypeSkills;
   Icon: string;
   Invisible: boolean;
   InvisibleInPlayerInventory: boolean;
@@ -2284,7 +2287,7 @@ export type BodyMeshPrototypeVariationsItem = GetStructType<{
 }>;
 
 export type BodyMeshSimulatePhysicsPrototype = GetStructType<{
-  BonesToApplyPhysics: SpawnActorPrototypeLairCoreVolumes;
+  BonesToApplyPhysics: SingletonConstantArmy;
   SID: string;
 }>;
 
@@ -2372,12 +2375,12 @@ export type CharacterWeaponSettingsPrototype = GetStructType<{
   StaggerEffectPrototypeSID: string;
   StealthReveal: number;
   UnequippedRelativeRotation: SpawnActorPrototypeRotation;
-  UnequippedRelativeTranslation: SpawnActorPrototypeVector;
+  UnequippedRelativeTranslation: AIGlobalRelativeLocation;
   UnequippedSocketName: string;
 }>;
 
 export type CharacterWeaponSettingsPrototypeCombatSynchronizationScore =
-  GetStructType<CombatSynchronizationPrototypeSynchronizationPrimitivesItem[]>;
+  GetStructType<NPCWeaponSettingsPrototypeCombatSynchronizationScoreItem[]>;
 
 export type CluePrototype = GetStructType<{
   DefaultValue: string;
@@ -2388,8 +2391,8 @@ export type CluePrototype = GetStructType<{
 }>;
 
 export type CombatSynchronizationPrototype = GetStructType<
-  { [k in Rank]: CombatSynchronizationPrototypeNewbie } & {
-    CombatEnteringUncheckedTags: SpawnActorPrototypeIgnoreCollisionActors;
+  { [k in Rank]: CombatSynchronizationPrototypeMaster } & {
+    CombatEnteringUncheckedTags: NPCPrototypeSkills;
     DifficultySID: string;
     SID: string;
   }
@@ -2406,19 +2409,13 @@ export type CombatSynchronizationPrototypeFilterGroupsItem = GetStructType<{
   MaxScore: number;
 }>;
 
-export type CombatSynchronizationPrototypeNewbie = GetStructType<{
+export type CombatSynchronizationPrototypeMaster = GetStructType<{
   FilterGroups: CombatSynchronizationPrototypeFilterGroups;
   SynchronizationPrimitives: CombatSynchronizationPrototypeSynchronizationPrimitives;
 }>;
 
 export type CombatSynchronizationPrototypeSynchronizationPrimitives =
-  GetStructType<CombatSynchronizationPrototypeSynchronizationPrimitivesItem[]>;
-
-export type CombatSynchronizationPrototypeSynchronizationPrimitivesItem =
-  GetStructType<{
-    Score: number;
-    TokenTag: string;
-  }>;
+  GetStructType<NPCWeaponSettingsPrototypeCombatSynchronizationScoreItem[]>;
 
 export type ConstBoolProviderPrototype = GetStructType<{
   SID: string;
@@ -2466,7 +2463,7 @@ export type ConsumablePrototype = GetStructType<{
   IsQuestItemPrototype: boolean;
   ItemGridHeight: number;
   ItemGridWidth: number;
-  ItemTags: SpawnActorPrototypeIgnoreCollisionActors;
+  ItemTags: NPCPrototypeSkills;
   ItemTypeSwitchValue: string;
   LocalizationSID: string;
   MaxStackCount: number;
@@ -2532,7 +2529,7 @@ export type ContextualActionBlueprintPrototypeAnimationFinalFrameTransformsItem 
 export type ContextualActionBlueprintPrototypeAnimationFinalFrameTransformsItemItem =
   GetStructType<{
     Rotation: SpawnActorPrototypeRotation;
-    Vector: SpawnActorPrototypeVector;
+    Vector: AIGlobalRelativeLocation;
   }>;
 
 export type ContextualActionBlueprintPrototypeNeeds = GetStructType<
@@ -2681,7 +2678,7 @@ export type ContextualActionNodePrototypePreconditions = GetStructType<
 
 export type ContextualActionNodePrototypePreconditionsItem = GetStructType<{
   AllowedAgentType: number;
-  AllowedFactions: SpawnActorPrototypeIgnoreCollisionActors;
+  AllowedFactions: NPCPrototypeSkills;
   AllowedUserRestriction: string;
   BodyParts: ContextualActionNodePrototypeBodyParts;
   GlobalVariableName: string;
@@ -2700,7 +2697,7 @@ export type ContextualActionNodePrototypeRandomSelectorNodes = GetStructType<
 
 export type ContextualActionNodePrototypeRandomSelectorNodesItem =
   GetStructType<{
-    AkAudioEvent: SpawnActorPrototypeIgnoreCollisionActors;
+    AkAudioEvent: NPCPrototypeSkills;
     AnimationData: ContextualActionNodePrototypeAnimationData;
     CanInteractWithPlayer: boolean;
     Effects: string;
@@ -2722,7 +2719,7 @@ export type ContextualActionNodePrototypeSequentialSelectorNodes =
 
 export type ContextualActionNodePrototypeSequentialSelectorNodesItem =
   GetStructType<{
-    AkAudioEvent: SpawnActorPrototypeIgnoreCollisionActors;
+    AkAudioEvent: NPCPrototypeSkills;
     AnimationData: ContextualActionNodePrototypeAnimationData;
     CanInteractWithPlayer: boolean;
     ConditionalSelectorNodes: ContextualActionNodePrototypeConditionalSelectorNodes;
@@ -2763,7 +2760,7 @@ export type CoreVariable = GetStructType<{
   AimAssistBoneLocationOffset: number;
   AimAssistMaxOverlapsThreshold: number;
   AimAssistMinOverlapsThreshold: number;
-  AimAssistSnappingBones: SingletonConstantBandits;
+  AimAssistSnappingBones: CoreVariableTorso;
   AimFOVRestoreTime: number;
   AimingWeaponDirtCurve: string;
   AimSocketName: string;
@@ -2778,7 +2775,7 @@ export type CoreVariable = GetStructType<{
   ArmorDeflectMinChance: number;
   ArmorDifferenceCoef: number;
   ArmorDurabilityParamsCoef: number;
-  ArtifactOffsetFromAnomalyBorder: SpawnActorPrototypeVector;
+  ArtifactOffsetFromAnomalyBorder: AIGlobalRelativeLocation;
   ArtifactSpawnAttemptsCount: number;
   ArtifactSpawnDistanceDelta: number;
   ArtifactSpawnHeightToNavmesh: number;
@@ -2811,8 +2808,8 @@ export type CoreVariable = GetStructType<{
   BoltCrosshairType: ECrosshairType;
   BoltLifetime: number;
   BoltPrototypeSID: string;
-  BoltSkeletalMeshes: SpawnActorPrototypeIgnoreCollisionActors;
-  BoltStaticMeshes: SpawnActorPrototypeIgnoreCollisionActors;
+  BoltSkeletalMeshes: NPCPrototypeSkills;
+  BoltStaticMeshes: NPCPrototypeSkills;
   BoneSurfaceMaterial: string;
   BoneToHitAreaMap: CoreVariableBoneToHitAreaMap;
   BP_DeveloperSpectator: string;
@@ -2892,7 +2889,7 @@ export type CoreVariable = GetStructType<{
   DefaultItemGeneratorTemplate: string;
   DefaultLeverCurve: string;
   DefaultLeverCurveReverse: string;
-  DefaultMapSize: SpawnActorPrototypeFreeformTriggerVerticesItem;
+  DefaultMapSize: AbilityPrototypeRadius;
   DefaultMouseSensitivityModifier: number;
   DefaultSaveLanguage: ELocalizationLanguage;
   DefaultState: string;
@@ -2925,11 +2922,11 @@ export type CoreVariable = GetStructType<{
   DropItemSFX: string;
   DurabilityRound: number;
   DynamicParticlesDataTable: string;
-  EffectsOnDestructWindowApplied: SpawnActorPrototypeIgnoreCollisionActors;
+  EffectsOnDestructWindowApplied: NPCPrototypeSkills;
   EffectsRemovedOnHealWounded: SingletonConstantZombie;
   EmissionCrowsFallFX: string;
   EmissionNeutralityTimer: number;
-  EmissionStartLocation: SpawnActorPrototypeFreeformTriggerVerticesItem;
+  EmissionStartLocation: AbilityPrototypeRadius;
   EnergeticOveruseParameter: string;
   EveningStartTime: number;
   ExplosionArmorDifferenceCoef: number;
@@ -3034,12 +3031,12 @@ export type CoreVariable = GetStructType<{
   LimpEffectSIDToThresholdMap: CoreVariableLimpEffectSIDToThresholdMap;
   LoadingScreenWidgetClass: string;
   LocationAmbientState: string;
-  LookGamepadInputCurves: SingletonConstantBandits;
+  LookGamepadInputCurves: CoreVariableTorso;
   LookUpGamepadInputCurve: string;
   LootMutantDeadBodySound: string;
   LootNPCDeadBodySound: string;
   LowDurabilityThreshold: number;
-  LowerRightLocation: SpawnActorPrototypeFreeformTriggerVerticesItem;
+  LowerRightLocation: AbilityPrototypeRadius;
   MainMenuState: string;
   MainMenuWidgetClass: string;
   MarkerCompassWidgetClass: string;
@@ -3076,7 +3073,7 @@ export type CoreVariable = GetStructType<{
   MotionOffState: string;
   MotionOnState: string;
   MoveGamepadInputCurve: string;
-  MoveGamepadInputCurves: SingletonConstantBandits;
+  MoveGamepadInputCurves: CoreVariableTorso;
   MovementVFXArmorScale: CoreVariableMovementVFXArmorScale;
   MovementVFXFootStepDecalLifetime: number;
   MPC_Environment: string;
@@ -3133,7 +3130,7 @@ export type CoreVariable = GetStructType<{
   PlayerDeathState: string;
   PlayerMeleeArmorDifferenceCoef: number;
   PlayerPrototypeSID: string;
-  PlayerStartingCoords: SpawnActorPrototypeVector;
+  PlayerStartingCoords: AIGlobalRelativeLocation;
   PlayerStartingMoney: number;
   PlayVideoState: string;
   PlayVideoWidgetClass: string;
@@ -3238,7 +3235,7 @@ export type CoreVariable = GetStructType<{
   UpgradesWidgetClass: string;
   UpgradeTooltipWidgetClass: string;
   UpgradeWidgetClass: string;
-  UpperLeftLocation: SpawnActorPrototypeFreeformTriggerVerticesItem;
+  UpperLeftLocation: AbilityPrototypeRadius;
   UseMutantLootWithoutWidget: boolean;
   VegetableSurfaceMaterial: string;
   VideoLoadingScreenWidgetClass: string;
@@ -3287,16 +3284,12 @@ export type CoreVariable = GetStructType<{
   WorldMapRegionTexture: string;
   WorldMapScene: string;
   WorldMapTexture: string;
-  WorldWindDirectionInitial: SpawnActorPrototypeFreeformTriggerVerticesItem;
+  WorldWindDirectionInitial: AbilityPrototypeRadius;
   WoundCausingDamageSourceTypes: CoreVariableWoundCausingDamageSourceTypes;
   WoundedHealHoldInteractTime: number;
   WoundedStateHealthRegen: number;
   WoundHitAreasThresholds: CoreVariableWoundHitAreasThresholds;
   ZombieFactionUIDName: string;
-}>;
-
-export type CoreVariableA012 = GetStructType<{
-  FireInterval: number;
 }>;
 
 export type CoreVariableAffectingEffectTypes = GetStructType<
@@ -3306,6 +3299,10 @@ export type CoreVariableAffectingEffectTypes = GetStructType<
 export type CoreVariableAffectingEffectTypesItem = GetStructType<{
   EffectType: EEffectType;
   Multiplier: number;
+}>;
+
+export type CoreVariableAGA = GetStructType<{
+  FireInterval: number;
 }>;
 
 export type CoreVariableArtifactSpawnPityStructs = GetStructType<
@@ -3329,9 +3326,9 @@ export type CoreVariableAudioRoomPresetBandwidth = GetStructType<{
 }>;
 
 export type CoreVariableBoneToHitAreaMap = GetStructType<{
-  Head: SpawnActorPrototypeSignals;
-  Legs: QuestNodePrototypeTargetQuestGuids;
-  Torso: SingletonConstantBandits;
+  Head: CoreVariableHead;
+  Legs: CoreVariableLegs;
+  Torso: CoreVariableTorso;
 }>;
 
 export type CoreVariableBurn = GetStructType<{
@@ -3350,6 +3347,8 @@ export type CoreVariableFleshIshPhysicalMaterials = GetStructType<
   EPhysicalMaterialType[]
 >;
 
+export type CoreVariableHead = StringArray;
+
 export type CoreVariableItemInfoAffectingEffects = GetStructType<
   CoreVariableItemInfoAffectingEffectsItem[]
 >;
@@ -3358,6 +3357,8 @@ export type CoreVariableItemInfoAffectingEffectsItem = GetStructType<{
   AffectingEffectTypes: CoreVariableAffectingEffectTypes;
   ItemInfoType: EItemInfoType;
 }>;
+
+export type CoreVariableLegs = StringArray;
 
 export type CoreVariableLimpEffectSIDToThresholdMap = GetStructType<
   CoreVariableLimpEffectSIDToThresholdMapItem[]
@@ -3418,16 +3419,7 @@ export type CoreVariablePlacesOfInterestItem = GetStructType<{
 }>;
 
 export type CoreVariablePossessedWeaponFireIntervals = GetStructType<{
-  A012: CoreVariableA012;
-  A045: CoreVariableA012;
-  A762NATO: CoreVariableA012;
-  A762Sniper: CoreVariableA012;
-  A918: CoreVariableA012;
-  A919: CoreVariableA012;
-  AGA: CoreVariableA012;
-  AHEDP: CoreVariableA012;
-  APG7V: CoreVariableA012;
-  AVOG: CoreVariableA012;
+  [A012 in Caliber]: CoreVariableAGA;
 }>;
 
 export type CoreVariableRadiationInnerOffsetPresetValues = GetStructType<
@@ -3444,7 +3436,7 @@ export type CoreVariableRadiationPresetValues = GetStructType<
 >;
 
 export type CoreVariableRadiationPresetValuesItem = GetStructType<{
-  EffectPrototypeSIDs: SpawnActorPrototypeIgnoreCollisionActors;
+  EffectPrototypeSIDs: NPCPrototypeSkills;
   GeigerRadiationIntensity: number;
   PostProcessRadiationIntensity: number;
   Preset: ERadiationPreset;
@@ -3503,6 +3495,8 @@ export type CoreVariableStrikeGrenadeResistCoefsItem = GetStructType<{
   ProtectionStrike: number;
 }>;
 
+export type CoreVariableTorso = StringArray;
+
 export type CoreVariableWeightAzimuthArrayPsyPhantom = GetStructType<
   CoreVariableWeightAzimuthArrayPsyPhantomItem[]
 >;
@@ -3553,10 +3547,10 @@ export type CorpseClueStashPrototypeRankClueItem = GetStructType<{
 
 export type CorpsePrototype = GetStructType<{
   AllowedAttachSuffixes: SingletonConstantZombie;
-  BlockAttachSuffixes: SpawnActorPrototypeIgnoreCollisionActors;
+  BlockAttachSuffixes: NPCPrototypeSkills;
   BloodPoolMaterial: string;
   BloodPoolSeverity: number;
-  BonesToHit: QuestNodePrototypeTargetQuestGuids;
+  BonesToHit: CoreVariableLegs;
   CauseOfDeath: ECauseOfDeath;
   DecalsMaterialSID: string;
   HitsCount: number;
@@ -3626,8 +3620,6 @@ export type Credit = GetStructType<{
 }>;
 
 export type CreditNames = StringArray;
-
-export type CreditRoles = GetStructType<CreditRolesItem[]>;
 
 export type CreditRolesItem = GetStructType<{
   Names: CreditNames;
@@ -3771,8 +3763,8 @@ export type DetectorPrototype = GetStructType<{
   DetectorWorkRadius: string;
   DetectorWorkSFX: string;
   DisplayUpdateInterval: number;
-  ExclusionAnomalyList: QuestNodePrototypeTargetQuestGuids;
-  ExclusionArtifactList: SpawnActorPrototypeLairCoreVolumes;
+  ExclusionAnomalyList: CoreVariableLegs;
+  ExclusionArtifactList: SingletonConstantArmy;
   Icon: string;
   ItemSlotType: EInventoryEquipmentSlot;
   ItemTypeSwitchValue: string;
@@ -3931,7 +3923,7 @@ export type DialogPrototypeConditionsItem = GetStructType<
 export type DialogPrototypeConditionsItemItem = GetStructType<{
   bTriggersByAnybody: boolean;
   ChangeValueMode: EChangeValueMode;
-  CompletedNodeLauncherNames: SpawnActorPrototypeIgnoreCollisionActors;
+  CompletedNodeLauncherNames: NPCPrototypeSkills;
   ConditionComparance: EConditionComparance;
   ConditionType: EQuestConditionType;
   DialogMemberIndex: number;
@@ -3941,14 +3933,14 @@ export type DialogPrototypeConditionsItemItem = GetStructType<{
   FastTravelPrototypeSID: string;
   GlobalVariablePrototypeSID: string;
   ItemPrototypeSID: DialogPrototypeItemPrototypeSID;
-  ItemsCount: DialogPrototypeDialogActionParam;
+  ItemsCount: DialogPrototypeMoney;
   JournalEntity: EJournalEntity;
   JournalQuestSID: string;
   JournalQuestStageSID: string;
   JournalState: EJournalState;
   LinkedNodePrototypeSID: string;
   LocationIndex: number;
-  Money: DialogPrototypeDialogActionParam;
+  Money: DialogPrototypeMoney;
   NodeState: EQuestNodeState;
   NotePrototypeSID: string;
   NumericValue: number;
@@ -3963,17 +3955,12 @@ export type DialogPrototypeConditionsItemItem = GetStructType<{
   TargetNode: string;
   TargetNPC: string;
   TargetPlaceholder: string;
-  TargetPoint: SpawnActorPrototypeVector;
+  TargetPoint: AIGlobalRelativeLocation;
   Trigger: string;
   VariableValue: boolean;
   Weather: EWeather;
   WithEquipped: boolean;
   WithInventory: boolean;
-}>;
-
-export type DialogPrototypeDialogActionParam = GetStructType<{
-  VariableType: EGlobalVariableType;
-  VariableValue: number;
 }>;
 
 export type DialogPrototypeDialogActions = GetStructType<
@@ -3984,9 +3971,9 @@ export type DialogPrototypeDialogActionsItem = GetStructType<{
   ChangeValueMode: EChangeValueMode;
   ConsumablePrototypeSID: DialogPrototypeItemPrototypeSID;
   DialogAction: EDialogAction;
-  DialogActionParam: DialogPrototypeDialogActionParam;
+  DialogActionParam: DialogPrototypeMoney;
   GlobalVariablePrototypeSID: string;
-  ItemsCount: DialogPrototypeDialogActionParam;
+  ItemsCount: DialogPrototypeMoney;
   VariableValue: number;
   WithEquipped: boolean;
 }>;
@@ -4019,13 +4006,6 @@ export type DialogPrototypeFalse = GetStructType<{
   Terminate: boolean;
 }>;
 
-export type DialogPrototypeGeneral_PC_DeclineFastTravel_Random = GetStructType<{
-  AnswerTo: number;
-  AvailableFromStart: boolean;
-  NextDialogSID: string;
-  VisibleOnFailedCondition: boolean;
-}>;
-
 export type DialogPrototypeGestureTiming = GetStructType<(number | string)[]>;
 
 export type DialogPrototypeItemPrototypeSID = GetStructType<{
@@ -4035,11 +4015,16 @@ export type DialogPrototypeItemPrototypeSID = GetStructType<{
 
 export type DialogPrototypeLocalizedSequences = StringArray;
 
+export type DialogPrototypeMoney = GetStructType<{
+  VariableType: EGlobalVariableType;
+  VariableValue: number;
+}>;
+
 export type DialogPrototypeNextDialogOptions = GetStructType<
   DialogPrototypeNextDialogOptionsItem[] & {
     False: DialogPrototypeFalse;
-    General_PC_DeclineFastTravel_Random: DialogPrototypeGeneral_PC_DeclineFastTravel_Random;
-    Pripyat_return_to_topics: DialogPrototypeGeneral_PC_DeclineFastTravel_Random;
+    General_PC_DeclineFastTravel_Random: DialogPrototypePripyat_return_to_topics;
+    Pripyat_return_to_topics: DialogPrototypePripyat_return_to_topics;
     True: DialogPrototypeTrue;
   }
 >;
@@ -4054,6 +4039,13 @@ export type DialogPrototypeNextDialogOptionsItem = GetStructType<{
   MainReply: boolean;
   NextDialogSID: string;
   Terminate: boolean;
+  VisibleOnFailedCondition: boolean;
+}>;
+
+export type DialogPrototypePripyat_return_to_topics = GetStructType<{
+  AnswerTo: number;
+  AvailableFromStart: boolean;
+  NextDialogSID: string;
   VisibleOnFailedCondition: boolean;
 }>;
 
@@ -4078,8 +4070,8 @@ export type DialogPrototypeTopicAvailabilityConditionsItemItem = GetStructType<{
   Faction: string;
   IncludePartialOverload: boolean;
   ItemPrototypeSID: DialogPrototypeItemPrototypeSID;
-  ItemsCount: DialogPrototypeDialogActionParam;
-  Money: DialogPrototypeDialogActionParam;
+  ItemsCount: DialogPrototypeMoney;
+  Money: DialogPrototypeMoney;
   NumericValue: number;
   Rank: ERank;
   ReactType: ETriggerReact;
@@ -4088,7 +4080,7 @@ export type DialogPrototypeTopicAvailabilityConditionsItemItem = GetStructType<{
   TargetCharacter: string;
   TargetContextualActionPlaceholder: string;
   TargetNPC: string;
-  TargetPoint: SpawnActorPrototypeVector;
+  TargetPoint: AIGlobalRelativeLocation;
   ThreatAwareness: EThreatAwareness;
   Trigger: string;
   WithEquipped: boolean;
@@ -4106,7 +4098,7 @@ export type DifficultyPrototype = GetStructType<{
   AccumulatedDamageReductionCurveWeightMaxDistance: number;
   AccumulatedDamageReductionCurveWeightMin: number;
   AccumulatedDamageReductionIncludesHealedHealth: boolean;
-  AdditionalMechanicsEffects: SingletonConstantBandits;
+  AdditionalMechanicsEffects: CoreVariableTorso;
   AgentCooldownMultipliers: DifficultyPrototypeAgentCooldownMultipliers;
   AllowedSaveTypes: DifficultyPrototypeAllowedSaveTypes;
   Ammo_Cost: number;
@@ -4226,7 +4218,7 @@ export type DoorPrototype = GetStructType<{
 }>;
 
 export type DoorPrototypeLockedByGlobalVariable = GetStructType<
-  UpgradePrototypeRequiredGlobalVariablesItem[]
+  DoorPrototypeLockedByScenarioFlagItem[]
 >;
 
 export type DoorPrototypeLockedByItemPrototype = GetStructType<
@@ -4239,8 +4231,13 @@ export type DoorPrototypeLockedByItemPrototypeItem = GetStructType<{
 }>;
 
 export type DoorPrototypeLockedByScenarioFlag = GetStructType<
-  UpgradePrototypeRequiredGlobalVariablesItem[]
+  DoorPrototypeLockedByScenarioFlagItem[]
 >;
+
+export type DoorPrototypeLockedByScenarioFlagItem = GetStructType<{
+  GlobalVariableSID: string;
+  Value: number;
+}>;
 
 export type EffectBoolProviderPrototype = GetStructType<{
   bPlayerTarget: boolean;
@@ -4296,18 +4293,18 @@ export type EffectPrototype = GetStructType<{
   DialogBlendInDuration: number;
   DialogBlendOutDuration: number;
   DialogIntensityMultiplier: number;
-  DragImpulseRangeNPC: SpawnActorPrototypeMaxSpawnQuantity;
+  DragImpulseRangeNPC: ObjPrototypeExplorationRadius;
   DuplicationType: EDuplicateResolveType;
-  DurabilityDamageRange: SpawnActorPrototypeMaxSpawnQuantity;
+  DurabilityDamageRange: ObjPrototypeExplorationRadius;
   Duration: number;
   EffectCurvePath: string;
   EffectLevel: string;
   EffectModifiers: EffectPrototypeEffectModifiers;
-  EffectsToBlockIDs: QuestNodePrototypeTargetQuestGuids;
+  EffectsToBlockIDs: CoreVariableLegs;
   FalseEffectSID: string;
   FireIntervals: CoreVariableSignalStrength;
   FireTypes: EffectPrototypeFireTypes;
-  GadgetTypes: SpawnActorPrototypeSignals;
+  GadgetTypes: CoreVariableHead;
   Hint: boolean;
   Icon: string;
   InstantFirstCharge: boolean;
@@ -4370,8 +4367,13 @@ export type EffectPrototypeAffectedStaminaActionTypes = GetStructType<
 >;
 
 export type EffectPrototypeAmmoTypeProjectiles = GetStructType<
-  WeaponGeneralSetupPrototypeAmmoTypeProjectilesItem[]
+  EffectPrototypeAmmoTypeProjectilesItem[]
 >;
+
+export type EffectPrototypeAmmoTypeProjectilesItem = GetStructType<{
+  AmmoType: EAmmoType;
+  ProjectilePrototypeSID: string;
+}>;
 
 export type EffectPrototypeApplicableEffects = GetStructType<
   EffectPrototypeApplicableEffectsItem[]
@@ -4389,63 +4391,7 @@ export type EffectPrototypeArtifactEquipmentSlots = GetStructType<
 export type EffectPrototypeBlockAnimationTypes = GetStructType<EActionType[]>;
 
 export type EffectPrototypeConditionEffects = GetStructType<{
-  BigSleepiness: EffectPrototypeStrongHunger;
-  DeadlyRadiation: EffectPrototypeStrongHunger;
-  Disabled: EffectPrototypeStrongHunger;
-  DisableHungerNegative: EffectPrototypeNoBleeding;
-  DisableRadiationNegative: EffectPrototypeNoBleeding;
-  DisableSleepinessNegative: EffectPrototypeNoBleeding;
-  FullHP: EffectPrototypeStrongHunger;
-  HighFallHeight: EffectPrototypeStrongHunger;
-  HighOverDrunkness: EffectPrototypeStrongHunger;
-  LightRadiation: EffectPrototypeStrongHunger;
-  LightRadiation_2: EffectPrototypeStrongHunger;
-  Low: EffectPrototypeStrongHunger;
-  LowBleeding: EffectPrototypeStrongHunger;
-  LowDrunkness: EffectPrototypeStrongHunger;
-  LowFallHeight: EffectPrototypeStrongHunger;
-  LowHPThreshold: EffectPrototypeStrongHunger;
-  LowHunger: EffectPrototypeStrongHunger;
-  LowSleepiness: EffectPrototypeStrongHunger;
-  LowSPThreshold: EffectPrototypeStrongHunger;
-  Medium: EffectPrototypeStrongHunger;
-  MediumBleeding: EffectPrototypeStrongHunger;
-  MediumDrunkness: EffectPrototypeStrongHunger;
-  MediumHunger: EffectPrototypeStrongHunger;
-  MediumRadiation: EffectPrototypeStrongHunger;
-  MediumSleepiness: EffectPrototypeStrongHunger;
-  No: EffectPrototypeNoBleeding;
-  NoBleeding: EffectPrototypeNoBleeding;
-  NoDrunkness: EffectPrototypeNoBleeding;
-  None: EffectPrototypeNoBleeding;
-  NoOverDrunkness: EffectPrototypeNoBleeding;
-  NormalHPThreshold: EffectPrototypeNoBleeding;
-  NormalSP: EffectPrototypeNoBleeding;
-  NoSleepiness: EffectPrototypeNoBleeding;
-  PhaseFour: EffectPrototypeStrongHunger;
-  PhaseOne: EffectPrototypeStrongHunger;
-  PhaseThree: EffectPrototypeStrongHunger;
-  PhaseTwo: EffectPrototypeStrongHunger;
-  RadiationLevel10: EffectPrototypeStrongHunger;
-  RadiationLevel4: EffectPrototypeStrongHunger;
-  RadiationLevel5: EffectPrototypeStrongHunger;
-  RadiationLevel6: EffectPrototypeStrongHunger;
-  RadiationLevel7: EffectPrototypeStrongHunger;
-  RadiationLevel8: EffectPrototypeStrongHunger;
-  RadiationLevel9: EffectPrototypeStrongHunger;
-  SmallSleepiness: EffectPrototypeStrongHunger;
-  Strong: EffectPrototypeStrongHunger;
-  StrongBleeding: EffectPrototypeStrongHunger;
-  StrongDrunkness: EffectPrototypeStrongHunger;
-  StrongHunger: EffectPrototypeStrongHunger;
-  StrongHungerNegative: EffectPrototypeStrongHunger;
-  StrongRadiation: EffectPrototypeStrongHunger;
-  StrongRadiationNegative: EffectPrototypeStrongHunger;
-  StrongSleepiness: EffectPrototypeStrongHunger;
-  StrongSleepinessNegative: EffectPrototypeStrongHunger;
-  VeryLowHunger: EffectPrototypeStrongHunger;
-  VeryLowSleepiness: EffectPrototypeNoBleeding;
-  Weak: EffectPrototypeStrongHunger;
+  [BigSleepiness in EffectConditionalEffect]: EffectPrototypeLow;
 }>;
 
 export type EffectPrototypeEffectModifiers = GetStructType<
@@ -4460,22 +4406,16 @@ export type EffectPrototypeEffectModifiersItem = GetStructType<{
 
 export type EffectPrototypeFireTypes = GetStructType<EFireType[]>;
 
+export type EffectPrototypeLow = GetStructType<{
+  ApplicableEffects: string | EffectPrototypeApplicableEffects;
+  ConditionValue: number;
+}>;
 export type EffectPrototypeMechanicsEffect = GetStructType<{
   ConditionComparance: EConditionComparance;
   ConditionEffects: EffectPrototypeConditionEffects;
   StartMechanicsValue: number;
   StopMechanicsValue: number;
   VitalBarType: EVitalType;
-}>;
-
-export type EffectPrototypeNoBleeding = GetStructType<{
-  ApplicableEffects: string;
-  ConditionValue: number;
-}>;
-
-export type EffectPrototypeStrongHunger = GetStructType<{
-  ApplicableEffects: EffectPrototypeApplicableEffects;
-  ConditionValue: number;
 }>;
 
 export type EffectSourcePriorityPrototype = GetStructType<{
@@ -4494,7 +4434,7 @@ export type EffectSourcePriorityPrototypeSourcePrioritiesItem = GetStructType<{
 
 export type EmissionPrototype = GetStructType<{
   AIEvents: EmissionPrototypeAIEvents;
-  AppliedEffects: SpawnActorPrototypeSignals;
+  AppliedEffects: CoreVariableHead;
   Assets: EmissionPrototypeAssets;
   DamageSettings: EmissionPrototypeDamageSettings;
   MaxEmissionKillDelayALife: number;
@@ -4567,7 +4507,7 @@ export type EnemyEvaluatorPrototype = GetStructType<{
 export type ExplosionPrototype = GetStructType<{
   ArmorPenetrationNPC: number;
   ArmorPenetrationPlayer: number;
-  ConcussionEffects: SpawnActorPrototypeIgnoreCollisionActors;
+  ConcussionEffects: NPCPrototypeSkills;
   ConcussionRadius: number;
   DamageArmorNPC: number;
   DamageArmorPlayer: number;
@@ -4575,7 +4515,7 @@ export type ExplosionPrototype = GetStructType<{
   DamageNPC: number;
   DamagePlayer: number;
   DamageSource: EDamageSource;
-  DefaultEffectSIDs: SpawnActorPrototypeIgnoreCollisionActors;
+  DefaultEffectSIDs: NPCPrototypeSkills;
   ExplosionAkSFX: string;
   ExplosionDamageCurve: string;
   ExplosionDefectAkSFX: string;
@@ -4590,7 +4530,7 @@ export type ExplosionPrototype = GetStructType<{
   ImpulseDamageCurve: string;
   ImpulsePower: number;
   ImpulseRadius: number;
-  NPCConcussionEffects: SpawnActorPrototypeIgnoreCollisionActors;
+  NPCConcussionEffects: NPCPrototypeSkills;
   PhysicalMaterialEffects: ExplosionPrototypePhysicalMaterialEffects;
   Radius: number;
   SID: string;
@@ -4601,7 +4541,7 @@ export type ExplosionPrototypePhysicalMaterialEffects = GetStructType<
 >;
 
 export type ExplosionPrototypePhysicalMaterialEffectsItem = GetStructType<{
-  EffectSIDs: SpawnActorPrototypeIgnoreCollisionActors;
+  EffectSIDs: NPCPrototypeSkills;
   PhysicalMaterialType: EPhysicalMaterialType;
 }>;
 
@@ -4626,12 +4566,10 @@ export type FaceBlockingBlendMaskPrototypeBlockingMasksItem = GetStructType<{
 }>;
 
 export type FactionActionRestrictionPrototype = GetStructType<{
-  Factions: FactionActionRestrictionPrototypeFactions;
+  Factions: WeaponPrototypePreinstalledUpgrades;
   ID: number;
   SID: string;
 }>;
-
-export type FactionActionRestrictionPrototypeFactions = StringArray;
 
 export type FastTravelLocationPrototype = GetStructType<{
   BlockingGlobalVariables: FastTravelLocationPrototypeBlockingGlobalVariables;
@@ -4643,7 +4581,7 @@ export type FastTravelLocationPrototype = GetStructType<{
 }>;
 
 export type FastTravelLocationPrototypeBlockingGlobalVariables = GetStructType<
-  FastTravelLocationPrototypeRequiredGlobalVariablesItem[]
+  InfotopicPrototypeBlockingGlobalVariablesItem[]
 >;
 
 export type FastTravelLocationPrototypePlayerLocation = GetStructType<{
@@ -4654,14 +4592,8 @@ export type FastTravelLocationPrototypePlayerLocation = GetStructType<{
 }>;
 
 export type FastTravelLocationPrototypeRequiredGlobalVariables = GetStructType<
-  FastTravelLocationPrototypeRequiredGlobalVariablesItem[]
+  InfotopicPrototypeBlockingGlobalVariablesItem[]
 >;
-
-export type FastTravelLocationPrototypeRequiredGlobalVariablesItem =
-  GetStructType<{
-    GlobalVariablePrototypeSID: string;
-    GlobalVariableValue: number;
-  }>;
 
 export type FastTravelPrototype = GetStructType<{
   DiscountCoefficients: FastTravelPrototypeDiscountCoefficients;
@@ -4742,7 +4674,7 @@ export type FlashlightPrototype = GetStructType<{
   BrokenCooldownSeconds: number;
   DroppedBeforeBurnOutPauseTimeSeconds: number;
   DroppedBurnOutTimeSeconds: number;
-  EffectSIDs: SpawnActorPrototypeIgnoreCollisionActors;
+  EffectSIDs: NPCPrototypeSkills;
   ExtraLightDistanceBasedParameters: FlashlightPrototypeExtraLightDistanceBasedParameters;
   FlashlightPriority: EFlashlightPriority;
   HeadBoneNameToCheckHitToFlashlight: string;
@@ -4764,7 +4696,7 @@ export type FlashlightPrototypeAdditionalMeshes = GetStructType<
 export type FlashlightPrototypeAdditionalMeshesItem = GetStructType<{
   MeshPath: string;
   OffsetRotator: SpawnActorPrototypeRotation;
-  OffsetVector: SpawnActorPrototypeVector;
+  OffsetVector: AIGlobalRelativeLocation;
 }>;
 
 export type FlashlightPrototypeExtraLightDistanceBasedParameters =
@@ -4778,18 +4710,7 @@ export type FlashlightPrototypeExtraLightDistanceBasedParametersItem =
     OuterConeAngle: number;
   }>;
 
-export type FlashlightPrototypeMeshOffsetParams = GetStructType<{
-  OffsetRotator: SpawnActorPrototypeRotation;
-  OffsetVector: SpawnActorPrototypeVector;
-}>;
-
-export type FlashlightPrototypeRelatedMeshes = StringArray;
-
-export type FlashlightPrototypeSocketNamesMeshes = GetStructType<
-  FlashlightPrototypeSocketNamesMeshesItem[]
->;
-
-export type FlashlightPrototypeSocketNamesMeshesItem = GetStructType<{
+export type FlashlightPrototypeFac_20_00_v2 = GetStructType<{
   AdditionalMeshes: FlashlightPrototypeAdditionalMeshes;
   MeshOffsetParams: FlashlightPrototypeMeshOffsetParams;
   MeshPath: string;
@@ -4798,9 +4719,20 @@ export type FlashlightPrototypeSocketNamesMeshesItem = GetStructType<{
   SpotlightOffsetParams: FlashlightPrototypeSpotlightOffsetParams;
 }>;
 
+export type FlashlightPrototypeMeshOffsetParams = GetStructType<{
+  OffsetRotator: SpawnActorPrototypeRotation;
+  OffsetVector: AIGlobalRelativeLocation;
+}>;
+
+export type FlashlightPrototypeRelatedMeshes = StringArray;
+
+export type FlashlightPrototypeSocketNamesMeshes = GetStructType<
+  FlashlightPrototypeFac_20_00_v2[]
+>;
+
 export type FlashlightPrototypeSpotlightOffsetParams = GetStructType<{
   OffsetRotator: SpawnActorPrototypeRotation;
-  OffsetVector: SpawnActorPrototypeVector;
+  OffsetVector: AIGlobalRelativeLocation;
   SocketName: string;
 }>;
 
@@ -4812,7 +4744,7 @@ export type FloatProviderPrototype = GetStructType<{
   FalseValueSID: string;
   FirstProviderSID: string;
   ParamType: EObjFloatParams;
-  ProviderSIDs: SpawnActorPrototypeSignals;
+  ProviderSIDs: CoreVariableHead;
   SecondProviderSID: string;
   SID: string;
   TimeFModValue: number;
@@ -4856,7 +4788,7 @@ export type GeneralNPCObjPrototype = GetStructType<{
   CombatParameters: GeneralNPCObjPrototypeCombatParameters;
   CustomMeshGeneratorPrototypeSID: string;
   DoorTransitionSettings: GeneralNPCObjPrototypeDoorTransitionSettings;
-  EscapeParameters: GeneralNPCObjPrototypeEscapeParameters;
+  EscapeParameters: ObjPrototypeEscapeParameters;
   EvadeParameters: GeneralNPCObjPrototypeEvadeParameters;
   Faction: string;
   FlairSensorPrototypeSID: string;
@@ -4876,7 +4808,7 @@ export type GeneralNPCObjPrototype = GetStructType<{
   OfflineCombatWeight: number;
   Protection: ArmorPrototypeProtection;
   ReactOnApproachWithWeapon: boolean;
-  SequentialAbilities: SpawnActorPrototypeSignals;
+  SequentialAbilities: CoreVariableHead;
   SequentialAbilitiesActionData: ObjPrototypeSequentialAbilitiesActionData;
   SID: string;
   SpawnPhantomParams: GeneralNPCObjPrototypeSpawnPhantomParams;
@@ -4888,7 +4820,7 @@ export type GeneralNPCObjPrototype = GetStructType<{
 }>;
 
 export type GeneralNPCObjPrototypeAbilities = GetStructType<
-  Record<HumanAbilityName, ObjPrototypeBlindDog_RunAttack_Left>
+  Record<HumanAbilityName, ObjPrototypeCat_Jump>
 >;
 
 export type GeneralNPCObjPrototypeAdvanceParameters = GetStructType<{
@@ -4898,13 +4830,8 @@ export type GeneralNPCObjPrototypeAdvanceParameters = GetStructType<{
 }>;
 
 export type GeneralNPCObjPrototypeAnimationData = GetStructType<
-  GeneralNPCObjPrototypeAnimationDataItem[]
+  ObjPrototypeAnimationDataItem[]
 >;
-
-export type GeneralNPCObjPrototypeAnimationDataItem = GetStructType<{
-  Montage: string;
-  Type: EEvadeActionType;
-}>;
 
 export type GeneralNPCObjPrototypeBoneDamageCoefficients = GetStructType<
   ObjPrototypeBoneDamageCoefficientsItem[]
@@ -4923,26 +4850,12 @@ export type GeneralNPCObjPrototypeCombatParameters = GetStructType<{
   RetreatToCoverDistance: number;
 }>;
 
-export type GeneralNPCObjPrototypeDefault = GetStructType<{
-  Animation: string;
-  StartDistance: number;
-}>;
-
 export type GeneralNPCObjPrototypeDoorTransitionSettings = GetStructType<{
-  Default: GeneralNPCObjPrototypeDefault;
-  OneHandedWeaponCombat: GeneralNPCObjPrototypeDefault;
-  OneHandedWeaponRelax: GeneralNPCObjPrototypeDefault;
-  TwoHandedWeaponCombat: GeneralNPCObjPrototypeDefault;
-  TwoHandedWeaponRelax: GeneralNPCObjPrototypeDefault;
-}>;
-
-export type GeneralNPCObjPrototypeEscapeParameters = GetStructType<{
-  AttackEscapeDelay: number;
-  EscapeRadius: number;
-  FailureChance: string;
-  InterruptEscapeAfterEnemyLostDelay: number;
-  InterruptEscapeDelay: number;
-  SquadLostFractionToEscape: string;
+  Default: ObjPrototypeDefault;
+  OneHandedWeaponCombat: ObjPrototypeDefault;
+  OneHandedWeaponRelax: ObjPrototypeDefault;
+  TwoHandedWeaponCombat: ObjPrototypeDefault;
+  TwoHandedWeaponRelax: ObjPrototypeDefault;
 }>;
 
 export type GeneralNPCObjPrototypeEvadeParameters = GetStructType<{
@@ -4974,7 +4887,7 @@ export type GeneralNPCObjPrototypeFlankParameters = GetStructType<{
 }>;
 
 export type GeneralNPCObjPrototypeFrontZone = GetStructType<
-  SpawnActorPrototypeFreeformTriggerVerticesItem[]
+  AbilityPrototypeRadius[]
 >;
 
 export type GeneralNPCObjPrototypeHumanAmbushParameters = GetStructType<{
@@ -5011,7 +4924,7 @@ export type GeneralNPCObjPrototypeMovementParams = GetStructType<{
 
 export type GeneralNPCObjPrototypeSpawnPhantomParams = GetStructType<{
   DelayBeforeMovement: number;
-  PhantomAllowedEquipItems: SpawnActorPrototypeIgnoreCollisionActors;
+  PhantomAllowedEquipItems: NPCPrototypeSkills;
   PhantomAttackAbilityTag: string;
   PhantomBlueprint: string;
 }>;
@@ -5039,14 +4952,7 @@ export type GenericLairPrototype = GetStructType<{
   SID: string;
 }>;
 
-export type GenericLairPrototypeBlinddog = GetStructType<{
-  Faction: string;
-  MinQuantityPerArchetype: number;
-  SpawnSettingsPerPlayerRanks: GenericLairPrototypeSpawnSettingsPerPlayerRanks;
-  SpawnWeight: number;
-}>;
-
-export type GenericLairPrototypeNewbie = GetStructType<{
+export type GenericLairPrototypeMaster = GetStructType<{
   InitialSpawnQuantityPercent: number;
   InitialSpawnQuantityRespawnTimeSeconds: number;
   MaxSpawnQuantity: number;
@@ -5056,7 +4962,7 @@ export type GenericLairPrototypeNewbie = GetStructType<{
 }>;
 
 export type GenericLairPrototypePossibleInhabitantFactions = GetStructType<{
-  [key in Faction]: GenericLairPrototypeBlinddog;
+  [key in Faction]: GenericLairPrototypeRat;
 }>;
 
 export type GenericLairPrototypePreset = GetStructType<{
@@ -5076,12 +4982,19 @@ export type GenericLairPrototypePreset = GetStructType<{
   RestingLairShortDelaySpawnMin: number;
 }>;
 
+export type GenericLairPrototypeRat = GetStructType<{
+  Faction: string;
+  MinQuantityPerArchetype: number;
+  SpawnSettingsPerPlayerRanks: GenericLairPrototypeSpawnSettingsPerPlayerRanks;
+  SpawnWeight: number;
+}>;
+
 export type GenericLairPrototypeSpawnSettingsPerArchetypes = GetStructType<{
-  [key in Archetype]: GenericLairPrototypeBlinddog;
+  [key in Archetype]: GenericLairPrototypeRat;
 }>;
 
 export type GenericLairPrototypeSpawnSettingsPerPlayerRanks = GetStructType<{
-  [k in Rank]: GenericLairPrototypeNewbie;
+  [k in Rank]: GenericLairPrototypeMaster;
 }>;
 
 export type GreetingsPopupPrototype = GetStructType<{
@@ -5126,12 +5039,10 @@ export type GrenadePrototype = GetStructType<{
 }>;
 
 export type GroomBlockingMappingPrototype = GetStructType<{
-  BlockingGrooms: SpawnActorPrototypeLairCoreVolumes;
-  BlockingGroomSIDs: GroomBlockingMappingPrototypeBlockingGroomSIDs;
+  BlockingGrooms: SingletonConstantArmy;
+  BlockingGroomSIDs: PDATutorialPrototypeImages;
   SID: string;
 }>;
-
-export type GroomBlockingMappingPrototypeBlockingGroomSIDs = StringArray;
 
 export type GroomGeneratorPrototype = GetStructType<{
   Category: GroomGeneratorPrototypeCategory;
@@ -5271,8 +5182,8 @@ export type ImpactPhysicalMaterialPrototypeImpactPhysicalMaterialsResourcesItem 
     bRandomizeRoll: boolean;
     ImpactParticle: string;
     ImpactParticleSize: number;
-    ImpactSurfaceDecals: SingletonConstantBandits;
-    ImpactSurfaceDecalSize: SpawnActorPrototypeVector;
+    ImpactSurfaceDecals: CoreVariableTorso;
+    ImpactSurfaceDecalSize: AIGlobalRelativeLocation;
     MaterialCoefficient: number;
     PhysicalMaterialType: EPhysicalMaterialType;
   }>;
@@ -5281,7 +5192,7 @@ export type InfotopicPrototype = GetStructType<{
   BlockingFactions: InfotopicPrototypeBlockingFactions;
   BlockingGlobalVariables: InfotopicPrototypeBlockingGlobalVariables;
   BlockingNPCs: InfotopicPrototypeBlockingNPCs;
-  BlockingRegions: InfotopicPrototypeRequiredRegions;
+  BlockingRegions: InfotopicPrototypeBlockingRegions;
   BlockingReputations: InfotopicPrototypeBlockingReputations;
   BlockingZoneSIDs: InfotopicPrototypeBlockingZoneSIDs;
   ID: number;
@@ -5292,7 +5203,7 @@ export type InfotopicPrototype = GetStructType<{
   RequiredGlobalVariables: InfotopicPrototypeRequiredGlobalVariables;
   RequiredLairs: InfotopicPrototypeRequiredLairs;
   RequiredNPCs: InfotopicPrototypeRequiredNPCs;
-  RequiredRegions: InfotopicPrototypeRequiredRegions;
+  RequiredRegions: InfotopicPrototypeBlockingRegions;
   RequiredReputations: InfotopicPrototypeRequiredReputations;
   RequiredZoneSIDs: InfotopicPrototypeRequiredZoneSIDs;
   SID: string;
@@ -5302,16 +5213,28 @@ export type InfotopicPrototype = GetStructType<{
 export type InfotopicPrototypeBlockingFactions = StringArray;
 
 export type InfotopicPrototypeBlockingGlobalVariables = GetStructType<
-  FastTravelLocationPrototypeRequiredGlobalVariablesItem[]
+  InfotopicPrototypeBlockingGlobalVariablesItem[]
 >;
+
+export type InfotopicPrototypeBlockingGlobalVariablesItem = GetStructType<{
+  GlobalVariablePrototypeSID: string;
+  GlobalVariableValue: number;
+}>;
 
 export type InfotopicPrototypeBlockingNPCs = GetStructType<{
   BlockingNPCObjPrototypeSID: string;
 }>;
 
+export type InfotopicPrototypeBlockingRegions = GetStructType<ERegion[]>;
+
 export type InfotopicPrototypeBlockingReputations = GetStructType<
-  InfotopicPrototypeRequiredReputationsItem[]
+  InfotopicPrototypeBlockingReputationsItem[]
 >;
+
+export type InfotopicPrototypeBlockingReputationsItem = GetStructType<{
+  Faction: string;
+  Reputation: ERelationLevel;
+}>;
 
 export type InfotopicPrototypeBlockingZoneSIDs = GetStructType<{
   ZonePlaceholder: string;
@@ -5322,7 +5245,7 @@ export type InfotopicPrototypeInfotopicDialogs = StringArray;
 export type InfotopicPrototypeRequiredFactions = StringArray;
 
 export type InfotopicPrototypeRequiredGlobalVariables = GetStructType<
-  FastTravelLocationPrototypeRequiredGlobalVariablesItem[]
+  InfotopicPrototypeBlockingGlobalVariablesItem[]
 >;
 
 export type InfotopicPrototypeRequiredLairs = GetStructType<{
@@ -5331,16 +5254,9 @@ export type InfotopicPrototypeRequiredLairs = GetStructType<{
 
 export type InfotopicPrototypeRequiredNPCs = StringArray;
 
-export type InfotopicPrototypeRequiredRegions = GetStructType<ERegion[]>;
-
 export type InfotopicPrototypeRequiredReputations = GetStructType<
-  InfotopicPrototypeRequiredReputationsItem[]
+  InfotopicPrototypeBlockingReputationsItem[]
 >;
-
-export type InfotopicPrototypeRequiredReputationsItem = GetStructType<{
-  Faction: string;
-  Reputation: ERelationLevel;
-}>;
 
 export type InfotopicPrototypeRequiredZoneSIDs = StringArray;
 
@@ -5379,7 +5295,7 @@ export type ItemContainerPrototype = GetStructType<{
 }>;
 
 export type ItemGeneratorPrototype = GetStructType<{
-  GeneratedItems: SpawnActorPrototypeIgnoreCollisionActors;
+  GeneratedItems: NPCPrototypeSkills;
   ID: number;
   ItemGenerator: ItemGeneratorPrototypeItemGenerator;
   MoneyGenerator: QuestRewardsPrototypeMoneyGenerator;
@@ -5422,7 +5338,7 @@ export type ItemGeneratorPrototypePossibleItemsItem = GetStructType<{
   AmmoMaxcount: number;
   AmmoMaxCount: number;
   AmmoMinCount: number;
-  Attaches: ItemGeneratorPrototypeUpgrades;
+  Attaches: QuestRewardsPrototypeUpgrades;
   bRequireAmmo: boolean;
   bRequireWeapon: boolean;
   bUnloadedWeapon: boolean;
@@ -5433,16 +5349,9 @@ export type ItemGeneratorPrototypePossibleItemsItem = GetStructType<{
   MaxDurability: number;
   MinCount: number;
   MinDurability: number;
-  Upgrades: ItemGeneratorPrototypeUpgrades;
+  Upgrades: QuestRewardsPrototypeUpgrades;
   weight: number;
   Weight: number;
-}>;
-
-export type ItemGeneratorPrototypeUpgrades = GetStructType<{
-  Chance: number;
-  MaxCount: number;
-  MinCount: number;
-  PossibleItems: string;
 }>;
 
 export type ItemPrototype = GetStructType<{
@@ -5450,10 +5359,10 @@ export type ItemPrototype = GetStructType<{
   ConsumeOnUse: boolean;
   Cost: number;
   DestroyOnPickup: boolean;
-  EffectOnPickPrototypeSIDs: SpawnActorPrototypeIgnoreCollisionActors;
-  EffectPrototypeSIDs: SpawnActorPrototypeIgnoreCollisionActors;
-  EffectsDisplayTypes: AIGlobalSoundEventTypeSpreadSpeedList;
-  FittingWeaponsSIDs: AIGlobalSoundEventTypeSpreadSpeedList;
+  EffectOnPickPrototypeSIDs: NPCPrototypeSkills;
+  EffectPrototypeSIDs: NPCPrototypeSkills;
+  EffectsDisplayTypes: AssetLibraryUIIcons;
+  FittingWeaponsSIDs: AssetLibraryUIIcons;
   HasPhysics: boolean;
   Hint: string;
   Icon: string;
@@ -5468,8 +5377,8 @@ export type ItemPrototype = GetStructType<{
   MaxStackCount: number;
   MeshPrototypeSID: string;
   PhysicsInteractionPrototypeSID: string;
-  SectionPositions: SpawnActorPrototypeIgnoreCollisionActors;
-  ShouldShowEffects: SpawnActorPrototypeIgnoreCollisionActors;
+  SectionPositions: NPCPrototypeSkills;
+  ShouldShowEffects: NPCPrototypeSkills;
   SID: string;
   SortGroup: ESortGroup;
   SortPriority: number;
@@ -5492,18 +5401,23 @@ export type JournalQuestPrototype = GetStructType<{
   Stages: string;
 }>;
 
+export type JournalQuestPrototypeMain1 = GetStructType<{
+  Description: string;
+  Optional: number | boolean;
+  SID: string;
+}>;
+
 export type JournalQuestPrototypeRewardTypes = GetStructType<
   EQuestRewardType[]
 >;
 
 export type JournalQuestPrototypeStages = GetStructType<{
-  [key: string]: JournalQuestPrototypeupack_ANCQ_27_GetToLocation;
+  [key in string]: JournalQuestPrototypeMain1;
 }>;
 
-export type JournalQuestPrototypeupack_ANCQ_27_GetToLocation = GetStructType<{
+export type JournalQuestPrototypeUnnamedStruct8 = GetStructType<{
   Description: string;
-  Optional: boolean | number;
-  SID: string;
+  SID: number;
 }>;
 
 export type KeyboardLayoutPreset = GetStructType<{
@@ -5559,38 +5473,42 @@ export type KeyboardLayoutPreset = GetStructType<{
 }>;
 
 export type KeyboardLayoutPresetAiming = GetStructType<
-  KeyboardLayoutPresetInventoryItem[]
+  KeyboardLayoutPresetMapItem[]
 >;
 
 export type KeyboardLayoutPresetAttachSelector = GetStructType<
-  KeyboardLayoutPresetExplorationItem[]
+  KeyboardLayoutPresetGuitarItem[]
 >;
 
 export type KeyboardLayoutPresetCodelock = GetStructType<
-  KeyboardLayoutPresetInventoryItem[]
+  KeyboardLayoutPresetMapItem[]
 >;
 
 export type KeyboardLayoutPresetDialogue = GetStructType<
-  KeyboardLayoutPresetInventoryItem[]
+  KeyboardLayoutPresetMapItem[]
 >;
 
 export type KeyboardLayoutPresetDialogueOnTheGo = GetStructType<
-  KeyboardLayoutPresetInventoryItem[]
+  KeyboardLayoutPresetMapItem[]
 >;
 
 export type KeyboardLayoutPresetEditSafeZone = GetStructType<
-  KeyboardLayoutPresetInventoryItem[]
+  KeyboardLayoutPresetMapItem[]
 >;
 
 export type KeyboardLayoutPresetEULA = GetStructType<
-  KeyboardLayoutPresetInventoryItem[]
+  KeyboardLayoutPresetMapItem[]
 >;
 
 export type KeyboardLayoutPresetExploration = GetStructType<
-  KeyboardLayoutPresetExplorationItem[]
+  KeyboardLayoutPresetGuitarItem[]
 >;
 
-export type KeyboardLayoutPresetExplorationItem = GetStructType<{
+export type KeyboardLayoutPresetGuitar = GetStructType<
+  KeyboardLayoutPresetGuitarItem[]
+>;
+
+export type KeyboardLayoutPresetGuitarItem = GetStructType<{
   bIsPlayerMappable: boolean;
   DefaultID: number;
   InputActionSID: string;
@@ -5601,23 +5519,35 @@ export type KeyboardLayoutPresetExplorationItem = GetStructType<{
   Triggers: KeyboardLayoutPresetTriggers;
 }>;
 
-export type KeyboardLayoutPresetGuitar = GetStructType<
-  KeyboardLayoutPresetExplorationItem[]
->;
-
 export type KeyboardLayoutPresetImportantChoice = GetStructType<
-  KeyboardLayoutPresetInventoryItem[]
+  KeyboardLayoutPresetMapItem[]
 >;
 
 export type KeyboardLayoutPresetInspectArtifact = GetStructType<
-  KeyboardLayoutPresetInventoryItem[]
+  KeyboardLayoutPresetMapItem[]
 >;
 
 export type KeyboardLayoutPresetInventory = GetStructType<
-  KeyboardLayoutPresetInventoryItem[]
+  KeyboardLayoutPresetMapItem[]
 >;
 
-export type KeyboardLayoutPresetInventoryItem = GetStructType<{
+export type KeyboardLayoutPresetItemSelector = GetStructType<
+  KeyboardLayoutPresetGuitarItem[]
+>;
+
+export type KeyboardLayoutPresetJournal = GetStructType<
+  KeyboardLayoutPresetMapItem[]
+>;
+
+export type KeyboardLayoutPresetLadder = GetStructType<
+  KeyboardLayoutPresetMapItem[]
+>;
+
+export type KeyboardLayoutPresetMap = GetStructType<
+  KeyboardLayoutPresetMapItem[]
+>;
+
+export type KeyboardLayoutPresetMapItem = GetStructType<{
   bIsPlayerMappable: boolean;
   DefaultID: number;
   InputActionSID: string;
@@ -5627,28 +5557,12 @@ export type KeyboardLayoutPresetInventoryItem = GetStructType<{
   Triggers: KeyboardLayoutPresetTriggers;
 }>;
 
-export type KeyboardLayoutPresetItemSelector = GetStructType<
-  KeyboardLayoutPresetExplorationItem[]
->;
-
-export type KeyboardLayoutPresetJournal = GetStructType<
-  KeyboardLayoutPresetInventoryItem[]
->;
-
-export type KeyboardLayoutPresetLadder = GetStructType<
-  KeyboardLayoutPresetInventoryItem[]
->;
-
-export type KeyboardLayoutPresetMap = GetStructType<
-  KeyboardLayoutPresetInventoryItem[]
->;
-
 export type KeyboardLayoutPresetMenu = GetStructType<
-  KeyboardLayoutPresetInventoryItem[]
+  KeyboardLayoutPresetMapItem[]
 >;
 
 export type KeyboardLayoutPresetMenuSettings = GetStructType<
-  KeyboardLayoutPresetExplorationItem[]
+  KeyboardLayoutPresetGuitarItem[]
 >;
 
 export type KeyboardLayoutPresetModifiers = GetStructType<
@@ -5656,27 +5570,27 @@ export type KeyboardLayoutPresetModifiers = GetStructType<
 >;
 
 export type KeyboardLayoutPresetNote = GetStructType<
-  KeyboardLayoutPresetInventoryItem[]
+  KeyboardLayoutPresetMapItem[]
 >;
 
 export type KeyboardLayoutPresetPDATutorial = GetStructType<
-  KeyboardLayoutPresetInventoryItem[]
+  KeyboardLayoutPresetMapItem[]
 >;
 
 export type KeyboardLayoutPresetPlayerContextualAction = GetStructType<
-  KeyboardLayoutPresetInventoryItem[]
+  KeyboardLayoutPresetMapItem[]
 >;
 
 export type KeyboardLayoutPresetPopup = GetStructType<
-  KeyboardLayoutPresetInventoryItem[]
+  KeyboardLayoutPresetMapItem[]
 >;
 
 export type KeyboardLayoutPresetStackSplitMenu = GetStructType<
-  KeyboardLayoutPresetInventoryItem[]
+  KeyboardLayoutPresetMapItem[]
 >;
 
 export type KeyboardLayoutPresetTrade = GetStructType<
-  KeyboardLayoutPresetInventoryItem[]
+  KeyboardLayoutPresetMapItem[]
 >;
 
 export type KeyboardLayoutPresetTriggers = GetStructType<
@@ -5684,11 +5598,11 @@ export type KeyboardLayoutPresetTriggers = GetStructType<
 >;
 
 export type KeyboardLayoutPresetUpgrades = GetStructType<
-  KeyboardLayoutPresetInventoryItem[]
+  KeyboardLayoutPresetMapItem[]
 >;
 
 export type KeyboardLayoutPresetUpgradesPopup = GetStructType<
-  KeyboardLayoutPresetInventoryItem[]
+  KeyboardLayoutPresetMapItem[]
 >;
 
 export type KeyItemPrototype = GetStructType<{
@@ -5704,7 +5618,7 @@ export type LairPrototype = GetStructType<{
   SID: string;
 }>;
 
-export type LairPrototypeNewbie = GetStructType<{
+export type LairPrototypeMaster = GetStructType<{
   InitialSpawnQuantityPercent: number;
   InitialSpawnQuantityRespawnTimeSeconds: number;
   MaxSpawnQuantity: number;
@@ -5729,15 +5643,15 @@ export type LairPrototypePreset = GetStructType<{
 }>;
 
 export type LairPrototypeSpawnSettingsPerArchetypes = GetStructType<{
-  GeneralNPC_Duty_CloseCombat: GenericLairPrototypeBlinddog;
+  GeneralNPC_Duty_CloseCombat: GenericLairPrototypeRat;
 }>;
 
 export type LairPrototypeSpawnSettingsPerPlayerRanks = GetStructType<{
-  [k in Rank]: LairPrototypeNewbie;
+  [k in Rank]: LairPrototypeMaster;
 }>;
 
 export type LevelStreamingPrototype = GetStructType<{
-  HiddenLevels: SpawnActorPrototypeSignals;
+  HiddenLevels: CoreVariableHead;
   ID: number;
   SID: string;
 }>;
@@ -5756,16 +5670,16 @@ export type LR_MeshGeneratorPrototypeAttaches = GetStructType<
 >;
 
 export type LR_MeshGeneratorPrototypeAttachesItem = GetStructType<{
-  BlockingBodyMeshes: QuestMeshGeneratorPrototypeBlockingBodyMeshes;
+  BlockingBodyMeshes: MeshGeneratorPrototypeBlockingBodyMeshes;
   BlockingGroomSIDs: UpgradePrototypeEffectPrototypeSIDs;
-  BlockingSlots: SpawnActorPrototypeNavModifierVolumes;
+  BlockingSlots: UpdatePopupPrototypeContentData;
   BodyMeshSID: string;
   Weight: number;
 }>;
 
 export type LR_MeshGeneratorPrototypeAttachments = GetStructType<
   LR_MeshGeneratorPrototypeAttachmentsItem[] & {
-    [key in MeshAttachment]: LR_MeshGeneratorPrototypeAttachmentsItem;
+    [Bbe in string]: LR_MeshGeneratorPrototypeBbe;
   }
 >;
 
@@ -5786,11 +5700,16 @@ export type LR_MeshGeneratorPrototypeAttachmentsItem = GetStructType<{
   SocketName: string;
 }>;
 
+export type LR_MeshGeneratorPrototypeBbe = GetStructType<{
+  Attaches: LR_MeshGeneratorPrototypeAttaches;
+  SlotName: string;
+}>;
+
 export type LR_MeshGeneratorPrototypeCustomData = GetStructType<
-  LR_MeshGeneratorPrototypeCustomDataItem[]
+  LR_MeshGeneratorPrototypeDirt[]
 >;
 
-export type LR_MeshGeneratorPrototypeCustomDataItem = GetStructType<{
+export type LR_MeshGeneratorPrototypeDirt = GetStructType<{
   Distribution: ECustomDataDistribution;
   MaterialGroup: string;
   Variations: LR_MeshGeneratorPrototypeVariations;
@@ -5815,14 +5734,8 @@ export type LR_MeshGeneratorPrototypeMaterialsItem = GetStructType<{
 }>;
 
 export type LR_MeshGeneratorPrototypeVariations = GetStructType<
-  LR_MeshGeneratorPrototypeVariationsItem[]
+  AttachMeshPrototypeVariationsItem[]
 >;
-
-export type LR_MeshGeneratorPrototypeVariationsItem = GetStructType<{
-  bBlockedInVisualizer: boolean;
-  VariationIndex: number;
-  Weight: number;
-}>;
 
 export type MarkerPrototype = GetStructType<{
   Description: string;
@@ -5835,7 +5748,7 @@ export type MarkerPrototype = GetStructType<{
   RegionType: ERegion;
   SID: string;
   Title: string;
-  WorldPosition: SpawnActorPrototypeVector;
+  WorldPosition: AIGlobalRelativeLocation;
 }>;
 
 export type MeleeWeaponPrototype = GetStructType<{
@@ -5866,17 +5779,12 @@ export type MeleeWeaponPrototypeDamageModifiers = GetStructType<{
 }>;
 
 export type MeleeWeaponPrototypeSourceEffects = GetStructType<
-  MeleeWeaponPrototypeTargetEffectsItem[]
+  ObjPrototypeEffectsItem[]
 >;
 
 export type MeleeWeaponPrototypeTargetEffects = GetStructType<
-  MeleeWeaponPrototypeTargetEffectsItem[]
+  ObjPrototypeEffectsItem[]
 >;
-
-export type MeleeWeaponPrototypeTargetEffectsItem = GetStructType<{
-  Chance: number;
-  EffectPrototypeSID: string;
-}>;
 
 export type MeshGeneratorPrototype = GetStructType<{
   Attachments: MeshGeneratorPrototypeAttachments;
@@ -5893,16 +5801,16 @@ export type MeshGeneratorPrototypeAttaches = GetStructType<
 >;
 
 export type MeshGeneratorPrototypeAttachesItem = GetStructType<{
-  BlockingBodyMeshes: QuestMeshGeneratorPrototypeBlockingBodyMeshes;
+  BlockingBodyMeshes: MeshGeneratorPrototypeBlockingBodyMeshes;
   BlockingGroomSIDs: UpgradePrototypeEffectPrototypeSIDs;
-  BlockingSlots: SpawnActorPrototypeNavModifierVolumes;
+  BlockingSlots: UpdatePopupPrototypeContentData;
   BodyMeshSID: string;
   Weight: number;
 }>;
 
 export type MeshGeneratorPrototypeAttachments = GetStructType<
   MeshGeneratorPrototypeAttachmentsItem[] & {
-    [key in MeshAttachment]: MeshGeneratorPrototypeBodyArmor;
+    [Bbe in string]: MeshGeneratorPrototypeBbe;
   }
 >;
 
@@ -5923,16 +5831,18 @@ export type MeshGeneratorPrototypeAttachmentsItem = GetStructType<{
   SocketName: string;
 }>;
 
-export type MeshGeneratorPrototypeBodyArmor = GetStructType<{
+export type MeshGeneratorPrototypeBbe = GetStructType<{
   Attaches: MeshGeneratorPrototypeAttaches;
   SlotName: string;
 }>;
 
+export type MeshGeneratorPrototypeBlockingBodyMeshes = StringArray;
+
 export type MeshGeneratorPrototypeCustomData = GetStructType<
-  MeshGeneratorPrototypeCustomDataItem[]
+  MeshGeneratorPrototypeDirt[]
 >;
 
-export type MeshGeneratorPrototypeCustomDataItem = GetStructType<{
+export type MeshGeneratorPrototypeDirt = GetStructType<{
   Distribution: ECustomDataDistribution;
   MaterialGroup: string;
   Variations: MeshGeneratorPrototypeVariations;
@@ -5967,8 +5877,14 @@ export type MeshGeneratorPrototypeQualityPresetsMeshGeneratorsItem =
   }>;
 
 export type MeshGeneratorPrototypeVariations = GetStructType<
-  LR_MeshGeneratorPrototypeVariationsItem[]
+  MeshGeneratorPrototypeVariationsItem[]
 >;
+
+export type MeshGeneratorPrototypeVariationsItem = GetStructType<{
+  bBlockedInVisualizer: boolean;
+  VariationIndex: number;
+  Weight: number;
+}>;
 
 export type MeshPrototype = GetStructType<{
   AdditionalMeshes: MeshPrototypeAdditionalMeshes;
@@ -5999,13 +5915,18 @@ export type MeshPrototypeAdditionalMeshesItem = GetStructType<{
 }>;
 
 export type MeshPrototypeMaterials = GetStructType<
-  WeaponGeneralSetupPrototypeMaterialsItem[]
+  MeshPrototypeMaterialsItem[]
 >;
+
+export type MeshPrototypeMaterialsItem = GetStructType<{
+  MaterialPath: string;
+  MaterialSlot: number;
+}>;
 
 export type MisansceneNodePrototype = GetStructType<{
   ActorID: number;
   ActorSID: string;
-  ActorsSID: SpawnActorPrototypeIgnoreCollisionActors;
+  ActorsSID: NPCPrototypeSkills;
   Chances: CoreVariableSignalStrength;
   Connections: MisansceneNodePrototypeConnections;
   MisansceneSID: string;
@@ -6016,15 +5937,15 @@ export type MisansceneNodePrototype = GetStructType<{
 }>;
 
 export type MisansceneNodePrototypeConnections = GetStructType<{
-  Input: QuestNodePrototypeTargetQuestGuids;
+  Input: CoreVariableLegs;
   Output: SingletonConstantZombie;
 }>;
 
 export type MoneyPrototype = GetStructType<{
   Cost: number;
   DestroyOnPickup: boolean;
-  EffectOnPickPrototypeSIDs: SpawnActorPrototypeIgnoreCollisionActors;
-  EffectPrototypeSIDs: SpawnActorPrototypeIgnoreCollisionActors;
+  EffectOnPickPrototypeSIDs: NPCPrototypeSkills;
+  EffectPrototypeSIDs: NPCPrototypeSkills;
   Icon: string;
   InvisibleInPlayerInventory: boolean;
   LocalizationSID: string;
@@ -6072,7 +5993,7 @@ export type MovementFXPrototypeFootstepFXItemItem = GetStructType<{
   FrontFootDecal: string;
   ImpactParticle: string;
   ImpactParticleRunSprint: string;
-  ImpactSurfaceDecalSize: SpawnActorPrototypeVector;
+  ImpactSurfaceDecalSize: AIGlobalRelativeLocation;
   PhysicalMaterialType: EPhysicalMaterialType;
 }>;
 
@@ -6099,7 +6020,7 @@ export type MovementSensorPrototype = GetStructType<{
   DistancePenaltyCurve: string;
   Enabled: boolean;
   IdentificationThreshold: number;
-  MinObjectSpeedRange: SpawnActorPrototypeFreeformTriggerVerticesItem;
+  MinObjectSpeedRange: AbilityPrototypeRadius;
   SID: string;
 }>;
 
@@ -6133,7 +6054,7 @@ export type MutantLootPrototype = GetStructType<{
 }>;
 
 export type NightVisionGogglesPrototype = GetStructType<{
-  ActiveEffectSIDs: NightVisionGogglesPrototypeActiveEffectSIDs;
+  ActiveEffectSIDs: ObjAimAssistParamsPrototypeAdditionalBones;
   Cost: number;
   Icon: string;
   Icon1x1: string;
@@ -6151,8 +6072,6 @@ export type NightVisionGogglesPrototype = GetStructType<{
   Type: EItemType;
   Weight: number;
 }>;
-
-export type NightVisionGogglesPrototypeActiveEffectSIDs = StringArray;
 
 export type NotePrototype = GetStructType<{
   AudiologChainPrototypeSID: string;
@@ -6184,19 +6103,19 @@ export type NotificationEventPrototypeFactionBasedSoundEventInformationItem =
     FactionDetectionRadius: number;
   }>;
 
-export type NPCName = GetStructType<
-  {
-    [k in Lowercase<Rank>]: NPCNamenewbie;
-  } & {
-    any_rank: NPCNamenewbie;
-  }
->;
+export type NPCName = GetStructType<{
+  any_rank: NPCNamemaster;
+  experienced: NPCNamemaster;
+  master: NPCNamemaster;
+  newbie: NPCNamemaster;
+  veteran: NPCNamemaster;
+}>;
 
 export type NPCNameFirstNames = StringArray;
 
 export type NPCNameLastNames = StringArray;
 
-export type NPCNamenewbie = GetStructType<{
+export type NPCNamemaster = GetStructType<{
   FirstNames: NPCNameFirstNames;
   LastNames: NPCNameLastNames;
 }>;
@@ -6263,10 +6182,10 @@ export type NPCNeedsPresetPrototypeOnCompletedItem = GetStructType<{
 }>;
 
 export type NPCNightVisionSetupPrototype = GetStructType<{
-  AllowedAttachSuffixes: SpawnActorPrototypeIgnoreCollisionActors;
+  AllowedAttachSuffixes: NPCPrototypeSkills;
   BlockAttachSuffixes: NPCNightVisionSetupPrototypeBlockAttachSuffixes;
   ID: number;
-  IncompatibleSuffixes: QuestNodePrototypeDialogMembers;
+  IncompatibleSuffixes: ObjPrototypeCapsuleNames;
   MaterialEmissiveMultOverride: number;
   PointLightOffsets: NPCNightVisionSetupPrototypePointLightOffsets;
   SID: string;
@@ -6283,7 +6202,7 @@ export type NPCNightVisionSetupPrototypeMeshOffsetParams = GetStructType<
 export type NPCNightVisionSetupPrototypeMeshOffsetParamsItem = GetStructType<{
   MeshPath: string;
   OffsetRotator: SpawnActorPrototypeRotation;
-  OffsetVector: SpawnActorPrototypeVector;
+  OffsetVector: AIGlobalRelativeLocation;
 }>;
 
 export type NPCNightVisionSetupPrototypePointLightOffsets = GetStructType<
@@ -6292,7 +6211,7 @@ export type NPCNightVisionSetupPrototypePointLightOffsets = GetStructType<
 
 export type NPCNightVisionSetupPrototypePointLightOffsetsItem = GetStructType<{
   PointLightOffsetRotator: SpawnActorPrototypeRotation;
-  PointLightOffsetVector: SpawnActorPrototypeVector;
+  PointLightOffsetVector: AIGlobalRelativeLocation;
 }>;
 
 export type NPCNightVisionSetupPrototypeRelatedMeshes = StringArray;
@@ -6304,7 +6223,7 @@ export type NPCNightVisionSetupPrototypeSocketNamesMeshes = GetStructType<
 export type NPCNightVisionSetupPrototypeSocketNamesMeshesItem = GetStructType<{
   HelmetAttachmentMesh: string;
   HelmetAttachmentOffsetRotator: SpawnActorPrototypeRotation;
-  HelmetAttachmentOffsetVector: SpawnActorPrototypeVector;
+  HelmetAttachmentOffsetVector: AIGlobalRelativeLocation;
   MeshOffsetParams: NPCNightVisionSetupPrototypeMeshOffsetParams;
   RelatedMeshes: NPCNightVisionSetupPrototypeRelatedMeshes;
   SocketName: string;
@@ -6327,7 +6246,7 @@ export type NPCPrototype = GetStructType<{
   ResumeCommentDialogChain: string;
   SellCoefficient: number;
   SID: string;
-  Skills: SpawnActorPrototypeIgnoreCollisionActors;
+  Skills: NPCPrototypeSkills;
   ThreshHoldItemCondition: number;
   TradeTopicDialogChain: string;
   TravelTopicDialogChain: string;
@@ -6339,6 +6258,8 @@ export type NPCPrototype = GetStructType<{
   VoiceUA: string;
 }>;
 
+export type NPCPrototypeSkills = StringArray;
+
 export type NPCPrototypeUpgrades = GetStructType<NPCPrototypeUpgradesItem[]>;
 
 export type NPCPrototypeUpgradesItem = GetStructType<{
@@ -6349,7 +6270,7 @@ export type NPCPrototypeUpgradesItem = GetStructType<{
 export type NPCSpawnerPrototype = GetStructType<{
   Blueprint: string;
   MinPopulationCountToRefresh: number;
-  ObjPrototypeSIDs: SingletonConstantBandits;
+  ObjPrototypeSIDs: CoreVariableTorso;
   QuantityMaxInSquad: number;
   QuantityMinInSquad: number;
   SID: string;
@@ -6371,35 +6292,18 @@ export type NPCWeaponAttributesPrototypeAIParameters = GetStructType<{
 
 export type NPCWeaponAttributesPrototypeBehaviorTypes = GetStructType<
   {
-    [k in Rank]: NPCWeaponAttributesPrototypeExperienced;
+    [k in Rank]: NPCWeaponAttributesPrototypeMaster;
   } & {
-    Zombie: NPCWeaponAttributesPrototypeExperienced;
+    Zombie: NPCWeaponAttributesPrototypeMaster;
   }
 >;
 
-export type NPCWeaponAttributesPrototypeExperienced = GetStructType<
-  { [k in WeaponShootDistance]: NPCWeaponAttributesPrototypeLong } & {
+export type NPCWeaponAttributesPrototypeMaster = GetStructType<
+  { [k in WeaponShootDistance]: WeaponAttributesPrototypeLong } & {
     CharacterWeaponSettingsSID: string;
     CombatEffectiveFireDistanceMax: number;
     CombatEffectiveFireDistanceMin: number;
-    NonAutomaticWeaponShotDelay: number;
-  }
->;
 
-export type NPCWeaponAttributesPrototypeLong = GetStructType<{
-  IgnoreDispersionMaxShots: number;
-  IgnoreDispersionMinShots: number;
-  MaxSecondsDelay: number;
-  MaxShots: number;
-  MinSecondsDelay: number;
-  MinShots: number;
-}>;
-
-export type NPCWeaponAttributesPrototypeNewbie = GetStructType<
-  { [k in WeaponShootDistance]: NPCWeaponAttributesPrototypeLong } & {
-    CharacterWeaponSettingsSID: string;
-    CombatEffectiveFireDistanceMax: number;
-    CombatEffectiveFireDistanceMin: number;
     NonAutomaticWeaponShotDelay: number;
   }
 >;
@@ -6410,16 +6314,10 @@ export type NPCWeaponAttributesPrototypeParticlesBasedOnHeating = GetStructType<
 
 export type NPCWeaponAttributesPrototypeParticlesBasedOnHeatingItem =
   GetStructType<{
-    PostShooting: NPCWeaponAttributesPrototypeShooting;
-    Shooting: NPCWeaponAttributesPrototypeShooting;
+    PostShooting: AttachPrototypeShooting;
+    Shooting: AttachPrototypeShooting;
     VFXGroupName: string;
   }>;
-
-export type NPCWeaponAttributesPrototypeShooting = GetStructType<{
-  MinHeatingValueToAppear: number;
-  PFXPath: string;
-  SocketName: string;
-}>;
 
 export type NPCWeaponSettingsPrototype = GetStructType<{
   ArmorDamage: number;
@@ -6441,25 +6339,33 @@ export type NPCWeaponSettingsPrototype = GetStructType<{
 }>;
 
 export type NPCWeaponSettingsPrototypeCombatSynchronizationScore =
-  GetStructType<CombatSynchronizationPrototypeSynchronizationPrimitivesItem[]>;
+  GetStructType<NPCWeaponSettingsPrototypeCombatSynchronizationScoreItem[]>;
+
+export type NPCWeaponSettingsPrototypeCombatSynchronizationScoreItem =
+  GetStructType<{
+    Score: number;
+    TokenTag: string;
+  }>;
 
 export type ObjAimAssistParamsPrototype = GetStructType<{
   BoneClusters: ObjAimAssistParamsPrototypeBoneClusters;
   SID: string;
 }>;
 
+export type ObjAimAssistParamsPrototypeAdditionalBones = StringArray;
+
 export type ObjAimAssistParamsPrototypeBoneClusters = GetStructType<
   ObjAimAssistParamsPrototypeBoneClustersItem[]
 >;
 
 export type ObjAimAssistParamsPrototypeBoneClustersItem = GetStructType<{
-  AdditionalBones: NightVisionGogglesPrototypeActiveEffectSIDs;
+  AdditionalBones: ObjAimAssistParamsPrototypeAdditionalBones;
   MainBone: string;
   VisibilityBone: string;
 }>;
 
 export type ObjCrouchParamsPrototype = GetStructType<{
-  CrouchEffectSIDs: SpawnActorPrototypeIgnoreCollisionActors;
+  CrouchEffectSIDs: NPCPrototypeSkills;
   SID: string;
 }>;
 
@@ -6475,7 +6381,7 @@ export type ObjCustomAbilityDialogPrototypeAbilityDialogues = GetStructType<
 export type ObjCustomAbilityDialogPrototypeAbilityDialoguesItem =
   GetStructType<{
     AbilityTag: string;
-    DialogueSIDs: SpawnActorPrototypeIgnoreCollisionActors;
+    DialogueSIDs: NPCPrototypeSkills;
   }>;
 
 export type ObjEffectMaxParamsPrototype = GetStructType<{
@@ -6507,7 +6413,7 @@ export type ObjHoldBreathParamsPrototypePostHoldBreathParameters =
 
 export type ObjHoldBreathParamsPrototypePostHoldBreathParametersItem =
   GetStructType<{
-    EffectPrototypeSIDs: SpawnActorPrototypeLairCoreVolumes;
+    EffectPrototypeSIDs: SingletonConstantArmy;
     Threshold: number;
   }>;
 
@@ -6607,7 +6513,7 @@ export type ObjPrototype = GetStructType<{
   EffectMaxParamsSID: string;
   EnemyValidationActionParams: ObjPrototypeEnemyValidationActionParams;
   EscapeIsolatedNavmeshActionData: ObjPrototypeEscapeIsolatedNavmeshActionData;
-  EscapeParameters: GeneralNPCObjPrototypeEscapeParameters;
+  EscapeParameters: ObjPrototypeEscapeParameters;
   EvadeParameters: ObjPrototypeEvadeParameters;
   Faction: string;
   FactoryClassName: string;
@@ -6639,12 +6545,12 @@ export type ObjPrototype = GetStructType<{
   JumpActionData: ObjPrototypeJumpActionData;
   JumpAttackData: ObjPrototypeJumpAttackData;
   JumpToEnemyActionData: ObjPrototypeJumpToEnemyActionData;
-  KickAttackData: ObjPrototypeShockwaveAttackData;
+  KickAttackData: ObjPrototypeKickAttackData;
   LongJumpAttackData: ObjPrototypeLongJumpAttackData;
   Mass: number;
   MaxDialogInteractDistance: number;
   MaxReactionTimeToExplosion: number;
-  MeleeAttackData: AbilityPrototypeAttackConditions;
+  MeleeAttackData: ObjPrototypeMeleeAttackData;
   Mesh: EObjMesh;
   MeshGeneratorPrototypeSID: string;
   MinDialogInteractDistance: number;
@@ -6665,7 +6571,7 @@ export type ObjPrototype = GetStructType<{
   OnHitParamsSID: string;
   PathFailedContextualAction: string;
   PeacefulChatterFeatureData: ObjPrototypePeacefulChatterFeatureData;
-  PostResurrectionEffects: SpawnActorPrototypeSignals;
+  PostResurrectionEffects: CoreVariableHead;
   PrepareForAttackActionData: ObjPrototypePrepareForAttackActionData;
   PrepareForEmissionContextualAction: string;
   ProcessCorpseObjectFeatureData: ObjPrototypeProcessCorpseObjectFeatureData;
@@ -6680,11 +6586,11 @@ export type ObjPrototype = GetStructType<{
   RoarActionData: ObjPrototypeRoarActionData;
   RunAttackData: ObjPrototypeRunAttackData;
   SearchpointDetectorPrototypeSID: string;
-  SequentialAbilities: SingletonConstantBandits;
+  SequentialAbilities: CoreVariableTorso;
   SequentialAbilitiesActionData: ObjPrototypeSequentialAbilitiesActionData;
   ShieldActionData: ObjPrototypeShieldActionData;
   ShieldFeatureData: ObjPrototypeShieldFeatureData;
-  ShockwaveAttackData: ObjPrototypeShockwaveAttackData;
+  ShockwaveAttackData: ObjPrototypeKickAttackData;
   ShortJumpAttackData: ObjPrototypeJumpAttackData;
   ShouldAvoidDangerPolygons: boolean;
   ShouldGenerateStashClues: boolean;
@@ -6730,7 +6636,7 @@ export type ObjPrototype = GetStructType<{
 }>;
 
 export type ObjPrototypeAbilities = GetStructType<{
-  [key in ObjectAbilityName]: ObjPrototypeBlindDog_RunAttack_Left;
+  [key in ObjectAbilityName]: ObjPrototypeCat_Jump;
 }>;
 
 export type ObjPrototypeAdvanceParameters = GetStructType<{
@@ -6748,8 +6654,13 @@ export type ObjPrototypeAIVisionTargetParams = GetStructType<{
 }>;
 
 export type ObjPrototypeAnimationData = GetStructType<
-  GeneralNPCObjPrototypeAnimationDataItem[]
+  ObjPrototypeAnimationDataItem[]
 >;
+
+export type ObjPrototypeAnimationDataItem = GetStructType<{
+  Montage: string;
+  Type: EEvadeActionType;
+}>;
 
 export type ObjPrototypeApplicableMechanicsEffects = StringArray;
 
@@ -6773,11 +6684,6 @@ export type ObjPrototypeAttacksConditionsItem = GetStructType<{
   StartAttackMaxAngleToEnemyDirection: number;
   StartAttackMinAngle: number;
   StartAttackMinAngleToEnemyDirection: number;
-}>;
-
-export type ObjPrototypeBlindDog_RunAttack_Left = GetStructType<{
-  ActivationTag: string;
-  SID: string;
 }>;
 
 export type ObjPrototypeBlinkTeleportActionData = GetStructType<{
@@ -6805,7 +6711,7 @@ export type ObjPrototypeBoneDamageMap = GetStructType<
 >;
 
 export type ObjPrototypeBoneDamageMapItem = GetStructType<{
-  CapsuleNames: QuestNodePrototypeDialogMembers;
+  CapsuleNames: ObjPrototypeCapsuleNames;
   DamageBone: EDamageBone;
 }>;
 
@@ -6813,6 +6719,13 @@ export type ObjPrototypeCamperFeatureData = GetStructType<{
   CamperRadius: number;
   SyncTokenTag: string;
   TimeToAssumeAsCamper: number;
+}>;
+
+export type ObjPrototypeCapsuleNames = StringArray;
+
+export type ObjPrototypeCat_Jump = GetStructType<{
+  ActivationTag: string;
+  SID: string;
 }>;
 
 export type ObjPrototypeChangeCombatLocationActionData = GetStructType<{
@@ -6902,6 +6815,11 @@ export type ObjPrototypeDeathHandlerFeatureData = GetStructType<{
   EffectsOnPlayer: ObjPrototypeEffectsOnPlayer;
 }>;
 
+export type ObjPrototypeDefault = GetStructType<{
+  Animation: string;
+  StartDistance: number;
+}>;
+
 export type ObjPrototypeDisableMovementWeightThreshold = GetStructType<
   ObjPrototypeDisableMovementWeightThresholdItem[]
 >;
@@ -6917,7 +6835,7 @@ export type ObjPrototypeDistanceConditions = GetStructType<{
 }>;
 
 export type ObjPrototypeDoorTransitionSettings = GetStructType<{
-  Default: GeneralNPCObjPrototypeDefault;
+  Default: ObjPrototypeDefault;
 }>;
 
 export type ObjPrototypeDualCurveEffects = GetStructType<
@@ -6930,8 +6848,13 @@ export type ObjPrototypeDualCurveEffectsItem = GetStructType<{
   EffectSID: string;
 }>;
 
+export type ObjPrototypeEffectsItem = GetStructType<{
+  Chance: number;
+  EffectPrototypeSID: string;
+}>;
+
 export type ObjPrototypeEffectsOnPlayer = GetStructType<
-  MeleeWeaponPrototypeTargetEffectsItem[]
+  ObjPrototypeEffectsItem[]
 >;
 
 export type ObjPrototypeEnemyValidationActionParams = GetStructType<{
@@ -6941,7 +6864,7 @@ export type ObjPrototypeEnemyValidationActionParams = GetStructType<{
   MinDistanceToValidationPoint: number;
   MinValidationTimeAtLocation: number;
   PointsSpreadDistance: number;
-  PossibleContextualActions: SpawnActorPrototypeIgnoreCollisionActors;
+  PossibleContextualActions: NPCPrototypeSkills;
   WaitForContextualAction: boolean;
 }>;
 
@@ -6949,6 +6872,15 @@ export type ObjPrototypeEscapeIsolatedNavmeshActionData = GetStructType<{
   AbilityActivationTag: string;
   bEnabled: boolean;
   JumpDistance: number;
+}>;
+
+export type ObjPrototypeEscapeParameters = GetStructType<{
+  AttackEscapeDelay: number;
+  EscapeRadius: number;
+  FailureChance: string;
+  InterruptEscapeAfterEnemyLostDelay: number;
+  InterruptEscapeDelay: number;
+  SquadLostFractionToEscape: string;
 }>;
 
 export type ObjPrototypeEvadeParameters = GetStructType<{
@@ -6963,10 +6895,15 @@ export type ObjPrototypeExampleAttack = GetStructType<{
   BleedingChanceIncrement: number;
   Damage: number;
   DamageSource: EDamageSource;
-  Effects: SpawnActorPrototypeSignals;
+  Effects: CoreVariableHead;
   MaxAttackAngle: number;
   MinAttackDistance: number;
   MutantAttackType: EMutantAttackType;
+}>;
+
+export type ObjPrototypeExplorationRadius = GetStructType<{
+  Max: number;
+  Min: number;
 }>;
 
 export type ObjPrototypeFatiguePerAction = GetStructType<{
@@ -7045,9 +6982,7 @@ export type ObjPrototypeFriendlyTracePointsItem = GetStructType<{
   Label: string;
 }>;
 
-export type ObjPrototypeFrontZone = GetStructType<
-  SpawnActorPrototypeFreeformTriggerVerticesItem[]
->;
+export type ObjPrototypeFrontZone = GetStructType<AbilityPrototypeRadius[]>;
 
 export type ObjPrototypeHideWeaponWarning = GetStructType<{
   BarkDelay: number;
@@ -7079,7 +7014,7 @@ export type ObjPrototypeHumanLookAtParameters = GetStructType<{
 export type ObjPrototypeInstanceDamageData = GetStructType<{
   ArmorDamage: number;
   ArmorPiercing: number;
-  AttackEffects: AIGlobalSoundEventTypeSpreadSpeedList;
+  AttackEffects: AssetLibraryUIIcons;
   Bleeding: number;
   BleedingChanceIncrement: number;
   bShouldIgnoreArmor: boolean;
@@ -7094,13 +7029,13 @@ export type ObjPrototypeInteractionData = GetStructType<
 >;
 
 export type ObjPrototypeInteractionDataItem = GetStructType<{
-  AllowedCorpses: QuestNodePrototypeDialogMembers;
+  AllowedCorpses: ObjPrototypeCapsuleNames;
   ApproachLocationOffset: number;
   ContextualAction: string;
 }>;
 
 export type ObjPrototypeInvisibilityEffects = GetStructType<
-  MeleeWeaponPrototypeTargetEffectsItem[]
+  ObjPrototypeEffectsItem[]
 >;
 
 export type ObjPrototypeInvisibilityFeatureData = GetStructType<{
@@ -7128,7 +7063,7 @@ export type ObjPrototypeJumpAttack = GetStructType<{
   Cooldown: number;
   Damage: number;
   DamageSource: EDamageSource;
-  Effects: SpawnActorPrototypeSignals;
+  Effects: CoreVariableHead;
   MaxAttackAngle: number;
   MinAttackDistance: number;
   MutantAttackType: EMutantAttackType;
@@ -7159,6 +7094,17 @@ export type ObjPrototypeJumpToEnemyActionData = GetStructType<{
   ReducedPathCoefToJump: number;
 }>;
 
+export type ObjPrototypeKickAttackData = GetStructType<{
+  AbilityTag: string;
+  AttackSyncTag: string;
+  StartAttackMaxAngle: number;
+  StartAttackMaxAngleToEnemyDirection: number;
+  StartAttackMaxDistance: number;
+  StartAttackMinAngle: number;
+  StartAttackMinAngleToEnemyDirection: number;
+  StartAttackMinDistance: number;
+}>;
+
 export type ObjPrototypeLongJumpAttackData = GetStructType<{
   AbilityTag: string;
   AttackSyncTag: string;
@@ -7166,6 +7112,15 @@ export type ObjPrototypeLongJumpAttackData = GetStructType<{
   JumpOffset: number;
   JumpPredictionSeconds: number;
   MaxWarpingAngle: number;
+  StartAttackMaxAngle: number;
+  StartAttackMaxAngleToEnemyDirection: number;
+  StartAttackMaxDistance: number;
+  StartAttackMinAngle: number;
+  StartAttackMinAngleToEnemyDirection: number;
+  StartAttackMinDistance: number;
+}>;
+
+export type ObjPrototypeMeleeAttackData = GetStructType<{
   StartAttackMaxAngle: number;
   StartAttackMaxAngleToEnemyDirection: number;
   StartAttackMaxDistance: number;
@@ -7223,7 +7178,7 @@ export type ObjPrototypeMoveToEnemyActionData = GetStructType<{
 }>;
 
 export type ObjPrototypeMutantAmbushParameters = GetStructType<{
-  AdditionalVisibilityTraceBones: SpawnActorPrototypeSignals;
+  AdditionalVisibilityTraceBones: CoreVariableHead;
   AttackAttemptsBeforeAmbush: number;
   bCheckTraceForFinishAction: boolean;
   bEnabled: boolean;
@@ -7244,7 +7199,7 @@ export type ObjPrototypeMutantCoverSelectorFeatureData = GetStructType<{
   bReturnAnyCoverIfNoValidFound: boolean;
   CosThresholdForCovers: number;
   EffectiveDistanceToEnemy: number;
-  ExplorationRadius: SpawnActorPrototypeMaxSpawnQuantity;
+  ExplorationRadius: ObjPrototypeExplorationRadius;
   IgnoreCoversNearLastCoverDist: number;
   MinDistanceToEnemy: number;
   MinimalCoverSize: number;
@@ -7395,21 +7350,10 @@ export type ObjPrototypeShieldFeatureData = GetStructType<{
   DamageAccumulationTime: number;
 }>;
 
-export type ObjPrototypeShockwaveAttackData = GetStructType<{
-  AbilityTag: string;
-  AttackSyncTag: string;
-  StartAttackMaxAngle: number;
-  StartAttackMaxAngleToEnemyDirection: number;
-  StartAttackMaxDistance: number;
-  StartAttackMinAngle: number;
-  StartAttackMinAngleToEnemyDirection: number;
-  StartAttackMinDistance: number;
-}>;
-
 export type ObjPrototypeSideJumpActionData = GetStructType<{
   Cooldown: number;
   DamageAccumulatedToActivate: number;
-  JumpMoveMontages: SpawnActorPrototypeSignals;
+  JumpMoveMontages: CoreVariableHead;
   StartAttackMaxAngle: number;
   StartAttackMaxAngleToEnemyDirection: number;
   StartAttackMaxDistance: number;
@@ -7445,7 +7389,7 @@ export type ObjPrototypeSkeletalMeshTraceBoneMapItem = GetStructType<{
 export type ObjPrototypeSpawnPhantomParams = GetStructType<{
   DelayBeforeMovement: number;
   DistanceConditions: ObjPrototypeDistanceConditions;
-  EffectsOnOverlap: SpawnActorPrototypeSignals;
+  EffectsOnOverlap: CoreVariableHead;
   PermanentEffects: SingletonConstantZombie;
   PhantomAttackAbilityTag: string;
   PhantomBlueprint: string;
@@ -7457,7 +7401,7 @@ export type ObjPrototypeStaminaDisableThresholds = GetStructType<
 
 export type ObjPrototypeStaminaDisableThresholdsItem = GetStructType<{
   RegenerationDelay: number;
-  StateTags: QuestObjPrototypeStateTags;
+  StateTags: ObjPrototypeStateTags;
   Threshold: number;
 }>;
 
@@ -7489,6 +7433,8 @@ export type ObjPrototypeStaminaPerActionLightOverweight = GetStructType<{
   Vault: number;
   Walk: number;
 }>;
+
+export type ObjPrototypeStateTags = GetStructType<EStateTag[]>;
 
 export type ObjPrototypeStealthKillParams = GetStructType<{
   AvailabilityDelayTimeSeconds: string;
@@ -7556,7 +7502,7 @@ export type ObjPrototypeTracePointsItem = GetStructType<{
   BaseScorePerSecond: number;
   BoneName: string;
   Label: string;
-  RelativeLocation: SpawnActorPrototypeVector;
+  RelativeLocation: AIGlobalRelativeLocation;
 }>;
 
 export type ObjPrototypeVaultingParams = GetStructType<{
@@ -7632,7 +7578,7 @@ export type ObjPrototypeWaterImmersionLevels = GetStructType<
 >;
 
 export type ObjPrototypeWaterImmersionLevelsItem = GetStructType<{
-  Effects: SpawnActorPrototypeSignals;
+  Effects: CoreVariableHead;
   LevelSoundSwitch: string;
   MinDepthThreshold: number;
   WaterLevel: EWaterImmersionLevel;
@@ -7689,12 +7635,12 @@ export type ObjPrototypeZombieBehaviourParameters = GetStructType<{
 export type ObjSleepParamsPrototype = GetStructType<{
   AllowSleepThreshold: number;
   bAllowEmissionSleep: boolean;
-  CantSleepEffectSIDs: QuestNodePrototypeTargetQuestGuids;
+  CantSleepEffectSIDs: CoreVariableLegs;
   MinSleepHours: number;
   PostSleepEffectSIDs: SingletonConstantZombie;
-  PostSleepMultiplierEffectSIDs: SpawnActorPrototypeIgnoreCollisionActors;
+  PostSleepMultiplierEffectSIDs: NPCPrototypeSkills;
   SID: string;
-  SleepEffectSIDs: SingletonConstantBandits;
+  SleepEffectSIDs: CoreVariableTorso;
   SleepHoursMultiplier: number;
 }>;
 
@@ -7704,9 +7650,9 @@ export type ObjWeatherParamsPrototype = GetStructType<{
 }>;
 
 export type ObjWeatherParamsPrototypeWeatherAppliedEffectSIDs = GetStructType<{
-  LightRainy: SpawnActorPrototypeIgnoreCollisionActors;
-  Rainy: SpawnActorPrototypeIgnoreCollisionActors;
-  Thundery: SpawnActorPrototypeIgnoreCollisionActors;
+  LightRainy: NPCPrototypeSkills;
+  Rainy: NPCPrototypeSkills;
+  Thundery: NPCPrototypeSkills;
 }>;
 
 export type ObjWeightParamsPrototype = GetStructType<{
@@ -7727,7 +7673,7 @@ export type ObjWeightParamsPrototypeWeightEffectParamsItem = GetStructType<{
 
 export type OffsetAimingBoolProviderPrototype = GetStructType<{
   ProviderSID: string;
-  ProviderSIDs: SpawnActorPrototypeSignals;
+  ProviderSIDs: CoreVariableHead;
   SID: string;
   Type: EBoolProviderType;
 }>;
@@ -7764,7 +7710,7 @@ export type PassiveDetectorPrototype = GetStructType<{
   DetectorRadius: string;
   DetectorWorkCurve: string;
   DetectorWorkSFX: string;
-  ExclusionAnomalyList: SpawnActorPrototypeNavModifierVolumes;
+  ExclusionAnomalyList: UpdatePopupPrototypeContentData;
   ID: number;
   SID: string;
   SignalCurve: string;
@@ -7774,9 +7720,9 @@ export type PassiveDetectorPrototype = GetStructType<{
 export type PDATutorialPrototype = GetStructType<{
   ExclusiveGamepadType: string;
   Id: number;
-  Images: GroomBlockingMappingPrototypeBlockingGroomSIDs;
+  Images: PDATutorialPrototypeImages;
   InputMappings: PDATutorialPrototypeInputMappings;
-  ItemSIDs: SingletonConstantBandits;
+  ItemSIDs: CoreVariableTorso;
   MasterDifficultyEquivalentSid: string;
   RelevantPDANoteTutorial: string;
   SID: string;
@@ -7787,6 +7733,8 @@ export type PDATutorialPrototype = GetStructType<{
   VisibleDifficulties: PDATutorialPrototypeVisibleDifficulties;
 }>;
 
+export type PDATutorialPrototypeImages = StringArray;
+
 export type PDATutorialPrototypeInputMappings = GetStructType<
   PDATutorialPrototypeInputMappingsItem[]
 >;
@@ -7795,7 +7743,7 @@ export type PDATutorialPrototypeInputMappingsItem = GetStructType<{
   GamepadInputAction: string;
   InputAction: string;
   InputMappingContext: EMappingContext;
-  PCInputMappingNames: QuestNodePrototypeTargetQuestGuids;
+  PCInputMappingNames: CoreVariableLegs;
   ShouldAnimate: boolean;
 }>;
 
@@ -7874,8 +7822,8 @@ export type PlayerWeaponAttributesPrototypeParticlesBasedOnHeating =
 
 export type PlayerWeaponAttributesPrototypeParticlesBasedOnHeatingItem =
   GetStructType<{
-    PostShooting: NPCWeaponAttributesPrototypeShooting;
-    Shooting: NPCWeaponAttributesPrototypeShooting;
+    PostShooting: AttachPrototypeShooting;
+    Shooting: AttachPrototypeShooting;
     VFXGroupName: string;
   }>;
 
@@ -7925,7 +7873,7 @@ export type PostEffectProcessorPrototype = GetStructType<{
   ParamSID: string;
   PeakDuration: number;
   PositiveInterpSpeed: number;
-  ProviderSIDs: SpawnActorPrototypeSignals;
+  ProviderSIDs: CoreVariableHead;
   SID: string;
   SpeedProviderSID: string;
   Type: EPostEffectProcessorType;
@@ -7948,12 +7896,12 @@ export type ProjectilePrototype = GetStructType<{
   BlueprintFP: string;
   BlueprintTP: string;
   bUseImpactReflectionMethod: boolean;
-  EffectPrototypeSIDs: SpawnActorPrototypeIgnoreCollisionActors;
+  EffectPrototypeSIDs: NPCPrototypeSkills;
   FlybyDotProductThreshold: number;
   FlybySound: string;
   ImpactBloodDecalMinSize: number;
   ImpactBloodDecals: SingletonConstantZombie;
-  ImpactBloodDecalSize: SpawnActorPrototypeVector;
+  ImpactBloodDecalSize: AIGlobalRelativeLocation;
   ImpactEffectsMinDistance: number;
   ImpactPhysicalMaterialPrototypeSID: string;
   ImpactSound: string;
@@ -7966,7 +7914,7 @@ export type ProjectilePrototype = GetStructType<{
   SID: string;
   Speed: number;
   SuppressionCenterBone: string;
-  SuppressionEffectSIDs: SpawnActorPrototypeIgnoreCollisionActors;
+  SuppressionEffectSIDs: NPCPrototypeSkills;
   SuppressionMinSpeed: number;
   TimeOfVisibilityEnabling: number;
 }>;
@@ -7987,10 +7935,10 @@ export type PsyMeshGeneratorPrototypeAttachesItem = GetStructType<{
 }>;
 
 export type PsyMeshGeneratorPrototypeAttachments = GetStructType<
-  PsyMeshGeneratorPrototypeBodyArmor[]
+  PsyMeshGeneratorPrototypeCap[]
 >;
 
-export type PsyMeshGeneratorPrototypeBodyArmor = GetStructType<{
+export type PsyMeshGeneratorPrototypeCap = GetStructType<{
   Attaches: PsyMeshGeneratorPrototypeAttaches;
   SlotName: string;
 }>;
@@ -8017,7 +7965,7 @@ export type QuestArtifactPrototype = GetStructType<
     AnomalyElementType: EAnomalyElementType;
     ArtifactType: EArtifactType;
     DetectorRequired: boolean;
-    EffectPrototypeSIDs: SpawnActorPrototypeIgnoreCollisionActors;
+    EffectPrototypeSIDs: NPCPrototypeSkills;
     ID: number;
     IsQuestItem: boolean;
     JumpAmount: number;
@@ -8035,30 +7983,25 @@ export type QuestArtifactPrototype = GetStructType<
   }
 >;
 
-export type QuestArtifactSpawnerPrototype = GetStructType<
-  { [k in Rank]: QuestArtifactSpawnerPrototypeNewbie } & {
-    ID: number;
-    ListOfArtifacts: SpawnActorPrototypeIgnoreCollisionActors;
-    SID: string;
-    UseListOfArtifacts: boolean;
-  }
->;
+export type QuestArtifactSpawnerPrototype = GetStructType<{
+  Experienced: QuestArtifactSpawnerPrototypeMaster;
+  ID: number;
+  ListOfArtifacts: NPCPrototypeSkills;
+  Master: QuestArtifactSpawnerPrototypeMaster;
+  Newbie: QuestArtifactSpawnerPrototypeMaster;
+  SID: string;
+  UseListOfArtifacts: boolean;
+  Veteran: QuestArtifactSpawnerPrototypeMaster;
+}>;
 
-export type QuestArtifactSpawnerPrototypeNewbie = GetStructType<{
+export type QuestArtifactSpawnerPrototypeMaster = GetStructType<{
   Count: number;
   MaxCooldown: number;
   MinCooldown: number;
   Radius: number;
-  RarityChance: QuestArtifactSpawnerPrototypeRarityChance;
+  RarityChance: ArtifactSpawnerPrototypeRarityChance;
   SpawnChanceBase: number;
   SpawnChanceBonus: number;
-}>;
-
-export type QuestArtifactSpawnerPrototypeRarityChance = GetStructType<{
-  Common: number;
-  Epic: number;
-  Rare: number;
-  Uncommon: number;
 }>;
 
 export type QuestItemGeneratorPrototype = GetStructType<{
@@ -8068,16 +8011,16 @@ export type QuestItemGeneratorPrototype = GetStructType<{
   SID: string;
 }>;
 
-export type QuestItemGeneratorPrototypeItemGenerator = GetStructType<
-  QuestItemGeneratorPrototypeItemGeneratorItem[]
->;
-
-export type QuestItemGeneratorPrototypeItemGeneratorItem = GetStructType<{
+export type QuestItemGeneratorPrototypeHead = GetStructType<{
   bAllowSameCategoryGeneration: boolean;
   Category: EItemGenerationCategory;
   PlayerRank: ERank;
   PossibleItems: QuestItemGeneratorPrototypePossibleItems;
 }>;
+
+export type QuestItemGeneratorPrototypeItemGenerator = GetStructType<
+  QuestItemGeneratorPrototypeHead[]
+>;
 
 export type QuestItemGeneratorPrototypePossibleItems = GetStructType<
   QuestItemGeneratorPrototypePossibleItemsItem[]
@@ -8106,7 +8049,7 @@ export type QuestItemGeneratorPrototypeUpgrades = GetStructType<{
 }>;
 
 export type QuestItemPrototype = GetStructType<{
-  AlternativeEffectPrototypeSIDs: QuestNodePrototypeTargetQuestGuids;
+  AlternativeEffectPrototypeSIDs: CoreVariableLegs;
   AnomalyElementType: EAnomalyElementType;
   ArchiartifactType: EArchiartifactType;
   ArtifactType: EArtifactType;
@@ -8114,7 +8057,7 @@ export type QuestItemPrototype = GetStructType<{
   Blueprint: string;
   Cost: number;
   DetectorRequired: boolean;
-  EffectPrototypeSIDs: QuestNodePrototypeTargetQuestGuids;
+  EffectPrototypeSIDs: CoreVariableLegs;
   EffectsDisplayTypes: QuestItemPrototypeEffectsDisplayTypes;
   Icon: string;
   Icon1x1: string;
@@ -8175,34 +8118,32 @@ export type QuestMeshGeneratorPrototypeAttaches = GetStructType<
 >;
 
 export type QuestMeshGeneratorPrototypeAttachesItem = GetStructType<{
-  BlockingBodyMeshes: QuestMeshGeneratorPrototypeBlockingBodyMeshes;
-  BlockingGrooms: SpawnActorPrototypeLairCoreVolumes;
-  BlockingGroomSIDs: GroomBlockingMappingPrototypeBlockingGroomSIDs;
+  BlockingBodyMeshes: MeshGeneratorPrototypeBlockingBodyMeshes;
+  BlockingGrooms: SingletonConstantArmy;
+  BlockingGroomSIDs: PDATutorialPrototypeImages;
   BlockingSlots: SpawnActorPrototypeLairTerritoryVolumes;
   BodyMeshSID: string;
   Weight: number;
 }>;
 
 export type QuestMeshGeneratorPrototypeAttachments = GetStructType<
-  QuestMeshGeneratorPrototypeAttachmentsItem[]
+  QuestMeshGeneratorPrototypeCap[]
 >;
 
-export type QuestMeshGeneratorPrototypeAttachmentsItem = GetStructType<{
+export type QuestMeshGeneratorPrototypeCap = GetStructType<{
   Attaches: QuestMeshGeneratorPrototypeAttaches;
   SlotName: string;
 }>;
 
-export type QuestMeshGeneratorPrototypeBlockingBodyMeshes = StringArray;
-
-export type QuestMeshGeneratorPrototypeCustomData = GetStructType<
-  QuestMeshGeneratorPrototypeCustomDataItem[]
->;
-
-export type QuestMeshGeneratorPrototypeCustomDataItem = GetStructType<{
+export type QuestMeshGeneratorPrototypeChevron_index = GetStructType<{
   Distribution: ECustomDataDistribution;
   MaterialGroup: string;
   Variations: QuestMeshGeneratorPrototypeVariations;
 }>;
+
+export type QuestMeshGeneratorPrototypeCustomData = GetStructType<
+  QuestMeshGeneratorPrototypeChevron_index[]
+>;
 
 export type QuestMeshGeneratorPrototypeGroom = GetStructType<
   QuestMeshGeneratorPrototypeGroomItem[]
@@ -8231,312 +8172,112 @@ export type QuestMeshGeneratorPrototypeVariationsItem = GetStructType<{
   Weight: number;
 }>;
 
-export type QuestNodePrototype = GetStructType<{
-  AbilityPrototypeSID: string;
+export type QuestNodePrototypeAchievementUnlock = GetStructType<{
   AchievementSID: string;
-  Activate: boolean;
-  ActorBoneName: string;
-  AddToPlayerStash: boolean;
-  AIThreatState: number;
-  AKEventPath: string;
-  ApplyRestrictionType: EApplyRestrictionType;
-  AssetsToLoad: string;
-  AttractionPointType: EAttractionPointType;
-  AudioLocalizedAssetsToLoad: QuestNodePrototypeAudioLocalizedAssetsToLoad;
-  BehaviorType: EBehaviorType;
-  BenchRuns: number;
-  BlendExpForEaseInOut: number;
-  BrokenGameDataFilter: EBrokenGameDataFilter;
-  bTriggersByAnybody: boolean;
-  CallPlayer: boolean;
-  CallPlayerRadius: number;
-  CameraHeight: number;
-  CanBeInterrupted: boolean;
-  CanBeIterrupted: boolean;
-  CanBeTeleported: boolean;
-  CanExitAnytime: boolean;
-  ChangeValueMode: EChangeValueMode;
-  CircleRadius: number;
-  CollisionChannel: number;
-  Conditions: QuestNodePrototypeConditions;
-  ConsoleCommand: string;
-  ContaineredQuestPrototypeSID: string;
-  ContextualActionLookAtPlayerRange: number;
-  ContextualActionRange: number;
-  Continue: boolean;
-  ContinueThroughRadio: boolean;
-  ContinueWhileCombatComments: string;
-  ContinueWhileMovingComments: string;
-  CustomRestPlaceSelection: boolean;
-  CustomSleepPlaceSelection: boolean;
-  DataLayerCombination: string;
-  DataLayerName: string;
-  Description: string;
-  DialogChainPrototypeSID: string;
-  DialogMembers: QuestNodePrototypeDialogMembers;
-  DialogObjectLocation: QuestNodePrototypeDialogObjectLocation;
-  DialogToStart: string;
-  DisabledEvents: string;
-  DisableFlashlightControl: boolean;
-  Discovered: boolean;
-  Duration: number;
-  EffectLocation: SpawnActorPrototypeVector;
-  EffectPath: string;
-  EffectPrototypeSID: string;
-  EmissionPrototypeSID: string;
-  EndHour: number;
-  EnteringDuration: number;
-  EquipItems: boolean;
-  EquipmentItemSID: string;
-  EquipmentTypeFilter: EMainHandEquipmentType;
-  Event: EDialogEventType;
-  EventType: EQuestEventType;
-  ExcludeAllNodesInContainer: boolean;
-  ExpectedItemsCount: number;
-  Explored: boolean;
-  Faction: string;
-  FadeTime: number;
-  FailureByCombat: boolean;
-  FailureByEmission: boolean;
-  FailureByHumanKil: boolean;
-  FailureByMutantKill: boolean;
-  FailureByPlayerEncounter: boolean;
-  FailureByPlayerKill: boolean;
-  FailureByTargetLost: boolean;
-  FailureByThreat: boolean;
-  FinishBattleComments: string;
-  FinishOnAKEvent: boolean;
-  FirstTargetSID: string;
-  FlashlightAction: EFlashlightAction;
-  FleeType: EFleeType;
-  FollowStartRange: number;
-  FollowStopRange: number;
-  Force: boolean;
-  ForceDespawn: boolean;
-  ForceEmission: boolean;
-  FullAmount: boolean;
-  FullSquad: boolean;
-  GlobalVariablePrototypeSID: string;
-  GoalPriority: EGoalPriority;
-  GoalTargetQuestGuid: string;
-  GuardOpponentFactions: SpawnActorPrototypeSignals;
-  GuardTargetGuid: string;
-  GuardType: EGuardType;
-  GuardZoneShapesGuids: string;
-  HealingType: EHealingType;
-  HideViewType: EHideViewType;
-  HitProducer: string;
-  HitReceiver: string;
-  IdlePosition: SpawnActorPrototypeVector;
-  IgnoreAnomalyFields: boolean;
-  IgnoreCombat: boolean;
-  IgnoreDamageType: EIgnoreDamageType;
-  IgnoreEmission: boolean;
-  IgnoreEnabledCheck: boolean;
-  IgnoreRadiationFeilds: boolean;
-  IgnoreThreat: boolean;
-  ImagePath: string;
-  ImmediatelyIdentifyEnemy: boolean;
-  IncludeWoundedEvent: boolean;
-  InfotopicLastPhrases: QuestNodePrototypeInfotopicLastPhrases;
-  InGameHours: number;
-  InGameMinutes: number;
-  InitialPitch: number;
-  InitialYaw: number;
-  InteractableQuestGuid: string;
-  IsComment: boolean;
-  IsDataLayerEnabled: boolean;
-  IsFinalVideo: boolean;
-  ItemGeneratorSID: string;
-  ItemPrototypeSID: string;
-  ItemsCount: number;
-  ItemSID: string;
-  JournalAction: EJournalAction;
-  JournalEntity: EJournalEntity;
-  JournalQuestDescriptionIndex: number;
-  JournalQuestSID: string;
-  JournalQuestStageSID: string;
-  LastPhrases: QuestNodePrototypeLastPhrases;
   Launchers: QuestNodePrototypeLaunchers;
-  LaunchOnQuestStart: boolean;
-  LeaveAnomalyZoneComments: string;
-  LinkedNodePrototypeSID: string;
-  LoadingScreenType: ELoadingDestination;
-  LocalizedSequences: DialogPrototypeLocalizedSequences;
-  Location: string;
-  LookAt: SpawnActorPrototypeVector;
-  LookAtActorFName: string;
-  LookAtLocation: SpawnActorPrototypeVector;
-  LookAtPlaceholder: string;
-  LoopSequence: boolean;
-  MainQuest: boolean;
-  MarkerDescription: string;
-  Markers: string;
-  MarkerSID: string;
-  MasterAKEventForLoad: string;
-  MaxAcceptanceDistance: number;
-  MeshGeneratorSID: string;
-  MinAcceptanceDistance: number;
-  MinFleeTime: number;
-  MinimalReputationLevel: ERelationLevel;
-  MinPanicTime: number;
-  MoveFrom: string;
-  MovementPose: EAIMovementPose;
-  MovementType: EMovementBehaviour;
-  MoveQuestItems: boolean;
-  MoveTo: string;
-  MoveToFailureRange: number;
-  MoveToPath: string;
-  MoveToPlayer: boolean;
-  MoveToSuccessRange: number;
-  NameSID: string;
-  NavAreaClass: string;
-  NavModifier: string;
-  NewDescription: number;
+  NodePrototypeVersion: number;
+  NodeType: "EQuestNodeType::AchievementUnlock" & EQuestNodeType;
+  QuestSID: string;
+  SID: string;
+}>;
+
+export type QuestNodePrototypeActivateAnomaly = GetStructType<{
+  Continue: boolean;
+  Description: string;
+  Launchers: QuestNodePrototypeLaunchers;
+  NodePrototypeVersion: number;
+  NodeType: "EQuestNodeType::ActivateAnomaly" & EQuestNodeType;
+  QuestSID: string;
+  Repeatable: boolean;
+  SID: string;
+  StartQuest: boolean;
+  TargetQuestGuid: string;
+}>;
+
+export type QuestNodePrototypeActivateDataLayerCombination = GetStructType<{
+  BrokenGameDataFilter: EBrokenGameDataFilter;
+  DataLayerCombination: string;
+  Launchers: QuestNodePrototypeLaunchers;
+  NodePrototypeVersion: number;
+  NodeType: "EQuestNodeType::ActivateDataLayerCombination" & EQuestNodeType;
+  QuestSID: string;
+  SID: string;
+}>;
+
+export type QuestNodePrototypeActivateInteractableObject = GetStructType<{
+  InteractableQuestGuid: string;
+  Launchers: QuestNodePrototypeLaunchers;
+  NodePrototypeVersion: number;
+  NodeType: "EQuestNodeType::ActivateInteractableObject" & EQuestNodeType;
+  OutputPinNames: QuestNodePrototypeOutputPinNames;
+  QuestSID: string;
+  Repeatable: boolean;
+  SID: string;
+}>;
+
+export type QuestNodePrototypeActivateRestrictor = GetStructType<{
+  BrokenGameDataFilter: EBrokenGameDataFilter;
+  Launchers: QuestNodePrototypeLaunchers;
+  NodePrototypeVersion: number;
+  NodeType: "EQuestNodeType::ActivateRestrictor" & EQuestNodeType;
+  QuestSID: string;
+  Repeatable: boolean;
+  SID: string;
+  VolumeGuid: string;
+}>;
+
+export type QuestNodePrototypeAddNote = GetStructType<{
+  BrokenGameDataFilter: EBrokenGameDataFilter;
+  Launchers: QuestNodePrototypeLaunchers;
+  NodePrototypeVersion: number;
+  NodeType: "EQuestNodeType::AddNote" & EQuestNodeType;
+  NotePrototypeSID: string;
+  PlayWhenReceived: boolean;
+  QuestSID: string;
+  SID: string;
+}>;
+
+export type QuestNodePrototypeAddOrRemoveFromSquad = GetStructType<{
+  Launchers: QuestNodePrototypeLaunchers;
+  NodePrototypeVersion: number;
+  NodeType: "EQuestNodeType::AddOrRemoveFromSquad" & EQuestNodeType;
+  QuestSID: string;
+  Remove: boolean;
+  SID: string;
+  Squad: string;
+  TargetQuestGuid: string;
+}>;
+
+export type QuestNodePrototypeAddTechnicianSkillOrUpgrade = GetStructType<{
+  Launchers: QuestNodePrototypeLaunchers;
   NewTechnicianSkill: string;
-  NewTitle: number;
+  NodePrototypeVersion: number;
+  NodeType: "EQuestNodeType::AddTechnicianSkillOrUpgrade" & EQuestNodeType;
+  QuestSID: string;
+  SID: string;
+  TargetQuestGuid: string;
+  UpgradeSIDs: QuestNodePrototypeUpgradeSIDs;
+}>;
+
+export type QuestNodePrototypeAddTutorialToPDA = GetStructType<{
+  Launchers: QuestNodePrototypeLaunchers;
+  NodePrototypeVersion: number;
+  NodeType: "EQuestNodeType::AddTutorialToPDA" & EQuestNodeType;
+  PDATutorialNoteSID: string;
+  QuestSID: string;
+  RequiredInputs: string;
+  SID: string;
+}>;
+
+export type QuestNodePrototypeALifeDirectorZoneSwitch = GetStructType<{
+  Launchers: QuestNodePrototypeLaunchers;
   NewZoneState: boolean;
   NodePrototypeVersion: number;
-  NodesToCleanUpResults: ObjPrototypeApplicableMechanicsEffects;
-  NodeType: EQuestNodeType;
-  NotePrototypeSID: string;
-  NPCToStartDialog: number;
-  OutputPinNames: QuestNodePrototypeOutputPinNames;
-  OverrideDialogTopic: EOverrideDialogTopic;
+  NodeType: "EQuestNodeType::ALifeDirectorZoneSwitch" & EQuestNodeType;
   OverrideScenarioGroupSID: string;
-  OwnedHub: string;
-  Params: QuestNodePrototypeParams;
-  PatrolCycleCount: number;
-  PatrolPlaceholderGUID: string;
-  PauseEmission: boolean;
-  PDATutorialNoteSID: string;
-  PersonalRestriction: QuestNodePrototypePersonalRestriction;
-  PinWeights: QuestNodePrototypePinWeights;
-  PistolDurabilityPercent: number;
-  PlayerLeavesWhileCombatComments: string;
-  PlayerLeavesWhileMovingComments: string;
-  PlayWhenReceived: boolean;
-  PostEffectProcessorSID: string;
-  PostProcessParamValue: number;
-  PreblendSequence: boolean;
-  PreblendTime: number;
-  PresetName: string;
-  PrimaryWeaponDurabilityPercent: number;
-  Priority: number;
-  ProfileCsv: boolean;
-  QuestItem: boolean;
-  QuestItemGeneratorSID: string;
   QuestSID: string;
-  Radius: number;
-  ReachAnomalyZoneComments: string;
-  ReachPointComments: QuestNodePrototypeReachPointComments;
-  ReactionTime: number;
-  ReactOnApproachWithWeapon: boolean;
-  ReactOnNonEnemySounds: boolean;
-  ReactType: ETriggerReact;
-  RelationshipValue: number;
-  Remove: boolean;
-  Repeatable: boolean;
-  RepeatableStayAnimation: boolean;
-  ReplaceInventory: boolean;
-  RequiredInputs: string;
-  RequiredSquadMembers: ERequiredSquadMembers;
-  RestLocation: SpawnActorPrototypeVector;
-  RestrictDeadBodyDespawn: boolean;
-  RestrictDeadBodyLootInteraction: boolean;
-  RestrictDeadBodyMovementInteraction: boolean;
-  RestrictDefeatStateInteraction: boolean;
-  RestrictDefeatStateMovementInteraction: boolean;
-  RestrictDialogInteractions: boolean;
-  RestrictedFaction: QuestNodePrototypeRestrictedFaction;
-  RotationAfterMoveTo: SpawnActorPrototypeAnomaliesLocationRotationItem;
-  RotationFreemoveEdge: number;
-  RotationStopEdge: number;
-  RotationTime: number;
-  SaveTypes: QuestNodePrototypeSaveTypes;
-  ScreenText: string;
-  SecondaryWeaponDurabilityPercent: number;
-  SecondTargetSID: string;
-  SeekPlayer: boolean;
-  SelectedDaysOfWeek: number;
-  SelfLocation: string;
-  SequentialAbilityModificationMode: EModifyAbilitySequenceQuestNodeMode;
-  SequentialAbilityPriority: number;
-  SetFactionRelationshipAsPersonal: boolean;
-  SetQuestActive: boolean;
-  ShootingPosition: SpawnActorPrototypeVector;
-  ShootTargetLocation: SpawnActorPrototypeVector;
-  ShotsQueueCount: number;
-  ShouldBeKilled: string;
-  ShouldBlendViaFade: boolean;
-  ShouldLockPersonalRelationship: boolean;
-  ShouldTargetPistol: boolean;
-  ShouldTargetPrimaryWeapon: boolean;
-  ShouldTargetSecondaryWeapon: boolean;
   SID: string;
-  SignalReceiverGuid: string;
-  SignalSenderGuid: string;
-  SimulateBattle: boolean;
-  SleepLocation: SpawnActorPrototypeVector;
-  SoundLocation: SpawnActorPrototypeVector;
-  SoundPath: string;
-  SpawnHidden: boolean;
-  SpawnNodeExcludeType: ESpawnNodeExcludeType;
-  SpecificItemDespawn: boolean;
-  Squad: string;
-  StageID: EEmissionStage;
-  StartBattleComments: string;
-  StartDelay: number;
-  StartForcedDialog: boolean;
-  StartHour: number;
-  StartPointID: number;
-  StartQuest: boolean;
-  StayAnimation: string;
-  StayContextualAction: string;
-  TalkThroughRadio: QuestNodePrototypeTalkThroughRadio;
-  TargetFaction: string;
-  TargetLocation: SpawnActorPrototypeVector;
-  TargetLocations: QuestNodePrototypeTargetLocations;
-  TargetMoneyAmount: number;
   TargetQuestGuid: string;
-  TargetQuestGuids: QuestNodePrototypeTargetQuestGuids;
-  TargetRank: ERank;
-  TeleportLocationAndRotation: SpawnActorPrototypeAnomaliesLocationRotationItem;
-  TeleportType: EGSCTeleportType;
-  ThreatSensor: number;
-  ThreatsReactRange: number;
-  TimerRate: number;
-  TimeToStartNextNodeBeforeEnd: number;
-  TimeToUseAbility: number;
-  TrackBeforeActive: boolean;
-  TransitionTime: number;
-  TriggerAction: number;
-  TriggerQuestGuid: string;
-  TutorialHeadLocalizedSID: string;
-  TutorialSID: string;
-  TutorialTextLocalizedSID: string;
-  UpgradePrototypeSID: string;
-  UpgradeSIDs: QuestNodePrototypeUpgradeSIDs;
-  UseAbilityMovementType: EMovementBehaviour;
-  UseAbilityPrototypeSID: string;
-  UseAbilityTarget: string;
-  UseDefaultEmissionPrototype: boolean;
-  UseDeltaValue: boolean;
-  UsePreset: boolean;
-  UseSecondaryWeapon: boolean;
-  VariableValue: boolean;
-  VideoAssetPath: string;
-  VolumeGuid: string;
-  WaitAllDialogEndingsToFinish: boolean;
-  WaitingPlayer: boolean;
-  WaitingTime: number;
-  WeaponReady: boolean;
-  WeaponState: EWeaponState;
-  Weather: EWeather;
-  WidgetType: number;
-  WithEquipped: boolean;
-  WithInventory: boolean;
-  WoundedOn: boolean;
 }>;
 
 export type QuestNodePrototypeAudioLocalizedAssetsToLoad = GetStructType<
@@ -8544,6 +8285,76 @@ export type QuestNodePrototypeAudioLocalizedAssetsToLoad = GetStructType<
 >;
 
 export type QuestNodePrototypeAudioLocalizedAssetsToLoadItem = StringArray;
+
+export type QuestNodePrototypeBridgeCleanUp = GetStructType<{
+  Launchers: QuestNodePrototypeLaunchers;
+  NodePrototypeVersion: number;
+  NodesToCleanUpResults: ObjPrototypeApplicableMechanicsEffects;
+  NodeType: "EQuestNodeType::BridgeCleanUp" & EQuestNodeType;
+  QuestSID: string;
+  Repeatable: boolean;
+  SID: string;
+}>;
+
+export type QuestNodePrototypeBridgeEvent = GetStructType<{
+  BrokenGameDataFilter: EBrokenGameDataFilter;
+  EventType: EQuestEventType;
+  LaunchOnQuestStart: boolean;
+  LinkedNodePrototypeSID: string;
+  NodePrototypeVersion: number;
+  NodeType: "EQuestNodeType::BridgeEvent" & EQuestNodeType;
+  OutputPinNames: QuestNodePrototypeOutputPinNames;
+  QuestSID: string;
+  Repeatable: boolean;
+  SID: string;
+  TrackBeforeActive: boolean;
+}>;
+
+export type QuestNodePrototypeCancelAllSideQuests = GetStructType<{
+  Launchers: QuestNodePrototypeLaunchers;
+  NodePrototypeVersion: number;
+  NodeType: "EQuestNodeType::CancelAllSideQuests" & EQuestNodeType;
+  QuestSID: string;
+  SID: string;
+}>;
+
+export type QuestNodePrototypeChangeFaction = GetStructType<{
+  Launchers: QuestNodePrototypeLaunchers;
+  NodePrototypeVersion: number;
+  NodeType: "EQuestNodeType::ChangeFaction" & EQuestNodeType;
+  QuestSID: string;
+  SID: string;
+  TargetFaction: string;
+  TargetQuestGuid: string;
+}>;
+
+export type QuestNodePrototypeChangeRelationships = GetStructType<{
+  BrokenGameDataFilter: EBrokenGameDataFilter;
+  FirstTargetSID: string;
+  Launchers: QuestNodePrototypeLaunchers;
+  NodePrototypeVersion: number;
+  NodeType: "EQuestNodeType::ChangeRelationships" & EQuestNodeType;
+  QuestSID: string;
+  RelationshipValue: number;
+  Repeatable: boolean;
+  SecondTargetSID: string;
+  SetFactionRelationshipAsPersonal: boolean;
+  ShouldLockPersonalRelationship: boolean;
+  SID: string;
+  UseDeltaValue: boolean;
+  UsePreset: boolean;
+}>;
+
+export type QuestNodePrototypeCondition = GetStructType<{
+  BrokenGameDataFilter: EBrokenGameDataFilter;
+  Conditions: QuestNodePrototypeConditions;
+  Launchers: QuestNodePrototypeLaunchers;
+  NodePrototypeVersion: number;
+  NodeType: "EQuestNodeType::Condition" & EQuestNodeType;
+  QuestSID: string;
+  Repeatable: boolean;
+  SID: string;
+}>;
 
 export type QuestNodePrototypeConditions = GetStructType<
   QuestNodePrototypeConditionsItem[] & {
@@ -8559,7 +8370,7 @@ export type QuestNodePrototypeConditionsItem = GetStructType<
     NumericValue: number;
     TargetCharacter: string;
     TargetItemContainer: string;
-    TargetPoint: SpawnActorPrototypeVector;
+    TargetPoint: AIGlobalRelativeLocation;
     WithEquipped: boolean;
     WithInventory: boolean;
   }
@@ -8572,7 +8383,7 @@ export type QuestNodePrototypeConditionsItemItem = GetStructType<{
   BoolValue: boolean;
   bTriggersByAnybody: boolean;
   ChangeValueMode: EChangeValueMode;
-  CompletedNodeLauncherNames: SpawnActorPrototypeSignals;
+  CompletedNodeLauncherNames: CoreVariableHead;
   ConditionComparance: EConditionComparance;
   ConditionType: EQuestConditionType;
   EffectPrototypeSID: string;
@@ -8581,17 +8392,17 @@ export type QuestNodePrototypeConditionsItemItem = GetStructType<{
   Faction: string;
   GlobalVariablePrototypeSID: string;
   ItemPrototypeSID: DialogPrototypeItemPrototypeSID;
-  ItemsCount: DialogPrototypeDialogActionParam;
+  ItemsCount: DialogPrototypeMoney;
   JournalEntity: EJournalEntity;
   JournalQuestSID: string;
   JournalQuestStageSID: string;
   JournalState: EJournalState;
   LinkedNodePrototypeSID: string;
-  Money: DialogPrototypeDialogActionParam;
+  Money: DialogPrototypeMoney;
   NodeState: EQuestNodeState;
   NotePrototypeSID: string;
   NumericValue: number;
-  PointToLookAt: SpawnActorPrototypeVector;
+  PointToLookAt: AIGlobalRelativeLocation;
   QuickSlotConsumableType: EConsumableType;
   QuickSlotIndex: number;
   QuickSlotItemSID: string;
@@ -8606,10 +8417,10 @@ export type QuestNodePrototypeConditionsItemItem = GetStructType<{
   TargetNode: string;
   TargetNPC: string;
   TargetPlaceholder: string;
-  TargetPoint: SpawnActorPrototypeVector;
+  TargetPoint: AIGlobalRelativeLocation;
   ThreatAwareness: EThreatAwareness;
   Trigger: string;
-  VariableValue: number;
+  VariableValue: boolean;
   Weather: EWeather;
   WithBodyArmor: boolean;
   WithEquipped: boolean;
@@ -8626,7 +8437,53 @@ export type QuestNodePrototypeConnectionsItem = GetStructType<{
   SID: string;
 }>;
 
-export type QuestNodePrototypeDialogMembers = StringArray;
+export type QuestNodePrototypeConsoleCommand = GetStructType<{
+  BrokenGameDataFilter: EBrokenGameDataFilter;
+  ConsoleCommand: string;
+  Launchers: QuestNodePrototypeLaunchers;
+  NodePrototypeVersion: number;
+  NodeType: "EQuestNodeType::ConsoleCommand" & EQuestNodeType;
+  QuestSID: string;
+  Repeatable: boolean;
+  SID: string;
+}>;
+
+export type QuestNodePrototypeContainer = GetStructType<{
+  BrokenGameDataFilter: EBrokenGameDataFilter;
+  ContaineredQuestPrototypeSID: string;
+  Launchers: QuestNodePrototypeLaunchers;
+  NodePrototypeVersion: number;
+  NodeType: "EQuestNodeType::Container" & EQuestNodeType;
+  OutputPinNames: QuestNodePrototypeOutputPinNames;
+  QuestSID: string;
+  Repeatable: boolean;
+  SID: string;
+}>;
+
+export type QuestNodePrototypeDeactivateZone = GetStructType<{
+  BrokenGameDataFilter: EBrokenGameDataFilter;
+  Launchers: QuestNodePrototypeLaunchers;
+  NavModifier: string;
+  NodePrototypeVersion: number;
+  NodeType: "EQuestNodeType::DeactivateZone" & EQuestNodeType;
+  QuestSID: string;
+  Repeatable: boolean;
+  SID: string;
+  TargetQuestGuid: string;
+}>;
+
+export type QuestNodePrototypeDespawn = GetStructType<{
+  BrokenGameDataFilter: EBrokenGameDataFilter;
+  Launchers: QuestNodePrototypeLaunchers;
+  NodePrototypeVersion: number;
+  NodeType: "EQuestNodeType::Despawn" & EQuestNodeType;
+  QuestSID: string;
+  Repeatable: boolean;
+  SID: string;
+  SpawnNodeExcludeType: ESpawnNodeExcludeType;
+  SpecificItemDespawn: boolean;
+  TargetQuestGuid: string;
+}>;
 
 export type QuestNodePrototypeDialogMembersItem = GetStructType<{
   DialogMemberGuid: string;
@@ -8634,12 +8491,156 @@ export type QuestNodePrototypeDialogMembersItem = GetStructType<{
 }>;
 
 export type QuestNodePrototypeDialogObjectLocation = GetStructType<
-  SpawnActorPrototypeVector[]
+  AIGlobalRelativeLocation[]
 >;
 
 export type QuestNodePrototypeDisabledEvents = GetStructType<
   EDialogEventType[]
 >;
+
+export type QuestNodePrototypeDisableNPCBark = GetStructType<{
+  DisabledEvents: string;
+  Launchers: QuestNodePrototypeLaunchers;
+  NodePrototypeVersion: number;
+  NodeType: "EQuestNodeType::DisableNPCBark" & EQuestNodeType;
+  QuestSID: string;
+  SID: string;
+  TargetQuestGuid: string;
+}>;
+
+export type QuestNodePrototypeDisableNPCInteraction = GetStructType<{
+  BrokenGameDataFilter: EBrokenGameDataFilter;
+  Launchers: QuestNodePrototypeLaunchers;
+  NodePrototypeVersion: number;
+  NodeType: "EQuestNodeType::DisableNPCInteraction" & EQuestNodeType;
+  QuestSID: string;
+  RestrictDeadBodyDespawn: boolean;
+  RestrictDeadBodyLootInteraction: boolean;
+  RestrictDeadBodyMovementInteraction: boolean;
+  RestrictDefeatStateInteraction: boolean;
+  RestrictDefeatStateMovementInteraction: boolean;
+  RestrictDialogInteractions: boolean;
+  SID: string;
+  TargetQuestGuid: string;
+}>;
+
+export type QuestNodePrototypeEmissionScheduleControl = GetStructType<{
+  BrokenGameDataFilter: EBrokenGameDataFilter;
+  Launchers: QuestNodePrototypeLaunchers;
+  NodePrototypeVersion: number;
+  NodeType: "EQuestNodeType::EmissionScheduleControl" & EQuestNodeType;
+  PauseEmission: boolean;
+  QuestSID: string;
+  Repeatable: boolean;
+  SID: string;
+}>;
+
+export type QuestNodePrototypeEmissionStart = GetStructType<{
+  BrokenGameDataFilter: EBrokenGameDataFilter;
+  EmissionPrototypeSID: string;
+  ForceEmission: boolean;
+  Launchers: QuestNodePrototypeLaunchers;
+  NodePrototypeVersion: number;
+  NodeType: "EQuestNodeType::EmissionStart" & EQuestNodeType;
+  QuestSID: string;
+  SID: string;
+  StartQuest: boolean;
+  UseDefaultEmissionPrototype: boolean;
+}>;
+
+export type QuestNodePrototypeEnableDataLayer = GetStructType<{
+  BrokenGameDataFilter: EBrokenGameDataFilter;
+  DataLayerName: string;
+  IsDataLayerEnabled: boolean;
+  Launchers: QuestNodePrototypeLaunchers;
+  NodePrototypeVersion: number;
+  NodeType: "EQuestNodeType::EnableDataLayer" & EQuestNodeType;
+  QuestSID: string;
+  Repeatable: boolean;
+  SID: string;
+}>;
+
+export type QuestNodePrototypeEnd = GetStructType<{
+  BrokenGameDataFilter: EBrokenGameDataFilter;
+  ExcludeAllNodesInContainer: boolean;
+  Launchers: string;
+  NodePrototypeVersion: number;
+  NodeType: "EQuestNodeType::End" & EQuestNodeType;
+  QuestSID: string;
+  SID: string;
+}>;
+
+export type QuestNodePrototypeEquipItemInHands = GetStructType<{
+  BrokenGameDataFilter: EBrokenGameDataFilter;
+  EquipmentItemSID: string;
+  EquipmentTypeFilter: EMainHandEquipmentType;
+  Launchers: QuestNodePrototypeLaunchers;
+  NodePrototypeVersion: number;
+  NodeType: "EQuestNodeType::EquipItemInHands" & EQuestNodeType;
+  QuestSID: string;
+  SID: string;
+  TargetQuestGuid: string;
+}>;
+
+export type QuestNodePrototypeFlashlightOnOff = GetStructType<{
+  DisableFlashlightControl: boolean;
+  FlashlightAction: EFlashlightAction;
+  Launchers: QuestNodePrototypeLaunchers;
+  NodePrototypeVersion: number;
+  NodeType: "EQuestNodeType::FlashlightOnOff" & EQuestNodeType;
+  QuestSID: string;
+  SID: string;
+  TargetQuestGuid: string;
+}>;
+
+export type QuestNodePrototypeForceInteract = GetStructType<{
+  IgnoreEnabledCheck: boolean;
+  InteractableQuestGuid: string;
+  Launchers: QuestNodePrototypeLaunchers;
+  NodePrototypeVersion: number;
+  NodeType: "EQuestNodeType::ForceInteract" & EQuestNodeType;
+  QuestSID: string;
+  SID: string;
+}>;
+
+export type QuestNodePrototypeGiveCache = GetStructType<{
+  Launchers: QuestNodePrototypeLaunchers;
+  NodePrototypeVersion: number;
+  NodeType: "EQuestNodeType::GiveCache" & EQuestNodeType;
+  QuestItemGeneratorSID: string;
+  QuestSID: string;
+  SID: string;
+  TargetQuestGuid: string;
+}>;
+
+export type QuestNodePrototypeHideLoadingScreen = GetStructType<{
+  Launchers: QuestNodePrototypeLaunchers;
+  NodePrototypeVersion: number;
+  NodeType: "EQuestNodeType::HideLoadingScreen" & EQuestNodeType;
+  QuestSID: string;
+  SID: string;
+}>;
+
+export type QuestNodePrototypeHideTutorial = GetStructType<{
+  Launchers: QuestNodePrototypeLaunchers;
+  NodePrototypeVersion: number;
+  NodeType: "EQuestNodeType::HideTutorial" & EQuestNodeType;
+  QuestSID: string;
+  Repeatable: boolean;
+  SID: string;
+  WidgetType: number;
+}>;
+
+export type QuestNodePrototypeIf = GetStructType<{
+  BrokenGameDataFilter: EBrokenGameDataFilter;
+  Conditions: QuestNodePrototypeConditions;
+  Launchers: QuestNodePrototypeLaunchers;
+  NodePrototypeVersion: number;
+  NodeType: "EQuestNodeType::If" & EQuestNodeType;
+  QuestSID: string;
+  Repeatable: boolean;
+  SID: string;
+}>;
 
 export type QuestNodePrototypeInfotopicLastPhrases = GetStructType<
   QuestNodePrototypeInfotopicLastPhrasesItem[]
@@ -8648,6 +8649,33 @@ export type QuestNodePrototypeInfotopicLastPhrases = GetStructType<
 export type QuestNodePrototypeInfotopicLastPhrasesItem = GetStructType<{
   LastPhraseSID: string;
   NextLaunchedPhraseSID: string;
+}>;
+
+export type QuestNodePrototypeItemAdd = GetStructType<{
+  AddToPlayerStash: boolean;
+  BrokenGameDataFilter: EBrokenGameDataFilter;
+  ItemsCount: number;
+  ItemSID: string;
+  Launchers: QuestNodePrototypeLaunchers;
+  NodePrototypeVersion: number;
+  NodeType: "EQuestNodeType::ItemAdd" & EQuestNodeType;
+  QuestSID: string;
+  Repeatable: boolean;
+  SID: string;
+  TargetQuestGuid: string;
+}>;
+
+export type QuestNodePrototypeItemRemove = GetStructType<{
+  BrokenGameDataFilter: EBrokenGameDataFilter;
+  ItemsCount: number;
+  ItemSID: string;
+  Launchers: QuestNodePrototypeLaunchers;
+  NodePrototypeVersion: number;
+  NodeType: "EQuestNodeType::ItemRemove" & EQuestNodeType;
+  QuestSID: string;
+  Repeatable: boolean;
+  SID: string;
+  TargetQuestGuid: string;
 }>;
 
 export type QuestNodePrototypeLastPhrases = GetStructType<
@@ -8669,6 +8697,44 @@ export type QuestNodePrototypeLaunchersItem = GetStructType<{
   Excluding: boolean;
 }>;
 
+export type QuestNodePrototypeLoadAsset = GetStructType<{
+  AssetsToLoad: string;
+  AudioLocalizedAssetsToLoad: QuestNodePrototypeAudioLocalizedAssetsToLoad;
+  Launchers: QuestNodePrototypeLaunchers;
+  NodePrototypeVersion: number;
+  NodeType: "EQuestNodeType::LoadAsset" & EQuestNodeType;
+  QuestSID: string;
+  SID: string;
+}>;
+
+export type QuestNodePrototypeLookAt = GetStructType<{
+  ActorBoneName: string;
+  ApplyRestrictionType: EApplyRestrictionType | number;
+  AttractionPointType: EAttractionPointType | number;
+  BrokenGameDataFilter: EBrokenGameDataFilter;
+  CollisionChannel: number;
+  Duration: number;
+  EnteringDuration: number;
+  Launchers: string;
+  LookAtActorFName: string;
+  LookAtLocation: AIGlobalRelativeLocation;
+  LookAtPlaceholder: string;
+  NodePrototypeVersion: number;
+  NodeType: "EQuestNodeType::LookAt" & EQuestNodeType;
+  PresetName: string;
+  Priority: number;
+  QuestSID: string;
+  ReactionTime: number;
+  Repeatable: boolean;
+  RotationFreemoveEdge: number;
+  RotationStopEdge: number;
+  SID: string;
+  TargetQuestGuid: string;
+  X: number;
+  Y: number;
+  Z: number;
+}>;
+
 export type QuestNodePrototypeMarkers = GetStructType<
   QuestNodePrototypeMarkersItem[]
 >;
@@ -8676,11 +8742,380 @@ export type QuestNodePrototypeMarkers = GetStructType<
 export type QuestNodePrototypeMarkersItem = GetStructType<{
   AddOnCondition: boolean;
   Conditions: QuestNodePrototypeConditions;
-  MarkerLocation: SpawnActorPrototypeVector;
+  MarkerLocation: AIGlobalRelativeLocation;
   MarkerRadius: number;
   MarkerTargetQuestGuid: string;
   RemoveOnCondition: boolean;
-  ZoneSubMarkers: string;
+  ZoneSubMarkers: QuestNodePrototypeZoneSubMarkers;
+}>;
+
+export type QuestNodePrototypeMoveInventory = GetStructType<{
+  Launchers: QuestNodePrototypeLaunchers;
+  MoveFrom: string;
+  MoveQuestItems: boolean;
+  MoveTo: string;
+  NodePrototypeVersion: number;
+  NodeType: "EQuestNodeType::MoveInventory" & EQuestNodeType;
+  QuestSID: string;
+  SID: string;
+  WithEquipped: boolean;
+}>;
+
+export type QuestNodePrototypeNPCBark = GetStructType<{
+  Event: EDialogEventType;
+  Launchers: string;
+  NodePrototypeVersion: number;
+  NodeType: "EQuestNodeType::NPCBark" & EQuestNodeType;
+  QuestSID: string;
+  Repeatable: boolean;
+  SID: string;
+  TargetQuestGuid: string;
+}>;
+
+export type QuestNodePrototypeOnAbilityEndedEvent = GetStructType<{
+  AbilityPrototypeSID: string;
+  EventType: EQuestEventType;
+  LaunchOnQuestStart: boolean;
+  NodePrototypeVersion: number;
+  NodeType: "EQuestNodeType::OnAbilityEndedEvent" & EQuestNodeType;
+  QuestSID: string;
+  SID: string;
+  TargetQuestGuid: string;
+  TrackBeforeActive: boolean;
+}>;
+
+export type QuestNodePrototypeOnAbilityUsedEvent = GetStructType<{
+  AbilityPrototypeSID: string;
+  EventType: EQuestEventType;
+  LaunchOnQuestStart: boolean;
+  NodePrototypeVersion: number;
+  NodeType: "EQuestNodeType::OnAbilityUsedEvent" & EQuestNodeType;
+  QuestSID: string;
+  Repeatable: boolean;
+  SID: string;
+  TargetQuestGuid: string;
+  TrackBeforeActive: boolean;
+}>;
+
+export type QuestNodePrototypeOnDialogStartEvent = GetStructType<{
+  DialogToStart: string;
+  EventType: EQuestEventType;
+  LaunchOnQuestStart: boolean;
+  NodePrototypeVersion: number;
+  NodeType: "EQuestNodeType::OnDialogStartEvent" & EQuestNodeType;
+  QuestSID: string;
+  SID: string;
+  TargetQuestGuid: string;
+  TrackBeforeActive: boolean;
+}>;
+
+export type QuestNodePrototypeOnEmissionFinishEvent = GetStructType<{
+  BrokenGameDataFilter: EBrokenGameDataFilter;
+  EventType: EQuestEventType;
+  LaunchOnQuestStart: boolean;
+  NodePrototypeVersion: number;
+  NodeType: "EQuestNodeType::OnEmissionFinishEvent" & EQuestNodeType;
+  QuestSID: string;
+  Repeatable: boolean;
+  SID: string;
+  TrackBeforeActive: boolean;
+}>;
+
+export type QuestNodePrototypeOnEmissionStageActivated = GetStructType<{
+  EventType: EQuestEventType;
+  LaunchOnQuestStart: boolean;
+  NodePrototypeVersion: number;
+  NodeType: "EQuestNodeType::OnEmissionStageActivated" & EQuestNodeType;
+  QuestSID: string;
+  Repeatable: boolean;
+  SID: string;
+  StageID: EEmissionStage;
+  TrackBeforeActive: boolean;
+}>;
+
+export type QuestNodePrototypeOnEmissionStageFinished = GetStructType<{
+  EventType: EQuestEventType;
+  LaunchOnQuestStart: boolean;
+  NodePrototypeVersion: number;
+  NodeType: "EQuestNodeType::OnEmissionStageFinished" & EQuestNodeType;
+  QuestSID: string;
+  Repeatable: boolean;
+  SID: string;
+  StageID: EEmissionStage;
+  TrackBeforeActive: boolean;
+}>;
+
+export type QuestNodePrototypeOnEmissionStartEvent = GetStructType<{
+  BrokenGameDataFilter: EBrokenGameDataFilter;
+  EventType: EQuestEventType;
+  LaunchOnQuestStart: boolean;
+  NodePrototypeVersion: number;
+  NodeType: "EQuestNodeType::OnEmissionStartEvent" & EQuestNodeType;
+  QuestSID: string;
+  Repeatable: boolean;
+  SID: string;
+  TrackBeforeActive: boolean;
+}>;
+
+export type QuestNodePrototypeOnFactionBecomeEnemyEvent = GetStructType<{
+  BrokenGameDataFilter: EBrokenGameDataFilter;
+  EventType: EQuestEventType;
+  Faction: string;
+  LaunchOnQuestStart: boolean;
+  NodePrototypeVersion: number;
+  NodeType: "EQuestNodeType::OnFactionBecomeEnemyEvent" & EQuestNodeType;
+  QuestSID: string;
+  Repeatable: boolean;
+  SID: string;
+  TrackBeforeActive: boolean;
+}>;
+
+export type QuestNodePrototypeOnFactionBecomeFriendEvent = GetStructType<{
+  EventType: EQuestEventType;
+  Faction: string;
+  LaunchOnQuestStart: boolean;
+  NodePrototypeVersion: number;
+  NodeType: "EQuestNodeType::OnFactionBecomeFriendEvent" & EQuestNodeType;
+  QuestSID: string;
+  SID: string;
+  TrackBeforeActive: boolean;
+}>;
+
+export type QuestNodePrototypeOnGetCompatibleAttachEvent = GetStructType<{
+  EventType: EQuestEventType;
+  LaunchOnQuestStart: boolean;
+  NodePrototypeVersion: number;
+  NodeType: "EQuestNodeType::OnGetCompatibleAttachEvent" & EQuestNodeType;
+  QuestSID: string;
+  SID: string;
+  TrackBeforeActive: boolean;
+}>;
+
+export type QuestNodePrototypeOnHitEvent = GetStructType<{
+  BrokenGameDataFilter: EBrokenGameDataFilter;
+  EventType: EQuestEventType;
+  HitProducer: string;
+  HitReceiver: string;
+  LaunchOnQuestStart: boolean;
+  NodePrototypeVersion: number;
+  NodeType: "EQuestNodeType::OnHitEvent" & EQuestNodeType;
+  QuestSID: string;
+  Repeatable: boolean;
+  SID: string;
+  TrackBeforeActive: boolean;
+}>;
+
+export type QuestNodePrototypeOnInfotopicFinishEvent = GetStructType<{
+  BrokenGameDataFilter: EBrokenGameDataFilter;
+  EventType: EQuestEventType;
+  InfotopicLastPhrases: QuestNodePrototypeInfotopicLastPhrases;
+  LaunchOnQuestStart: boolean;
+  NodePrototypeVersion: number;
+  NodeType: "EQuestNodeType::OnInfotopicFinishEvent" & EQuestNodeType;
+  QuestSID: string;
+  SID: string;
+  TrackBeforeActive: boolean;
+}>;
+
+export type QuestNodePrototypeOnInteractEvent = GetStructType<{
+  EventType: EQuestEventType;
+  InteractableQuestGuid: string;
+  LaunchOnQuestStart: boolean;
+  NodePrototypeVersion: number;
+  NodeType: "EQuestNodeType::OnInteractEvent" & EQuestNodeType;
+  QuestSID: string;
+  Repeatable: boolean;
+  SID: string;
+  TrackBeforeActive: boolean;
+}>;
+
+export type QuestNodePrototypeOnJournalQuestEvent = GetStructType<{
+  BrokenGameDataFilter: EBrokenGameDataFilter;
+  EventType: EQuestEventType;
+  JournalQuestSID: string;
+  JournalQuestStageSID: string;
+  LaunchOnQuestStart: boolean;
+  NodePrototypeVersion: number;
+  NodeType: "EQuestNodeType::OnJournalQuestEvent" & EQuestNodeType;
+  QuestSID: string;
+  Repeatable: boolean;
+  SID: string;
+  TrackBeforeActive: boolean;
+}>;
+
+export type QuestNodePrototypeOnKillerCheckEvent = GetStructType<{
+  EventType: EQuestEventType;
+  FullSquad: boolean;
+  IncludeWoundedEvent: boolean;
+  LaunchOnQuestStart: boolean;
+  NodePrototypeVersion: number;
+  NodeType: "EQuestNodeType::OnKillerCheckEvent" & EQuestNodeType;
+  QuestSID: string;
+  ShouldBeKilled: string;
+  SID: string;
+  TargetQuestGuid: string;
+  TrackBeforeActive: boolean;
+}>;
+
+export type QuestNodePrototypeOnMoneyAmountReachedEvent = GetStructType<{
+  EventType: EQuestEventType;
+  LaunchOnQuestStart: boolean;
+  NodePrototypeVersion: number;
+  NodeType: "EQuestNodeType::OnMoneyAmountReachedEvent" & EQuestNodeType;
+  QuestSID: string;
+  SID: string;
+  TargetMoneyAmount: number;
+  TrackBeforeActive: boolean;
+}>;
+
+export type QuestNodePrototypeOnNPCBecomeEnemyEvent = GetStructType<{
+  EventType: EQuestEventType;
+  LaunchOnQuestStart: boolean;
+  NodePrototypeVersion: number;
+  NodeType: "EQuestNodeType::OnNPCBecomeEnemyEvent" & EQuestNodeType;
+  QuestSID: string;
+  Repeatable: boolean;
+  SID: string;
+  TargetQuestGuid: string;
+  TrackBeforeActive: boolean;
+}>;
+
+export type QuestNodePrototypeOnNPCBecomeFriendEvent = GetStructType<{
+  EventType: EQuestEventType;
+  LaunchOnQuestStart: boolean;
+  NodePrototypeVersion: number;
+  NodeType: "EQuestNodeType::OnNPCBecomeFriendEvent" & EQuestNodeType;
+  QuestSID: string;
+  Repeatable: boolean;
+  SID: string;
+  TargetQuestGuid: string;
+  TrackBeforeActive: boolean;
+}>;
+
+export type QuestNodePrototypeOnNPCCreateEvent = GetStructType<{
+  BrokenGameDataFilter: EBrokenGameDataFilter;
+  EventType: EQuestEventType;
+  LaunchOnQuestStart: boolean;
+  NodePrototypeVersion: number;
+  NodeType: "EQuestNodeType::OnNPCCreateEvent" & EQuestNodeType;
+  QuestSID: string;
+  SID: string;
+  TargetQuestGuid: string;
+  TrackBeforeActive: boolean;
+}>;
+
+export type QuestNodePrototypeOnNPCDeathEvent = GetStructType<{
+  BrokenGameDataFilter: EBrokenGameDataFilter;
+  EventType: EQuestEventType;
+  LaunchOnQuestStart: boolean;
+  NodePrototypeVersion: number;
+  NodeType: "EQuestNodeType::OnNPCDeathEvent" & EQuestNodeType;
+  QuestSID: string;
+  Repeatable: boolean;
+  SID: string;
+  TargetQuestGuid: string;
+  TrackBeforeActive: boolean;
+}>;
+
+export type QuestNodePrototypeOnNPCDefeatEvent = GetStructType<{
+  EventType: EQuestEventType;
+  LaunchOnQuestStart: boolean;
+  NodePrototypeVersion: number;
+  NodeType: "EQuestNodeType::OnNPCDefeatEvent" & EQuestNodeType;
+  QuestSID: string;
+  SID: string;
+  TargetQuestGuid: string;
+  TrackBeforeActive: boolean;
+}>;
+
+export type QuestNodePrototypeOnPlayerGetItemEvent = GetStructType<{
+  BrokenGameDataFilter: EBrokenGameDataFilter;
+  EventType: EQuestEventType;
+  ExpectedItemsCount: number;
+  ItemPrototypeSID: string;
+  LaunchOnQuestStart: boolean;
+  NodePrototypeVersion: number;
+  NodeType: "EQuestNodeType::OnPlayerGetItemEvent" & EQuestNodeType;
+  QuestSID: string;
+  Repeatable: boolean;
+  SID: string;
+  TrackBeforeActive: boolean;
+  WithEquipped: boolean;
+  WithInventory: boolean;
+}>;
+
+export type QuestNodePrototypeOnPlayerLostItemEvent = GetStructType<{
+  EventType: EQuestEventType;
+  ExpectedItemsCount: number;
+  FullAmount: boolean;
+  ItemPrototypeSID: string;
+  LaunchOnQuestStart: boolean;
+  NodePrototypeVersion: number;
+  NodeType: "EQuestNodeType::OnPlayerLostItemEvent" & EQuestNodeType;
+  QuestSID: string;
+  Repeatable: boolean;
+  SID: string;
+  TrackBeforeActive: boolean;
+}>;
+
+export type QuestNodePrototypeOnPlayerNoticedEvent = GetStructType<{
+  AIThreatState: number;
+  EventType: EQuestEventType;
+  LaunchOnQuestStart: number;
+  NodePrototypeVersion: number;
+  NodeType: "EQuestNodeType::OnPlayerNoticedEvent" & EQuestNodeType;
+  QuestSID: string;
+  Repeatable: boolean;
+  SID: string;
+  TargetQuestGuid: string;
+  ThreatSensor: number;
+  TrackBeforeActive: number;
+}>;
+
+export type QuestNodePrototypeOnPlayerRankReachedEvent = GetStructType<{
+  EventType: EQuestEventType;
+  LaunchOnQuestStart: boolean;
+  NodePrototypeVersion: number;
+  NodeType: "EQuestNodeType::OnPlayerRankReachedEvent" & EQuestNodeType;
+  QuestSID: string;
+  SID: string;
+  TargetRank: ERank;
+  TrackBeforeActive: boolean;
+}>;
+
+export type QuestNodePrototypeOnSignalReceived = GetStructType<{
+  BrokenGameDataFilter: EBrokenGameDataFilter;
+  EventType: EQuestEventType;
+  LaunchOnQuestStart: boolean;
+  NodePrototypeVersion: number;
+  NodeType: "EQuestNodeType::OnSignalReceived" & EQuestNodeType;
+  QuestSID: string;
+  Repeatable: boolean;
+  SID: string;
+  SignalSenderGuid: string;
+  TrackBeforeActive: boolean;
+}>;
+
+export type QuestNodePrototypeOnTickEvent = GetStructType<{
+  BrokenGameDataFilter: EBrokenGameDataFilter;
+  EventType: EQuestEventType;
+  LaunchOnQuestStart: boolean;
+  NodePrototypeVersion: number;
+  NodeType: "EQuestNodeType::OnTickEvent" & EQuestNodeType;
+  QuestSID: string;
+  SID: string;
+  TrackBeforeActive: boolean;
+}>;
+
+export type QuestNodePrototypeOnUpgradeInstallEvent = GetStructType<{
+  EventType: EQuestEventType;
+  LaunchOnQuestStart: boolean;
+  NodePrototypeVersion: number;
+  NodeType: "EQuestNodeType::OnUpgradeInstallEvent" & EQuestNodeType;
+  QuestSID: string;
+  SID: string;
+  TrackBeforeActive: boolean;
+  UpgradePrototypeSID: string;
 }>;
 
 export type QuestNodePrototypeOutputPinNames = GetStructType<
@@ -8705,14 +9140,108 @@ export type QuestNodePrototypePersonalRestriction = GetStructType<
 
 export type QuestNodePrototypePinWeights = GetStructType<number[]>;
 
+export type QuestNodePrototypePlayEffect = GetStructType<{
+  BrokenGameDataFilter: EBrokenGameDataFilter;
+  EffectLocation: AIGlobalRelativeLocation;
+  EffectPath: string;
+  Launchers: QuestNodePrototypeLaunchers;
+  NodePrototypeVersion: number;
+  NodeType: "EQuestNodeType::PlayEffect" & EQuestNodeType;
+  QuestSID: string;
+  Repeatable: boolean;
+  SID: string;
+  TargetQuestGuid: string;
+}>;
+
+export type QuestNodePrototypePlayPostProcess = GetStructType<{
+  Launchers: QuestNodePrototypeLaunchers;
+  NodePrototypeVersion: number;
+  NodeType: "EQuestNodeType::PlayPostProcess" & EQuestNodeType;
+  PostEffectProcessorSID: string;
+  PostProcessParamValue: number;
+  QuestSID: string;
+  Repeatable: boolean;
+  SID: string;
+}>;
+
+export type QuestNodePrototypePlaySound = GetStructType<{
+  AKEventPath: string;
+  BrokenGameDataFilter: EBrokenGameDataFilter;
+  FinishOnAKEvent: boolean;
+  Launchers: string;
+  MasterAKEventForLoad: string;
+  NodePrototypeVersion: number;
+  NodeType: "EQuestNodeType::PlaySound" & EQuestNodeType;
+  QuestSID: string;
+  Repeatable: boolean;
+  SID: string;
+  SoundLocation: AIGlobalRelativeLocation;
+  SoundPath: string;
+}>;
+
+export type QuestNodePrototypePlayVideo = GetStructType<{
+  BrokenGameDataFilter: EBrokenGameDataFilter;
+  IsFinalVideo: boolean;
+  Launchers: QuestNodePrototypeLaunchers;
+  NodePrototypeVersion: number;
+  NodeType: "EQuestNodeType::PlayVideo" & EQuestNodeType;
+  QuestSID: string;
+  SID: string;
+  TimeToStartNextNodeBeforeEnd: number;
+  VideoAssetPath: string;
+}>;
+
+export type QuestNodePrototypeProtectLairNPCSquadItem = GetStructType<{
+  Launchers: QuestNodePrototypeLaunchers;
+  NodePrototypeVersion: number;
+  NodeType: "EQuestNodeType::ProtectLairNPCSquadItem" & EQuestNodeType;
+  QuestSID: string;
+  SID: string;
+  TargetQuestGuid: string;
+}>;
+
+export type QuestNodePrototypeRandom = GetStructType<{
+  Launchers: QuestNodePrototypeLaunchers;
+  NodePrototypeVersion: number;
+  NodeType: "EQuestNodeType::Random" & EQuestNodeType;
+  OutputPinNames: QuestNodePrototypeOutputPinNames;
+  PinWeights: QuestNodePrototypePinWeights;
+  QuestSID: string;
+  Repeatable: boolean;
+  SID: string;
+}>;
+
 export type QuestNodePrototypeReachPointComments = GetStructType<
   QuestNodePrototypeReachPointCommentsItem[]
 >;
 
 export type QuestNodePrototypeReachPointCommentsItem = GetStructType<{
-  DialogMembers: string;
+  DialogMembers: ObjPrototypeCapsuleNames;
   ReachPointComment: string;
-  ReachPointLocation: SpawnActorPrototypeVector;
+  ReachPointLocation: AIGlobalRelativeLocation;
+}>;
+
+export type QuestNodePrototypeReputationLocker = GetStructType<{
+  BrokenGameDataFilter: EBrokenGameDataFilter;
+  Launchers: string;
+  MinimalReputationLevel: ERelationLevel;
+  NodePrototypeVersion: number;
+  NodeType: "EQuestNodeType::ReputationLocker" & EQuestNodeType;
+  QuestSID: string;
+  SID: string;
+  TargetFaction: string;
+  TargetQuestGuid: string;
+}>;
+
+export type QuestNodePrototypeResetAI = GetStructType<{
+  BrokenGameDataFilter: EBrokenGameDataFilter;
+  Launchers: QuestNodePrototypeLaunchers;
+  NodePrototypeVersion: number;
+  NodeType: "EQuestNodeType::ResetAI" & EQuestNodeType;
+  QuestSID: string;
+  Repeatable: boolean;
+  SID: string;
+  TargetQuestGuid: string;
 }>;
 
 export type QuestNodePrototypeRestrictedFaction = GetStructType<{
@@ -8724,15 +9253,738 @@ export type QuestNodePrototypeRestrictedFaction = GetStructType<{
   Varta: ESpaceRestrictionType;
 }>;
 
+export type QuestNodePrototypeRestrictionArea = GetStructType<{
+  IgnoreDamageType: EIgnoreDamageType;
+  Launchers: QuestNodePrototypeLaunchers;
+  NodeType: "EQuestNodeType::RestrictionArea" & EQuestNodeType;
+  QuestSID: string;
+  SID: string;
+  SpawnHidden: boolean;
+  SpawnNodeExcludeType: ESpawnNodeExcludeType;
+  TargetQuestGuid: string;
+}>;
+
+export type QuestNodePrototypeRestrictSave = GetStructType<{
+  Launchers: QuestNodePrototypeLaunchers;
+  NodePrototypeVersion: number;
+  NodeType: "EQuestNodeType::RestrictSave" & EQuestNodeType;
+  QuestSID: string;
+  SaveTypes: QuestNodePrototypeSaveTypes;
+  SID: string;
+}>;
+
+export type QuestNodePrototypeRotationAfterMoveTo = GetStructType<{
+  Pitch: number;
+  Roll: number;
+  X: number;
+  Y: number;
+  Yaw: number;
+  Z: number;
+}>;
+
+export type QuestNodePrototypeSaveGame = GetStructType<{
+  Launchers: QuestNodePrototypeLaunchers;
+  NodePrototypeVersion: number;
+  NodeType: "EQuestNodeType::SaveGame" & EQuestNodeType;
+  QuestSID: string;
+  Repeatable: boolean;
+  SID: string;
+}>;
+
 export type QuestNodePrototypeSaveTypes = GetStructType<ESaveType[]>;
+
+export type QuestNodePrototypeScheduledContainer = GetStructType<{
+  ContaineredQuestPrototypeSID: string;
+  EndHour: number;
+  Launchers: QuestNodePrototypeLaunchers;
+  NodePrototypeVersion: number;
+  NodeType: "EQuestNodeType::ScheduledContainer" & EQuestNodeType;
+  OutputPinNames: QuestNodePrototypeOutputPinNames;
+  QuestSID: string;
+  Repeatable: boolean;
+  SelectedDaysOfWeek: number;
+  SID: string;
+  StartHour: number;
+}>;
+
+export type QuestNodePrototypeSearchPoint = GetStructType<{
+  Launchers: QuestNodePrototypeLaunchers;
+  NodePrototypeVersion: number;
+  NodeType: "EQuestNodeType::SearchPoint" & EQuestNodeType;
+  QuestSID: string;
+  SID: string;
+  TargetLocation: AIGlobalRelativeLocation;
+  TargetQuestGuid: string;
+}>;
+
+export type QuestNodePrototypeSendSignal = GetStructType<{
+  BrokenGameDataFilter: EBrokenGameDataFilter;
+  Launchers: QuestNodePrototypeLaunchers;
+  NodePrototypeVersion: number;
+  NodeType: "EQuestNodeType::SendSignal" & EQuestNodeType;
+  QuestSID: string;
+  Repeatable: boolean;
+  SID: string;
+  SignalReceiverGuid: string;
+}>;
+
+export type QuestNodePrototypeSequenceStart = GetStructType<{
+  BlendExpForEaseInOut: number;
+  BrokenGameDataFilter: EBrokenGameDataFilter;
+  Launchers: QuestNodePrototypeLaunchers;
+  LocalizedSequences: DialogPrototypeLocalizedSequences;
+  LoopSequence: number;
+  NodePrototypeVersion: number;
+  NodeType: "EQuestNodeType::SequenceStart" & EQuestNodeType;
+  PreblendSequence: boolean;
+  PreblendTime: number;
+  QuestSID: string;
+  Repeatable: boolean;
+  RotationTime: number;
+  SelfLocation: string;
+  SID: string;
+  TargetLocation: string;
+}>;
+
+export type QuestNodePrototypeSetAIBehavior = GetStructType<{
+  BehaviorType: EBehaviorType;
+  BrokenGameDataFilter: EBrokenGameDataFilter;
+  CanBeInterrupted: boolean;
+  CanBeIterrupted: boolean;
+  CanBeTeleported: boolean;
+  ContextualActionLookAtPlayerRange: number;
+  ContextualActionRange: number;
+  ContinueWhileCombatComments: string;
+  ContinueWhileMovingComments: string;
+  CustomRestPlaceSelection: boolean;
+  CustomSleepPlaceSelection: boolean;
+  FailureByCombat: boolean;
+  FailureByEmission: boolean;
+  FailureByHumanKil: boolean;
+  FailureByMutantKill: boolean;
+  FailureByPlayerEncounter: boolean;
+  FailureByPlayerKill: boolean;
+  FailureByTargetLost: boolean;
+  FailureByThreat: boolean;
+  FinishBattleComments: string;
+  FleeType: EFleeType;
+  FollowStartRange: number;
+  FollowStopRange: number;
+  GoalPriority: EGoalPriority;
+  GoalTargetQuestGuid: string;
+  GuardOpponentFactions: CoreVariableHead;
+  GuardTargetGuid: string;
+  GuardType: EGuardType;
+  GuardZoneShapesGuids: string;
+  IdlePosition: AIGlobalRelativeLocation;
+  IgnoreAnomalyFields: boolean;
+  IgnoreCombat: boolean;
+  IgnoreEmission: boolean;
+  IgnoreRadiationFeilds: boolean;
+  IgnoreThreat: boolean;
+  ImmediatelyIdentifyEnemy: boolean;
+  Launchers: QuestNodePrototypeLaunchers;
+  LeaveAnomalyZoneComments: string;
+  LookAt: QuestNodePrototypeLookAt;
+  MaxAcceptanceDistance: number;
+  MinAcceptanceDistance: number;
+  MinFleeTime: number;
+  MinPanicTime: number;
+  MovementPose: EAIMovementPose;
+  MovementType: EMovementBehaviour;
+  MoveToFailureRange: number;
+  MoveToPath: string;
+  MoveToPlayer: boolean;
+  MoveToSuccessRange: number;
+  NodePrototypeVersion: number;
+  NodeType: "EQuestNodeType::SetAIBehavior" & EQuestNodeType;
+  PatrolCycleCount: number;
+  PatrolPlaceholderGUID: string;
+  PlayerLeavesWhileCombatComments: string;
+  PlayerLeavesWhileMovingComments: string;
+  QuestSID: string;
+  Radius: number;
+  ReachAnomalyZoneComments: string;
+  ReachPointComments: QuestNodePrototypeReachPointComments;
+  ReactOnApproachWithWeapon: boolean;
+  ReactOnNonEnemySounds: boolean;
+  Repeatable: boolean;
+  RepeatableStayAnimation: boolean;
+  RestLocation: AIGlobalRelativeLocation;
+  RotationAfterMoveTo: QuestNodePrototypeRotationAfterMoveTo;
+  ShootingPosition: AIGlobalRelativeLocation;
+  ShootTargetLocation: AIGlobalRelativeLocation;
+  ShotsQueueCount: number;
+  SID: string;
+  SimulateBattle: boolean;
+  SleepLocation: AIGlobalRelativeLocation;
+  StartBattleComments: string;
+  StartPointID: number;
+  StayAnimation: string;
+  StayContextualAction: string;
+  TargetLocations: QuestNodePrototypeTargetLocations;
+  TargetQuestGuid: string;
+  TargetQuestGuids: CoreVariableLegs;
+  ThreatsReactRange: number;
+  TimeToUseAbility: number;
+  UseAbilityMovementType: EMovementBehaviour;
+  UseAbilityPrototypeSID: string;
+  UseAbilityTarget: string;
+  UseSecondaryWeapon: boolean;
+  WaitingPlayer: boolean;
+  WaitingTime: number;
+  WeaponReady: boolean;
+  WeaponState: EWeaponState;
+}>;
+
+export type QuestNodePrototypeSetCharacterEffect = GetStructType<{
+  BrokenGameDataFilter: EBrokenGameDataFilter;
+  EffectPrototypeSID: string;
+  Launchers: QuestNodePrototypeLaunchers;
+  NodePrototypeVersion: number;
+  NodeType: "EQuestNodeType::SetCharacterEffect" & EQuestNodeType;
+  QuestSID: string;
+  Repeatable: boolean;
+  SID: string;
+  TargetQuestGuid: string;
+}>;
+
+export type QuestNodePrototypeSetCharacterParam = GetStructType<{
+  BrokenGameDataFilter: EBrokenGameDataFilter;
+  Launchers: QuestNodePrototypeLaunchers;
+  NodePrototypeVersion: number;
+  NodeType: "EQuestNodeType::SetCharacterParam" & EQuestNodeType;
+  Params: QuestNodePrototypeParams;
+  QuestSID: string;
+  Repeatable: boolean;
+  SID: string;
+  TargetQuestGuid: string;
+}>;
+
+export type QuestNodePrototypeSetDialog = GetStructType<{
+  BrokenGameDataFilter: EBrokenGameDataFilter;
+  CallPlayer: boolean;
+  CallPlayerRadius: number;
+  CanExitAnytime: boolean;
+  ContinueThroughRadio: boolean;
+  DialogChainPrototypeSID: string;
+  DialogMembers: ObjPrototypeCapsuleNames;
+  DialogObjectLocation: QuestNodePrototypeDialogObjectLocation;
+  IsComment: boolean;
+  LastPhrases: QuestNodePrototypeLastPhrases;
+  Launchers: QuestNodePrototypeLaunchers;
+  NodePrototypeVersion: number;
+  NodeType: "EQuestNodeType::SetDialog" & EQuestNodeType;
+  NPCToStartDialog: number;
+  OutputPinNames: QuestNodePrototypeOutputPinNames;
+  OverrideDialogTopic: EOverrideDialogTopic;
+  QuestSID: string;
+  Repeatable: boolean;
+  SeekPlayer: boolean;
+  SID: string;
+  StartForcedDialog: boolean;
+  TalkThroughRadio: QuestNodePrototypeTalkThroughRadio;
+  WaitAllDialogEndingsToFinish: boolean;
+}>;
+
+export type QuestNodePrototypeSetDurabilityParam = GetStructType<{
+  Launchers: string;
+  NodePrototypeVersion: number;
+  NodeType: "EQuestNodeType::SetDurabilityParam" & EQuestNodeType;
+  PistolDurabilityPercent: number;
+  PrimaryWeaponDurabilityPercent: number;
+  QuestSID: string;
+  SecondaryWeaponDurabilityPercent: number;
+  ShouldTargetPistol: boolean;
+  ShouldTargetPrimaryWeapon: boolean;
+  ShouldTargetSecondaryWeapon: boolean;
+  SID: string;
+  TargetQuestGuid: string;
+}>;
+
+export type QuestNodePrototypeSetFactionRestriction = GetStructType<{
+  Launchers: QuestNodePrototypeLaunchers;
+  NavAreaClass: string;
+  NodePrototypeVersion: number;
+  NodeType: "EQuestNodeType::SetFactionRestriction" & EQuestNodeType;
+  QuestSID: string;
+  RestrictedFaction: QuestNodePrototypeRestrictedFaction;
+  SID: string;
+}>;
+
+export type QuestNodePrototypeSetGlobalVariable = GetStructType<{
+  BrokenGameDataFilter: EBrokenGameDataFilter;
+  ChangeValueMode: EChangeValueMode;
+  GlobalVariablePrototypeSID: string;
+  Launchers: QuestNodePrototypeLaunchers;
+  NodePrototypeVersion: number;
+  NodeType: "EQuestNodeType::SetGlobalVariable" & EQuestNodeType;
+  QuestSID: string;
+  Repeatable: boolean;
+  SID: string;
+  VariableValue: boolean;
+}>;
+
+export type QuestNodePrototypeSetHubOwner = GetStructType<{
+  Launchers: QuestNodePrototypeLaunchers;
+  NodePrototypeVersion: number;
+  NodeType: "EQuestNodeType::SetHubOwner" & EQuestNodeType;
+  OwnedHub: string;
+  QuestSID: string;
+  SID: string;
+  TargetQuestGuid: string;
+}>;
+
+export type QuestNodePrototypeSetItemGenerator = GetStructType<{
+  BrokenGameDataFilter: EBrokenGameDataFilter;
+  EquipItems: boolean;
+  ItemGeneratorSID: string;
+  Launchers: QuestNodePrototypeLaunchers;
+  NodePrototypeVersion: number;
+  NodeType: "EQuestNodeType::SetItemGenerator" & EQuestNodeType;
+  QuestSID: string;
+  Repeatable: boolean;
+  ReplaceInventory: boolean;
+  SID: string;
+  TargetQuestGuid: string;
+}>;
+
+export type QuestNodePrototypeSetJournal = GetStructType<{
+  BrokenGameDataFilter: EBrokenGameDataFilter;
+  JournalAction: EJournalAction;
+  JournalEntity: EJournalEntity;
+  JournalQuestDescriptionIndex: number;
+  JournalQuestSID: string;
+  JournalQuestStageSID: string;
+  Launchers: QuestNodePrototypeLaunchers;
+  Markers: QuestNodePrototypeMarkers;
+  NodePrototypeVersion: number;
+  NodeType: "EQuestNodeType::SetJournal" & EQuestNodeType;
+  QuestSID: string;
+  Repeatable: boolean;
+  SetQuestActive: boolean;
+  SID: string;
+}>;
+
+export type QuestNodePrototypeSetLocationName = GetStructType<{
+  Launchers: QuestNodePrototypeLaunchers;
+  Location: string;
+  NewDescription: number;
+  NewTitle: number;
+  NodePrototypeVersion: number;
+  NodeType: "EQuestNodeType::SetLocationName" & EQuestNodeType;
+  QuestSID: string;
+  SID: string;
+}>;
+
+export type QuestNodePrototypeSetMeshGenerator = GetStructType<{
+  BrokenGameDataFilter: EBrokenGameDataFilter;
+  Launchers: QuestNodePrototypeLaunchers;
+  MeshGeneratorSID: string;
+  NodePrototypeVersion: number;
+  NodeType: "EQuestNodeType::SetMeshGenerator" & EQuestNodeType;
+  QuestSID: string;
+  SID: string;
+  TargetQuestGuid: string;
+}>;
+
+export type QuestNodePrototypeSetName = GetStructType<{
+  Launchers: QuestNodePrototypeLaunchers;
+  NameSID: string;
+  NodePrototypeVersion: number;
+  NodeType: "EQuestNodeType::SetName" & EQuestNodeType;
+  QuestSID: string;
+  SID: string;
+  TargetQuestGuid: string;
+}>;
+
+export type QuestNodePrototypeSetNPCSequentialAbility = GetStructType<{
+  AbilityPrototypeSID: string;
+  Launchers: QuestNodePrototypeLaunchers;
+  NodePrototypeVersion: number;
+  NodeType: "EQuestNodeType::SetNPCSequentialAbility" & EQuestNodeType;
+  QuestSID: string;
+  SequentialAbilityModificationMode: EModifyAbilitySequenceQuestNodeMode;
+  SequentialAbilityPriority: number;
+  SID: string;
+  TargetQuestGuid: string;
+}>;
+
+export type QuestNodePrototypeSetPersonalRestriction = GetStructType<{
+  BrokenGameDataFilter: EBrokenGameDataFilter;
+  Launchers: QuestNodePrototypeLaunchers;
+  NavAreaClass: string;
+  NodePrototypeVersion: number;
+  NodeType: "EQuestNodeType::SetPersonalRestriction" & EQuestNodeType;
+  PersonalRestriction: QuestNodePrototypePersonalRestriction;
+  QuestSID: string;
+  SID: string;
+}>;
+
+export type QuestNodePrototypeSetQuestGiver = GetStructType<{
+  Launchers: QuestNodePrototypeLaunchers;
+  MainQuest: boolean;
+  MarkerDescription: string;
+  NodePrototypeVersion: number;
+  NodeType: "EQuestNodeType::SetQuestGiver" & EQuestNodeType;
+  QuestSID: string;
+  Repeatable: boolean;
+  SID: string;
+  TargetQuestGuid: string;
+}>;
+
+export type QuestNodePrototypeSetSpaceRestrictor = GetStructType<{
+  Launchers: QuestNodePrototypeLaunchers;
+  NodePrototypeVersion: number;
+  NodeType: "EQuestNodeType::SetSpaceRestrictor" & EQuestNodeType;
+  QuestSID: string;
+  SID: string;
+  TargetQuestGuid: string;
+}>;
+
+export type QuestNodePrototypeSetTime = GetStructType<{
+  InGameHours: number;
+  InGameMinutes: number;
+  Launchers: QuestNodePrototypeLaunchers;
+  NodePrototypeVersion: number;
+  NodeType: "EQuestNodeType::SetTime" & EQuestNodeType;
+  QuestSID: string;
+  SID: string;
+  TransitionTime: number;
+}>;
+
+export type QuestNodePrototypeSetTimer = GetStructType<{
+  BrokenGameDataFilter: EBrokenGameDataFilter;
+  InGameHours: number;
+  Launchers: QuestNodePrototypeLaunchers;
+  NodePrototypeVersion: number;
+  NodeType: "EQuestNodeType::SetTimer" & EQuestNodeType;
+  QuestSID: string;
+  Repeatable: boolean;
+  SID: string;
+}>;
+
+export type QuestNodePrototypeSetWeather = GetStructType<{
+  BrokenGameDataFilter: EBrokenGameDataFilter;
+  Force: boolean;
+  Launchers: QuestNodePrototypeLaunchers;
+  NodePrototypeVersion: number;
+  NodeType: "EQuestNodeType::SetWeather" & EQuestNodeType;
+  QuestSID: string;
+  SID: string;
+  TransitionTime: number;
+  Weather: EWeather;
+}>;
+
+export type QuestNodePrototypeSetWounded = GetStructType<{
+  BrokenGameDataFilter: EBrokenGameDataFilter;
+  HealingType: EHealingType;
+  Launchers: QuestNodePrototypeLaunchers;
+  NodePrototypeVersion: number;
+  NodeType: "EQuestNodeType::SetWounded" & EQuestNodeType;
+  QuestSID: string;
+  Repeatable: boolean;
+  SID: string;
+  TargetQuestGuid: string;
+  WoundedOn: boolean;
+}>;
+
+export type QuestNodePrototypeShowFadeScreen = GetStructType<{
+  BrokenGameDataFilter: EBrokenGameDataFilter;
+  FadeTime: number;
+  ImagePath: string;
+  Launchers: QuestNodePrototypeLaunchers;
+  NodePrototypeVersion: number;
+  NodeType: "EQuestNodeType::ShowFadeScreen" & EQuestNodeType;
+  QuestSID: string;
+  Repeatable: boolean;
+  ScreenText: string;
+  SID: string;
+}>;
+
+export type QuestNodePrototypeShowLoadingScreen = GetStructType<{
+  Launchers: string;
+  LoadingScreenType: ELoadingDestination;
+  NodePrototypeVersion: number;
+  NodeType: "EQuestNodeType::ShowLoadingScreen" & EQuestNodeType;
+  QuestSID: string;
+  SID: string;
+}>;
+
+export type QuestNodePrototypeShowMarker = GetStructType<{
+  BrokenGameDataFilter: EBrokenGameDataFilter;
+  Discovered: boolean;
+  Explored: boolean;
+  Launchers: QuestNodePrototypeLaunchers;
+  MarkerSID: string;
+  NodePrototypeVersion: number;
+  NodeType: "EQuestNodeType::ShowMarker" & EQuestNodeType;
+  QuestSID: string;
+  SID: string;
+}>;
+
+export type QuestNodePrototypeShowTutorialWidget = GetStructType<{
+  Launchers: QuestNodePrototypeLaunchers;
+  NodePrototypeVersion: number;
+  NodeType: "EQuestNodeType::ShowTutorialWidget" & EQuestNodeType;
+  PDATutorialNoteSID: string;
+  QuestSID: string;
+  Repeatable: boolean;
+  RequiredInputs: CoreVariableLegs;
+  SID: string;
+  TimerRate: number;
+  TutorialHeadLocalizedSID: string;
+  TutorialSID: string;
+  TutorialTextLocalizedSID: string;
+  WidgetType: number;
+}>;
+
+export type QuestNodePrototypeSpawn = GetStructType<{
+  BrokenGameDataFilter: EBrokenGameDataFilter;
+  IgnoreDamageType: EIgnoreDamageType;
+  Launchers: QuestNodePrototypeLaunchers;
+  NodePrototypeVersion: number;
+  NodeType: "EQuestNodeType::Spawn" & EQuestNodeType;
+  QuestSID: string;
+  Repeatable: boolean;
+  SID: string;
+  SpawnHidden: boolean;
+  SpawnNodeExcludeType: ESpawnNodeExcludeType;
+  TargetQuestGuid: string;
+}>;
+
+export type QuestNodePrototypeSpawnAnomaly = GetStructType<{
+  IgnoreDamageType: EIgnoreDamageType;
+  Launchers: QuestNodePrototypeLaunchers;
+  NodeType: "EQuestNodeType::SpawnAnomaly" & EQuestNodeType;
+  QuestSID: string;
+  SID: string;
+  SpawnHidden: boolean;
+  SpawnNodeExcludeType: ESpawnNodeExcludeType;
+  TargetQuestGuid: string;
+}>;
+
+export type QuestNodePrototypeSpawnAnomalySpawner = GetStructType<{
+  IgnoreDamageType: EIgnoreDamageType;
+  Launchers: QuestNodePrototypeLaunchers;
+  NodeType: "EQuestNodeType::SpawnAnomalySpawner" & EQuestNodeType;
+  QuestSID: string;
+  SID: string;
+  SpawnHidden: boolean;
+  SpawnNodeExcludeType: ESpawnNodeExcludeType;
+  TargetQuestGuid: string;
+}>;
+
+export type QuestNodePrototypeSpawnArtifactSpawner = GetStructType<{
+  IgnoreDamageType: EIgnoreDamageType;
+  Launchers: QuestNodePrototypeLaunchers;
+  NodeType: "EQuestNodeType::SpawnArtifactSpawner" & EQuestNodeType;
+  QuestSID: string;
+  SID: string;
+  SpawnHidden: boolean;
+  SpawnNodeExcludeType: ESpawnNodeExcludeType;
+  TargetQuestGuid: string;
+}>;
+
+export type QuestNodePrototypeSpawnDeadBody = GetStructType<{
+  IgnoreDamageType: EIgnoreDamageType;
+  Launchers: QuestNodePrototypeLaunchers;
+  NodeType: "EQuestNodeType::SpawnDeadBody" & EQuestNodeType;
+  QuestSID: string;
+  SID: string;
+  SpawnHidden: boolean;
+  SpawnNodeExcludeType: ESpawnNodeExcludeType;
+  TargetQuestGuid: string;
+}>;
+
+export type QuestNodePrototypeSpawnItemContainer = GetStructType<{
+  IgnoreDamageType: EIgnoreDamageType;
+  Launchers: QuestNodePrototypeLaunchers;
+  NodeType: "EQuestNodeType::SpawnItemContainer" & EQuestNodeType;
+  QuestSID: string;
+  SID: string;
+  SpawnHidden: boolean;
+  SpawnNodeExcludeType: ESpawnNodeExcludeType;
+  TargetQuestGuid: string;
+}>;
+
+export type QuestNodePrototypeSpawnLair = GetStructType<{
+  IgnoreDamageType: EIgnoreDamageType;
+  Launchers: QuestNodePrototypeLaunchers;
+  NodeType: "EQuestNodeType::SpawnLair" & EQuestNodeType;
+  QuestSID: string;
+  SID: string;
+  SpawnHidden: boolean;
+  SpawnNodeExcludeType: ESpawnNodeExcludeType;
+  TargetQuestGuid: string;
+}>;
+
+export type QuestNodePrototypeSpawnSafeZone = GetStructType<{
+  IgnoreDamageType: EIgnoreDamageType;
+  Launchers: QuestNodePrototypeLaunchers;
+  NodeType: "EQuestNodeType::SpawnSafeZone" & EQuestNodeType;
+  QuestSID: string;
+  SID: string;
+  SpawnHidden: boolean;
+  SpawnNodeExcludeType: ESpawnNodeExcludeType;
+  TargetQuestGuid: string;
+}>;
+
+export type QuestNodePrototypeSpawnSingleObj = GetStructType<{
+  IgnoreDamageType: EIgnoreDamageType;
+  Launchers: QuestNodePrototypeLaunchers;
+  NodeType: "EQuestNodeType::SpawnSingleObj" & EQuestNodeType;
+  QuestSID: string;
+  SID: string;
+  SpawnHidden: boolean;
+  SpawnNodeExcludeType: ESpawnNodeExcludeType;
+  TargetQuestGuid: string;
+}>;
+
+export type QuestNodePrototypeSpawnSquad = GetStructType<{
+  IgnoreDamageType: EIgnoreDamageType;
+  Launchers: QuestNodePrototypeLaunchers;
+  NodeType: "EQuestNodeType::SpawnSquad" & EQuestNodeType;
+  QuestSID: string;
+  SID: string;
+  SpawnHidden: boolean;
+  SpawnNodeExcludeType: ESpawnNodeExcludeType;
+  TargetQuestGuid: string;
+}>;
+
+export type QuestNodePrototypeSpawnTrigger = GetStructType<{
+  IgnoreDamageType: EIgnoreDamageType;
+  Launchers: QuestNodePrototypeLaunchers;
+  NodeType: "EQuestNodeType::SpawnTrigger" & EQuestNodeType;
+  QuestSID: string;
+  SID: string;
+  SpawnHidden: boolean;
+  SpawnNodeExcludeType: ESpawnNodeExcludeType;
+  TargetQuestGuid: string;
+}>;
+
+export type QuestNodePrototypeStartBenchmark = GetStructType<{
+  BenchRuns: number;
+  CameraHeight: number;
+  CircleRadius: number;
+  InitialPitch: number;
+  InitialYaw: number;
+  Launchers: QuestNodePrototypeLaunchers;
+  NodePrototypeVersion: number;
+  NodeType: "EQuestNodeType::StartBenchmark" & EQuestNodeType;
+  ProfileCsv: boolean;
+  QuestSID: string;
+  SID: string;
+}>;
+
+export type QuestNodePrototypeSwitchQuestItemState = GetStructType<{
+  ItemPrototypeSID: string;
+  Launchers: QuestNodePrototypeLaunchers;
+  NodePrototypeVersion: number;
+  NodeType: "EQuestNodeType::SwitchQuestItemState" & EQuestNodeType;
+  QuestItem: boolean;
+  QuestSID: string;
+  Repeatable: boolean;
+  SID: string;
+}>;
 
 export type QuestNodePrototypeTalkThroughRadio = GetStructType<boolean[]>;
 
 export type QuestNodePrototypeTargetLocations = GetStructType<
-  SpawnActorPrototypeVector[]
+  AIGlobalRelativeLocation[]
 >;
 
-export type QuestNodePrototypeTargetQuestGuids = StringArray;
+export type QuestNodePrototypeTechnical = GetStructType<{
+  BrokenGameDataFilter: EBrokenGameDataFilter;
+  Launchers: string;
+  LaunchOnQuestStart: boolean;
+  NodePrototypeVersion: number;
+  NodeType: "EQuestNodeType::Technical" & EQuestNodeType;
+  QuestSID: string;
+  Repeatable: boolean;
+  SID: string;
+  StartDelay: number;
+}>;
+
+export type QuestNodePrototypeTeleportCharacter = GetStructType<{
+  BrokenGameDataFilter: EBrokenGameDataFilter;
+  Launchers: QuestNodePrototypeLaunchers;
+  NodePrototypeVersion: number;
+  NodeType: "EQuestNodeType::TeleportCharacter" & EQuestNodeType;
+  QuestSID: string;
+  Repeatable: boolean;
+  ShouldBlendViaFade: boolean;
+  SID: string;
+  TargetQuestGuid: string;
+  TeleportLocationAndRotation: QuestNodePrototypeRotationAfterMoveTo;
+  TeleportType: EGSCTeleportType;
+}>;
+
+export type QuestNodePrototypeTimeLock = GetStructType<{
+  Launchers: QuestNodePrototypeLaunchers;
+  NodePrototypeVersion: number;
+  NodeType: "EQuestNodeType::TimeLock" & EQuestNodeType;
+  QuestSID: string;
+  SID: string;
+}>;
+
+export type QuestNodePrototypeToggleLairActivity = GetStructType<{
+  Activate: boolean;
+  BrokenGameDataFilter: EBrokenGameDataFilter;
+  ForceDespawn: boolean;
+  Launchers: QuestNodePrototypeLaunchers;
+  NodePrototypeVersion: number;
+  NodeType: "EQuestNodeType::ToggleLairActivity" & EQuestNodeType;
+  QuestSID: string;
+  Repeatable: boolean;
+  SID: string;
+  TargetQuestGuid: string;
+}>;
+
+export type QuestNodePrototypeToggleNPCHidden = GetStructType<{
+  HideViewType: EHideViewType;
+  Launchers: QuestNodePrototypeLaunchers;
+  NodePrototypeVersion: number;
+  NodeType: "EQuestNodeType::ToggleNPCHidden" & EQuestNodeType;
+  QuestSID: string;
+  Repeatable: boolean;
+  SID: string;
+  TargetQuestGuid: string;
+}>;
+
+export type QuestNodePrototypeTrackJournal = GetStructType<{
+  JournalQuestSID: string;
+  Launchers: QuestNodePrototypeLaunchers;
+  NodeType: "EQuestNodeType::TrackJournal" & EQuestNodeType;
+  QuestSID: string;
+  SID: string;
+}>;
+
+export type QuestNodePrototypeTrackShelter = GetStructType<{
+  Launchers: QuestNodePrototypeLaunchers;
+  NodeType: "EQuestNodeType::TrackShelter" & EQuestNodeType;
+  QuestSID: string;
+  SID: string;
+}>;
+
+export type QuestNodePrototypeTrigger = GetStructType<{
+  BrokenGameDataFilter: EBrokenGameDataFilter;
+  bTriggersByAnybody: boolean;
+  EventType: EQuestEventType;
+  Launchers: QuestNodePrototypeLaunchers;
+  LaunchOnQuestStart: boolean;
+  NodePrototypeVersion: number;
+  NodeType: "EQuestNodeType::Trigger" & EQuestNodeType;
+  QuestSID: string;
+  ReactType: ETriggerReact;
+  Repeatable: boolean;
+  RequiredSquadMembers: ERequiredSquadMembers;
+  SID: string;
+  TargetQuestGuid: string;
+  TrackBeforeActive: boolean;
+  TriggerAction: number;
+  TriggerQuestGuid: string;
+}>;
 
 export type QuestNodePrototypeUpgradeSIDs = StringArray;
 
@@ -8741,7 +9993,7 @@ export type QuestNodePrototypeZoneSubMarkers = GetStructType<
 >;
 
 export type QuestNodePrototypeZoneSubMarkersItem = GetStructType<{
-  MarkerLocation: SpawnActorPrototypeVector;
+  MarkerLocation: AIGlobalRelativeLocation;
   MarkerRadiusSquared: number;
 }>;
 
@@ -8788,7 +10040,7 @@ export type QuestObjPrototype = GetStructType<{
   CanProcessCorpses: boolean;
   CustomMeshGeneratorPrototypeSID: string;
   DialogInteractDistance: number;
-  DuplicateFacialAnimationNPCs: QuestNodePrototypeTargetQuestGuids;
+  DuplicateFacialAnimationNPCs: CoreVariableLegs;
   Faction: string;
   FlashlightPrototypeSID: string;
   Hint: string;
@@ -8824,7 +10076,7 @@ export type QuestObjPrototype = GetStructType<{
 }>;
 
 export type QuestObjPrototypeAbilities = GetStructType<{
-  NoDamagePSYAttack: ObjPrototypeBlindDog_RunAttack_Left;
+  NoDamagePSYAttack: ObjPrototypeCat_Jump;
 }>;
 
 export type QuestObjPrototypeAttackParams = GetStructType<{
@@ -8845,11 +10097,9 @@ export type QuestObjPrototypeStaminaDisableThresholds = GetStructType<
 
 export type QuestObjPrototypeStaminaDisableThresholdsItem = GetStructType<{
   RegenerationDelay: number;
-  StateTags: QuestObjPrototypeStateTags;
+  StateTags: ObjPrototypeStateTags;
   Threshold: number;
 }>;
-
-export type QuestObjPrototypeStateTags = GetStructType<EStateTag[]>;
 
 export type QuestObjPrototypeVitalParams = GetStructType<{
   DegenFoodPoint: number;
@@ -8916,8 +10166,15 @@ export type QuestRewardsPrototypePossibleItemsItem = GetStructType<{
   MaxDurability: number;
   MinCount: number;
   MinDurability: number;
-  Upgrades: ItemGeneratorPrototypeUpgrades;
+  Upgrades: QuestRewardsPrototypeUpgrades;
   Weight: number;
+}>;
+
+export type QuestRewardsPrototypeUpgrades = GetStructType<{
+  Chance: number;
+  MaxCount: number;
+  MinCount: number;
+  PossibleItems: string;
 }>;
 
 export type QuestStashBodyItemGeneratorPrototype = GetStructType<{
@@ -8945,7 +10202,7 @@ export type QuestStashBodyItemGeneratorPrototypePossibleItemsItem =
   GetStructType<{
     AmmoMaxCount: number;
     AmmoMinCount: number;
-    Attaches: ItemGeneratorPrototypeUpgrades;
+    Attaches: QuestRewardsPrototypeUpgrades;
     bRequireWeapon: boolean;
     Chance: number;
     ItemGeneratorPrototypeSID: string;
@@ -8954,7 +10211,7 @@ export type QuestStashBodyItemGeneratorPrototypePossibleItemsItem =
     MaxDurability: number;
     MinCount: number;
     MinDurability: number;
-    Upgrades: ItemGeneratorPrototypeUpgrades;
+    Upgrades: QuestRewardsPrototypeUpgrades;
     Weight: number;
   }>;
 
@@ -8963,15 +10220,15 @@ export type QuickSaveVariable = GetStructType<{
 }>;
 
 export type ref = GetStructType<
-  (refBaseCharacterBoneDamageMapItem | refRiflesCompatibleAttachmentItem)[]
+  (refFleshBoneDamageMapItem | refRiflesCompatibleAttachmentItem)[]
 >;
 
-export type refBaseCharacterBoneDamageMapItem = GetStructType<{
+export type refCapsuleNames = StringArray;
+
+export type refFleshBoneDamageMapItem = GetStructType<{
   CapsuleNames: refCapsuleNames;
   DamageBone: EDamageBone;
 }>;
-
-export type refCapsuleNames = StringArray;
 
 export type refRiflesCompatibleAttachmentItem = GetStructType<{
   AttachID: string;
@@ -9000,7 +10257,7 @@ export type RelationPrototype = GetStructType<{
   HubReputationRollbackCooldownModifier: number;
   LairReputationRollbackCooldownModifier: number;
   MinRelationLevelToTrade: ERelationLevel;
-  NegativeReactionsExcludedFactions: RelationPrototypeNegativeReactionsExcludedFactions;
+  NegativeReactionsExcludedFactions: WeaponGeneralSetupPrototypeUpgradePrototypeSIDs;
   PositiveReactionsExcludedFactions: RelationPrototypePositiveReactionsExcludedFactions;
   RelationLevelRanges: RelationPrototypeRelationLevelRanges;
   Relations: RelationPrototypeRelations;
@@ -9015,13 +10272,7 @@ export type RelationPrototypeAttackLairRestrictions = GetStructType<
 >;
 
 export type RelationPrototypeCharacterReactions = GetStructType<
-  RelationPrototypeCharacterReactionsItem[]
->;
-
-export type RelationPrototypeCharacterReactionsItem = GetStructType<
-  Record<`${Reaction}->${Reaction}`, number> & {
-    Type: ERelationChangingEvent;
-  }
+  RelationPrototypeFactionReactionsItem[]
 >;
 
 export type RelationPrototypeExpansionPolicies = GetStructType<{
@@ -9029,8 +10280,32 @@ export type RelationPrototypeExpansionPolicies = GetStructType<{
 }>;
 
 export type RelationPrototypeFactionReactions = GetStructType<
-  RelationPrototypeCharacterReactionsItem[]
+  RelationPrototypeFactionReactionsItem[]
 >;
+
+export type RelationPrototypeFactionReactionsItem = GetStructType<{
+  "Disaffection->Disaffection": number;
+  "Disaffection->Enemy": number;
+  "Disaffection->Friend": number;
+  "Disaffection->Neutral": number;
+  "Disaffection->Self": number;
+  "Enemy->Disaffection": number;
+  "Enemy->Enemy": number;
+  "Enemy->Friend": number;
+  "Enemy->Neutral": number;
+  "Enemy->Self": number;
+  "Friend->Disaffection": number;
+  "Friend->Enemy": number;
+  "Friend->Friend": number;
+  "Friend->Neutral": number;
+  "Friend->Self": number;
+  "Neutral->Disaffection": number;
+  "Neutral->Enemy": number;
+  "Neutral->Friend": number;
+  "Neutral->Neutral": number;
+  "Neutral->Self": number;
+  Type: ERelationChangingEvent;
+}>;
 
 export type RelationPrototypeFactionRollbackCooldowns = GetStructType<{
   ArenaFriend: number;
@@ -9055,8 +10330,6 @@ export type RelationPrototypeFactionRollbackCooldowns = GetStructType<{
 }>;
 
 export type RelationPrototypeFactions = GetStructType<Record<Faction, string>>;
-
-export type RelationPrototypeNegativeReactionsExcludedFactions = StringArray;
 
 export type RelationPrototypePositiveReactionsExcludedFactions = StringArray;
 
@@ -9157,19 +10430,19 @@ export type ScriptScriptsArray = GetStructType<
 export type ScriptScriptsArrayItem = GetStructType<{
   ScenarioFlagKey: string;
   ScenarioFlagValue: number;
-  ScriptsSubArray: SpawnActorPrototypeIgnoreCollisionActors;
+  ScriptsSubArray: NPCPrototypeSkills;
 }>;
 
 export type SettingsVariablesPC = GetStructType<
-  SettingsVariablesPCMoveSensitivityCurveKeysItem[] & {
+  SettingsVariablesPCLookSensitivityCurveKeysItem[] & {
     AimAssistMagnetismModifier: number;
     AimAssistSnappingModifier: number;
     AimAssistStickinessModifier: number;
     AimAssistTrackingModifier: number;
-    LeftThumbstick: SettingsVariablesPCLeftThumbstick;
-    LeftTrigger: SettingsVariablesPCLeftThumbstick;
-    RightThumbstick: SettingsVariablesPCLeftThumbstick;
-    RightTrigger: SettingsVariablesPCLeftThumbstick;
+    LeftThumbstick: SettingsVariablesPCLeftTrigger;
+    LeftTrigger: SettingsVariablesPCLeftTrigger;
+    RightThumbstick: SettingsVariablesPCLeftTrigger;
+    RightTrigger: SettingsVariablesPCLeftTrigger;
     SnappingAutomaticTargetChangeEnabled: boolean;
     SnappingCameraMovementToleranceEnabled: boolean;
     SnappingCameraRadiusToleranceEnabled: boolean;
@@ -9177,13 +10450,13 @@ export type SettingsVariablesPC = GetStructType<
   }
 >;
 
-export type SettingsVariablesPCLeftThumbstick = GetStructType<{
+export type SettingsVariablesPCLeftTrigger = GetStructType<{
   LowerThreshold: number;
   Type: EDeadZoneType;
   UpperThreshold: number;
 }>;
 
-export type SettingsVariablesPCMoveSensitivityCurveKeysItem = GetStructType<{
+export type SettingsVariablesPCLookSensitivityCurveKeysItem = GetStructType<{
   ArriveTangent: number;
   ArriveTangentWeight: number;
   LeaveTangent: number;
@@ -9193,15 +10466,15 @@ export type SettingsVariablesPCMoveSensitivityCurveKeysItem = GetStructType<{
 }>;
 
 export type SettingsVariablesPS5Base = GetStructType<
-  SettingsVariablesPCMoveSensitivityCurveKeysItem[] & {
+  SettingsVariablesPCLookSensitivityCurveKeysItem[] & {
     AimAssistMagnetismModifier: number;
     AimAssistSnappingModifier: number;
     AimAssistStickinessModifier: number;
     AimAssistTrackingModifier: number;
-    LeftThumbstick: SettingsVariablesPCLeftThumbstick;
-    LeftTrigger: SettingsVariablesPCLeftThumbstick;
-    RightThumbstick: SettingsVariablesPCLeftThumbstick;
-    RightTrigger: SettingsVariablesPCLeftThumbstick;
+    LeftThumbstick: SettingsVariablesPCLeftTrigger;
+    LeftTrigger: SettingsVariablesPCLeftTrigger;
+    RightThumbstick: SettingsVariablesPCLeftTrigger;
+    RightTrigger: SettingsVariablesPCLeftTrigger;
     SnappingAutomaticTargetChangeEnabled: boolean;
     SnappingCameraMovementToleranceEnabled: boolean;
     SnappingCameraRadiusToleranceEnabled: boolean;
@@ -9209,18 +10482,78 @@ export type SettingsVariablesPS5Base = GetStructType<
   }
 >;
 
-export type SettingsVariablesPS5Pro = SettingsVariablesPS5Base;
+export type SettingsVariablesPS5Pro = GetStructType<
+  SettingsVariablesPCLookSensitivityCurveKeysItem[] & {
+    AimAssistMagnetismModifier: number;
+    AimAssistSnappingModifier: number;
+    AimAssistStickinessModifier: number;
+    AimAssistTrackingModifier: number;
+    LeftThumbstick: SettingsVariablesPCLeftTrigger;
+    LeftTrigger: SettingsVariablesPCLeftTrigger;
+    RightThumbstick: SettingsVariablesPCLeftTrigger;
+    RightTrigger: SettingsVariablesPCLeftTrigger;
+    SnappingAutomaticTargetChangeEnabled: boolean;
+    SnappingCameraMovementToleranceEnabled: boolean;
+    SnappingCameraRadiusToleranceEnabled: boolean;
+    SnappingTime: number;
+  }
+>;
 
-export type SettingsVariablesWin64 = SettingsVariablesPS5Base;
+export type SettingsVariablesWin64 = GetStructType<
+  SettingsVariablesPCLookSensitivityCurveKeysItem[] & {
+    AimAssistMagnetismModifier: number;
+    AimAssistSnappingModifier: number;
+    AimAssistStickinessModifier: number;
+    AimAssistTrackingModifier: number;
+    LeftThumbstick: SettingsVariablesPCLeftTrigger;
+    LeftTrigger: SettingsVariablesPCLeftTrigger;
+    RightThumbstick: SettingsVariablesPCLeftTrigger;
+    RightTrigger: SettingsVariablesPCLeftTrigger;
+    SnappingAutomaticTargetChangeEnabled: boolean;
+    SnappingCameraMovementToleranceEnabled: boolean;
+    SnappingCameraRadiusToleranceEnabled: boolean;
+    SnappingTime: number;
+  }
+>;
 
-export type SettingsVariablesXSS = SettingsVariablesPS5Base;
+export type SettingsVariablesXSS = GetStructType<
+  SettingsVariablesPCLookSensitivityCurveKeysItem[] & {
+    AimAssistMagnetismModifier: number;
+    AimAssistSnappingModifier: number;
+    AimAssistStickinessModifier: number;
+    AimAssistTrackingModifier: number;
+    LeftThumbstick: SettingsVariablesPCLeftTrigger;
+    LeftTrigger: SettingsVariablesPCLeftTrigger;
+    RightThumbstick: SettingsVariablesPCLeftTrigger;
+    RightTrigger: SettingsVariablesPCLeftTrigger;
+    SnappingAutomaticTargetChangeEnabled: boolean;
+    SnappingCameraMovementToleranceEnabled: boolean;
+    SnappingCameraRadiusToleranceEnabled: boolean;
+    SnappingTime: number;
+  }
+>;
 
-export type SettingsVariablesXSX = SettingsVariablesPS5Base;
+export type SettingsVariablesXSX = GetStructType<
+  SettingsVariablesPCLookSensitivityCurveKeysItem[] & {
+    AimAssistMagnetismModifier: number;
+    AimAssistSnappingModifier: number;
+    AimAssistStickinessModifier: number;
+    AimAssistTrackingModifier: number;
+    LeftThumbstick: SettingsVariablesPCLeftTrigger;
+    LeftTrigger: SettingsVariablesPCLeftTrigger;
+    RightThumbstick: SettingsVariablesPCLeftTrigger;
+    RightTrigger: SettingsVariablesPCLeftTrigger;
+    SnappingAutomaticTargetChangeEnabled: boolean;
+    SnappingCameraMovementToleranceEnabled: boolean;
+    SnappingCameraRadiusToleranceEnabled: boolean;
+    SnappingTime: number;
+  }
+>;
 
 export type SingletonConstant = GetStructType<
   (EDialogEventType | SingletonConstantSpotLightIntensityItem)[] & {
-    Army: SpawnActorPrototypeLairCoreVolumes;
-    Bandits: SingletonConstantBandits;
+    Army: SingletonConstantArmy;
+    Bandits: CoreVariableTorso;
     bDebugLogAssetLoading: boolean;
     CallPlayer: number;
     Chatter: number;
@@ -9259,7 +10592,7 @@ export type SingletonConstant = GetStructType<
     Dualshock4: SingletonConstantKeyboard;
     Emission_LeaderEnd: number;
     Emission_LeaderStart: number;
-    FreeStalkers: SpawnActorPrototypeLairCoreVolumes;
+    FreeStalkers: SingletonConstantArmy;
     Interact_Friendly: number;
     Interact_Neutral: number;
     Interact_NonFriendly: number;
@@ -9268,7 +10601,7 @@ export type SingletonConstant = GetStructType<
     Latitude: number;
     LightSourceFadingDurationHoursOnDayNightChange: number;
     Longitude: number;
-    Monolith: SingletonConstantBandits;
+    Monolith: CoreVariableTorso;
     MoonLightMaxBrightness: number;
     NorthOffsetAngle: number;
     NotifyExpireDuration: number;
@@ -9323,9 +10656,7 @@ export type SingletonConstantActionsItem = GetStructType<{
   TimeThresholdHold: number;
 }>;
 
-export type SpawnActorPrototypeLairCoreVolumes = StringArray;
-
-export type SingletonConstantBandits = StringArray;
+export type SingletonConstantArmy = StringArray;
 
 export type SingletonConstantKeyboard = GetStructType<{
   Actions: SingletonConstantActions;
@@ -9381,17 +10712,17 @@ export type SmartCoverPrototype = GetStructType<{
 }>;
 
 export type SmartCoverPrototypeEnterCoverOffsets = GetStructType<
-  SmartCoverPrototypeLookFromCoverOffsetsItem[]
+  SmartCoverPrototypeEnterCoverOffsetsItem[]
 >;
 
-export type SmartCoverPrototypeLookFromCoverOffsets = GetStructType<
-  SmartCoverPrototypeLookFromCoverOffsetsItem[]
->;
-
-export type SmartCoverPrototypeLookFromCoverOffsetsItem = GetStructType<{
+export type SmartCoverPrototypeEnterCoverOffsetsItem = GetStructType<{
   PerCoverTypeOffsets: SmartCoverPrototypePerCoverTypeOffsets;
   SmartCoverType: ESmartCoverType;
 }>;
+
+export type SmartCoverPrototypeLookFromCoverOffsets = GetStructType<
+  SmartCoverPrototypeEnterCoverOffsetsItem[]
+>;
 
 export type SmartCoverPrototypePerCoverTypeOffsets = GetStructType<
   SmartCoverPrototypePerCoverTypeOffsetsItem[]
@@ -9437,7 +10768,7 @@ export type SpawnActorPrototype = GetStructType<{
   bForceWeather: boolean;
   bRandomChancesForSeparateItems: boolean;
   bRestrictorVolumeEnabled: boolean;
-  BubbleInitialLocation: SpawnActorPrototypeVector;
+  BubbleInitialLocation: AIGlobalRelativeLocation;
   bUseCustomLocation: boolean;
   bWakeUpOnStart: boolean;
   CanAttack: boolean;
@@ -9449,7 +10780,7 @@ export type SpawnActorPrototype = GetStructType<{
   ClickerAnomalyArtifactJumpPositions: string;
   CloseDoorRadius: number;
   ClueVariablePrototypeSID: string;
-  CollisionSize: SpawnActorPrototypeVector;
+  CollisionSize: AIGlobalRelativeLocation;
   CombatTacticsOverride: ECombatTactics;
   CompoundAnimationReferences: string;
   ContextualActionAccessibility: number;
@@ -9458,7 +10789,7 @@ export type SpawnActorPrototype = GetStructType<{
   CorpsePrototypeSID: string;
   CorpseStashSID: string;
   DamageMultiplier: number;
-  DataLayers: SpawnActorPrototypeIgnoreCollisionActors;
+  DataLayers: NPCPrototypeSkills;
   DeadPose: string;
   DecalsMaterialSID: string;
   DisableCollision: boolean;
@@ -9471,7 +10802,7 @@ export type SpawnActorPrototype = GetStructType<{
   DisableSpawnAndStrafeInThisAnomaly: boolean;
   DLC: string;
   Durability: number;
-  EffectPrototypeSIDs: SpawnActorPrototypeIgnoreCollisionActors;
+  EffectPrototypeSIDs: NPCPrototypeSkills;
   ElectroBakedData: SpawnActorPrototypeElectroBakedData;
   EnableSmartLootIfPossible: boolean;
   FactionGroup: SpawnActorPrototypeFactionGroup;
@@ -9502,7 +10833,7 @@ export type SpawnActorPrototype = GetStructType<{
   LairPrototypeSID: string;
   LairType: ELairType;
   LevelName: string;
-  LightningBallLiveBoxExtent: SpawnActorPrototypeVector;
+  LightningBallLiveBoxExtent: AIGlobalRelativeLocation;
   LightningBallNavigationPoints: SpawnActorPrototypeLightningBallNavigationPoints;
   LightningBallPathUsage: boolean;
   LocationSID: string;
@@ -9518,7 +10849,7 @@ export type SpawnActorPrototype = GetStructType<{
   MinSpawnRank: ERank;
   MoveSpeedMultiplier: number;
   NavModifierVolume: string;
-  NavModifierVolumes: SpawnActorPrototypeNavModifierVolumes;
+  NavModifierVolumes: UpdatePopupPrototypeContentData;
   NodeCreationVersion: number;
   NodePrototypeVersion: number;
   OnlineModifierDistance: number;
@@ -9543,7 +10874,7 @@ export type SpawnActorPrototype = GetStructType<{
   PresetIndex: number;
   Priority: number;
   PSYControllerArtifactItemSID: string;
-  PSYControllerArtifactLocation: SpawnActorPrototypeVector;
+  PSYControllerArtifactLocation: AIGlobalRelativeLocation;
   PsyNPCType: EPsyNPCType;
   RadiationCycleSpeedPostEffectSID: string;
   RadiationPerSecondValue: number;
@@ -9552,7 +10883,7 @@ export type SpawnActorPrototype = GetStructType<{
   Rank: ERank;
   RespawnMembers: boolean;
   RespawnOnNPCCount: number;
-  RespawnPoints: SingletonConstantBandits;
+  RespawnPoints: CoreVariableTorso;
   RestrictedFactions: SpawnActorPrototypeRestrictedFactions;
   RestrictionRadius: number;
   RotatorAnglePitch: number;
@@ -9569,7 +10900,7 @@ export type SpawnActorPrototype = GetStructType<{
   SignalReceivers: SpawnActorPrototypeSignalReceivers;
   SignalSenders: SpawnActorPrototypeSignalSenders;
   SimplifiedOverlap: boolean;
-  SpawnedGenericMembers: string;
+  SpawnedGenericMembers: SpawnActorPrototypeSpawnedGenericMembers;
   SpawnedPrototypeSID: string;
   SpawnedSquadMembersCount: number;
   SpawnInRadius: number;
@@ -9593,17 +10924,8 @@ export type SpawnActorPrototype = GetStructType<{
 }>;
 
 export type SpawnActorPrototypeAnomaliesLocationRotation = GetStructType<
-  SpawnActorPrototypeAnomaliesLocationRotationItem[]
+  QuestNodePrototypeRotationAfterMoveTo[]
 >;
-
-export type SpawnActorPrototypeAnomaliesLocationRotationItem = GetStructType<{
-  Pitch: number;
-  Roll: number;
-  X: number;
-  Y: number;
-  Yaw: number;
-  Z: number;
-}>;
 
 export type SpawnActorPrototypeAnomaliesPresets = GetStructType<
   SpawnActorPrototypeAnomaliesPresetsItem[]
@@ -9633,19 +10955,13 @@ export type SpawnActorPrototypeAttachReferencesItem = GetStructType<{
   AttachReference: string;
 }>;
 
-export type SpawnActorPrototypeVector = GetStructType<{
-  X: number;
-  Y: number;
-  Z: number;
-}>;
-
 export type SpawnActorPrototypeCenterLocationRotation = GetStructType<
   SpawnActorPrototypeCenterLocationRotationItem[]
 >;
 
 export type SpawnActorPrototypeCenterLocationRotationItem = GetStructType<{
   Rotation: SpawnActorPrototypeRotation;
-  Vector: SpawnActorPrototypeVector;
+  Vector: AIGlobalRelativeLocation;
 }>;
 
 export type SpawnActorPrototypeContextualActionPreconditions = GetStructType<
@@ -9655,7 +10971,7 @@ export type SpawnActorPrototypeContextualActionPreconditions = GetStructType<
 export type SpawnActorPrototypeContextualActionPreconditionsItem =
   GetStructType<{
     AllowedAgentType: number;
-    AllowedFactions: SpawnActorPrototypeIgnoreCollisionActors;
+    AllowedFactions: NPCPrototypeSkills;
     AllowedUserRestriction: string;
     GlobalVariableName: string;
     IsTargetWeather: boolean;
@@ -9700,28 +11016,16 @@ export type SpawnActorPrototypeFactionsItem = GetStructType<{
 }>;
 
 export type SpawnActorPrototypeFreeformTriggerVertices = GetStructType<
-  SpawnActorPrototypeFreeformTriggerVerticesItem[]
+  AbilityPrototypeRadius[]
 >;
-
-export type SpawnActorPrototypeFreeformTriggerVerticesItem = GetStructType<{
-  X: number;
-  Y: number;
-}>;
-
-export type SpawnActorPrototypeIgnoreCollisionActors = StringArray;
 
 export type SpawnActorPrototypeInLocationRotation = GetStructType<
   SpawnActorPrototypeInLocationRotationItem[]
 >;
 
 export type SpawnActorPrototypeInLocationRotationItem = GetStructType<
-  SpawnActorPrototypeInLocationRotationItemItem[]
+  SpawnActorPrototypeCenterLocationRotationItem[]
 >;
-
-export type SpawnActorPrototypeInLocationRotationItemItem = GetStructType<{
-  Rotation: SpawnActorPrototypeRotation;
-  Vector: SpawnActorPrototypeVector;
-}>;
 
 export type SpawnActorPrototypeItemGenerators = GetStructType<
   SpawnActorPrototypeItemGeneratorsItem[]
@@ -9755,7 +11059,7 @@ export type SpawnActorPrototypeItemsItem = GetStructType<{
 export type SpawnActorPrototypeLairTerritoryVolumes = StringArray;
 
 export type SpawnActorPrototypeLightningBallLocation = GetStructType<
-  SpawnActorPrototypeVector[]
+  AIGlobalRelativeLocation[]
 >;
 
 export type SpawnActorPrototypeLightningBallNavigationPoints = GetStructType<
@@ -9775,14 +11079,7 @@ export type SpawnActorPrototypeLightningBallNeighborLocations = GetStructType<
 
 export type SpawnActorPrototypeLockReceivers = StringArray;
 
-export type SpawnActorPrototypeMaxSpawnQuantity = GetStructType<{
-  Max: number;
-  Min: number;
-}>;
-
-export type SpawnActorPrototypeNavModifierVolumes = StringArray;
-
-export type SpawnActorPrototypeNewbie = GetStructType<{
+export type SpawnActorPrototypeMaster = GetStructType<{
   InitialSpawnQuantityPercent: number;
   InitialSpawnQuantityRespawnTimeSeconds: number;
   MaxSpawnQuantity: number;
@@ -9843,8 +11140,6 @@ export type SpawnActorPrototypeSignalReceivers = GetStructType<{
   DestroyReceiver: SpawnActorPrototypeDestroyReceiver;
 }>;
 
-export type SpawnActorPrototypeSignals = StringArray;
-
 export type SpawnActorPrototypeSignalSenders = GetStructType<{
   DestroySender: SpawnActorPrototypeDestroySender;
 }>;
@@ -9868,20 +11163,20 @@ export type SpawnActorPrototypeSpawnedGenericMembersItem = GetStructType<{
 }>;
 
 export type SpawnActorPrototypeSpawnSettingsPerArchetypes = GetStructType<
-  Record<Archetype, GenericLairPrototypeBlinddog>
+  Record<Archetype, GenericLairPrototypeRat>
 >;
 
 export type SpawnActorPrototypeSpawnSettingsPerPlayerRanks = GetStructType<{
-  [k in Rank]: SpawnActorPrototypeNewbie;
+  [k in Rank]: SpawnActorPrototypeMaster;
 }>;
 
 export type SpawnActorPrototypeSquadMembersQuestSIDs = StringArray;
 
 export type SpawnActorPrototypeVolumes = GetStructType<
   SpawnActorPrototypeVolumesItem[] & {
-    LairCoreVolumes: SpawnActorPrototypeLairCoreVolumes;
+    LairCoreVolumes: SingletonConstantArmy;
     LairTerritoryVolumes: SpawnActorPrototypeLairTerritoryVolumes;
-    NavModifierVolumes: SpawnActorPrototypeNavModifierVolumes;
+    NavModifierVolumes: UpdatePopupPrototypeContentData;
   }
 >;
 
@@ -9925,19 +11220,19 @@ export type StashPrototypeAttachParamsItem = GetStructType<{
 }>;
 
 export type StashPrototypeConsumablesParams = GetStructType<
-  StashPrototypeConsumablesParamsItem[]
+  StashPrototypeGrenadesParamsItem[]
 >;
 
-export type StashPrototypeConsumablesParamsItem = GetStructType<{
+export type StashPrototypeGrenadesParams = GetStructType<
+  StashPrototypeGrenadesParamsItem[]
+>;
+
+export type StashPrototypeGrenadesParamsItem = GetStructType<{
   Items: StashPrototypeItems;
   ItemSetCount: number;
   MaxSpawnChance: number;
   MinSpawnChance: number;
 }>;
-
-export type StashPrototypeGrenadesParams = GetStructType<
-  StashPrototypeConsumablesParamsItem[]
->;
 
 export type StashPrototypeHealthParams = GetStructType<
   StashPrototypeHealthParamsItem[]
@@ -9970,14 +11265,10 @@ export type StashPrototypeItemsItem = GetStructType<{
 }>;
 
 export type StashPrototypePistolWeaponParams = GetStructType<
-  StashPrototypePrimaryWeaponParamsItem[]
+  StashPrototypePistolWeaponParamsItem[]
 >;
 
-export type StashPrototypePrimaryWeaponParams = GetStructType<
-  StashPrototypePrimaryWeaponParamsItem[]
->;
-
-export type StashPrototypePrimaryWeaponParamsItem = GetStructType<{
+export type StashPrototypePistolWeaponParamsItem = GetStructType<{
   Items: StashPrototypeItems;
   MainWeaponAmmoCount: number;
   MaxSpawnChance: number;
@@ -9985,8 +11276,12 @@ export type StashPrototypePrimaryWeaponParamsItem = GetStructType<{
   PriorityCaliber: EAmmoCaliber;
 }>;
 
+export type StashPrototypePrimaryWeaponParams = GetStructType<
+  StashPrototypePistolWeaponParamsItem[]
+>;
+
 export type StashPrototypeSecondaryWeaponParams = GetStructType<
-  StashPrototypePrimaryWeaponParamsItem[]
+  StashPrototypePistolWeaponParamsItem[]
 >;
 
 export type StashPrototypeSmartLootParams = GetStructType<{
@@ -10005,7 +11300,7 @@ export type TeleportGroupPrototype = GetStructType<{
 }>;
 
 export type TeleportPrototype = GetStructType<{
-  EffectPrototypeSIDs: SpawnActorPrototypeSignals;
+  EffectPrototypeSIDs: CoreVariableHead;
   SID: string;
   TeleportType: EGSCTeleportType;
 }>;
@@ -10031,7 +11326,7 @@ export type ThreatPrototype = GetStructType<{
   IdentifyAsEnemyTime: number;
   MaxThreatLevelValue: number;
   MaxThreatLevelValueBeforeIndentification: number;
-  ReachedThrealLevelSpeechCommands: AIGlobalSoundEventTypeSpreadSpeedList;
+  ReachedThrealLevelSpeechCommands: AssetLibraryUIIcons;
   ShowThreatIndicator: boolean;
   SID: string;
   ThreatParams: ThreatPrototypeThreatParams;
@@ -10109,7 +11404,7 @@ export type TradeTestBoolProviderPrototype = GetStructType<{
   Faction: string;
   Hours: number;
   ProviderSID: string;
-  ProviderSIDs: SpawnActorPrototypeSignals;
+  ProviderSIDs: CoreVariableHead;
   Ranks: TradeTestBoolProviderPrototypeRanks;
   ReputationThreshold: number;
   SID: string;
@@ -10124,13 +11419,15 @@ export type UpdatePopupPrototype = GetStructType<{
   TabData: UpdatePopupPrototypeTabData;
 }>;
 
+export type UpdatePopupPrototypeContentData = StringArray;
+
 export type UpdatePopupPrototypeTabData = GetStructType<
   UpdatePopupPrototypeTabDataItem[]
 >;
 
 export type UpdatePopupPrototypeTabDataItem = GetStructType<{
   Background: string;
-  ContentData: SpawnActorPrototypeNavModifierVolumes;
+  ContentData: UpdatePopupPrototypeContentData;
   ContentSID: string;
   TabBackground: string;
   TabSID: string;
@@ -10140,7 +11437,7 @@ export type UpgradePrototype = GetStructType<{
   AttachPrototypeSIDs: SingletonConstantZombie;
   BaseCost: number;
   BlockingGlobalVariables: UpgradePrototypeBlockingGlobalVariables;
-  BlockingUpgradePrototypeSIDs: SpawnActorPrototypeIgnoreCollisionActors;
+  BlockingUpgradePrototypeSIDs: NPCPrototypeSkills;
   ConnectionLines: UpgradePrototypeConnectionLines;
   DiscountCoefficient: number;
   EffectPrototypeSIDs: UpgradePrototypeEffectPrototypeSIDs;
@@ -10150,15 +11447,15 @@ export type UpgradePrototype = GetStructType<{
   Icon: string;
   ID: number;
   Image: string;
-  InterchangeableUpgradePrototypeSIDs: SpawnActorPrototypeIgnoreCollisionActors;
+  InterchangeableUpgradePrototypeSIDs: NPCPrototypeSkills;
   IsModification: boolean;
   LocalizationSID: string;
   RepairCostModifier: number;
   RequiredGlobalVariables: UpgradePrototypeRequiredGlobalVariables;
-  RequiredItemPrototypeSIDs: SpawnActorPrototypeIgnoreCollisionActors;
-  RequiredUpgradePrototypeSIDs: SpawnActorPrototypeSignals;
+  RequiredItemPrototypeSIDs: NPCPrototypeSkills;
+  RequiredUpgradePrototypeSIDs: CoreVariableHead;
   SID: string;
-  Skills: SpawnActorPrototypeIgnoreCollisionActors;
+  Skills: NPCPrototypeSkills;
   Text: string;
   UpgradeCancelSound: string;
   UpgradeModificationSound: string;
@@ -10168,7 +11465,7 @@ export type UpgradePrototype = GetStructType<{
 }>;
 
 export type UpgradePrototypeBlockingGlobalVariables = GetStructType<
-  UpgradePrototypeRequiredGlobalVariablesItem[]
+  DoorPrototypeLockedByScenarioFlagItem[]
 >;
 
 export type UpgradePrototypeConnectionLines = GetStructType<
@@ -10178,13 +11475,8 @@ export type UpgradePrototypeConnectionLines = GetStructType<
 export type UpgradePrototypeEffectPrototypeSIDs = StringArray;
 
 export type UpgradePrototypeRequiredGlobalVariables = GetStructType<
-  UpgradePrototypeRequiredGlobalVariablesItem[]
+  DoorPrototypeLockedByScenarioFlagItem[]
 >;
-
-export type UpgradePrototypeRequiredGlobalVariablesItem = GetStructType<{
-  GlobalVariableSID: string;
-  Value: number;
-}>;
 
 export type UserNotificationPrototype = GetStructType<{
   ID: number;
@@ -10269,7 +11561,7 @@ export type WeaponAttributesPrototype = GetStructType<{
   AnimBlueprint: string;
   DefaultWeaponSettingsSID: string;
   MuzzleSocketName: string;
-  ParticlesBasedOnHeating: AIGlobalSoundEventTypeSpreadSpeedList;
+  ParticlesBasedOnHeating: AssetLibraryUIIcons;
   ShellShutterSocketName: string;
   SID: string;
 }>;
@@ -10279,22 +11571,22 @@ export type WeaponAttributesPrototypeAIParameters = GetStructType<{
 }>;
 
 export type WeaponAttributesPrototypeBehaviorTypes = GetStructType<
-  { [key in Rank]: WeaponAttributesPrototypeExperienced } & {
-    Zombie: WeaponAttributesPrototypeExperienced;
+  { [key in Rank]: WeaponAttributesPrototypeMaster } & {
+    Zombie: WeaponAttributesPrototypeMaster;
   }
 >;
 
-export type WeaponAttributesPrototypeExperienced = GetStructType<
-  { [k in WeaponShootDistance]: NPCWeaponAttributesPrototypeLong } & {
-    CharacterWeaponSettingsSID: string;
-    CombatEffectiveFireDistanceMax: string;
-    CombatEffectiveFireDistanceMin: string;
-    NonAutomaticWeaponShotDelay: number;
-  }
->;
+export type WeaponAttributesPrototypeLong = GetStructType<{
+  IgnoreDispersionMaxShots: number;
+  IgnoreDispersionMinShots: number;
+  MaxSecondsDelay: number;
+  MaxShots: number;
+  MinSecondsDelay: number;
+  MinShots: number;
+}>;
 
-export type WeaponAttributesPrototypeNewbie = GetStructType<
-  { [k in WeaponShootDistance]: NPCWeaponAttributesPrototypeLong } & {
+export type WeaponAttributesPrototypeMaster = GetStructType<
+  { [k in WeaponShootDistance]: WeaponAttributesPrototypeLong } & {
     CharacterWeaponSettingsSID: string;
     CombatEffectiveFireDistanceMax: string;
     CombatEffectiveFireDistanceMin: string;
@@ -10303,7 +11595,7 @@ export type WeaponAttributesPrototypeNewbie = GetStructType<
 >;
 
 export type WeaponFloatProviderPrototype = GetStructType<{
-  ProviderSIDs: SpawnActorPrototypeSignals;
+  ProviderSIDs: CoreVariableHead;
   SID: string;
   Type: EFloatProviderType;
   Value: number;
@@ -10399,7 +11691,7 @@ export type WeaponGeneralSetupPrototype = GetStructType<{
   TacticalReloadTimeMultiplier: number;
   ToggleOffsetAimingConditionSID: string;
   UnloadTime: number;
-  UpgradePrototypeSIDs: RelationPrototypeNegativeReactionsExcludedFactions;
+  UpgradePrototypeSIDs: WeaponGeneralSetupPrototypeUpgradePrototypeSIDs;
   WeaponDurabilityCurve: string;
   WeaponInWorldUnloadSound: string;
   WeaponJamEvent: string;
@@ -10420,8 +11712,8 @@ export type WeaponGeneralSetupPrototypeAdditionalMeshesItem = GetStructType<{
 }>;
 
 export type WeaponGeneralSetupPrototypeAimingEffects = GetStructType<{
-  Effects: SpawnActorPrototypeIgnoreCollisionActors;
-  PlayerOnlyEffects: SpawnActorPrototypeIgnoreCollisionActors;
+  Effects: NPCPrototypeSkills;
+  PlayerOnlyEffects: NPCPrototypeSkills;
 }>;
 
 export type WeaponGeneralSetupPrototypeAimModifiers = GetStructType<{
@@ -10431,13 +11723,8 @@ export type WeaponGeneralSetupPrototypeAimModifiers = GetStructType<{
 }>;
 
 export type WeaponGeneralSetupPrototypeAmmoTypeProjectiles = GetStructType<
-  WeaponGeneralSetupPrototypeAmmoTypeProjectilesItem[]
+  EffectPrototypeAmmoTypeProjectilesItem[]
 >;
-
-export type WeaponGeneralSetupPrototypeAmmoTypeProjectilesItem = GetStructType<{
-  AmmoType: EAmmoType;
-  ProjectilePrototypeSID: string;
-}>;
 
 export type WeaponGeneralSetupPrototypeCompatibleAttachments = GetStructType<
   WeaponGeneralSetupPrototypeCompatibleAttachmentsItem[]
@@ -10451,13 +11738,13 @@ export type WeaponGeneralSetupPrototypeCompatibleAttachmentsItem =
     AimMuzzleVFXSocket: string;
     AimShellShutterVFXSocket: string;
     AttachPrototypeSID: string;
-    BlockingUpgradeIds: SpawnActorPrototypeIgnoreCollisionActors;
+    BlockingUpgradeIds: NPCPrototypeSkills;
     BlockingUpgradeIDs: string;
     IconPosX: number;
     IconPosY: number;
     MeshPrototypeSID: string;
     Muzzle: string;
-    RequiredUpgradeIDs: SpawnActorPrototypeIgnoreCollisionActors;
+    RequiredUpgradeIDs: NPCPrototypeSkills;
     Socket: string;
     WeaponSpecificIcon: string;
   }>;
@@ -10486,13 +11773,8 @@ export type WeaponGeneralSetupPrototypeHipModifiers = GetStructType<{
 }>;
 
 export type WeaponGeneralSetupPrototypeMaterials = GetStructType<
-  WeaponGeneralSetupPrototypeMaterialsItem[]
+  MeshPrototypeMaterialsItem[]
 >;
-
-export type WeaponGeneralSetupPrototypeMaterialsItem = GetStructType<{
-  MaterialPath: string;
-  MaterialSlot: number;
-}>;
 
 export type WeaponGeneralSetupPrototypeMovementSpeedModifiers = GetStructType<{
   MovementSpeedModifier: number;
@@ -10553,6 +11835,8 @@ export type WeaponGeneralSetupPrototypeShootingStateParams = GetStructType<{
   RadiusNormalizationModifiers: WeaponGeneralSetupPrototypeRadiusNormalizationModifiers;
 }>;
 
+export type WeaponGeneralSetupPrototypeUpgradePrototypeSIDs = StringArray;
+
 export type WeaponGeneralSetupPrototypeWeaponJamParams = GetStructType<
   WeaponGeneralSetupPrototypeWeaponJamParamsItem[]
 >;
@@ -10592,7 +11876,7 @@ export type WeaponGeneralSetupPrototypeWeaponStaticMeshPartsItem =
 export type WeaponPrototype = GetStructType<{
   BaseDurability: number;
   Cost: number;
-  EffectPrototypeSIDs: SpawnActorPrototypeIgnoreCollisionActors;
+  EffectPrototypeSIDs: NPCPrototypeSkills;
   GeneralWeaponSetup: string;
   Icon: string;
   IsQuestItem: boolean;
@@ -10608,12 +11892,14 @@ export type WeaponPrototype = GetStructType<{
   NPCWeaponAttributes: string;
   PhysicsInteractionPrototypeSID: string;
   PlayerWeaponAttributes: string;
-  PreinstalledUpgrades: FactionActionRestrictionPrototypeFactions;
+  PreinstalledUpgrades: WeaponPrototypePreinstalledUpgrades;
   SectionSettings: WeaponPrototypeSectionSettings;
   SID: string;
   Type: EItemType;
   Weight: number;
 }>;
+
+export type WeaponPrototypePreinstalledUpgrades = StringArray;
 
 export type WeaponPrototypeSectionSettings = GetStructType<
   ArmorPrototypeSectionSettingsItem[]
@@ -10665,7 +11951,7 @@ export type WeatherPrototypeClouds = GetStructType<{
   CirrusDecay: number;
   CirrusDensity: number;
   CloudSpeed: number;
-  CloudSpeedXY: SpawnActorPrototypeFreeformTriggerVerticesItem;
+  CloudSpeedXY: AbilityPrototypeRadius;
   CloudsPhaseShift: number;
   CloudsTile: number;
   CNContrast: number;
@@ -10675,8 +11961,8 @@ export type WeatherPrototypeClouds = GetStructType<{
   CNDetailContrast: number;
   CNMaxDensity: number;
   CNSize: number;
-  Color1: AudioScattererPrototypeVisualizationColor;
-  Color2: AudioScattererPrototypeVisualizationColor;
+  Color1: WeatherPrototypeColor1;
+  Color2: WeatherPrototypeColor1;
   GlobalDensity: number;
   StratusAmount: number;
   StratusContrast: number;
@@ -10692,34 +11978,41 @@ export type WeatherPrototypeClouds = GetStructType<{
   VTCloudScale: number;
 }>;
 
-export type WeatherPrototypeColorGrading = GetStructType<{
-  ColorContrast: WeatherPrototypeColorSaturation;
-  ColorGain: WeatherPrototypeColorSaturation;
-  ColorGamma: WeatherPrototypeColorSaturation;
-  ColorOffset: WeatherPrototypeColorSaturation;
-  ColorSaturation: WeatherPrototypeColorSaturation;
-  Highlights: WeatherPrototypeHighlights;
-  Midtones: WeatherPrototypeMidtones;
-  Shadows: WeatherPrototypeShadows;
+export type WeatherPrototypeColor1 = GetStructType<{
+  A: number;
+  B: number;
+  G: number;
+  R: number;
 }>;
 
-export type WeatherPrototypeColorSaturation = GetStructType<{
+export type WeatherPrototypeColorGain = GetStructType<{
   W: number;
   X: number;
   Y: number;
   Z: number;
 }>;
 
+export type WeatherPrototypeColorGrading = GetStructType<{
+  ColorContrast: WeatherPrototypeColorGain;
+  ColorGain: WeatherPrototypeColorGain;
+  ColorGamma: WeatherPrototypeColorGain;
+  ColorOffset: WeatherPrototypeColorGain;
+  ColorSaturation: WeatherPrototypeColorGain;
+  Highlights: WeatherPrototypeHighlights;
+  Midtones: WeatherPrototypeMidtones;
+  Shadows: WeatherPrototypeShadows;
+}>;
+
 export type WeatherPrototypeFilm = GetStructType<{
   FilmBlackClip: number;
-  FilmChannelMixerBlue: AudioScattererPrototypeVisualizationColor;
-  FilmChannelMixerGreen: AudioScattererPrototypeVisualizationColor;
-  FilmChannelMixerRed: AudioScattererPrototypeVisualizationColor;
+  FilmChannelMixerBlue: WeatherPrototypeColor1;
+  FilmChannelMixerGreen: WeatherPrototypeColor1;
+  FilmChannelMixerRed: WeatherPrototypeColor1;
   FilmContrast: number;
   FilmDynamicRange: number;
   FilmHealAmount: number;
   FilmSaturation: number;
-  FilmShadowTint: AudioScattererPrototypeVisualizationColor;
+  FilmShadowTint: WeatherPrototypeColor1;
   FilmShadowTintAmount: number;
   FilmShadowTintBlend: number;
   FilmShoulder: number;
@@ -10727,51 +12020,51 @@ export type WeatherPrototypeFilm = GetStructType<{
   FilmToe: number;
   FilmToeAmount: number;
   FilmWhiteClip: number;
-  FilmWhitePoint: AudioScattererPrototypeVisualizationColor;
+  FilmWhitePoint: WeatherPrototypeColor1;
 }>;
 
 export type WeatherPrototypeHighlights = GetStructType<{
-  ColorContrast: WeatherPrototypeColorSaturation;
+  ColorContrast: WeatherPrototypeColorGain;
   ColorCorrectionHighlightsMin: number;
-  ColorGain: WeatherPrototypeColorSaturation;
-  ColorGamma: WeatherPrototypeColorSaturation;
-  ColorOffset: WeatherPrototypeColorSaturation;
-  ColorSaturation: WeatherPrototypeColorSaturation;
+  ColorGain: WeatherPrototypeColorGain;
+  ColorGamma: WeatherPrototypeColorGain;
+  ColorOffset: WeatherPrototypeColorGain;
+  ColorSaturation: WeatherPrototypeColorGain;
 }>;
 
 export type WeatherPrototypeMidtones = GetStructType<{
-  ColorContrast: WeatherPrototypeColorSaturation;
-  ColorGain: WeatherPrototypeColorSaturation;
-  ColorGamma: WeatherPrototypeColorSaturation;
-  ColorOffset: WeatherPrototypeColorSaturation;
-  ColorSaturation: WeatherPrototypeColorSaturation;
+  ColorContrast: WeatherPrototypeColorGain;
+  ColorGain: WeatherPrototypeColorGain;
+  ColorGamma: WeatherPrototypeColorGain;
+  ColorOffset: WeatherPrototypeColorGain;
+  ColorSaturation: WeatherPrototypeColorGain;
 }>;
 
 export type WeatherPrototypeShadows = GetStructType<{
-  ColorContrast: WeatherPrototypeColorSaturation;
+  ColorContrast: WeatherPrototypeColorGain;
   ColorCorrectionShadowsMax: number;
-  ColorGain: WeatherPrototypeColorSaturation;
-  ColorGamma: WeatherPrototypeColorSaturation;
-  ColorOffset: WeatherPrototypeColorSaturation;
-  ColorSaturation: WeatherPrototypeColorSaturation;
+  ColorGain: WeatherPrototypeColorGain;
+  ColorGamma: WeatherPrototypeColorGain;
+  ColorOffset: WeatherPrototypeColorGain;
+  ColorSaturation: WeatherPrototypeColorGain;
 }>;
 
 export type WeatherPrototypeSkyAtmosphere = GetStructType<{
   AerialPespectiveViewDistanceScale: number;
   HeightFogContribution: number;
-  MieAbsorption: AudioScattererPrototypeVisualizationColor;
+  MieAbsorption: WeatherPrototypeColor1;
   MieAbsorptionScale: number;
   MieAnisotropy: number;
   MieExponentialDistribution: number;
-  MieScattering: AudioScattererPrototypeVisualizationColor;
+  MieScattering: WeatherPrototypeColor1;
   MieScatteringScale: number;
   MultiScatteringFactor: number;
-  OtherAbsorption: AudioScattererPrototypeVisualizationColor;
+  OtherAbsorption: WeatherPrototypeColor1;
   OtherAbsorptionScale: number;
   RayleighExponentialDistribution: number;
-  RayleighScattering: AudioScattererPrototypeVisualizationColor;
+  RayleighScattering: WeatherPrototypeColor1;
   RayleighScatteringScale: number;
-  SkyLuminanceFactor: AudioScattererPrototypeVisualizationColor;
+  SkyLuminanceFactor: WeatherPrototypeColor1;
 }>;
 
 export type WeatherPrototypeSkyLight = GetStructType<{
@@ -10804,10 +12097,10 @@ export type WeatherPrototypeWeatherParamsItem = GetStructType<{
   FogDensity: number;
   FogHeightFalloff: number;
   FogHeightOffset: number;
-  FogInscatteringColor: AudioScattererPrototypeVisualizationColor;
+  FogInscatteringColor: WeatherPrototypeColor1;
   Moon: WeatherPrototypeSun;
   MoonPhase: number;
-  MoonScale: SpawnActorPrototypeVector;
+  MoonScale: AIGlobalRelativeLocation;
   SecondFogDensity: number;
   SecondFogHeightFalloff: number;
   SkyAtmosphere: WeatherPrototypeSkyAtmosphere;
@@ -10816,8 +12109,8 @@ export type WeatherPrototypeWeatherParamsItem = GetStructType<{
   Sun: WeatherPrototypeSun;
   SunMoonDiskLuminanceMultiplier: number;
   Time: number;
-  VolumetricFogAlbedo: AudioScattererPrototypeVisualizationColor;
-  VolumetricFogEmissive: AudioScattererPrototypeVisualizationColor;
+  VolumetricFogAlbedo: WeatherPrototypeColor1;
+  VolumetricFogEmissive: WeatherPrototypeColor1;
   VolumetricFogExtinctionScale: number;
 }>;
 
@@ -10837,10 +12130,10 @@ export type WeatherSelectionPrototype = GetStructType<
     EmissionPrototypeSID: string;
     Priority: number;
     SID: string;
-  } & Record<WeatherSelection, WeatherSelectionPrototypeClearly>
+  } & Record<WeatherSelection, WeatherSelectionPrototypeFogy>
 >;
 
-export type WeatherSelectionPrototypeClearly = GetStructType<{
+export type WeatherSelectionPrototypeFogy = GetStructType<{
   bAllowInDialogueTransition: boolean;
   BlendWeight: number;
   BlendWeightIncrease: number;
@@ -10849,3 +12142,5 @@ export type WeatherSelectionPrototypeClearly = GetStructType<{
   WeatherDurationMax: number;
   WeatherDurationMin: number;
 }>;
+
+export type CreditRoles = GetStructType<CreditRolesItem[]>;
