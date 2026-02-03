@@ -3860,8 +3860,8 @@ export type DialogPrototype = GetStructType<{
   BrokenGameDataFilter: EBrokenGameDataFilter;
   CanBeInterrupted: boolean;
   Conditions: DialogPrototypeConditions;
-  DialogActionParam: string;
-  DialogActions: string;
+  DialogActionParam: number | DialogPrototypeItemPrototypeSID;
+  DialogActions: DialogPrototypeDialogActions;
   DialogAnswerActions: DialogPrototypeDialogAnswerActions;
   DialogChainPrototypeSID: string;
   DialogMemberIndex: number;
@@ -5643,7 +5643,7 @@ export type LairPrototypePreset = GetStructType<{
 }>;
 
 export type LairPrototypeSpawnSettingsPerArchetypes = GetStructType<{
-  GeneralNPC_Duty_CloseCombat: GenericLairPrototypeRat;
+  [key in Archetype]: GenericLairPrototypeRat;
 }>;
 
 export type LairPrototypeSpawnSettingsPerPlayerRanks = GetStructType<{
