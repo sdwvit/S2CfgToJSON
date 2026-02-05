@@ -131,7 +131,11 @@ export class Struct {
         "Cannot remove node from non-patch struct. Use fork() first.",
       );
     }
-    this[key] = REMOVE_NODE as any;
+    if (this[key] instanceof Struct) {
+      this[key].__internal__.removenode = true;
+    } else {
+      this[key] = REMOVE_NODE as any;
+    }
     return this;
   }
 
