@@ -24,6 +24,7 @@ export interface DefaultEntries {
   rawName?: string;
   refkey?: string | number;
   refurl?: string;
+  removenode?: boolean;
   useAsterisk?: boolean;
 }
 
@@ -293,8 +294,13 @@ export class Struct {
           equalsOrColon = value instanceof Struct ? ":" : "=";
           spaceOrNoSpace = value === "" ? "" : " ";
         }
-
-        return pad(`${keyOrIndex}${equalsOrColon}${spaceOrNoSpace}${value}`);
+        const renderedValue =
+          value instanceof Struct && value.__internal__.removenode
+            ? REMOVE_NODE
+            : value;
+        return pad(
+          `${keyOrIndex}${equalsOrColon}${spaceOrNoSpace}${renderedValue}`,
+        );
       })
       .join("\n");
     text += "\nstruct.end";
@@ -315,6 +321,7 @@ export class Refs implements DefaultEntries {
   isArray?: boolean;
   isRoot?: boolean;
   useAsterisk?: boolean;
+  removenode?: boolean;
 
   constructor(ref?: string | Refs) {
     if (typeof ref === "string") {

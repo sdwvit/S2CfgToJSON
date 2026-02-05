@@ -50,6 +50,11 @@ class BuyLimitations extends Struct {
   });
   "0" = "EItemType::Weapon";
   "1" = "EItemType::Armor";
+  "2" = new Struct({
+    __internal__: {
+      removenode: true,
+    },
+  });
 }
 
 describe("Struct", () => {
@@ -69,6 +74,7 @@ struct.end`,
          BuyLimitations : struct.begin
             [0] = EItemType::Weapon
             [1] = EItemType::Armor
+            [2] : removenode
          struct.end
       struct.end
    struct.end
@@ -270,7 +276,7 @@ struct.end`;
         "EItemType::Artifact",
         undefined,
       );
-      expect(a.TradeGenerators[0].BuyLimitations[2]).toBe(
+      expect(a.TradeGenerators[0].BuyLimitations[3]).toBe(
         "EItemType::Artifact",
       );
     });
@@ -352,6 +358,11 @@ struct.end`;
               __internal__: { rawName: "BuyLimitations", isArray: true },
               "0": "EItemType::Weapon",
               "1": "EItemType::Armor",
+              "2": {
+                __internal__: {
+                  removenode: true,
+                },
+              },
             },
           },
         },
