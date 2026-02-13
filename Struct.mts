@@ -361,7 +361,7 @@ export class Refs implements DefaultEntries {
 }
 
 const structHeadRegex = new RegExp(
-  `^\s*((.*)\\s*:)?\\s*struct\\.begin\\s*({\\s*((${KEYWORDS.join("|")})\\s*(=.+)?)\\s*})?`,
+  `^\\s*((.*)\\s*:)?\\s*struct\\.begin\\s*({\\s*((${KEYWORDS.join("|")})\\s*(=.+)?)\\s*})?`,
 );
 
 function parseHead(line: string, index: number): Struct {
