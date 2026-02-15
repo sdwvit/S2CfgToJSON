@@ -559,33 +559,32 @@ export type AbilityPrototypeTriggeredCooldownsItem = GetStructType<{
   Duration: number;
 }>;
 
-export type Achievement = GetStructType<
-  {
-    AcceptableInterval: number;
-    AnomalyPrototypeSID: string;
-    ArmorSIDs: AchievementArmorSIDs;
-    BleedingThreshold: number;
-    Calibers: AchievementCalibers;
-    DrunkennessThreshold: number;
-    DrunknessThreshold: number;
-    FoodSet: AchievementFoodSet;
-    HeadshotDistance: number;
-    HungerThreshold: number;
-    Items: AchievementItems;
-    MarkerTypes: AchievementMarkerTypes;
-    MinHeight: number;
-    MinSquadSize: number;
-    MutantSID: string;
-    MutantsSID: AchievementArmorSIDs;
-    NumberOfWeapons: number;
-    PsyThreshold: number;
-    RadiationThreshold: number;
-    RequiredCount: number;
-    SleepinessThreshold: number;
-    TargetSID: string;
-    TimeWindow: number;
-  } & AchievementAchievementGoalsItem[]
->;
+export type Achievement = GetStructType<{
+  AcceptableInterval: number;
+  AnomalyPrototypeSID: string;
+  ArmorSIDs: AchievementArmorSIDs;
+  BleedingThreshold: number;
+  Calibers: AchievementCalibers;
+  DrunkennessThreshold: number;
+  DrunknessThreshold: number;
+  FoodSet: AchievementFoodSet;
+  HeadshotDistance: number;
+  HungerThreshold: number;
+  Items: AchievementItems;
+  MarkerTypes: AchievementMarkerTypes;
+  MinHeight: number;
+  MinSquadSize: number;
+  MutantSID: string;
+  MutantsSID: AchievementArmorSIDs;
+  NumberOfWeapons: number;
+  PsyThreshold: number;
+  RadiationThreshold: number;
+  RequiredCount: number;
+  SleepinessThreshold: number;
+  TargetSID: string;
+  TimeWindow: number;
+}> &
+  GetStructType<AchievementAchievementGoalsItem[]>;
 
 export type AchievementAchievementGoalsItem = GetStructType<{
   Goal: number;
@@ -1534,11 +1533,10 @@ export type ArtifactPrototypeAnomalyDamageDeflectionsItem = GetStructType<{
   TimeToReduceCharge: number;
 }>;
 
-export type ArtifactPrototypeEffectOnPickPrototypeSIDs = GetStructType<
-  {
-    ViewOffset: AIGlobalRelativeLocation;
-  } & string[]
->;
+export type ArtifactPrototypeEffectOnPickPrototypeSIDs = GetStructType<{
+  ViewOffset: AIGlobalRelativeLocation;
+}> &
+  GetStructType<string[]>;
 
 export type ArtifactPrototypeEffectsDisplayTypes = GetStructType<
   EEffectDisplayType[]
@@ -1743,49 +1741,48 @@ export type AssetLibraryUIWidgetBlueprint = GetStructType<{
   WorldMapRegionMarkerClass: string;
 }>;
 
-export type AttachMeshPrototype = GetStructType<
-  {
-    AdditionalCollisions: AttachMeshPrototypeAdditionalCollisions;
-    AdditionalMesh: AttachMeshPrototypeAdditionalMesh;
-    AnimPath: string;
-    bHasClothSimulation: boolean;
-    bHasExoskeleton: boolean;
-    BodyMeshType: EBodyMeshType;
-    bReceiveAttachedDecals: boolean;
-    bReceiveDecals: boolean;
-    bRenderCustomDepthPass: boolean;
-    bShouldUseParentBound: boolean;
-    bUseCustomLODSync: boolean;
-    ComponentTags: NPCPrototypeSkills;
-    FaceBlockingBlendMaskPrototypeSID: string;
-    GroomBlockingMappingPrototypeSID: string;
-    GroomPrototypeSID: string;
-    IsSkeletal: boolean;
-    ItemPrototypeSID: string;
-    LODSyncMapping: AttachMeshPrototypeLODSyncMapping;
-    MaterialCount: number;
-    MaterialLODs: AttachMeshPrototypeMaterialLODs;
-    Materials: AttachMeshPrototypeMaterials;
-    MeshPath: string;
-    MeshType: EMeshSubType;
-    OffsetX: number;
-    OffsetY: number;
-    OffsetZ: number;
-    ParentMeshPath: string;
-    RotationPitch: number;
-    RotationRoll: number;
-    RotationYaw: number;
-    ScaleX: number;
-    ScaleY: number;
-    ScaleZ: number;
-    ShadowMeshPath: string;
-    SID: string;
-    SkeletonPath: string;
-    SocketName: string;
-    SyncOption: string;
-    VoiceModulatorSID: string;
-  } & AttachMeshPrototypeTor_mer_01_a_PSYItem[]
->;
+export type AttachMeshPrototype = GetStructType<{
+  AdditionalCollisions: AttachMeshPrototypeAdditionalCollisions;
+  AdditionalMesh: AttachMeshPrototypeAdditionalMesh;
+  AnimPath: string;
+  bHasClothSimulation: boolean;
+  bHasExoskeleton: boolean;
+  BodyMeshType: EBodyMeshType;
+  bReceiveAttachedDecals: boolean;
+  bReceiveDecals: boolean;
+  bRenderCustomDepthPass: boolean;
+  bShouldUseParentBound: boolean;
+  bUseCustomLODSync: boolean;
+  ComponentTags: NPCPrototypeSkills;
+  FaceBlockingBlendMaskPrototypeSID: string;
+  GroomBlockingMappingPrototypeSID: string;
+  GroomPrototypeSID: string;
+  IsSkeletal: boolean;
+  ItemPrototypeSID: string;
+  LODSyncMapping: AttachMeshPrototypeLODSyncMapping;
+  MaterialCount: number;
+  MaterialLODs: AttachMeshPrototypeMaterialLODs;
+  Materials: AttachMeshPrototypeMaterials;
+  MeshPath: string;
+  MeshType: EMeshSubType;
+  OffsetX: number;
+  OffsetY: number;
+  OffsetZ: number;
+  ParentMeshPath: string;
+  RotationPitch: number;
+  RotationRoll: number;
+  RotationYaw: number;
+  ScaleX: number;
+  ScaleY: number;
+  ScaleZ: number;
+  ShadowMeshPath: string;
+  SID: string;
+  SkeletonPath: string;
+  SocketName: string;
+  SyncOption: string;
+  VoiceModulatorSID: string;
+}> &
+  GetStructType<AttachMeshPrototypeTor_mer_01_a_PSYItem[]>;
 
 export type AttachMeshPrototypeAdditionalCollisions = GetStructType<{
   BoxCollisions: AttachMeshPrototypeBoxCollisions;
@@ -3830,14 +3827,13 @@ export type DialogPoolPrototype = GetStructType<{
 
 export type DialogPoolPrototypeAvailableDialogs = StringArray;
 
-export type DialogPoolPrototypeDialogMemberRestrictions = GetStructType<
-  {
-    ExcludedFactions: DialogPoolPrototypeExcludedFactions;
-    ExcludedObjPrototypes: DialogPoolPrototypeExcludedObjPrototypes;
-    FactionRestrictions: DialogPoolPrototypeFactionRestrictions;
-    ObjPrototypeRestrictions: DialogPoolPrototypeObjPrototypeRestrictions;
-  } & DialogPoolPrototypeDialogMemberRestrictionsItem[]
->;
+export type DialogPoolPrototypeDialogMemberRestrictions = GetStructType<{
+  ExcludedFactions: DialogPoolPrototypeExcludedFactions;
+  ExcludedObjPrototypes: DialogPoolPrototypeExcludedObjPrototypes;
+  FactionRestrictions: DialogPoolPrototypeFactionRestrictions;
+  ObjPrototypeRestrictions: DialogPoolPrototypeObjPrototypeRestrictions;
+}> &
+  GetStructType<DialogPoolPrototypeDialogMemberRestrictionsItem[]>;
 
 export type DialogPoolPrototypeDialogMemberRestrictionsItem = GetStructType<{
   FactionRestrictions: DialogPoolPrototypeFactionRestrictions;
@@ -3913,14 +3909,13 @@ export type DialogPrototypeConditions = GetStructType<
   DialogPrototypeConditionsItem[]
 >;
 
-export type DialogPrototypeConditionsItem = GetStructType<
-  {
-    ConditionComparance: EConditionComparance;
-    ConditionType: EQuestConditionType;
-    NumericValue: number;
-    TargetCharacter: string;
-  } & DialogPrototypeConditionsItemItem[]
->;
+export type DialogPrototypeConditionsItem = GetStructType<{
+  ConditionComparance: EConditionComparance;
+  ConditionType: EQuestConditionType;
+  NumericValue: number;
+  TargetCharacter: string;
+}> &
+  GetStructType<DialogPrototypeConditionsItemItem[]>;
 
 export type DialogPrototypeConditionsItemItem = GetStructType<{
   bTriggersByAnybody: boolean;
@@ -4022,14 +4017,13 @@ export type DialogPrototypeMoney = GetStructType<{
   VariableValue: VariableValue;
 }>;
 
-export type DialogPrototypeNextDialogOptions = GetStructType<
-  {
-    False: DialogPrototypeFalse;
-    General_PC_DeclineFastTravel_Random: DialogPrototypePripyat_return_to_topics;
-    Pripyat_return_to_topics: DialogPrototypePripyat_return_to_topics;
-    True: DialogPrototypeTrue;
-  } & DialogPrototypeNextDialogOptionsItem[]
->;
+export type DialogPrototypeNextDialogOptions = GetStructType<{
+  False: DialogPrototypeFalse;
+  General_PC_DeclineFastTravel_Random: DialogPrototypePripyat_return_to_topics;
+  Pripyat_return_to_topics: DialogPrototypePripyat_return_to_topics;
+  True: DialogPrototypeTrue;
+}> &
+  GetStructType<DialogPrototypeNextDialogOptionsItem[]>;
 
 export type DialogPrototypeNextDialogOptionsItem = GetStructType<{
   AnswerTo: number;
@@ -4055,14 +4049,13 @@ export type DialogPrototypeTopicAvailabilityConditions = GetStructType<
   DialogPrototypeTopicAvailabilityConditionsItem[]
 >;
 
-export type DialogPrototypeTopicAvailabilityConditionsItem = GetStructType<
-  {
-    ConditionComparance: EConditionComparance;
-    ConditionType: EQuestConditionType;
-    EmissionPrototypeSID: string;
-    IncludePartialOverload: boolean;
-  } & DialogPrototypeTopicAvailabilityConditionsItemItem[]
->;
+export type DialogPrototypeTopicAvailabilityConditionsItem = GetStructType<{
+  ConditionComparance: EConditionComparance;
+  ConditionType: EQuestConditionType;
+  EmissionPrototypeSID: string;
+  IncludePartialOverload: boolean;
+}> &
+  GetStructType<DialogPrototypeTopicAvailabilityConditionsItemItem[]>;
 
 export type DialogPrototypeTopicAvailabilityConditionsItemItem = GetStructType<{
   bTriggersByAnybody: boolean;
@@ -5073,11 +5066,10 @@ export type GroomGeneratorPrototypeCategoryItem = GetStructType<{
   Variations: GroomGeneratorPrototypeVariations;
 }>;
 
-export type GroomGeneratorPrototypeCustomData = GetStructType<
-  {
-    ShortHair: GroomGeneratorPrototypeShortHair;
-  } & GroomGeneratorPrototypeCustomDataItem[]
->;
+export type GroomGeneratorPrototypeCustomData = GetStructType<{
+  ShortHair: GroomGeneratorPrototypeShortHair;
+}> &
+  GetStructType<GroomGeneratorPrototypeCustomDataItem[]>;
 
 export type GroomGeneratorPrototypeCustomDataItem = GetStructType<{
   Distribution: ECustomDataDistribution;
@@ -5313,14 +5305,13 @@ export type ItemGeneratorPrototypeHead = GetStructType<{
   PossibleItems: ItemGeneratorPrototypePossibleItems;
 }>;
 
-export type ItemGeneratorPrototypeItemGenerator = GetStructType<
-  {
-    Attach: ItemGeneratorPrototypeHead;
-    BodyArmor: ItemGeneratorPrototypeHead;
-    Head: ItemGeneratorPrototypeHead;
-    WeaponPrimary: ItemGeneratorPrototypeHead;
-  } & ItemGeneratorPrototypeItemGeneratorItem[]
->;
+export type ItemGeneratorPrototypeItemGenerator = GetStructType<{
+  Attach: ItemGeneratorPrototypeHead;
+  BodyArmor: ItemGeneratorPrototypeHead;
+  Head: ItemGeneratorPrototypeHead;
+  WeaponPrimary: ItemGeneratorPrototypeHead;
+}> &
+  GetStructType<ItemGeneratorPrototypeItemGeneratorItem[]>;
 
 export type ItemGeneratorPrototypeItemGeneratorItem = GetStructType<{
   bAllowSameCategoryGeneration: boolean;
@@ -5679,11 +5670,10 @@ export type LR_MeshGeneratorPrototypeAttachesItem = GetStructType<{
   Weight: number;
 }>;
 
-export type LR_MeshGeneratorPrototypeAttachments = GetStructType<
-  {
-    [Bbe in MeshSlotName]: LR_MeshGeneratorPrototypeBbe;
-  } & LR_MeshGeneratorPrototypeAttachmentsItem[]
->;
+export type LR_MeshGeneratorPrototypeAttachments = GetStructType<{
+  [Bbe in MeshSlotName]: LR_MeshGeneratorPrototypeBbe;
+}> &
+  GetStructType<LR_MeshGeneratorPrototypeAttachmentsItem[]>;
 
 export type LR_MeshGeneratorPrototypeAttachmentsItem = GetStructType<{
   Attaches: LR_MeshGeneratorPrototypeAttaches;
@@ -5810,11 +5800,10 @@ export type MeshGeneratorPrototypeAttachesItem = GetStructType<{
   Weight: number;
 }>;
 
-export type MeshGeneratorPrototypeAttachments = GetStructType<
-  {
-    [Bbe in MeshSlotName]: MeshGeneratorPrototypeBbe;
-  } & MeshGeneratorPrototypeAttachmentsItem[]
->;
+export type MeshGeneratorPrototypeAttachments = GetStructType<{
+  [Bbe in MeshSlotName]: MeshGeneratorPrototypeBbe;
+}> &
+  GetStructType<MeshGeneratorPrototypeAttachmentsItem[]>;
 
 export type MeshGeneratorPrototypeAttachmentsItem = GetStructType<{
   Attaches: MeshGeneratorPrototypeAttaches;
@@ -6134,11 +6123,10 @@ export type NPCNeedsPresetPrototypeExpansionResolverFactory = GetStructType<{
   MinSquadSize: number;
 }>;
 
-export type NPCNeedsPresetPrototypeGoalNeeds = GetStructType<
-  {
-    bEmpty: boolean;
-  } & NPCNeedsPresetPrototypeGoalNeedsItem[]
->;
+export type NPCNeedsPresetPrototypeGoalNeeds = GetStructType<{
+  bEmpty: boolean;
+}> &
+  GetStructType<NPCNeedsPresetPrototypeGoalNeedsItem[]>;
 
 export type NPCNeedsPresetPrototypeGoalNeedsItem = GetStructType<{
   InitialNeedValue: number;
@@ -6160,11 +6148,10 @@ export type NPCNeedsPresetPrototypeNeedsItem = GetStructType<{
   Radius: number;
 }>;
 
-export type NPCNeedsPresetPrototypeNeedsResolvers = GetStructType<
-  {
-    bEmpty: boolean;
-  } & NPCNeedsPresetPrototypeNeedsResolversItem[]
->;
+export type NPCNeedsPresetPrototypeNeedsResolvers = GetStructType<{
+  bEmpty: boolean;
+}> &
+  GetStructType<NPCNeedsPresetPrototypeNeedsResolversItem[]>;
 
 export type NPCNeedsPresetPrototypeNeedsResolversItem = GetStructType<{
   ExpansionResolverFactory: NPCNeedsPresetPrototypeExpansionResolverFactory;
@@ -7962,28 +7949,27 @@ export type QuestAnomalyPrototype = GetStructType<{
   VelocityThreshold: number;
 }>;
 
-export type QuestArtifactPrototype = GetStructType<
-  {
-    AnomalyElementType: EAnomalyElementType;
-    ArtifactType: EArtifactType;
-    DetectorRequired: boolean;
-    EffectPrototypeSIDs: NPCPrototypeSkills;
-    ID: number;
-    IsQuestItem: boolean;
-    JumpAmount: number;
-    JumpDelay: number;
-    JumpDistance: number;
-    JumpForce: number;
-    JumpHeight: number;
-    JumpSeriesDelay: number;
-    JumpSpeedCoef: number;
-    LandingForce: number;
-    LifeTime: number;
-    PlayerDistance: number;
-    Rarity: EArtifactRarity;
-    ReturnDistanceValue: number;
-  } & string[]
->;
+export type QuestArtifactPrototype = GetStructType<{
+  AnomalyElementType: EAnomalyElementType;
+  ArtifactType: EArtifactType;
+  DetectorRequired: boolean;
+  EffectPrototypeSIDs: NPCPrototypeSkills;
+  ID: number;
+  IsQuestItem: boolean;
+  JumpAmount: number;
+  JumpDelay: number;
+  JumpDistance: number;
+  JumpForce: number;
+  JumpHeight: number;
+  JumpSeriesDelay: number;
+  JumpSpeedCoef: number;
+  LandingForce: number;
+  LifeTime: number;
+  PlayerDistance: number;
+  Rarity: EArtifactRarity;
+  ReturnDistanceValue: number;
+}> &
+  GetStructType<string[]>;
 
 export type QuestArtifactSpawnerPrototype = GetStructType<{
   Experienced: QuestArtifactSpawnerPrototypeMaster;
@@ -8488,25 +8474,23 @@ export type QuestNodePrototypeCondition = GetStructType<{
   SID: string;
 }>;
 
-export type QuestNodePrototypeConditions = GetStructType<
-  {
-    ConditionCheckType: EConditionCheckType;
-  } & QuestNodePrototypeConditionsItem[]
->;
+export type QuestNodePrototypeConditions = GetStructType<{
+  ConditionCheckType: EConditionCheckType;
+}> &
+  GetStructType<QuestNodePrototypeConditionsItem[]>;
 
-export type QuestNodePrototypeConditionsItem = GetStructType<
-  {
-    ConditionComparance: EConditionComparance;
-    ConditionType: EQuestConditionType;
-    ItemPrototypeSID: string;
-    NumericValue: number;
-    TargetCharacter: string;
-    TargetItemContainer: string;
-    TargetPoint: AIGlobalRelativeLocation;
-    WithEquipped: boolean;
-    WithInventory: boolean;
-  } & QuestNodePrototypeConditionsItemItem[]
->;
+export type QuestNodePrototypeConditionsItem = GetStructType<{
+  ConditionComparance: EConditionComparance;
+  ConditionType: EQuestConditionType;
+  ItemPrototypeSID: string;
+  NumericValue: number;
+  TargetCharacter: string;
+  TargetItemContainer: string;
+  TargetPoint: AIGlobalRelativeLocation;
+  WithEquipped: boolean;
+  WithInventory: boolean;
+}> &
+  GetStructType<QuestNodePrototypeConditionsItemItem[]>;
 
 export type QuestNodePrototypeConditionsItemItem = GetStructType<{
   AITarget: string;
@@ -10565,22 +10549,21 @@ export type ScriptScriptsArrayItem = GetStructType<{
   ScriptsSubArray: NPCPrototypeSkills;
 }>;
 
-export type SettingsVariablesPC = GetStructType<
-  {
-    AimAssistMagnetismModifier: number;
-    AimAssistSnappingModifier: number;
-    AimAssistStickinessModifier: number;
-    AimAssistTrackingModifier: number;
-    LeftThumbstick: SettingsVariablesPCLeftTrigger;
-    LeftTrigger: SettingsVariablesPCLeftTrigger;
-    RightThumbstick: SettingsVariablesPCLeftTrigger;
-    RightTrigger: SettingsVariablesPCLeftTrigger;
-    SnappingAutomaticTargetChangeEnabled: boolean;
-    SnappingCameraMovementToleranceEnabled: boolean;
-    SnappingCameraRadiusToleranceEnabled: boolean;
-    SnappingTime: number;
-  } & SettingsVariablesPCLookSensitivityCurveKeysItem[]
->;
+export type SettingsVariablesPC = GetStructType<{
+  AimAssistMagnetismModifier: number;
+  AimAssistSnappingModifier: number;
+  AimAssistStickinessModifier: number;
+  AimAssistTrackingModifier: number;
+  LeftThumbstick: SettingsVariablesPCLeftTrigger;
+  LeftTrigger: SettingsVariablesPCLeftTrigger;
+  RightThumbstick: SettingsVariablesPCLeftTrigger;
+  RightTrigger: SettingsVariablesPCLeftTrigger;
+  SnappingAutomaticTargetChangeEnabled: boolean;
+  SnappingCameraMovementToleranceEnabled: boolean;
+  SnappingCameraRadiusToleranceEnabled: boolean;
+  SnappingTime: number;
+}> &
+  GetStructType<SettingsVariablesPCLookSensitivityCurveKeysItem[]>;
 
 export type SettingsVariablesPCLeftTrigger = GetStructType<{
   LowerThreshold: number;
@@ -10597,187 +10580,181 @@ export type SettingsVariablesPCLookSensitivityCurveKeysItem = GetStructType<{
   Value: number;
 }>;
 
-export type SettingsVariablesPS5Base = GetStructType<
-  {
-    AimAssistMagnetismModifier: number;
-    AimAssistSnappingModifier: number;
-    AimAssistStickinessModifier: number;
-    AimAssistTrackingModifier: number;
-    LeftThumbstick: SettingsVariablesPCLeftTrigger;
-    LeftTrigger: SettingsVariablesPCLeftTrigger;
-    RightThumbstick: SettingsVariablesPCLeftTrigger;
-    RightTrigger: SettingsVariablesPCLeftTrigger;
-    SnappingAutomaticTargetChangeEnabled: boolean;
-    SnappingCameraMovementToleranceEnabled: boolean;
-    SnappingCameraRadiusToleranceEnabled: boolean;
-    SnappingTime: number;
-  } & SettingsVariablesPCLookSensitivityCurveKeysItem[]
->;
+export type SettingsVariablesPS5Base = GetStructType<{
+  AimAssistMagnetismModifier: number;
+  AimAssistSnappingModifier: number;
+  AimAssistStickinessModifier: number;
+  AimAssistTrackingModifier: number;
+  LeftThumbstick: SettingsVariablesPCLeftTrigger;
+  LeftTrigger: SettingsVariablesPCLeftTrigger;
+  RightThumbstick: SettingsVariablesPCLeftTrigger;
+  RightTrigger: SettingsVariablesPCLeftTrigger;
+  SnappingAutomaticTargetChangeEnabled: boolean;
+  SnappingCameraMovementToleranceEnabled: boolean;
+  SnappingCameraRadiusToleranceEnabled: boolean;
+  SnappingTime: number;
+}> &
+  GetStructType<SettingsVariablesPCLookSensitivityCurveKeysItem[]>;
 
-export type SettingsVariablesPS5Pro = GetStructType<
-  {
-    AimAssistMagnetismModifier: number;
-    AimAssistSnappingModifier: number;
-    AimAssistStickinessModifier: number;
-    AimAssistTrackingModifier: number;
-    LeftThumbstick: SettingsVariablesPCLeftTrigger;
-    LeftTrigger: SettingsVariablesPCLeftTrigger;
-    RightThumbstick: SettingsVariablesPCLeftTrigger;
-    RightTrigger: SettingsVariablesPCLeftTrigger;
-    SnappingAutomaticTargetChangeEnabled: boolean;
-    SnappingCameraMovementToleranceEnabled: boolean;
-    SnappingCameraRadiusToleranceEnabled: boolean;
-    SnappingTime: number;
-  } & SettingsVariablesPCLookSensitivityCurveKeysItem[]
->;
+export type SettingsVariablesPS5Pro = GetStructType<{
+  AimAssistMagnetismModifier: number;
+  AimAssistSnappingModifier: number;
+  AimAssistStickinessModifier: number;
+  AimAssistTrackingModifier: number;
+  LeftThumbstick: SettingsVariablesPCLeftTrigger;
+  LeftTrigger: SettingsVariablesPCLeftTrigger;
+  RightThumbstick: SettingsVariablesPCLeftTrigger;
+  RightTrigger: SettingsVariablesPCLeftTrigger;
+  SnappingAutomaticTargetChangeEnabled: boolean;
+  SnappingCameraMovementToleranceEnabled: boolean;
+  SnappingCameraRadiusToleranceEnabled: boolean;
+  SnappingTime: number;
+}> &
+  GetStructType<SettingsVariablesPCLookSensitivityCurveKeysItem[]>;
 
-export type SettingsVariablesWin64 = GetStructType<
-  {
-    AimAssistMagnetismModifier: number;
-    AimAssistSnappingModifier: number;
-    AimAssistStickinessModifier: number;
-    AimAssistTrackingModifier: number;
-    LeftThumbstick: SettingsVariablesPCLeftTrigger;
-    LeftTrigger: SettingsVariablesPCLeftTrigger;
-    RightThumbstick: SettingsVariablesPCLeftTrigger;
-    RightTrigger: SettingsVariablesPCLeftTrigger;
-    SnappingAutomaticTargetChangeEnabled: boolean;
-    SnappingCameraMovementToleranceEnabled: boolean;
-    SnappingCameraRadiusToleranceEnabled: boolean;
-    SnappingTime: number;
-  } & SettingsVariablesPCLookSensitivityCurveKeysItem[]
->;
+export type SettingsVariablesWin64 = GetStructType<{
+  AimAssistMagnetismModifier: number;
+  AimAssistSnappingModifier: number;
+  AimAssistStickinessModifier: number;
+  AimAssistTrackingModifier: number;
+  LeftThumbstick: SettingsVariablesPCLeftTrigger;
+  LeftTrigger: SettingsVariablesPCLeftTrigger;
+  RightThumbstick: SettingsVariablesPCLeftTrigger;
+  RightTrigger: SettingsVariablesPCLeftTrigger;
+  SnappingAutomaticTargetChangeEnabled: boolean;
+  SnappingCameraMovementToleranceEnabled: boolean;
+  SnappingCameraRadiusToleranceEnabled: boolean;
+  SnappingTime: number;
+}> &
+  GetStructType<SettingsVariablesPCLookSensitivityCurveKeysItem[]>;
 
-export type SettingsVariablesXSS = GetStructType<
-  {
-    AimAssistMagnetismModifier: number;
-    AimAssistSnappingModifier: number;
-    AimAssistStickinessModifier: number;
-    AimAssistTrackingModifier: number;
-    LeftThumbstick: SettingsVariablesPCLeftTrigger;
-    LeftTrigger: SettingsVariablesPCLeftTrigger;
-    RightThumbstick: SettingsVariablesPCLeftTrigger;
-    RightTrigger: SettingsVariablesPCLeftTrigger;
-    SnappingAutomaticTargetChangeEnabled: boolean;
-    SnappingCameraMovementToleranceEnabled: boolean;
-    SnappingCameraRadiusToleranceEnabled: boolean;
-    SnappingTime: number;
-  } & SettingsVariablesPCLookSensitivityCurveKeysItem[]
->;
+export type SettingsVariablesXSS = GetStructType<{
+  AimAssistMagnetismModifier: number;
+  AimAssistSnappingModifier: number;
+  AimAssistStickinessModifier: number;
+  AimAssistTrackingModifier: number;
+  LeftThumbstick: SettingsVariablesPCLeftTrigger;
+  LeftTrigger: SettingsVariablesPCLeftTrigger;
+  RightThumbstick: SettingsVariablesPCLeftTrigger;
+  RightTrigger: SettingsVariablesPCLeftTrigger;
+  SnappingAutomaticTargetChangeEnabled: boolean;
+  SnappingCameraMovementToleranceEnabled: boolean;
+  SnappingCameraRadiusToleranceEnabled: boolean;
+  SnappingTime: number;
+}> &
+  GetStructType<SettingsVariablesPCLookSensitivityCurveKeysItem[]>;
 
-export type SettingsVariablesXSX = GetStructType<
-  {
-    AimAssistMagnetismModifier: number;
-    AimAssistSnappingModifier: number;
-    AimAssistStickinessModifier: number;
-    AimAssistTrackingModifier: number;
-    LeftThumbstick: SettingsVariablesPCLeftTrigger;
-    LeftTrigger: SettingsVariablesPCLeftTrigger;
-    RightThumbstick: SettingsVariablesPCLeftTrigger;
-    RightTrigger: SettingsVariablesPCLeftTrigger;
-    SnappingAutomaticTargetChangeEnabled: boolean;
-    SnappingCameraMovementToleranceEnabled: boolean;
-    SnappingCameraRadiusToleranceEnabled: boolean;
-    SnappingTime: number;
-  } & SettingsVariablesPCLookSensitivityCurveKeysItem[]
->;
+export type SettingsVariablesXSX = GetStructType<{
+  AimAssistMagnetismModifier: number;
+  AimAssistSnappingModifier: number;
+  AimAssistStickinessModifier: number;
+  AimAssistTrackingModifier: number;
+  LeftThumbstick: SettingsVariablesPCLeftTrigger;
+  LeftTrigger: SettingsVariablesPCLeftTrigger;
+  RightThumbstick: SettingsVariablesPCLeftTrigger;
+  RightTrigger: SettingsVariablesPCLeftTrigger;
+  SnappingAutomaticTargetChangeEnabled: boolean;
+  SnappingCameraMovementToleranceEnabled: boolean;
+  SnappingCameraRadiusToleranceEnabled: boolean;
+  SnappingTime: number;
+}> &
+  GetStructType<SettingsVariablesPCLookSensitivityCurveKeysItem[]>;
 
-export type SingletonConstant = GetStructType<
-  {
-    Army: SingletonConstantArmy;
-    Bandits: CoreVariableTorso;
-    bDebugLogAssetLoading: boolean;
-    CallPlayer: number;
-    Chatter: number;
-    CloudOpacity: number;
-    CloudSpeed: number;
-    Combat_Action_Cover: number;
-    Combat_Action_Detour: number;
-    Combat_Action_EnemyDead: number;
-    Combat_Action_EnemyGrenade: number;
-    Combat_Action_EnemyHit: number;
-    Combat_Action_FireSupression: number;
-    Combat_Action_Flank: number;
-    Combat_Action_FriendlyDead: number;
-    Combat_Action_FriendlyFire: number;
-    Combat_Action_FriendlyGrenade: number;
-    Combat_Action_FriendlyHit: number;
-    Combat_Action_Move: number;
-    Combat_Action_Reload: number;
-    Combat_EnemyFound: number;
-    Combat_EnemyRetreat: number;
-    Combat_EnemySearch: number;
-    Combat_Over: number;
-    Combat_SearchEnd: number;
-    Combat_SelfRetreat: number;
-    Combat_Start: number;
-    Combat_Threats_AlertedSearch: number;
-    Combat_Threats_AlertedSearchEnd: number;
-    Combat_Threats_EnemySearch: number;
-    Combat_Threats_ThreatDetected: number;
-    Combat_Wounded_GoingToHeal: number;
-    Combat_Wounded_Grunt_HealReceive: number;
-    Combat_Wounded_Knocked: number;
-    Combat_Zombie_Attack: number;
-    Combat_Zombie_Moan: number;
-    DefeatComment: number;
-    Dualshock4: SingletonConstantKeyboard;
-    Emission_LeaderEnd: number;
-    Emission_LeaderStart: number;
-    FreeStalkers: SingletonConstantArmy;
-    Interact_Friendly: number;
-    Interact_Neutral: number;
-    Interact_NonFriendly: number;
-    Joke: number;
-    Keyboard: SingletonConstantKeyboard;
-    Latitude: number;
-    LightSourceFadingDurationHoursOnDayNightChange: number;
-    Longitude: number;
-    Monolith: CoreVariableTorso;
-    MoonLightMaxBrightness: number;
-    NorthOffsetAngle: number;
-    NotifyExpireDuration: number;
-    NotifyFadeInDuration: number;
-    NotifyFadeOutDuration: number;
-    Peaceful_CorpseHubComment: number;
-    Peaceful_DropCorpse: number;
-    Peaceful_LootingEnemyCorpse: number;
-    Peaceful_LootingFriendlyCorpse: number;
-    PointLight: SingletonConstantPointLight;
-    ReflectionCubemapMipSize: number;
-    ReflectionCubemapResolution: number;
-    ReflectionFloorHeight: number;
-    ReflectionManagerTickTime: number;
-    ReflectionNonGeneratedLimit: number;
-    ReflectionSphereGlobalGridDepth: number;
-    ReflectionSphereGlobalGridHeight: number;
-    ReflectionSphereGlobalGridWidth: number;
-    ReflectionSphereGridLoadCoef: number;
-    ReflectionSphereGridSizeX: number;
-    ReflectionSphereGridSizeY: number;
-    ReflectionSphereGridSizeZ: number;
-    ReflectionSphereGridUnloadCoef: number;
-    ReflectionSphereLocalGridDepth: number;
-    ReflectionSphereLocalGridHeight: number;
-    ReflectionSphereLocalGridWidth: number;
-    ReflectionSpherePoolMaxSize: number;
-    ReflectionSphereRadius: number;
-    ReflectionUpdateDistancesSqr: SingletonConstantReflectionUpdateDistancesSqr;
-    RunOn: number;
-    SpeechEventCooldown: SingletonConstantSpeechEventCooldown;
-    SpotLight: SingletonConstantSpotLight;
-    StarsBrightness: number;
-    StartDay: number;
-    StartHour: number;
-    StartMinute: number;
-    StartMonth: number;
-    StartSecond: number;
-    StartYear: number;
-    SunLightMaxBrightness: number;
-    TimeZone: number;
-    Zombie: SingletonConstantZombie;
-  } & (EDialogEventType | SingletonConstantSpotLightIntensityItem)[]
->;
+export type SingletonConstant = GetStructType<{
+  Army: SingletonConstantArmy;
+  Bandits: CoreVariableTorso;
+  bDebugLogAssetLoading: boolean;
+  CallPlayer: number;
+  Chatter: number;
+  CloudOpacity: number;
+  CloudSpeed: number;
+  Combat_Action_Cover: number;
+  Combat_Action_Detour: number;
+  Combat_Action_EnemyDead: number;
+  Combat_Action_EnemyGrenade: number;
+  Combat_Action_EnemyHit: number;
+  Combat_Action_FireSupression: number;
+  Combat_Action_Flank: number;
+  Combat_Action_FriendlyDead: number;
+  Combat_Action_FriendlyFire: number;
+  Combat_Action_FriendlyGrenade: number;
+  Combat_Action_FriendlyHit: number;
+  Combat_Action_Move: number;
+  Combat_Action_Reload: number;
+  Combat_EnemyFound: number;
+  Combat_EnemyRetreat: number;
+  Combat_EnemySearch: number;
+  Combat_Over: number;
+  Combat_SearchEnd: number;
+  Combat_SelfRetreat: number;
+  Combat_Start: number;
+  Combat_Threats_AlertedSearch: number;
+  Combat_Threats_AlertedSearchEnd: number;
+  Combat_Threats_EnemySearch: number;
+  Combat_Threats_ThreatDetected: number;
+  Combat_Wounded_GoingToHeal: number;
+  Combat_Wounded_Grunt_HealReceive: number;
+  Combat_Wounded_Knocked: number;
+  Combat_Zombie_Attack: number;
+  Combat_Zombie_Moan: number;
+  DefeatComment: number;
+  Dualshock4: SingletonConstantKeyboard;
+  Emission_LeaderEnd: number;
+  Emission_LeaderStart: number;
+  FreeStalkers: SingletonConstantArmy;
+  Interact_Friendly: number;
+  Interact_Neutral: number;
+  Interact_NonFriendly: number;
+  Joke: number;
+  Keyboard: SingletonConstantKeyboard;
+  Latitude: number;
+  LightSourceFadingDurationHoursOnDayNightChange: number;
+  Longitude: number;
+  Monolith: CoreVariableTorso;
+  MoonLightMaxBrightness: number;
+  NorthOffsetAngle: number;
+  NotifyExpireDuration: number;
+  NotifyFadeInDuration: number;
+  NotifyFadeOutDuration: number;
+  Peaceful_CorpseHubComment: number;
+  Peaceful_DropCorpse: number;
+  Peaceful_LootingEnemyCorpse: number;
+  Peaceful_LootingFriendlyCorpse: number;
+  PointLight: SingletonConstantPointLight;
+  ReflectionCubemapMipSize: number;
+  ReflectionCubemapResolution: number;
+  ReflectionFloorHeight: number;
+  ReflectionManagerTickTime: number;
+  ReflectionNonGeneratedLimit: number;
+  ReflectionSphereGlobalGridDepth: number;
+  ReflectionSphereGlobalGridHeight: number;
+  ReflectionSphereGlobalGridWidth: number;
+  ReflectionSphereGridLoadCoef: number;
+  ReflectionSphereGridSizeX: number;
+  ReflectionSphereGridSizeY: number;
+  ReflectionSphereGridSizeZ: number;
+  ReflectionSphereGridUnloadCoef: number;
+  ReflectionSphereLocalGridDepth: number;
+  ReflectionSphereLocalGridHeight: number;
+  ReflectionSphereLocalGridWidth: number;
+  ReflectionSpherePoolMaxSize: number;
+  ReflectionSphereRadius: number;
+  ReflectionUpdateDistancesSqr: SingletonConstantReflectionUpdateDistancesSqr;
+  RunOn: number;
+  SpeechEventCooldown: SingletonConstantSpeechEventCooldown;
+  SpotLight: SingletonConstantSpotLight;
+  StarsBrightness: number;
+  StartDay: number;
+  StartHour: number;
+  StartMinute: number;
+  StartMonth: number;
+  StartSecond: number;
+  StartYear: number;
+  SunLightMaxBrightness: number;
+  TimeZone: number;
+  Zombie: SingletonConstantZombie;
+}> &
+  GetStructType<(EDialogEventType | SingletonConstantSpotLightIntensityItem)[]>;
 
 export type SingletonConstantActions = GetStructType<
   SingletonConstantActionsItem[]
@@ -11063,11 +11040,10 @@ export type SpawnActorPrototypeAnomaliesPresets = GetStructType<
   SpawnActorPrototypeAnomaliesPresetsItem[]
 >;
 
-export type SpawnActorPrototypeAnomaliesPresetsItem = GetStructType<
-  {
-    AnomaliesSpawnData: SpawnActorPrototypeAnomaliesSpawnData;
-  } & string[]
->;
+export type SpawnActorPrototypeAnomaliesPresetsItem = GetStructType<{
+  AnomaliesSpawnData: SpawnActorPrototypeAnomaliesSpawnData;
+}> &
+  GetStructType<string[]>;
 
 export type SpawnActorPrototypeAnomaliesSpawnData = GetStructType<
   SpawnActorPrototypeAnomaliesSpawnDataItem[]
@@ -11304,13 +11280,12 @@ export type SpawnActorPrototypeSpawnSettingsPerPlayerRanks = GetStructType<{
 
 export type SpawnActorPrototypeSquadMembersQuestSIDs = StringArray;
 
-export type SpawnActorPrototypeVolumes = GetStructType<
-  {
-    LairCoreVolumes: SingletonConstantArmy;
-    LairTerritoryVolumes: SpawnActorPrototypeLairTerritoryVolumes;
-    NavModifierVolumes: UpdatePopupPrototypeContentData;
-  } & SpawnActorPrototypeVolumesItem[]
->;
+export type SpawnActorPrototypeVolumes = GetStructType<{
+  LairCoreVolumes: SingletonConstantArmy;
+  LairTerritoryVolumes: SpawnActorPrototypeLairTerritoryVolumes;
+  NavModifierVolumes: UpdatePopupPrototypeContentData;
+}> &
+  GetStructType<SpawnActorPrototypeVolumesItem[]>;
 
 export type SpawnActorPrototypeVolumesItem = GetStructType<{
   bShowMarker: boolean;
@@ -12257,13 +12232,12 @@ export type WeatherPrototypeWeatherTransitionsItem = GetStructType<{
   WeatherPrototypeSID: string;
 }>;
 
-export type WeatherSelectionPrototype = GetStructType<
-  {
-    EmissionPrototypeSID: string;
-    Priority: number;
-    SID: string;
-  } & Record<WeatherSelection, WeatherSelectionPrototypeFogy>
->;
+export type WeatherSelectionPrototype = GetStructType<{
+  EmissionPrototypeSID: string;
+  Priority: number;
+  SID: string;
+}> &
+  GetStructType<Record<WeatherSelection, WeatherSelectionPrototypeFogy>>;
 
 export type WeatherSelectionPrototypeFogy = GetStructType<{
   bAllowInDialogueTransition: boolean;
