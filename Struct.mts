@@ -32,7 +32,11 @@ export type GetStructType<In> =
   In extends Array<any>
     ? Struct & { [key: `${number}`]: GetStructType<In[typeof key]> }
     : In extends Record<any, any>
-      ? Struct & { [key in keyof In]: GetStructType<In[key]> }
+      ? Struct & {
+          [key in keyof In]: key extends "__internal__"
+            ? Refs
+            : GetStructType<In[key]>;
+        }
       : In extends string
         ? In
         : In extends number
