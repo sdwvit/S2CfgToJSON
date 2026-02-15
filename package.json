@@ -24,7 +24,8 @@
   "type": "module",
   "main": "Struct.mts",
   "scripts": {
-    "test": "vitest"
+    "test": "vitest",
+    "release:patch": "npm version patch && npm i && npm publish"
   },
   "devDependencies": {
     "@types/node": "^24.5.2",

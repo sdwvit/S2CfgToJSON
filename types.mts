@@ -10026,7 +10026,7 @@ export type QuestNodePrototypeTargetLocations = GetStructType<
 
 export type QuestNodePrototypeTechnical = GetStructType<{
   BrokenGameDataFilter: EBrokenGameDataFilter;
-  Launchers: string;
+  Launchers: QuestNodePrototypeLaunchers;
   LaunchOnQuestStart: boolean;
   NodePrototypeVersion: number;
   NodeType: "EQuestNodeType::Technical" & EQuestNodeType;
