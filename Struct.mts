@@ -11,10 +11,10 @@ export type Internal =
   | "forEach"
   | "filter"
   | "map"
-  | "fromJson"
   | "toJson"
-  | "toString"
-  | "fromString";
+  | "toString";
+
+export type InternalPlus = Internal | "fromString" | "fromJson";
 
 export interface DefaultEntries {
   bpatch?: boolean;
@@ -33,8 +33,8 @@ export type GetStructType<In> =
     ? Struct & { [key: `${number}`]: GetStructType<In[typeof key]> }
     : In extends Record<any, any>
       ? Struct & {
-          [key in keyof In]: key extends "__internal__"
-            ? Refs
+          [key in keyof In]: key extends Internal
+            ? Struct[key]
             : GetStructType<In[key]>;
         }
       : In extends string
@@ -90,7 +90,7 @@ const REF_INTERNAL_PROPS_INV = new Map(
  * This file is part of the Stalker 2 Modding Tools project.
  * This is a base class for all structs.
  */
-export class Struct {
+export class Struct implements Record<Internal, any> {
   __internal__: Refs = new Refs();
 
   /**
@@ -174,7 +174,7 @@ export class Struct {
   }
 
   entries<
-    K extends Exclude<keyof this, Internal>,
+    K extends Exclude<keyof this, InternalPlus>,
     V extends (typeof this)[K],
   >() {
     return Object.entries(this).filter(
@@ -182,9 +182,10 @@ export class Struct {
     ) as [K, V][];
   }
 
-  forEach<K extends Exclude<keyof this, Internal>, V extends (typeof this)[K]>(
-    callback: ([key, value]: [K, V], i: number, arr: [K, V][]) => void,
-  ): void {
+  forEach<
+    K extends Exclude<keyof this, InternalPlus>,
+    V extends (typeof this)[K],
+  >(callback: ([key, value]: [K, V], i: number, arr: [K, V][]) => void): void {
     this.entries().forEach(([key, value], i, arr) =>
       callback([key as K, value as V], i, arr as any),
     );
@@ -195,7 +196,7 @@ export class Struct {
    * @param callback
    */
   filter<
-    K extends Exclude<keyof this, Internal>,
+    K extends Exclude<keyof this, InternalPlus>,
     V extends (typeof this)[K],
     S extends this,
   >(callback: (value: [K, V], index: number, array: [K, V][]) => boolean): S {
@@ -212,7 +213,7 @@ export class Struct {
    * Maps the struct entries based on a callback function. Returns a copy.
    * @param callback
    */
-  map<K extends Exclude<keyof this, Internal>, V extends (typeof this)[K]>(
+  map<K extends Exclude<keyof this, InternalPlus>, V extends (typeof this)[K]>(
     callback: ([key, value]: [K, V], i: number, arr: [K, V][]) => V,
   ): this {
     const clone = this.clone();

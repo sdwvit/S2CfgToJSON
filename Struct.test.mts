@@ -6,6 +6,8 @@ import {
   Struct,
   ArmorPrototype,
   Refs,
+  QuestNodePrototypeRandom,
+  QuestNodePrototypeLaunchers,
 } from "./Struct.mjs";
 import fs from "node:fs";
 
@@ -481,3 +483,6 @@ struct.end`);
 const MyRank: ERank = "ERank::Experienced, ERank::Veteran, ERank::Master";
 // noinspection BadExpressionStatementJS
 ({}) as ArmorPrototype["MeshGenerator"];
+
+(new Struct() as QuestNodePrototypeRandom).Launchers =
+  {} as QuestNodePrototypeLaunchers;
