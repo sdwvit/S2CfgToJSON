@@ -207,6 +207,7 @@ import {
   ScenarioGroup,
   SID,
   StringArray,
+  VariableValue,
   WeaponShootDistance,
   WeatherSelection,
 } from "./utility-types.mts";
@@ -3957,7 +3958,7 @@ export type DialogPrototypeConditionsItemItem = GetStructType<{
   TargetPlaceholder: string;
   TargetPoint: AIGlobalRelativeLocation;
   Trigger: string;
-  VariableValue: boolean;
+  VariableValue: VariableValue;
   Weather: EWeather;
   WithEquipped: boolean;
   WithInventory: boolean;
@@ -3974,7 +3975,7 @@ export type DialogPrototypeDialogActionsItem = GetStructType<{
   DialogActionParam: DialogPrototypeMoney;
   GlobalVariablePrototypeSID: string;
   ItemsCount: DialogPrototypeMoney;
-  VariableValue: number;
+  VariableValue: VariableValue;
   WithEquipped: boolean;
 }>;
 
@@ -4010,14 +4011,14 @@ export type DialogPrototypeGestureTiming = GetStructType<(number | string)[]>;
 
 export type DialogPrototypeItemPrototypeSID = GetStructType<{
   VariableType: EGlobalVariableType;
-  VariableValue: string;
+  VariableValue: VariableValue;
 }>;
 
 export type DialogPrototypeLocalizedSequences = StringArray;
 
 export type DialogPrototypeMoney = GetStructType<{
   VariableType: EGlobalVariableType;
-  VariableValue: number;
+  VariableValue: VariableValue;
 }>;
 
 export type DialogPrototypeNextDialogOptions = GetStructType<
@@ -5218,7 +5219,7 @@ export type InfotopicPrototypeBlockingGlobalVariables = GetStructType<
 
 export type InfotopicPrototypeBlockingGlobalVariablesItem = GetStructType<{
   GlobalVariablePrototypeSID: string;
-  GlobalVariableValue: number;
+  GlobalVariableValue: VariableValue;
 }>;
 
 export type InfotopicPrototypeBlockingNPCs = GetStructType<{
@@ -8550,7 +8551,7 @@ export type QuestNodePrototypeConditionsItemItem = GetStructType<{
   TargetPoint: AIGlobalRelativeLocation;
   ThreatAwareness: EThreatAwareness;
   Trigger: string;
-  VariableValue: boolean;
+  VariableValue: VariableValue;
   Weather: EWeather;
   WithBodyArmor: boolean;
   WithEquipped: boolean;
@@ -9652,7 +9653,7 @@ export type QuestNodePrototypeSetGlobalVariable = GetStructType<{
   QuestSID: string;
   Repeatable: boolean;
   SID: string;
-  VariableValue: boolean;
+  VariableValue: VariableValue;
 }>;
 
 export type QuestNodePrototypeSetHubOwner = GetStructType<{

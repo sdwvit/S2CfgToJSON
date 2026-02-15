@@ -29,6 +29,7 @@ export type Caliber =
   | "AVOG"
   | "None";
 
+export type VariableValue = boolean | number | string;
 export type WeaponShootDistance = "Long" | "Medium" | "Short";
 export type SID = string;
 export type Rank = "Newbie" | "Experienced" | "Veteran" | "Master";
