@@ -129,7 +129,7 @@ export class Struct implements Record<Internal, any> {
     return patch as this;
   }
 
-  removeNode(key: keyof this) {
+  removeNode(key: Exclude<keyof this, Symbol>) {
     if (this.__internal__.bpatch !== true) {
       throw new Error(
         "Cannot remove node from non-patch struct. Use fork() first.",
@@ -138,7 +138,10 @@ export class Struct implements Record<Internal, any> {
     if (this[key] instanceof Struct) {
       this[key].__internal__.removenode = true;
     } else {
-      this[key] = REMOVE_NODE as any;
+      console.warn(
+        `Attempting to remove node on non-struct value. Old value: '${this.__internal__.rawName}.${key}' = ${this[key]}. Assigning 'empty' instead.`,
+      );
+      this[key] = "empty" as any;
     }
     return this;
   }
