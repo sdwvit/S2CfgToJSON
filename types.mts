@@ -2381,13 +2381,7 @@ export type CharacterWeaponSettingsPrototype = GetStructType<{
 export type CharacterWeaponSettingsPrototypeCombatSynchronizationScore =
   GetStructType<NPCWeaponSettingsPrototypeCombatSynchronizationScoreItem[]>;
 
-export type CluePrototype = GetStructType<{
-  DefaultValue: string;
-  Description: string;
-  ID: number;
-  SID: string;
-  Type: EGlobalVariableType;
-}>;
+export type CluePrototype = GlobalVariablePrototype;
 
 export type CombatSynchronizationPrototype = GetStructType<
   { [k in Rank]: CombatSynchronizationPrototypeMaster } & {
@@ -11306,8 +11300,10 @@ export type SpawnActorPrototypeVolumetricCoverRestrictions = GetStructType<{
 
 export type SpawnActorPrototypeWeather = GetStructType<EWeather[]>;
 
-export type SQ95_GlobalVariablePrototype = GetStructType<{
-  DefaultValue: string;
+export type GlobalVariablePrototype = GetStructType<{
+  DefaultValue: VariableValue;
+  Description: string;
+  ID: number;
   SID: string;
   Type: EGlobalVariableType;
 }>;
