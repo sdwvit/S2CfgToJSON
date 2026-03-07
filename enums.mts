@@ -241,14 +241,11 @@ export type EBoltActionWeaponState = `EBoltActionWeaponState::${
 
 export type EBoolProviderType = `EBoolProviderType::${
   | "And"
-  | "And provider - Player has Experienced rank AND at least 500 Reputation with Duty"
   | "Constant"
   | "FactionRelation"
   | "None"
   | "Not"
-  | "Not provider - Player doesn't have Experienced rank and has less than 500 Reputation with Duty"
   | "Or"
-  | "Or provider - Player has Experienced rank OR at least 500 Reputation with Duty"
   | "PlayerRank"
   | "PlayerUnderRoof"
   | "TargetHasEffectBoolProvider"
@@ -263,8 +260,7 @@ export type EBrokenGameDataFilter =
 
 export type ECalculateSignificance = `ECalculateSignificance::${"ScreenSize"}`;
 
-export type ECameraShakeEffectSubtype =
-  `ECameraShakeEffectSubtype::${"None // MP: There is no camera shake asset mentioned, so I will disable it for now"}`;
+export type ECameraShakeEffectSubtype = `ECameraShakeEffectSubtype::${"None"}`;
 
 export type ECameraShakeGroupType = `ECameraShakeGroupType::${
   | "MaxCount"
@@ -382,12 +378,10 @@ export type EContextualAgentType = `EContextualAgentType::${
 export type ECrosshairType = `ECrosshairType::${
   | "Arc"
   | "Circle"
-  | "Circle // Circle Point Cross Arc"
   | "Cross"
-  | "Cross // Circle Point Cross Arc"
   | "Empty"
   | "Point"
-  | "Point // Circle Point Cross Arc"}`;
+}`;
 
 export type ECrosshairTypeSetting = `ECrosshairTypeSetting::${"Regular"}`;
 
@@ -1460,10 +1454,12 @@ export type EQuestNodeType = `EQuestNodeType::${
   | "AchievementUnlock"
   | "ActivateAnomaly"
   | "ActivateInteractableObject"
+  | "ActivateDataLayerCombination"
   | "ActivateRestrictor"
   | "AddNote"
   | "AddOrRemoveFromSquad"
   | "AddTechnicianSkillOrUpgrade"
+  | "AddTutorialToPDA"
   | "BridgeCleanUp"
   | "BridgeEvent"
   | "CancelAllSideQuests"
@@ -1517,7 +1513,9 @@ export type EQuestNodeType = `EQuestNodeType::${
   | "OnPlayerGetItemEvent"
   | "OnPlayerLostItemEvent"
   | "OnPlayerNoticedEvent"
+  | "OnPlayerRankReachedEvent"
   | "OnSignalReceived"
+  | "OnUpgradeInstallEvent"
   | "OnTickEvent"
   | "PlayEffect"
   | "PlayPostProcess"
@@ -1543,6 +1541,7 @@ export type EQuestNodeType = `EQuestNodeType::${
   | "SetGlobalVariable"
   | "SetHubOwner"
   | "SetItemGenerator"
+  | "SetLocationName"
   | "SetJournal"
   | "SetMeshGenerator"
   | "SetNPCSequentialAbility"
@@ -1861,8 +1860,7 @@ export type EUpgradeTargetPartType = `EUpgradeTargetPartType::${
   | "Handguard"
   | "None"
   | "PistolGrip"
-  | "Stock"
-  | "Stock "}`;
+  | "Stock"}`;
 
 export type EUpgradeVerticalPosition = `EUpgradeVerticalPosition::${
   | "Down"
