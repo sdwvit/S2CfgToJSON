@@ -380,8 +380,7 @@ export type ECrosshairType = `ECrosshairType::${
   | "Circle"
   | "Cross"
   | "Empty"
-  | "Point"
-}`;
+  | "Point"}`;
 
 export type ECrosshairTypeSetting = `ECrosshairTypeSetting::${"Regular"}`;
 
@@ -1676,8 +1675,9 @@ export type EScenarioBranch = `EScenarioBranch::${
 export type ESensitivityType = `ESensitivityType::${"Medium"}`;
 
 export type ESettingCategoryType = `ESettingCategoryType::${
-  | "Display = 1"
-  | "Input = 2"}`;
+  | "Display"
+  | "UI"
+  | "Input"}`;
 
 export type ESmartCoverType = `ESmartCoverType::${
   | "BehindTreeCover"
