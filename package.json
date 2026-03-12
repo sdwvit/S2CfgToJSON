@@ -56,7 +56,7 @@
     "build": "node ./scripts/build.mjs",
     "prepublishOnly": "npm run build",
     "test": "vitest",
-    "release:patch": "npm version patch && npm i && npm run build && npm publish"
+    "release:patch": "npm version patch && npm i && npm audit fix && npm run build && npm publish"
   },
   "devDependencies": {
     "@types/node": "^24.5.2",
