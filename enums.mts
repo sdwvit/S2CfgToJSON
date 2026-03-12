@@ -1,6 +1,6 @@
 // noinspection JSUnusedGlobalSymbols
 
-import {
+import type {
   Caliber,
   Experienced,
   FactionGoalType,
@@ -8,7 +8,7 @@ import {
   Newbie,
   Permutations3,
   Veteran,
-} from "./utility-types.mts";
+} from "./utility-types.mjs";
 
 export type PanningRule = `PanningRule::${
   | "PanningRule_Headphones"

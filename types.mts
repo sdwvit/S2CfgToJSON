@@ -1,7 +1,7 @@
 // noinspection JSUnusedGlobalSymbols
 // this file is up to date with game version 1.8
 
-import {
+import type {
   EAIConstraintType,
   EAIMovementPose,
   EALifeDirectorScenarioTarget,
@@ -191,10 +191,10 @@ import {
   EThreatAwareness,
   EConditionCheckType,
   EQuestRewardType,
-} from "./enums.mts";
+} from "./enums.mjs";
 
-import { GetStructType } from "./Struct.mts";
-import {
+import type { GetStructType, Struct } from "./Struct.mjs";
+import type {
   Archetype,
   Caliber,
   EffectConditionalEffect,
@@ -211,7 +211,7 @@ import {
   VariableValue,
   WeaponShootDistance,
   WeatherSelection,
-} from "./utility-types.mts";
+} from "./utility-types.mjs";
 
 export type AbilityPrototype = GetStructType<{
   AbilityPreparationTime: number;
@@ -2577,27 +2577,29 @@ export type ContextualActionNodePrototypeBodyParts = GetStructType<
   EContextualActionBodyPart[]
 >;
 
-export type ContextualActionNodePrototypeConditionalSelectorNodes =
-  GetStructType<ContextualActionNodePrototypeConditionalSelectorNodesItem[]>;
+export interface ContextualActionNodePrototypeConditionalSelectorNodes
+  extends Struct {
+  [key: `${number}`]: ContextualActionNodePrototypeConditionalSelectorNodesItem;
+}
 
-export type ContextualActionNodePrototypeConditionalSelectorNodesItem =
-  GetStructType<{
-    AnimationData: ContextualActionNodePrototypeAnimationData;
-    CanInteractWithPlayer: boolean;
-    Effects: ContextualActionNodePrototypeEffects;
-    Interrupt: ContextualActionNodePrototypeInterrupt;
-    IsValidForQuestDialog: boolean;
-    Need: EContextualActionNeeds;
-    NodeType: EContextualActionNodeType;
-    Preconditions: string;
-    RandomSelectorNodes: ContextualActionNodePrototypeRandomSelectorNodes;
-    Repetitions: ERepetitions;
-    RepetitionsCount: number;
-    SequentialSelectorNodes: ContextualActionNodePrototypeSequentialSelectorNodes;
-    ShouldDisableDialogAnimations: boolean;
-    ShouldPlayerCrouchDuringDialog: boolean;
-    Weights: ContextualActionNodePrototypeWeights;
-  }>;
+export interface ContextualActionNodePrototypeConditionalSelectorNodesItem
+  extends Struct {
+  AnimationData: ContextualActionNodePrototypeAnimationData;
+  CanInteractWithPlayer: boolean;
+  Effects: ContextualActionNodePrototypeEffects;
+  Interrupt: ContextualActionNodePrototypeInterrupt;
+  IsValidForQuestDialog: boolean;
+  Need: EContextualActionNeeds;
+  NodeType: EContextualActionNodeType;
+  Preconditions: string;
+  RandomSelectorNodes: ContextualActionNodePrototypeRandomSelectorNodes;
+  Repetitions: ERepetitions;
+  RepetitionsCount: number;
+  SequentialSelectorNodes: ContextualActionNodePrototypeSequentialSelectorNodes;
+  ShouldDisableDialogAnimations: boolean;
+  ShouldPlayerCrouchDuringDialog: boolean;
+  Weights: ContextualActionNodePrototypeWeights;
+}
 
 export type ContextualActionNodePrototypeDistanceSelectorNodes = GetStructType<
   ContextualActionNodePrototypeDistanceSelectorNodesItem[]
@@ -2684,50 +2686,53 @@ export type ContextualActionNodePrototypePreconditionsItem = GetStructType<{
   Weather: ContextualActionNodePrototypeWeather;
 }>;
 
-export type ContextualActionNodePrototypeRandomSelectorNodes = GetStructType<
-  ContextualActionNodePrototypeRandomSelectorNodesItem[]
->;
+export interface ContextualActionNodePrototypeRandomSelectorNodes
+  extends Struct {
+  [key: `${number}`]: ContextualActionNodePrototypeRandomSelectorNodesItem;
+}
 
-export type ContextualActionNodePrototypeRandomSelectorNodesItem =
-  GetStructType<{
-    AkAudioEvent: NPCPrototypeSkills;
-    AnimationData: ContextualActionNodePrototypeAnimationData;
-    CanInteractWithPlayer: boolean;
-    Effects: string;
-    Interrupt: ContextualActionNodePrototypeInterrupt;
-    IsValidForQuestDialog: boolean;
-    NodeType: EContextualActionNodeType;
-    Preconditions: string;
-    RandomSelectorNodes: ContextualActionNodePrototypeRandomSelectorNodes;
-    Repetitions: ERepetitions;
-    RepetitionsCount: number;
-    SequentialSelectorNodes: ContextualActionNodePrototypeSequentialSelectorNodes;
-    ShouldDisableDialogAnimations: boolean;
-    ShouldPlayerCrouchDuringDialog: boolean;
-    Weights: ContextualActionNodePrototypeWeights;
-  }>;
+export interface ContextualActionNodePrototypeRandomSelectorNodesItem
+  extends Struct {
+  AkAudioEvent: NPCPrototypeSkills;
+  AnimationData: ContextualActionNodePrototypeAnimationData;
+  CanInteractWithPlayer: boolean;
+  Effects: string;
+  Interrupt: ContextualActionNodePrototypeInterrupt;
+  IsValidForQuestDialog: boolean;
+  NodeType: EContextualActionNodeType;
+  Preconditions: string;
+  RandomSelectorNodes: ContextualActionNodePrototypeRandomSelectorNodes;
+  Repetitions: ERepetitions;
+  RepetitionsCount: number;
+  SequentialSelectorNodes: ContextualActionNodePrototypeSequentialSelectorNodes;
+  ShouldDisableDialogAnimations: boolean;
+  ShouldPlayerCrouchDuringDialog: boolean;
+  Weights: ContextualActionNodePrototypeWeights;
+}
 
-export type ContextualActionNodePrototypeSequentialSelectorNodes =
-  GetStructType<ContextualActionNodePrototypeSequentialSelectorNodesItem[]>;
+export interface ContextualActionNodePrototypeSequentialSelectorNodes
+  extends Struct {
+  [key: `${number}`]: ContextualActionNodePrototypeSequentialSelectorNodesItem;
+}
 
-export type ContextualActionNodePrototypeSequentialSelectorNodesItem =
-  GetStructType<{
-    AkAudioEvent: NPCPrototypeSkills;
-    AnimationData: ContextualActionNodePrototypeAnimationData;
-    CanInteractWithPlayer: boolean;
-    ConditionalSelectorNodes: ContextualActionNodePrototypeConditionalSelectorNodes;
-    Effects: string;
-    IsValidForQuestDialog: boolean;
-    NodeType: EContextualActionNodeType;
-    Preconditions: string;
-    RandomSelectorNodes: ContextualActionNodePrototypeRandomSelectorNodes;
-    Repetitions: ERepetitions;
-    RepetitionsCount: number;
-    SequentialSelectorNodes: ContextualActionNodePrototypeSequentialSelectorNodes;
-    ShouldDisableDialogAnimations: boolean;
-    ShouldPlayerCrouchDuringDialog: boolean;
-    Weights: ContextualActionNodePrototypeWeights;
-  }>;
+export interface ContextualActionNodePrototypeSequentialSelectorNodesItem
+  extends Struct {
+  AkAudioEvent: NPCPrototypeSkills;
+  AnimationData: ContextualActionNodePrototypeAnimationData;
+  CanInteractWithPlayer: boolean;
+  ConditionalSelectorNodes: ContextualActionNodePrototypeConditionalSelectorNodes;
+  Effects: string;
+  IsValidForQuestDialog: boolean;
+  NodeType: EContextualActionNodeType;
+  Preconditions: string;
+  RandomSelectorNodes: ContextualActionNodePrototypeRandomSelectorNodes;
+  Repetitions: ERepetitions;
+  RepetitionsCount: number;
+  SequentialSelectorNodes: ContextualActionNodePrototypeSequentialSelectorNodes;
+  ShouldDisableDialogAnimations: boolean;
+  ShouldPlayerCrouchDuringDialog: boolean;
+  Weights: ContextualActionNodePrototypeWeights;
+}
 
 export type ContextualActionNodePrototypeWeather = GetStructType<EWeather[]>;
 
@@ -5038,16 +5043,16 @@ export type GroomGeneratorPrototype = GetStructType<{
   SID: string;
 }>;
 
-export type GroomGeneratorPrototypeAdditionalGrooms = GetStructType<
-  GroomGeneratorPrototypeAdditionalGroomsItem[]
->;
+export interface GroomGeneratorPrototypeAdditionalGrooms extends Struct {
+  [key: `${number}`]: GroomGeneratorPrototypeAdditionalGroomsItem;
+}
 
-export type GroomGeneratorPrototypeAdditionalGroomsItem = GetStructType<{
+export interface GroomGeneratorPrototypeAdditionalGroomsItem extends Struct {
   GroomBindingPath: string;
   GroomPath: string;
   MaterialPath: string;
   Materials: GroomGeneratorPrototypeMaterials;
-}>;
+}
 
 export type GroomGeneratorPrototypeCategory = GetStructType<
   GroomGeneratorPrototypeCategoryItem[]
@@ -5060,32 +5065,32 @@ export type GroomGeneratorPrototypeCategoryItem = GetStructType<{
   Variations: GroomGeneratorPrototypeVariations;
 }>;
 
-export type GroomGeneratorPrototypeCustomData = GetStructType<{
+export interface GroomGeneratorPrototypeCustomData extends Struct {
   ShortHair: GroomGeneratorPrototypeShortHair;
-}> &
-  GetStructType<GroomGeneratorPrototypeCustomDataItem[]>;
+  [key: `${number}`]: GroomGeneratorPrototypeCustomDataItem;
+}
 
-export type GroomGeneratorPrototypeCustomDataItem = GetStructType<{
+export interface GroomGeneratorPrototypeCustomDataItem extends Struct {
   Distribution: ECustomDataDistribution;
   MaterialGroup: string;
   ParameterID: number;
   Variations: GroomGeneratorPrototypeVariations;
-}>;
+}
 
 export type GroomGeneratorPrototypeMaterialInstanceParameters = GetStructType<
   AttachMeshPrototypeMaterialInstanceParametersItem[]
 >;
 
-export type GroomGeneratorPrototypeMaterials = GetStructType<
-  GroomGeneratorPrototypeMaterialsItem[]
->;
+export interface GroomGeneratorPrototypeMaterials extends Struct {
+  [key: `${number}`]: GroomGeneratorPrototypeMaterialsItem;
+}
 
-export type GroomGeneratorPrototypeMaterialsItem = GetStructType<{
+export interface GroomGeneratorPrototypeMaterialsItem extends Struct {
   CustomData: GroomGeneratorPrototypeCustomData;
   MaterialGroup: string;
   MaterialSlot: number;
   Variations: GroomGeneratorPrototypeVariations;
-}>;
+}
 
 export type GroomGeneratorPrototypeShortHair = GetStructType<{
   Distribution: ECustomDataDistribution;
@@ -5102,11 +5107,11 @@ export type GroomGeneratorPrototypeVariationReplacementMapItem = GetStructType<{
   To: number;
 }>;
 
-export type GroomGeneratorPrototypeVariations = GetStructType<
-  GroomGeneratorPrototypeVariationsItem[]
->;
+export interface GroomGeneratorPrototypeVariations extends Struct {
+  [key: `${number}`]: GroomGeneratorPrototypeVariationsItem;
+}
 
-export type GroomGeneratorPrototypeVariationsItem = GetStructType<{
+export interface GroomGeneratorPrototypeVariationsItem extends Struct {
   AdditionalGrooms: GroomGeneratorPrototypeAdditionalGrooms;
   bHasCustomData: boolean;
   CustomData: GroomGeneratorPrototypeCustomData;
@@ -5120,7 +5125,7 @@ export type GroomGeneratorPrototypeVariationsItem = GetStructType<{
   ParameterValue: number;
   VariationIndex: number;
   Weight: number;
-}>;
+}
 
 export type HappyHoursPrototype = GetStructType<{
   HappyHoursRanges: HappyHoursPrototypeHappyHoursRanges;

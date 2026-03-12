@@ -1,4 +1,4 @@
-import { GetStructType } from "./Struct.mts";
+import type { GetStructType } from "./Struct.mjs";
 
 export type WeatherSelection =
   | "CalmBeforeEmission"

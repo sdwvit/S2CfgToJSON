@@ -31,7 +31,7 @@ npm install
 ### Usage
 Import the `Struct` class from `Struct.mts` to parse or generate Stalker 2 config data. For example:
 ```ts
-import { Struct } from './Struct.mts';
+import { Struct } from 's2cfgtojson';
 
 const config = new Struct();
 // Use methods like `toString()` or `fromString()` to process configs

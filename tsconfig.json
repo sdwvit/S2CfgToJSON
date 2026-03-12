@@ -3,6 +3,6 @@
     "esModuleInterop": true,
     "lib": ["es2024"],
     "module": "nodenext",
-    "allowImportingTsExtensions": true
+    "moduleResolution": "nodenext"
   }
 }

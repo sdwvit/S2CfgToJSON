@@ -1,5 +1,5 @@
-export * from "./types.mts";
-export * from "./enums.mts";
+export * from "./types.mjs";
+export * from "./enums.mjs";
 
 export type Internal =
   | "__internal__"
@@ -29,8 +29,8 @@ export interface DefaultEntries {
 }
 
 export type GetStructType<In> =
-  In extends Array<any>
-    ? Struct & { [key: `${number}`]: GetStructType<In[typeof key]> }
+  In extends Array<infer T>
+    ? Struct & { [K in `${number}`]: GetStructType<T> }
     : In extends Record<any, any>
       ? Struct & {
           [key in keyof In]: key extends Internal

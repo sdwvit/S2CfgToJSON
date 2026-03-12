@@ -22,10 +22,41 @@
   "license": "ISC",
   "author": "sdwvit",
   "type": "module",
-  "main": "Struct.mts",
+  "main": "./dist/Struct.mjs",
+  "types": "./dist/Struct.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/Struct.d.ts",
+      "import": "./dist/Struct.mjs",
+      "default": "./dist/Struct.mjs"
+    },
+    "./Struct": {
+      "types": "./dist/Struct.d.ts",
+      "import": "./dist/Struct.mjs"
+    },
+    "./types": {
+      "types": "./dist/types.d.ts",
+      "import": "./dist/types.mjs"
+    },
+    "./enums": {
+      "types": "./dist/enums.d.ts",
+      "import": "./dist/enums.mjs"
+    },
+    "./utility-types": {
+      "types": "./dist/utility-types.d.ts",
+      "import": "./dist/utility-types.mjs"
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist",
+    "readme.md"
+  ],
   "scripts": {
+    "build": "node ./scripts/build.mjs",
+    "prepublishOnly": "npm run build",
     "test": "vitest",
-    "release:patch": "npm version patch && npm i && npm publish"
+    "release:patch": "npm version patch && npm i && npm run build && npm publish"
   },
   "devDependencies": {
     "@types/node": "^24.5.2",
