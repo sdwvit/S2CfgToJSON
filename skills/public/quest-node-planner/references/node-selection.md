@@ -27,6 +27,8 @@ Reach for an event node when the quest should react to something instead of auto
 - `SetJournal`: objective and quest-stage updates
 - `TrackJournal`: tracked objective changes
 - `SendSignal` / `OnSignalReceived`: cross-fragment control
+- journal quest prototype structs
+- global variable definitions or reused variable namespaces
 
 ## Inventory / Reward
 
@@ -34,6 +36,10 @@ Reach for an event node when the quest should react to something instead of auto
 - `ItemRemove`
 - `SetItemGenerator`
 - `GiveCache`
+- money-related conditions or events when affordability or payment gating matters
+- reward generator structs
+- stash and item-generator structs
+- item prototypes when a genuinely new item must exist
 
 ## World / Interaction
 
@@ -56,6 +62,21 @@ Reach for an event node when the quest should react to something instead of auto
 - `SetDialog`
 - dialog-start or infotopic-finish events
 - `SetJournal` for stage reflection after dialog
+- dialog-chain/topic structs when new conversation content must be authored
+
+## Navigation / POI
+
+- `SetJournal` with embedded markers
+- `ShowMarker`
+- `SearchPoint`
+- region or hub data from local world definitions
+- marker prototype structs or reused marker families
+
+## Supporting Content
+
+- quest prototype and container structs when the quest must be registered in a broader quest family
+- NPC prototype or spawn references when the quest depends on a specific giver or target
+- world or support structs only when the quest cannot function by referencing existing data
 
 ## Selection Rule
 

@@ -39,6 +39,12 @@ Observed convention:
 
 Do not assume target fields are interchangeable even when they point at the same logical actor.
 
+## Evidence Rules For IDs
+
+- Prefer concrete IDs found in local `GameLite` files over guessed placeholders.
+- If an actor is found through spawn data, report both the `SpawnedPrototypeSID` and the `PlaceholderActorGuid` when relevant.
+- If a display name cannot be matched to an internal item SID, keep the plan generic and call out the unresolved mapping.
+
 ## Practical Guardrails
 
 - Prefer exact launcher targeting.

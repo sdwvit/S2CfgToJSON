@@ -86,3 +86,50 @@ Use:
 - branch-specific action nodes
 
 This is the standard player-choice pattern.
+
+## Dialog-Driven Quest Surface
+
+Use:
+
+- existing or new accept entry
+- in-progress reminder entry
+- turn-in entry
+- optional decline or cancel entry
+- `OnInfotopicFinishEvent` or another dialog-linked event for state transitions
+
+Treat these as part of the quest contract. The node graph and the dialog surface should agree on which branch accepts, completes, cancels, or defers the quest.
+
+Implementation guidance:
+
+- use a `SetDialog` node when the quest must expose a dialog state directly
+- map `LastPhraseSID` values to named output pins
+- use separate chains or comments for major state transitions when needed
+- use dialog-side `If` nodes or bridge conditions when the dialog itself should react to quest state
+
+## Fetch And Return
+
+Use:
+
+- accept or start event
+- `SetJournal` for the first objective
+- `SetGlobalVariable` or journal-state gate for quest phase
+- `OnPlayerGetItemEvent` for objective acquisition
+- second `SetJournal` for return-to-giver progression
+- dialog or interaction event on the quest giver
+- `If` checking both quest phase and item possession
+- `ItemRemove` for turn-in
+- reward and completion nodes
+
+Optional branches:
+
+- reminder branch when the player talks to the giver too early
+- decline branch before acceptance
+- cancel branch if the player should be allowed to back out after acceptance
+
+Use this pattern when the quest should not spawn the item itself and only needs to track acquisition and delivery.
+
+Reward add-ons:
+
+- `ItemAdd` for direct money-like or item-like payout if locally appropriate
+- `SetItemGenerator` for a packaged reward
+- `GiveCache` when the reward should arrive as a stash reveal
