@@ -6,9 +6,20 @@ Read this file when the user wants to know where new cfg patches and supporting 
 
 Patch files are generated per target cfg family and stored under the mod's `raw/` tree, preserving the `GameLite/GameData` folder family.
 
+The game does not read arbitrary new cfg files. New structs still have to be written into a patch whose target is an existing base cfg file from the relevant family.
+
+For implementation guidance, the exact base cfg filename is mandatory. Do not stop at the family name alone.
+
 Base pattern:
 
 - `Mods/<ModName>/raw/Stalker2/Content/GameLite/GameData/...`
+
+Observed processor behavior from `S2Mods/src/get-cfg-file-processor.mts`:
+
+- it starts from a real source cfg file path
+- it preserves that file's family and base name
+- it writes the patch under a folder derived from the base file name
+- it names the patch from the existing file name, not from the new struct name
 
 ## File Family Placement
 
@@ -40,6 +51,8 @@ Placement rules:
 - add new reward generators in the quest reward or item-generator family
 - add new quest nodes in the quest node family
 - add new items only when existing items cannot satisfy the design
+- for every one of the above, choose an existing base cfg file in that family and place the new structs in that file's patch
+- if the exact base cfg file cannot be resolved quickly, ask the user instead of inventing one
 
 ## Content Grouping
 

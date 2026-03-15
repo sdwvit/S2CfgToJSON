@@ -16,6 +16,7 @@ What to reuse:
 - `LastPhrases` mapped to named outputs
 - multiple dialog phases represented by different chains or comments
 - dialog-side conditional routing using `Bridge` conditions and `LinkedNodePrototypeSID`
+- quest state exposed through dialog availability instead of auto-fired giver conversations
 
 Use this as the main template for:
 
@@ -37,6 +38,7 @@ What to reuse:
 - `LastPhraseSID` mapped back into quest-node outputs
 - multi-step cancel confirmation inside the dialog chain
 - quest completion triggered from the finish phrase
+- turn-in state changes happening after the player-selected finish line, not by auto-launching a giver conversation
 
 Use this as the main template for:
 

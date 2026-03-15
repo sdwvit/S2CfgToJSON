@@ -103,9 +103,12 @@ Implementation guidance:
 
 - use a `SetDialog` node when the quest must expose a dialog state directly
 - map `LastPhraseSID` values to named output pins
+- prefer the NPC conversation itself to be player-initiated; the quest should usually expose dialog availability, not auto-launch the giver's conversation
+- let accept, complete, cancel, and "not yet" outcomes flow from the chosen final phrase or dialog-linked event into quest-state changes
 - use separate chains or comments for major state transitions when needed
 - use dialog-side `If` nodes or bridge conditions when the dialog itself should react to quest state
 - when the quest giver already has dialog content, add new chains and dialog structs alongside that existing dialog family
+- reserve forced dialog, comments, or radio-style conversation for cases where vanilla also treats the line as an unsolicited event rather than a normal NPC interaction
 
 ## Fetch And Return
 
@@ -116,7 +119,8 @@ Use:
 - `SetGlobalVariable` or journal-state gate for quest phase
 - `OnPlayerGetItemEvent` for objective acquisition
 - second `SetJournal` for return-to-giver progression
-- dialog or interaction event on the quest giver
+- `SetDialog` to expose the giver's quest conversation
+- final phrase output or dialog-linked event on the quest giver
 - `If` checking both quest phase and item possession
 - `ItemRemove` for turn-in
 - reward and completion nodes

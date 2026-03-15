@@ -47,6 +47,8 @@ Practical reward planning:
 - for "money plus stash" rewards, split the reward into two explicit actions
 - for armor rewards such as a plain exoskeleton, prefer an item generator or stash reveal over inventing ad hoc delivery logic
 - if the reward fantasy depends on a stash reveal but no suitable stash can be identified quickly, ask the user before inventing one
+- if the reward is a stash, do not leave the final reward items sitting in a lootable stash from the beginning of the quest
+- prefer `SetItemGenerator` in the quest completion branch to populate or unlock the stash reward so it only becomes available after quest completion
 
 Observed local pattern:
 
@@ -60,7 +62,7 @@ When the user wants a combined reward:
 
 1. look for an existing quest reward generator pattern
 2. model the money portion as its own reward generator
-3. if a stash is part of the fantasy, use `GiveCache` with a dedicated stash generator
+3. if a stash is part of the fantasy, use `SetItemGenerator` in the completion flow with the dedicated stash or reward generator that makes the stash reward available
 4. if the reward should go straight to the player, use `SetItemGenerator` or `ItemAdd`
 
 ## Missing Struct Rule

@@ -36,9 +36,12 @@ Turn human quest intent into a complete quest content package grounded in this r
    - reward generators, item generators, stash generators, or direct items
    - any supporting quest prototype, actor reference, or item prototype that must exist for the design to work
 4. Reuse existing structs where they fit. Create new structs only when the existing content does not cover the need cleanly.
+   - Even when a struct is new, place it into a patch for an existing cfg file in the correct family. Do not plan brand-new standalone cfg files that the game will not read.
+   - In implementation mode, resolve the exact existing base cfg filename for each struct family being patched.
 5. If core inputs are still missing after local lookup, make the smallest safe assumptions and label them clearly.
    - For quest-objective stashes or reward stashes, do a brief local lookup first.
    - If a suitable stash cannot be found quickly, ask the user whether to reuse a known stash, point to a specific stash, or author a new stash-related struct.
+   - If implementation guidance is requested and the exact base cfg filename for a required patch cannot be found quickly, ask the user instead of guessing.
 6. Read only the references needed for the task:
    - Start with `references/workflow.md`.
    - Read `references/patterns.md` when the quest has branching, synchronization, journals, dialog, or reusable subgraphs.
@@ -76,7 +79,7 @@ Always return these sections:
 - `Recommended graph`: short narrative of flow
 - `Nodes`: a table with `SID`, `NodeType`, purpose, key fields, and notable pins
 - `Supporting structs`: journal quests, markers, globals, reward generators, item generators, stash generators, items, or other supporting content
-- `Placement guidance`: where each new or patched struct family should live in the mod layout
+- `Placement guidance`: where each new or patched struct family should live in the mod layout, including the exact existing base cfg file being patched whenever implementation guidance is in scope
 - `Edges`: upstream `SID` plus output `Name` for each launcher binding
 - `State and references`: globals, journal state, signals, bridges, GUID placeholders
 - `Validation risks`: anything that remains inference or needs live verification
@@ -94,10 +97,15 @@ If the user asks for variants, provide a primary plan first, then 1-2 alternativ
 - Treat quest-facing dialog as part of the quest design, not as optional flavor text.
 - When the quest requires new conversation content, plan both the quest node hooks and the dialog chain/topic skeleton.
 - When extending an existing NPC, prefer placing new dialog chains and dialog structs next to that NPC's existing dialog file family.
+- For NPC giver interactions, prefer dialog-triggered state changes: expose the dialog with `SetDialog`, then drive accept, turn-in, cancel, or defer outcomes from `LastPhraseSID` outputs or dialog-linked events.
+- Do not default to quest-state nodes auto-firing giver conversations. Reserve forced or auto-started dialog for explicit comment, radio, cutscene, or user-requested cases.
 - Treat journal, marker, reward, and generator structs as part of the quest package, not as optional extras.
 - Create new item or support prototypes only when existing items, markers, generators, or world references are insufficient.
 - When the user wants implementation guidance, explain the expected mod folder structure and patch file family placement.
+- The game will not read arbitrary brand-new cfg files. Every new or changed struct must be emitted into a patch derived from an existing base cfg file in the correct family.
+- In implementation mode, the exact existing base cfg filename is mandatory for each patched struct family.
 - Do not invent a specific quest stash or reward stash if local lookup does not surface one quickly; ask the user instead.
+- If a quest grants a stash as a reward, do not plan it as pre-lootable world content with the final reward already inside; use `SetItemGenerator` in the quest completion flow to populate or unlock the stash reward at completion time.
 - When a node has named outputs, bind the exact output `Name`.
 - When a simple gate is enough, prefer `Condition`; when explicit `True` / `False` routing is needed, prefer `If`.
 
@@ -113,10 +121,12 @@ If the user asks for variants, provide a primary plan first, then 1-2 alternativ
 - When the user implies abandon or backing out, include an explicit cancel or decline path rather than assuming only success/failure.
 - For NPC-given quests, plan the dialog entry points first, then connect them to quest-state nodes.
 - Use `SetDialog`, `OnDialogStartEvent`, and `OnInfotopicFinishEvent` when dialog is the natural trigger or branch surface.
+- For accept, turn-in, and cancel flows, prefer player-initiated conversation that changes quest state after the relevant dialog phrase finishes, rather than quest state launching the conversation itself.
 - For existing NPCs, prefer extending their established dialog chain family instead of inventing a disconnected dialog namespace.
 - For local regions and hubs, prefer concrete region, hub, or search-area data over vague place text.
 - For rewards, choose the gameplay fantasy explicitly: direct item grant, inventory package, or stash reveal.
 - For rewards in this repo, treat money reward generators as first-class authored content, not as an afterthought.
+- For stash rewards, prefer `SetItemGenerator`-driven completion gating so the player cannot loot the final reward before finishing the quest.
 - Default to reusing existing items, markers, reward generators, and location structures before inventing new prototypes.
 - If the quest cannot work without a missing struct, call it out and specify the minimal new struct needed.
 - If implementation paths are unknown, ask the user for the GameLite source path, implementation repo path, and target mod folder rather than guessing.
@@ -128,5 +138,7 @@ If the user asks for variants, provide a primary plan first, then 1-2 alternativ
 - When dialog must be created, include a short dialog chain/topic outline with entry purpose, final phrase, and branch result, not full prose unless the user asks for writing.
 - When support structs must be created, group them by file family such as journal, markers, rewards, generators, or items.
 - When implementation placement matters, group the answer by `GameData` family and target mod path.
+- When naming placements, identify the existing base cfg file being patched, not just the folder family.
+- If the exact base cfg file is unknown, say so and ask instead of inventing one.
 - If the user wants a `readme.md`, keep it short and make sure it describes the quest flow, main stages, and reward/cancel outcomes.
 - End by naming the smallest next implementation step, such as cfg authoring, patch insertion, or GUID resolution.

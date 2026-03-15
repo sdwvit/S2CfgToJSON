@@ -12,7 +12,11 @@ The implementation repo uses a per-mod folder under:
 
 - `Mods/<ModName>/`
 
-Important content lives under the mod's generated content tree, for example:
+In the local implementation repo, generated content is typically stored under:
+
+- `Mods/<ModName>/raw/Stalker2/Content/GameLite/...`
+
+The important game-facing content tree inside that layout is:
 
 - `Stalker2/Content/GameLite/...`
 
@@ -27,7 +31,7 @@ If the user does want a `readme.md`, treat it as lightweight supporting document
 
 Generated cfg patches live under:
 
-- `Mods/<ModName>/.../Stalker2/Content/GameLite/...`
+- `Mods/<ModName>/raw/Stalker2/Content/GameLite/...`
 
 Example:
 
