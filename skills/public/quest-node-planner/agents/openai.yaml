@@ -1,0 +1,4 @@
+interface:
+  display_name: "Quest Node Planner"
+  short_description: "Plan S.T.A.L.K.E.R. 2 quest-node graphs"
+  default_prompt: "Use $quest-node-planner to turn a human quest concept into a quest-node-only graph plan."
