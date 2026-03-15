@@ -13,7 +13,7 @@ Common place names can map to different kinds of data:
 
 Do not assume these are interchangeable.
 
-## Malahit / Malachite
+## Resolving Places
 
 Useful local sources:
 
@@ -23,17 +23,14 @@ Useful local sources:
 - `GameLite/GameData/SpawnActorPrototypes/WorldMap_WP/**` for concrete world placements and stash generators
 - `GameLite/GameData/CorpseClueStashPrototypes.cfg` for region-linked stash categories
 
-Observed local pattern:
-
-- `Malahit` appears as `ERegion::Malahit`
-- `FastTravelLocationPrototypes.cfg` contains the hub location and coordinates for the Malahit guide point
-- stash generators under `STCMalachite_*` identify concrete Malachite-area sublocations
-
 Use these rules:
 
 - if the player only needs broad regional guidance, use journal region and marker guidance
 - if the player needs a base or hub destination, use the fast-travel or hub location data
 - if the player needs a specific stash or search area, prefer a concrete stash generator, marker target, or search point
+- if the user names a place that could mean several things, resolve whether they mean a region, hub, marker, or specific world location before planning
+- if exact coordinates are unnecessary, prefer a broad area target with a radius over inventing a precise point
+- if the quest depends on a specific stash and local lookup does not reveal a clear candidate quickly, stop and ask the user which stash or stash family to use
 
 ## Reward Composition
 
@@ -49,6 +46,7 @@ Practical reward planning:
 - for money-only rewards, prefer an authored reward generator using `MoneyGenerator`
 - for "money plus stash" rewards, split the reward into two explicit actions
 - for armor rewards such as a plain exoskeleton, prefer an item generator or stash reveal over inventing ad hoc delivery logic
+- if the reward fantasy depends on a stash reveal but no suitable stash can be identified quickly, ask the user before inventing one
 
 Observed local pattern:
 

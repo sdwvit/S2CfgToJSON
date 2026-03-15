@@ -105,6 +105,7 @@ Implementation guidance:
 - map `LastPhraseSID` values to named output pins
 - use separate chains or comments for major state transitions when needed
 - use dialog-side `If` nodes or bridge conditions when the dialog itself should react to quest state
+- when the quest giver already has dialog content, add new chains and dialog structs alongside that existing dialog family
 
 ## Fetch And Return
 

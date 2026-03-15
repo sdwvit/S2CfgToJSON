@@ -19,6 +19,7 @@ Extract or infer:
 - actors, items, triggers, dialog, or world objects
 - whether the quest is one-shot, repeatable, or stateful
 - every supporting struct family the quest will require
+- whether the user needs design-only output or actual mod placement guidance
 
 ## Minimal Mental Model
 
@@ -44,6 +45,7 @@ If the user wants:
 - cross-fragment communication: `SendSignal`, `OnSignalReceived`, globals, or `BridgeEvent`
 - location or hub guidance: journal `Region`, `Markers`, marker prototypes, and fast-travel location data
 - complete quest package authoring: journal quests, globals, reward generators, item generators, stash generators, and support prototypes
+- mod placement guidance: target mod folder, `raw/` tree layout, and patch family placement
 
 ## ID Resolution
 
@@ -56,6 +58,7 @@ Before treating names as assumptions, search local game data for:
 - journal quest and stage IDs in `JournalQuestPrototypes`
 - region, marker, hub, and fast-travel data when the user names a place
 - existing reward, stash, and item generator patterns before inventing new ones
+- target mod layout and patch family placement when the user wants implementation guidance
 
 If a requested item name does not appear anywhere in local data, say so explicitly and keep the plan generic until the exact internal SID is known.
 
@@ -66,11 +69,12 @@ Build plans in this order:
 1. Resolve concrete IDs.
 2. Resolve place data if navigation matters.
 3. Identify all required struct families.
-4. Define the journal and state model.
-5. Define the dialog surface.
-6. Choose the entry point.
-7. Choose the first gate or branch.
-8. Choose the action and reward nodes.
-9. Add any helper delays with `Technical`.
-10. Add joins or side-branch synchronization.
-11. Add explicit end nodes where the fragment should stop.
+4. If needed, ask the user for implementation repo path, GameLite path, and target mod folder.
+5. Define the journal and state model.
+6. Define the dialog surface.
+7. Choose the entry point.
+8. Choose the first gate or branch.
+9. Choose the action and reward nodes.
+10. Add any helper delays with `Technical`.
+11. Add joins or side-branch synchronization.
+12. Add explicit end nodes where the fragment should stop.

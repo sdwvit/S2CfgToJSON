@@ -45,6 +45,11 @@ Use this as the main template for:
 - cancel confirmation branches
 - Sidorovich-style giver interactions
 
+Placement rule:
+
+- when extending an existing quest giver, place the new `DialogChainPrototypeSID` and dialog structs alongside that NPC's existing dialog file family
+- do not default to a separate quest-only dialog namespace unless there is a concrete reason
+
 ## Example Reading Rule
 
 When the user asks for:
