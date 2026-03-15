@@ -1,6 +1,7 @@
 /.idea/
 /S2CfgToJSON.iml
 /node_modules/
+/dist/
 
 # Local symlink
 /GameLite

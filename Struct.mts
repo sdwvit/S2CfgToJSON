@@ -1,5 +1,5 @@
-export * from "./types.mjs";
-export * from "./enums.mjs";
+export type * from "./types.mjs";
+export type * from "./enums.mjs";
 
 export type Internal =
   | "__internal__"
