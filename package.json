@@ -50,7 +50,8 @@
   },
   "files": [
     "dist",
-    "readme.md"
+    "readme.md",
+    "skills/public"
   ],
   "scripts": {
     "build": "node ./scripts/build.mjs",
