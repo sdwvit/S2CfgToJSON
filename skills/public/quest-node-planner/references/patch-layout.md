@@ -54,6 +54,21 @@ Placement rules:
 - for every one of the above, choose an existing base cfg file in that family and place the new structs in that file's patch
 - if the exact base cfg file cannot be resolved quickly, ask the user instead of inventing one
 
+## Struct Rendering Note
+
+When the plan turns into actual authoring with this repo's `Struct` helpers:
+
+- set `__internal__.rawName` to the engine-facing struct SID or name that should appear before `: struct.begin`
+- set `__internal__.isRoot = true` on each top-level struct being emitted into the cfg patch
+- leave `isRoot` unset on ordinary nested child structs
+
+Role of `__internal__.isRoot`:
+
+- it makes `Struct.toString()` render the struct as a root entry like `SomeSID : struct.begin`
+- it also prevents the parent from re-rendering that struct's field key, which would otherwise duplicate the name at the nesting site
+
+Practical rule: use `isRoot` for structs that should exist as standalone cfg entries in the patch file, not for normal nested properties inside another struct.
+
 ## Content Grouping
 
 Keep the guidance grouped by target cfg family. Do not describe the quest as if unrelated edits should be scattered arbitrarily.

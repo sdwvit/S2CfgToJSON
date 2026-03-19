@@ -108,6 +108,7 @@ If the user asks for variants, provide a primary plan first, then 1-2 alternativ
 - If a quest grants a stash as a reward, do not plan it as pre-lootable world content with the final reward already inside; use `SetItemGenerator` in the quest completion flow to populate or unlock the stash reward at completion time.
 - When a node has named outputs, bind the exact output `Name`.
 - When a simple gate is enough, prefer `Condition`; when explicit `True` / `False` routing is needed, prefer `If`.
+- When emitting actual cfg structs through this repo's `Struct` serializer, mark each top-level struct with `__internal__.isRoot = true` so the renderer writes `RawName : struct.begin` for that struct. Nested child structs should normally leave `isRoot` unset, because `isRoot` suppresses the parent-key form and treats the struct as a root entry.
 
 ## Default Planning Heuristics
 
