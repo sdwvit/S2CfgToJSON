@@ -23,27 +23,27 @@
   "author": "sdwvit",
   "type": "module",
   "main": "./dist/Struct.mjs",
-  "types": "./dist/Struct.d.ts",
+  "types": "./dist/Struct.d.mts",
   "exports": {
     ".": {
-      "types": "./dist/Struct.d.ts",
+      "types": "./dist/Struct.d.mts",
       "import": "./dist/Struct.mjs",
       "default": "./dist/Struct.mjs"
     },
     "./Struct": {
-      "types": "./dist/Struct.d.ts",
+      "types": "./dist/Struct.d.mts",
       "import": "./dist/Struct.mjs"
     },
     "./types": {
-      "types": "./dist/types.d.ts",
+      "types": "./dist/types.d.mts",
       "import": "./dist/types.mjs"
     },
     "./enums": {
-      "types": "./dist/enums.d.ts",
+      "types": "./dist/enums.d.mts",
       "import": "./dist/enums.mjs"
     },
     "./utility-types": {
-      "types": "./dist/utility-types.d.ts",
+      "types": "./dist/utility-types.d.mts",
       "import": "./dist/utility-types.mjs"
     },
     "./package.json": "./package.json"

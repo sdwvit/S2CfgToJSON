@@ -1,5 +1,5 @@
 import { spawnSync } from "node:child_process";
-import { existsSync, readdirSync, renameSync, rmSync } from "node:fs";
+import { existsSync, rmSync } from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -29,12 +29,6 @@ const allOutputsExist = expectedOutputs.every((file) => existsSync(path.join(dis
 
 if (!allOutputsExist) {
   process.exit(result.status ?? 1);
-}
-
-for (const file of readdirSync(distDir)) {
-  if (file.endsWith(".d.mts")) {
-    renameSync(path.join(distDir, file), path.join(distDir, file.replace(/\.d\.mts$/, ".d.ts")));
-  }
 }
 
 if (result.status !== 0) {
