@@ -9847,7 +9847,7 @@ export type QuestNodePrototypeShowFadeScreen = GetStructType<{
 }>;
 
 export type QuestNodePrototypeShowLoadingScreen = GetStructType<{
-  Launchers: string;
+  Launchers: QuestNodePrototypeLaunchers;
   LoadingScreenType: ELoadingDestination;
   NodePrototypeVersion: number;
   NodeType: "EQuestNodeType::ShowLoadingScreen" & EQuestNodeType;
