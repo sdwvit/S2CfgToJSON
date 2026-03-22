@@ -8420,6 +8420,7 @@ export type QuestNodePrototypeBridgeEvent = GetStructType<{
   LinkedNodePrototypeSID: string;
   NodePrototypeVersion: number;
   NodeType: "EQuestNodeType::BridgeEvent" & EQuestNodeType;
+  Launchers: QuestNodePrototypeLaunchers;
   OutputPinNames: QuestNodePrototypeOutputPinNames;
   QuestSID: string;
   Repeatable: boolean;
@@ -8893,6 +8894,7 @@ export type QuestNodePrototypeOnAbilityEndedEvent = GetStructType<{
   LaunchOnQuestStart: boolean;
   NodePrototypeVersion: number;
   NodeType: "EQuestNodeType::OnAbilityEndedEvent" & EQuestNodeType;
+  Launchers: QuestNodePrototypeLaunchers;
   QuestSID: string;
   SID: string;
   TargetQuestGuid: string;
@@ -8905,6 +8907,7 @@ export type QuestNodePrototypeOnAbilityUsedEvent = GetStructType<{
   LaunchOnQuestStart: boolean;
   NodePrototypeVersion: number;
   NodeType: "EQuestNodeType::OnAbilityUsedEvent" & EQuestNodeType;
+  Launchers: QuestNodePrototypeLaunchers;
   QuestSID: string;
   Repeatable: boolean;
   SID: string;
@@ -8918,6 +8921,7 @@ export type QuestNodePrototypeOnDialogStartEvent = GetStructType<{
   LaunchOnQuestStart: boolean;
   NodePrototypeVersion: number;
   NodeType: "EQuestNodeType::OnDialogStartEvent" & EQuestNodeType;
+  Launchers: QuestNodePrototypeLaunchers;
   QuestSID: string;
   SID: string;
   TargetQuestGuid: string;
@@ -8930,6 +8934,7 @@ export type QuestNodePrototypeOnEmissionFinishEvent = GetStructType<{
   LaunchOnQuestStart: boolean;
   NodePrototypeVersion: number;
   NodeType: "EQuestNodeType::OnEmissionFinishEvent" & EQuestNodeType;
+  Launchers: QuestNodePrototypeLaunchers;
   QuestSID: string;
   Repeatable: boolean;
   SID: string;
@@ -8941,6 +8946,7 @@ export type QuestNodePrototypeOnEmissionStageActivated = GetStructType<{
   LaunchOnQuestStart: boolean;
   NodePrototypeVersion: number;
   NodeType: "EQuestNodeType::OnEmissionStageActivated" & EQuestNodeType;
+  Launchers: QuestNodePrototypeLaunchers;
   QuestSID: string;
   Repeatable: boolean;
   SID: string;
@@ -8953,6 +8959,7 @@ export type QuestNodePrototypeOnEmissionStageFinished = GetStructType<{
   LaunchOnQuestStart: boolean;
   NodePrototypeVersion: number;
   NodeType: "EQuestNodeType::OnEmissionStageFinished" & EQuestNodeType;
+  Launchers: QuestNodePrototypeLaunchers;
   QuestSID: string;
   Repeatable: boolean;
   SID: string;
@@ -8966,6 +8973,7 @@ export type QuestNodePrototypeOnEmissionStartEvent = GetStructType<{
   LaunchOnQuestStart: boolean;
   NodePrototypeVersion: number;
   NodeType: "EQuestNodeType::OnEmissionStartEvent" & EQuestNodeType;
+  Launchers: QuestNodePrototypeLaunchers;
   QuestSID: string;
   Repeatable: boolean;
   SID: string;
@@ -8979,6 +8987,7 @@ export type QuestNodePrototypeOnFactionBecomeEnemyEvent = GetStructType<{
   LaunchOnQuestStart: boolean;
   NodePrototypeVersion: number;
   NodeType: "EQuestNodeType::OnFactionBecomeEnemyEvent" & EQuestNodeType;
+  Launchers: QuestNodePrototypeLaunchers;
   QuestSID: string;
   Repeatable: boolean;
   SID: string;
@@ -8991,6 +9000,7 @@ export type QuestNodePrototypeOnFactionBecomeFriendEvent = GetStructType<{
   LaunchOnQuestStart: boolean;
   NodePrototypeVersion: number;
   NodeType: "EQuestNodeType::OnFactionBecomeFriendEvent" & EQuestNodeType;
+  Launchers: QuestNodePrototypeLaunchers;
   QuestSID: string;
   SID: string;
   TrackBeforeActive: boolean;
@@ -9001,6 +9011,7 @@ export type QuestNodePrototypeOnGetCompatibleAttachEvent = GetStructType<{
   LaunchOnQuestStart: boolean;
   NodePrototypeVersion: number;
   NodeType: "EQuestNodeType::OnGetCompatibleAttachEvent" & EQuestNodeType;
+  Launchers: QuestNodePrototypeLaunchers;
   QuestSID: string;
   SID: string;
   TrackBeforeActive: boolean;
@@ -9014,6 +9025,7 @@ export type QuestNodePrototypeOnHitEvent = GetStructType<{
   LaunchOnQuestStart: boolean;
   NodePrototypeVersion: number;
   NodeType: "EQuestNodeType::OnHitEvent" & EQuestNodeType;
+  Launchers: QuestNodePrototypeLaunchers;
   QuestSID: string;
   Repeatable: boolean;
   SID: string;
@@ -9027,6 +9039,7 @@ export type QuestNodePrototypeOnInfotopicFinishEvent = GetStructType<{
   LaunchOnQuestStart: boolean;
   NodePrototypeVersion: number;
   NodeType: "EQuestNodeType::OnInfotopicFinishEvent" & EQuestNodeType;
+  Launchers: QuestNodePrototypeLaunchers;
   QuestSID: string;
   SID: string;
   TrackBeforeActive: boolean;
@@ -9038,6 +9051,7 @@ export type QuestNodePrototypeOnInteractEvent = GetStructType<{
   LaunchOnQuestStart: boolean;
   NodePrototypeVersion: number;
   NodeType: "EQuestNodeType::OnInteractEvent" & EQuestNodeType;
+  Launchers: QuestNodePrototypeLaunchers;
   QuestSID: string;
   Repeatable: boolean;
   SID: string;
@@ -9052,6 +9066,7 @@ export type QuestNodePrototypeOnJournalQuestEvent = GetStructType<{
   LaunchOnQuestStart: boolean;
   NodePrototypeVersion: number;
   NodeType: "EQuestNodeType::OnJournalQuestEvent" & EQuestNodeType;
+  Launchers: QuestNodePrototypeLaunchers;
   QuestSID: string;
   Repeatable: boolean;
   SID: string;
@@ -9065,6 +9080,7 @@ export type QuestNodePrototypeOnKillerCheckEvent = GetStructType<{
   LaunchOnQuestStart: boolean;
   NodePrototypeVersion: number;
   NodeType: "EQuestNodeType::OnKillerCheckEvent" & EQuestNodeType;
+  Launchers: QuestNodePrototypeLaunchers;
   QuestSID: string;
   ShouldBeKilled: string;
   SID: string;
@@ -9077,6 +9093,7 @@ export type QuestNodePrototypeOnMoneyAmountReachedEvent = GetStructType<{
   LaunchOnQuestStart: boolean;
   NodePrototypeVersion: number;
   NodeType: "EQuestNodeType::OnMoneyAmountReachedEvent" & EQuestNodeType;
+  Launchers: QuestNodePrototypeLaunchers;
   QuestSID: string;
   SID: string;
   TargetMoneyAmount: number;
@@ -9088,6 +9105,7 @@ export type QuestNodePrototypeOnNPCBecomeEnemyEvent = GetStructType<{
   LaunchOnQuestStart: boolean;
   NodePrototypeVersion: number;
   NodeType: "EQuestNodeType::OnNPCBecomeEnemyEvent" & EQuestNodeType;
+  Launchers: QuestNodePrototypeLaunchers;
   QuestSID: string;
   Repeatable: boolean;
   SID: string;
@@ -9100,6 +9118,7 @@ export type QuestNodePrototypeOnNPCBecomeFriendEvent = GetStructType<{
   LaunchOnQuestStart: boolean;
   NodePrototypeVersion: number;
   NodeType: "EQuestNodeType::OnNPCBecomeFriendEvent" & EQuestNodeType;
+  Launchers: QuestNodePrototypeLaunchers;
   QuestSID: string;
   Repeatable: boolean;
   SID: string;
@@ -9113,6 +9132,7 @@ export type QuestNodePrototypeOnNPCCreateEvent = GetStructType<{
   LaunchOnQuestStart: boolean;
   NodePrototypeVersion: number;
   NodeType: "EQuestNodeType::OnNPCCreateEvent" & EQuestNodeType;
+  Launchers: QuestNodePrototypeLaunchers;
   QuestSID: string;
   SID: string;
   TargetQuestGuid: string;
@@ -9125,6 +9145,7 @@ export type QuestNodePrototypeOnNPCDeathEvent = GetStructType<{
   LaunchOnQuestStart: boolean;
   NodePrototypeVersion: number;
   NodeType: "EQuestNodeType::OnNPCDeathEvent" & EQuestNodeType;
+  Launchers: QuestNodePrototypeLaunchers;
   QuestSID: string;
   Repeatable: boolean;
   SID: string;
@@ -9137,6 +9158,7 @@ export type QuestNodePrototypeOnNPCDefeatEvent = GetStructType<{
   LaunchOnQuestStart: boolean;
   NodePrototypeVersion: number;
   NodeType: "EQuestNodeType::OnNPCDefeatEvent" & EQuestNodeType;
+  Launchers: QuestNodePrototypeLaunchers;
   QuestSID: string;
   SID: string;
   TargetQuestGuid: string;
@@ -9151,6 +9173,7 @@ export type QuestNodePrototypeOnPlayerGetItemEvent = GetStructType<{
   LaunchOnQuestStart: boolean;
   NodePrototypeVersion: number;
   NodeType: "EQuestNodeType::OnPlayerGetItemEvent" & EQuestNodeType;
+  Launchers: QuestNodePrototypeLaunchers;
   QuestSID: string;
   Repeatable: boolean;
   SID: string;
@@ -9167,6 +9190,7 @@ export type QuestNodePrototypeOnPlayerLostItemEvent = GetStructType<{
   LaunchOnQuestStart: boolean;
   NodePrototypeVersion: number;
   NodeType: "EQuestNodeType::OnPlayerLostItemEvent" & EQuestNodeType;
+  Launchers: QuestNodePrototypeLaunchers;
   QuestSID: string;
   Repeatable: boolean;
   SID: string;
@@ -9179,6 +9203,7 @@ export type QuestNodePrototypeOnPlayerNoticedEvent = GetStructType<{
   LaunchOnQuestStart: number;
   NodePrototypeVersion: number;
   NodeType: "EQuestNodeType::OnPlayerNoticedEvent" & EQuestNodeType;
+  Launchers: QuestNodePrototypeLaunchers;
   QuestSID: string;
   Repeatable: boolean;
   SID: string;
@@ -9192,6 +9217,7 @@ export type QuestNodePrototypeOnPlayerRankReachedEvent = GetStructType<{
   LaunchOnQuestStart: boolean;
   NodePrototypeVersion: number;
   NodeType: "EQuestNodeType::OnPlayerRankReachedEvent" & EQuestNodeType;
+  Launchers: QuestNodePrototypeLaunchers;
   QuestSID: string;
   SID: string;
   TargetRank: ERank;
@@ -9204,6 +9230,7 @@ export type QuestNodePrototypeOnSignalReceived = GetStructType<{
   LaunchOnQuestStart: boolean;
   NodePrototypeVersion: number;
   NodeType: "EQuestNodeType::OnSignalReceived" & EQuestNodeType;
+  Launchers: QuestNodePrototypeLaunchers;
   QuestSID: string;
   Repeatable: boolean;
   SID: string;
@@ -9217,6 +9244,7 @@ export type QuestNodePrototypeOnTickEvent = GetStructType<{
   LaunchOnQuestStart: boolean;
   NodePrototypeVersion: number;
   NodeType: "EQuestNodeType::OnTickEvent" & EQuestNodeType;
+  Launchers: QuestNodePrototypeLaunchers;
   QuestSID: string;
   SID: string;
   TrackBeforeActive: boolean;
@@ -9227,6 +9255,7 @@ export type QuestNodePrototypeOnUpgradeInstallEvent = GetStructType<{
   LaunchOnQuestStart: boolean;
   NodePrototypeVersion: number;
   NodeType: "EQuestNodeType::OnUpgradeInstallEvent" & EQuestNodeType;
+  Launchers: QuestNodePrototypeLaunchers;
   QuestSID: string;
   SID: string;
   TrackBeforeActive: boolean;
