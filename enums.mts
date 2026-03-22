@@ -1567,6 +1567,7 @@ export type EQuestNodeType = `EQuestNodeType::${
   | "SpawnSingleObj"
   | "SpawnSquad"
   | "SpawnTrigger"
+  | "StartBenchmark"
   | "SwitchQuestItemState"
   | "Technical"
   | "TeleportCharacter"

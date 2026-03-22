@@ -8159,243 +8159,86 @@ export type QuestMeshGeneratorPrototypeVariationsItem = GetStructType<{
   Weight: number;
 }>;
 
-export type QuestNodePrototype =
-  | QuestNodePrototypeAchievementUnlock
-  | QuestNodePrototypeActivateAnomaly
-  | QuestNodePrototypeActivateDataLayerCombination
-  | QuestNodePrototypeActivateInteractableObject
-  | QuestNodePrototypeActivateRestrictor
-  | QuestNodePrototypeAddNote
-  | QuestNodePrototypeAddOrRemoveFromSquad
-  | QuestNodePrototypeAddTechnicianSkillOrUpgrade
-  | QuestNodePrototypeAddTutorialToPDA
-  | QuestNodePrototypeALifeDirectorZoneSwitch
-  | QuestNodePrototypeBridgeCleanUp
-  | QuestNodePrototypeBridgeEvent
-  | QuestNodePrototypeCancelAllSideQuests
-  | QuestNodePrototypeChangeFaction
-  | QuestNodePrototypeChangeRelationships
-  | QuestNodePrototypeCondition
-  | QuestNodePrototypeConsoleCommand
-  | QuestNodePrototypeContainer
-  | QuestNodePrototypeDeactivateZone
-  | QuestNodePrototypeDespawn
-  | QuestNodePrototypeDisableNPCBark
-  | QuestNodePrototypeDisableNPCInteraction
-  | QuestNodePrototypeEmissionScheduleControl
-  | QuestNodePrototypeEmissionStart
-  | QuestNodePrototypeEnableDataLayer
-  | QuestNodePrototypeEnd
-  | QuestNodePrototypeEquipItemInHands
-  | QuestNodePrototypeFlashlightOnOff
-  | QuestNodePrototypeForceInteract
-  | QuestNodePrototypeGiveCache
-  | QuestNodePrototypeHideLoadingScreen
-  | QuestNodePrototypeHideTutorial
-  | QuestNodePrototypeIf
-  | QuestNodePrototypeItemAdd
-  | QuestNodePrototypeItemRemove
-  | QuestNodePrototypeLoadAsset
-  | QuestNodePrototypeLookAt
-  | QuestNodePrototypeMoveInventory
-  | QuestNodePrototypeNPCBark
-  | QuestNodePrototypeOnAbilityEndedEvent
-  | QuestNodePrototypeOnAbilityUsedEvent
-  | QuestNodePrototypeOnDialogStartEvent
-  | QuestNodePrototypeOnEmissionFinishEvent
-  | QuestNodePrototypeOnEmissionStageActivated
-  | QuestNodePrototypeOnEmissionStageFinished
-  | QuestNodePrototypeOnEmissionStartEvent
-  | QuestNodePrototypeOnFactionBecomeEnemyEvent
-  | QuestNodePrototypeOnFactionBecomeFriendEvent
-  | QuestNodePrototypeOnGetCompatibleAttachEvent
-  | QuestNodePrototypeOnHitEvent
-  | QuestNodePrototypeOnInfotopicFinishEvent
-  | QuestNodePrototypeOnInteractEvent
-  | QuestNodePrototypeOnJournalQuestEvent
-  | QuestNodePrototypeOnKillerCheckEvent
-  | QuestNodePrototypeOnMoneyAmountReachedEvent
-  | QuestNodePrototypeOnNPCBecomeEnemyEvent
-  | QuestNodePrototypeOnNPCBecomeFriendEvent
-  | QuestNodePrototypeOnNPCCreateEvent
-  | QuestNodePrototypeOnNPCDeathEvent
-  | QuestNodePrototypeOnNPCDefeatEvent
-  | QuestNodePrototypeOnPlayerGetItemEvent
-  | QuestNodePrototypeOnPlayerLostItemEvent
-  | QuestNodePrototypeOnPlayerNoticedEvent
-  | QuestNodePrototypeOnPlayerRankReachedEvent
-  | QuestNodePrototypeOnSignalReceived
-  | QuestNodePrototypeOnTickEvent
-  | QuestNodePrototypeOnUpgradeInstallEvent
-  | QuestNodePrototypePlayEffect
-  | QuestNodePrototypePlayPostProcess
-  | QuestNodePrototypePlaySound
-  | QuestNodePrototypePlayVideo
-  | QuestNodePrototypeProtectLairNPCSquadItem
-  | QuestNodePrototypeRandom
-  | QuestNodePrototypeReputationLocker
-  | QuestNodePrototypeResetAI
-  | QuestNodePrototypeRestrictionArea
-  | QuestNodePrototypeRestrictSave
-  | QuestNodePrototypeSaveGame
-  | QuestNodePrototypeScheduledContainer
-  | QuestNodePrototypeSearchPoint
-  | QuestNodePrototypeSendSignal
-  | QuestNodePrototypeSequenceStart
-  | QuestNodePrototypeSetAIBehavior
-  | QuestNodePrototypeSetCharacterEffect
-  | QuestNodePrototypeSetCharacterParam
-  | QuestNodePrototypeSetDialog
-  | QuestNodePrototypeSetDurabilityParam
-  | QuestNodePrototypeSetFactionRestriction
-  | QuestNodePrototypeSetGlobalVariable
-  | QuestNodePrototypeSetHubOwner
-  | QuestNodePrototypeSetItemGenerator
-  | QuestNodePrototypeSetJournal
-  | QuestNodePrototypeSetLocationName
-  | QuestNodePrototypeSetMeshGenerator
-  | QuestNodePrototypeSetName
-  | QuestNodePrototypeSetNPCSequentialAbility
-  | QuestNodePrototypeSetPersonalRestriction
-  | QuestNodePrototypeSetQuestGiver
-  | QuestNodePrototypeSetSpaceRestrictor
-  | QuestNodePrototypeSetTime
-  | QuestNodePrototypeSetTimer
-  | QuestNodePrototypeSetWeather
-  | QuestNodePrototypeSetWounded
-  | QuestNodePrototypeShowFadeScreen
-  | QuestNodePrototypeShowLoadingScreen
-  | QuestNodePrototypeShowMarker
-  | QuestNodePrototypeShowTutorialWidget
-  | QuestNodePrototypeSpawn
-  | QuestNodePrototypeSpawnAnomaly
-  | QuestNodePrototypeSpawnAnomalySpawner
-  | QuestNodePrototypeSpawnArtifactSpawner
-  | QuestNodePrototypeSpawnDeadBody
-  | QuestNodePrototypeSpawnItemContainer
-  | QuestNodePrototypeSpawnLair
-  | QuestNodePrototypeSpawnSafeZone
-  | QuestNodePrototypeSpawnSingleObj
-  | QuestNodePrototypeSpawnSquad
-  | QuestNodePrototypeSpawnTrigger
-  | QuestNodePrototypeStartBenchmark
-  | QuestNodePrototypeSwitchQuestItemState
-  | QuestNodePrototypeTechnical
-  | QuestNodePrototypeTeleportCharacter
-  | QuestNodePrototypeTimeLock
-  | QuestNodePrototypeToggleLairActivity
-  | QuestNodePrototypeToggleNPCHidden
-  | QuestNodePrototypeTrackJournal
-  | QuestNodePrototypeTrackShelter
-  | QuestNodePrototypeTrigger;
-
-export type QuestNodePrototypeAchievementUnlock = GetStructType<{
-  AchievementSID: string;
+export interface QuestNodePrototype extends GetStructType<{}> {
   Launchers: QuestNodePrototypeLaunchers;
   NodePrototypeVersion: number;
-  NodeType: "EQuestNodeType::AchievementUnlock" & EQuestNodeType;
+  NodeType: EQuestNodeType;
   QuestSID: string;
+  Repeatable: boolean;
   SID: string;
-}>;
+}
 
-export type QuestNodePrototypeActivateAnomaly = GetStructType<{
+export interface QuestNodePrototypeAchievementUnlock
+  extends QuestNodePrototype {
+  AchievementSID: string;
+  NodeType: "EQuestNodeType::AchievementUnlock";
+}
+
+export interface QuestNodePrototypeActivateAnomaly extends QuestNodePrototype {
   Continue: boolean;
   Description: string;
-  Launchers: QuestNodePrototypeLaunchers;
-  NodePrototypeVersion: number;
-  NodeType: "EQuestNodeType::ActivateAnomaly" & EQuestNodeType;
-  QuestSID: string;
-  Repeatable: boolean;
-  SID: string;
+  NodeType: "EQuestNodeType::ActivateAnomaly";
   StartQuest: boolean;
   TargetQuestGuid: string;
-}>;
+}
 
-export type QuestNodePrototypeActivateDataLayerCombination = GetStructType<{
+export interface QuestNodePrototypeActivateDataLayerCombination
+  extends QuestNodePrototype {
   BrokenGameDataFilter: EBrokenGameDataFilter;
   DataLayerCombination: string;
-  Launchers: QuestNodePrototypeLaunchers;
-  NodePrototypeVersion: number;
-  NodeType: "EQuestNodeType::ActivateDataLayerCombination" & EQuestNodeType;
-  QuestSID: string;
-  SID: string;
-}>;
+  NodeType: "EQuestNodeType::ActivateDataLayerCombination";
+}
 
-export type QuestNodePrototypeActivateInteractableObject = GetStructType<{
+export interface QuestNodePrototypeActivateInteractableObject
+  extends QuestNodePrototype {
   InteractableQuestGuid: string;
-  Launchers: QuestNodePrototypeLaunchers;
-  NodePrototypeVersion: number;
-  NodeType: "EQuestNodeType::ActivateInteractableObject" & EQuestNodeType;
+  NodeType: "EQuestNodeType::ActivateInteractableObject";
   OutputPinNames: QuestNodePrototypeOutputPinNames;
-  QuestSID: string;
-  Repeatable: boolean;
-  SID: string;
-}>;
+}
 
-export type QuestNodePrototypeActivateRestrictor = GetStructType<{
+export interface QuestNodePrototypeActivateRestrictor
+  extends QuestNodePrototype {
   BrokenGameDataFilter: EBrokenGameDataFilter;
-  Launchers: QuestNodePrototypeLaunchers;
-  NodePrototypeVersion: number;
-  NodeType: "EQuestNodeType::ActivateRestrictor" & EQuestNodeType;
-  QuestSID: string;
-  Repeatable: boolean;
-  SID: string;
+  NodeType: "EQuestNodeType::ActivateRestrictor";
   VolumeGuid: string;
-}>;
+}
 
-export type QuestNodePrototypeAddNote = GetStructType<{
+export interface QuestNodePrototypeAddNote extends QuestNodePrototype {
   BrokenGameDataFilter: EBrokenGameDataFilter;
-  Launchers: QuestNodePrototypeLaunchers;
-  NodePrototypeVersion: number;
-  NodeType: "EQuestNodeType::AddNote" & EQuestNodeType;
+  NodeType: "EQuestNodeType::AddNote";
   NotePrototypeSID: string;
   PlayWhenReceived: boolean;
-  QuestSID: string;
-  SID: string;
-}>;
+}
 
-export type QuestNodePrototypeAddOrRemoveFromSquad = GetStructType<{
-  Launchers: QuestNodePrototypeLaunchers;
-  NodePrototypeVersion: number;
-  NodeType: "EQuestNodeType::AddOrRemoveFromSquad" & EQuestNodeType;
-  QuestSID: string;
+export interface QuestNodePrototypeAddOrRemoveFromSquad
+  extends QuestNodePrototype {
+  NodeType: "EQuestNodeType::AddOrRemoveFromSquad";
   Remove: boolean;
-  SID: string;
   Squad: string;
   TargetQuestGuid: string;
-}>;
+}
 
-export type QuestNodePrototypeAddTechnicianSkillOrUpgrade = GetStructType<{
-  Launchers: QuestNodePrototypeLaunchers;
+export interface QuestNodePrototypeAddTechnicianSkillOrUpgrade
+  extends QuestNodePrototype {
   NewTechnicianSkill: string;
-  NodePrototypeVersion: number;
-  NodeType: "EQuestNodeType::AddTechnicianSkillOrUpgrade" & EQuestNodeType;
-  QuestSID: string;
-  SID: string;
+  NodeType: "EQuestNodeType::AddTechnicianSkillOrUpgrade";
   TargetQuestGuid: string;
   UpgradeSIDs: QuestNodePrototypeUpgradeSIDs;
-}>;
+}
 
-export type QuestNodePrototypeAddTutorialToPDA = GetStructType<{
-  Launchers: QuestNodePrototypeLaunchers;
-  NodePrototypeVersion: number;
-  NodeType: "EQuestNodeType::AddTutorialToPDA" & EQuestNodeType;
+export interface QuestNodePrototypeAddTutorialToPDA extends QuestNodePrototype {
+  NodeType: "EQuestNodeType::AddTutorialToPDA";
   PDATutorialNoteSID: string;
-  QuestSID: string;
   RequiredInputs: string;
-  SID: string;
-}>;
+}
 
-export type QuestNodePrototypeALifeDirectorZoneSwitch = GetStructType<{
-  Launchers: QuestNodePrototypeLaunchers;
+export interface QuestNodePrototypeALifeDirectorZoneSwitch
+  extends QuestNodePrototype {
   NewZoneState: boolean;
-  NodePrototypeVersion: number;
-  NodeType: "EQuestNodeType::ALifeDirectorZoneSwitch" & EQuestNodeType;
+  NodeType: "EQuestNodeType::ALifeDirectorZoneSwitch";
   OverrideScenarioGroupSID: string;
-  QuestSID: string;
-  SID: string;
   TargetQuestGuid: string;
-}>;
+}
 
 export type QuestNodePrototypeAudioLocalizedAssetsToLoad = GetStructType<
   QuestNodePrototypeAudioLocalizedAssetsToLoadItem[]
@@ -8403,76 +8246,50 @@ export type QuestNodePrototypeAudioLocalizedAssetsToLoad = GetStructType<
 
 export type QuestNodePrototypeAudioLocalizedAssetsToLoadItem = StringArray;
 
-export type QuestNodePrototypeBridgeCleanUp = GetStructType<{
-  Launchers: QuestNodePrototypeLaunchers;
-  NodePrototypeVersion: number;
+export interface QuestNodePrototypeBridgeCleanUp extends QuestNodePrototype {
   NodesToCleanUpResults: ObjPrototypeApplicableMechanicsEffects;
-  NodeType: "EQuestNodeType::BridgeCleanUp" & EQuestNodeType;
-  QuestSID: string;
-  Repeatable: boolean;
-  SID: string;
-}>;
+  NodeType: "EQuestNodeType::BridgeCleanUp";
+}
 
-export type QuestNodePrototypeBridgeEvent = GetStructType<{
+export interface QuestNodePrototypeBridgeEvent extends QuestNodePrototype {
   BrokenGameDataFilter: EBrokenGameDataFilter;
   EventType: EQuestEventType;
   LaunchOnQuestStart: boolean;
   LinkedNodePrototypeSID: string;
-  NodePrototypeVersion: number;
-  NodeType: "EQuestNodeType::BridgeEvent" & EQuestNodeType;
-  Launchers: QuestNodePrototypeLaunchers;
+  NodeType: "EQuestNodeType::BridgeEvent";
   OutputPinNames: QuestNodePrototypeOutputPinNames;
-  QuestSID: string;
-  Repeatable: boolean;
-  SID: string;
   TrackBeforeActive: boolean;
-}>;
+}
 
-export type QuestNodePrototypeCancelAllSideQuests = GetStructType<{
-  Launchers: QuestNodePrototypeLaunchers;
-  NodePrototypeVersion: number;
-  NodeType: "EQuestNodeType::CancelAllSideQuests" & EQuestNodeType;
-  QuestSID: string;
-  SID: string;
-}>;
+export interface QuestNodePrototypeCancelAllSideQuests
+  extends QuestNodePrototype {
+  NodeType: "EQuestNodeType::CancelAllSideQuests";
+}
 
-export type QuestNodePrototypeChangeFaction = GetStructType<{
-  Launchers: QuestNodePrototypeLaunchers;
-  NodePrototypeVersion: number;
-  NodeType: "EQuestNodeType::ChangeFaction" & EQuestNodeType;
-  QuestSID: string;
-  SID: string;
+export interface QuestNodePrototypeChangeFaction extends QuestNodePrototype {
+  NodeType: "EQuestNodeType::ChangeFaction";
   TargetFaction: string;
   TargetQuestGuid: string;
-}>;
+}
 
-export type QuestNodePrototypeChangeRelationships = GetStructType<{
+export interface QuestNodePrototypeChangeRelationships
+  extends QuestNodePrototype {
   BrokenGameDataFilter: EBrokenGameDataFilter;
   FirstTargetSID: string;
-  Launchers: QuestNodePrototypeLaunchers;
-  NodePrototypeVersion: number;
-  NodeType: "EQuestNodeType::ChangeRelationships" & EQuestNodeType;
-  QuestSID: string;
+  NodeType: "EQuestNodeType::ChangeRelationships";
   RelationshipValue: number;
-  Repeatable: boolean;
   SecondTargetSID: string;
   SetFactionRelationshipAsPersonal: boolean;
   ShouldLockPersonalRelationship: boolean;
-  SID: string;
   UseDeltaValue: boolean;
   UsePreset: boolean;
-}>;
+}
 
-export type QuestNodePrototypeCondition = GetStructType<{
+export interface QuestNodePrototypeCondition extends QuestNodePrototype {
   BrokenGameDataFilter: EBrokenGameDataFilter;
   Conditions: QuestNodePrototypeConditions;
-  Launchers: QuestNodePrototypeLaunchers;
-  NodePrototypeVersion: number;
-  NodeType: "EQuestNodeType::Condition" & EQuestNodeType;
-  QuestSID: string;
-  Repeatable: boolean;
-  SID: string;
-}>;
+  NodeType: "EQuestNodeType::Condition";
+}
 
 export type QuestNodePrototypeConditions = GetStructType<{
   ConditionCheckType: EConditionCheckType;
@@ -8553,53 +8370,33 @@ export type QuestNodePrototypeConnectionsItem = GetStructType<{
   SID: string;
 }>;
 
-export type QuestNodePrototypeConsoleCommand = GetStructType<{
+export interface QuestNodePrototypeConsoleCommand extends QuestNodePrototype {
   BrokenGameDataFilter: EBrokenGameDataFilter;
   ConsoleCommand: string;
-  Launchers: QuestNodePrototypeLaunchers;
-  NodePrototypeVersion: number;
-  NodeType: "EQuestNodeType::ConsoleCommand" & EQuestNodeType;
-  QuestSID: string;
-  Repeatable: boolean;
-  SID: string;
-}>;
+  NodeType: "EQuestNodeType::ConsoleCommand";
+}
 
-export type QuestNodePrototypeContainer = GetStructType<{
+export interface QuestNodePrototypeContainer extends QuestNodePrototype {
   BrokenGameDataFilter: EBrokenGameDataFilter;
   ContaineredQuestPrototypeSID: string;
-  Launchers: QuestNodePrototypeLaunchers;
-  NodePrototypeVersion: number;
-  NodeType: "EQuestNodeType::Container" & EQuestNodeType;
+  NodeType: "EQuestNodeType::Container";
   OutputPinNames: QuestNodePrototypeOutputPinNames;
-  QuestSID: string;
-  Repeatable: boolean;
-  SID: string;
-}>;
+}
 
-export type QuestNodePrototypeDeactivateZone = GetStructType<{
+export interface QuestNodePrototypeDeactivateZone extends QuestNodePrototype {
   BrokenGameDataFilter: EBrokenGameDataFilter;
-  Launchers: QuestNodePrototypeLaunchers;
   NavModifier: string;
-  NodePrototypeVersion: number;
-  NodeType: "EQuestNodeType::DeactivateZone" & EQuestNodeType;
-  QuestSID: string;
-  Repeatable: boolean;
-  SID: string;
+  NodeType: "EQuestNodeType::DeactivateZone";
   TargetQuestGuid: string;
-}>;
+}
 
-export type QuestNodePrototypeDespawn = GetStructType<{
+export interface QuestNodePrototypeDespawn extends QuestNodePrototype {
   BrokenGameDataFilter: EBrokenGameDataFilter;
-  Launchers: QuestNodePrototypeLaunchers;
-  NodePrototypeVersion: number;
-  NodeType: "EQuestNodeType::Despawn" & EQuestNodeType;
-  QuestSID: string;
-  Repeatable: boolean;
-  SID: string;
+  NodeType: "EQuestNodeType::Despawn";
   SpawnNodeExcludeType: ESpawnNodeExcludeType;
   SpecificItemDespawn: boolean;
   TargetQuestGuid: string;
-}>;
+}
 
 export type QuestNodePrototypeDialogMembersItem = GetStructType<{
   DialogMemberGuid: string;
@@ -8614,149 +8411,97 @@ export type QuestNodePrototypeDisabledEvents = GetStructType<
   EDialogEventType[]
 >;
 
-export type QuestNodePrototypeDisableNPCBark = GetStructType<{
+export interface QuestNodePrototypeDisableNPCBark extends QuestNodePrototype {
   DisabledEvents: string;
-  Launchers: QuestNodePrototypeLaunchers;
-  NodePrototypeVersion: number;
-  NodeType: "EQuestNodeType::DisableNPCBark" & EQuestNodeType;
-  QuestSID: string;
-  SID: string;
+  NodeType: "EQuestNodeType::DisableNPCBark";
   TargetQuestGuid: string;
-}>;
+}
 
-export type QuestNodePrototypeDisableNPCInteraction = GetStructType<{
+export interface QuestNodePrototypeDisableNPCInteraction
+  extends QuestNodePrototype {
   BrokenGameDataFilter: EBrokenGameDataFilter;
-  Launchers: QuestNodePrototypeLaunchers;
-  NodePrototypeVersion: number;
-  NodeType: "EQuestNodeType::DisableNPCInteraction" & EQuestNodeType;
-  QuestSID: string;
+  NodeType: "EQuestNodeType::DisableNPCInteraction";
   RestrictDeadBodyDespawn: boolean;
   RestrictDeadBodyLootInteraction: boolean;
   RestrictDeadBodyMovementInteraction: boolean;
   RestrictDefeatStateInteraction: boolean;
   RestrictDefeatStateMovementInteraction: boolean;
   RestrictDialogInteractions: boolean;
-  SID: string;
   TargetQuestGuid: string;
-}>;
+}
 
-export type QuestNodePrototypeEmissionScheduleControl = GetStructType<{
+export interface QuestNodePrototypeEmissionScheduleControl
+  extends QuestNodePrototype {
   BrokenGameDataFilter: EBrokenGameDataFilter;
-  Launchers: QuestNodePrototypeLaunchers;
-  NodePrototypeVersion: number;
-  NodeType: "EQuestNodeType::EmissionScheduleControl" & EQuestNodeType;
+  NodeType: "EQuestNodeType::EmissionScheduleControl";
   PauseEmission: boolean;
-  QuestSID: string;
-  Repeatable: boolean;
-  SID: string;
-}>;
+}
 
-export type QuestNodePrototypeEmissionStart = GetStructType<{
+export interface QuestNodePrototypeEmissionStart extends QuestNodePrototype {
   BrokenGameDataFilter: EBrokenGameDataFilter;
   EmissionPrototypeSID: string;
   ForceEmission: boolean;
-  Launchers: QuestNodePrototypeLaunchers;
-  NodePrototypeVersion: number;
-  NodeType: "EQuestNodeType::EmissionStart" & EQuestNodeType;
-  QuestSID: string;
-  SID: string;
+  NodeType: "EQuestNodeType::EmissionStart";
   StartQuest: boolean;
   UseDefaultEmissionPrototype: boolean;
-}>;
+}
 
-export type QuestNodePrototypeEnableDataLayer = GetStructType<{
+export interface QuestNodePrototypeEnableDataLayer extends QuestNodePrototype {
   BrokenGameDataFilter: EBrokenGameDataFilter;
   DataLayerName: string;
   IsDataLayerEnabled: boolean;
-  Launchers: QuestNodePrototypeLaunchers;
-  NodePrototypeVersion: number;
-  NodeType: "EQuestNodeType::EnableDataLayer" & EQuestNodeType;
-  QuestSID: string;
-  Repeatable: boolean;
-  SID: string;
-}>;
+  NodeType: "EQuestNodeType::EnableDataLayer";
+}
 
-export type QuestNodePrototypeEnd = GetStructType<{
+export interface QuestNodePrototypeEnd extends QuestNodePrototype {
   BrokenGameDataFilter: EBrokenGameDataFilter;
   ExcludeAllNodesInContainer: boolean;
-  Launchers: string;
-  NodePrototypeVersion: number;
-  NodeType: "EQuestNodeType::End" & EQuestNodeType;
-  QuestSID: string;
-  SID: string;
-}>;
+  NodeType: "EQuestNodeType::End";
+}
 
-export type QuestNodePrototypeEquipItemInHands = GetStructType<{
+export interface QuestNodePrototypeEquipItemInHands extends QuestNodePrototype {
   BrokenGameDataFilter: EBrokenGameDataFilter;
   EquipmentItemSID: string;
   EquipmentTypeFilter: EMainHandEquipmentType;
-  Launchers: QuestNodePrototypeLaunchers;
-  NodePrototypeVersion: number;
-  NodeType: "EQuestNodeType::EquipItemInHands" & EQuestNodeType;
-  QuestSID: string;
-  SID: string;
+  NodeType: "EQuestNodeType::EquipItemInHands";
   TargetQuestGuid: string;
-}>;
+}
 
-export type QuestNodePrototypeFlashlightOnOff = GetStructType<{
+export interface QuestNodePrototypeFlashlightOnOff extends QuestNodePrototype {
   DisableFlashlightControl: boolean;
   FlashlightAction: EFlashlightAction;
-  Launchers: QuestNodePrototypeLaunchers;
-  NodePrototypeVersion: number;
-  NodeType: "EQuestNodeType::FlashlightOnOff" & EQuestNodeType;
-  QuestSID: string;
-  SID: string;
+  NodeType: "EQuestNodeType::FlashlightOnOff";
   TargetQuestGuid: string;
-}>;
+}
 
-export type QuestNodePrototypeForceInteract = GetStructType<{
+export interface QuestNodePrototypeForceInteract extends QuestNodePrototype {
   IgnoreEnabledCheck: boolean;
   InteractableQuestGuid: string;
-  Launchers: QuestNodePrototypeLaunchers;
-  NodePrototypeVersion: number;
-  NodeType: "EQuestNodeType::ForceInteract" & EQuestNodeType;
-  QuestSID: string;
-  SID: string;
-}>;
+  NodeType: "EQuestNodeType::ForceInteract";
+}
 
-export type QuestNodePrototypeGiveCache = GetStructType<{
-  Launchers: QuestNodePrototypeLaunchers;
-  NodePrototypeVersion: number;
-  NodeType: "EQuestNodeType::GiveCache" & EQuestNodeType;
+export interface QuestNodePrototypeGiveCache extends QuestNodePrototype {
+  NodeType: "EQuestNodeType::GiveCache";
   QuestItemGeneratorSID: string;
-  QuestSID: string;
-  SID: string;
   TargetQuestGuid: string;
-}>;
+}
 
-export type QuestNodePrototypeHideLoadingScreen = GetStructType<{
-  Launchers: QuestNodePrototypeLaunchers;
-  NodePrototypeVersion: number;
-  NodeType: "EQuestNodeType::HideLoadingScreen" & EQuestNodeType;
-  QuestSID: string;
-  SID: string;
-}>;
+export interface QuestNodePrototypeHideLoadingScreen
+  extends QuestNodePrototype {
+  NodeType: "EQuestNodeType::HideLoadingScreen";
+}
 
-export type QuestNodePrototypeHideTutorial = GetStructType<{
-  Launchers: QuestNodePrototypeLaunchers;
-  NodePrototypeVersion: number;
-  NodeType: "EQuestNodeType::HideTutorial" & EQuestNodeType;
-  QuestSID: string;
-  Repeatable: boolean;
-  SID: string;
+export interface QuestNodePrototypeHideTutorial extends QuestNodePrototype {
+  NodeType: "EQuestNodeType::HideTutorial";
+
   WidgetType: number;
-}>;
+}
 
-export type QuestNodePrototypeIf = GetStructType<{
+export interface QuestNodePrototypeIf extends QuestNodePrototype {
   BrokenGameDataFilter: EBrokenGameDataFilter;
   Conditions: QuestNodePrototypeConditions;
-  Launchers: QuestNodePrototypeLaunchers;
-  NodePrototypeVersion: number;
-  NodeType: "EQuestNodeType::If" & EQuestNodeType;
-  QuestSID: string;
-  Repeatable: boolean;
-  SID: string;
-}>;
+  NodeType: "EQuestNodeType::If";
+}
 
 export type QuestNodePrototypeInfotopicLastPhrases = GetStructType<
   QuestNodePrototypeInfotopicLastPhrasesItem[]
@@ -8767,32 +8512,24 @@ export type QuestNodePrototypeInfotopicLastPhrasesItem = GetStructType<{
   NextLaunchedPhraseSID: string;
 }>;
 
-export type QuestNodePrototypeItemAdd = GetStructType<{
+export interface QuestNodePrototypeItemAdd extends QuestNodePrototype {
   AddToPlayerStash: boolean;
   BrokenGameDataFilter: EBrokenGameDataFilter;
   ItemsCount: number;
   ItemSID: string;
-  Launchers: QuestNodePrototypeLaunchers;
-  NodePrototypeVersion: number;
-  NodeType: "EQuestNodeType::ItemAdd" & EQuestNodeType;
-  QuestSID: string;
-  Repeatable: boolean;
-  SID: string;
-  TargetQuestGuid: string;
-}>;
+  NodeType: "EQuestNodeType::ItemAdd";
 
-export type QuestNodePrototypeItemRemove = GetStructType<{
+  TargetQuestGuid: string;
+}
+
+export interface QuestNodePrototypeItemRemove extends QuestNodePrototype {
   BrokenGameDataFilter: EBrokenGameDataFilter;
   ItemsCount: number;
   ItemSID: string;
-  Launchers: QuestNodePrototypeLaunchers;
-  NodePrototypeVersion: number;
-  NodeType: "EQuestNodeType::ItemRemove" & EQuestNodeType;
-  QuestSID: string;
-  Repeatable: boolean;
-  SID: string;
+  NodeType: "EQuestNodeType::ItemRemove";
+
   TargetQuestGuid: string;
-}>;
+}
 
 export type QuestNodePrototypeLastPhrases = GetStructType<
   QuestNodePrototypeLastPhrasesItem[]
@@ -8813,17 +8550,13 @@ export type QuestNodePrototypeLaunchersItem = GetStructType<{
   Excluding: boolean;
 }>;
 
-export type QuestNodePrototypeLoadAsset = GetStructType<{
+export interface QuestNodePrototypeLoadAsset extends QuestNodePrototype {
   AssetsToLoad: string;
   AudioLocalizedAssetsToLoad: QuestNodePrototypeAudioLocalizedAssetsToLoad;
-  Launchers: QuestNodePrototypeLaunchers;
-  NodePrototypeVersion: number;
-  NodeType: "EQuestNodeType::LoadAsset" & EQuestNodeType;
-  QuestSID: string;
-  SID: string;
-}>;
+  NodeType: "EQuestNodeType::LoadAsset";
+}
 
-export type QuestNodePrototypeLookAt = GetStructType<{
+export interface QuestNodePrototypeLookAt extends QuestNodePrototype {
   ActorBoneName: string;
   ApplyRestrictionType: EApplyRestrictionType | number;
   AttractionPointType: EAttractionPointType | number;
@@ -8831,25 +8564,21 @@ export type QuestNodePrototypeLookAt = GetStructType<{
   CollisionChannel: number;
   Duration: number;
   EnteringDuration: number;
-  Launchers: string;
   LookAtActorFName: string;
   LookAtLocation: AIGlobalRelativeLocation;
   LookAtPlaceholder: string;
-  NodePrototypeVersion: number;
-  NodeType: "EQuestNodeType::LookAt" & EQuestNodeType;
+  NodeType: "EQuestNodeType::LookAt";
   PresetName: string;
   Priority: number;
-  QuestSID: string;
   ReactionTime: number;
-  Repeatable: boolean;
+
   RotationFreemoveEdge: number;
   RotationStopEdge: number;
-  SID: string;
   TargetQuestGuid: string;
   X: number;
   Y: number;
   Z: number;
-}>;
+}
 
 export type QuestNodePrototypeMarkers = GetStructType<
   QuestNodePrototypeMarkersItem[]
@@ -8865,402 +8594,291 @@ export type QuestNodePrototypeMarkersItem = GetStructType<{
   ZoneSubMarkers: QuestNodePrototypeZoneSubMarkers;
 }>;
 
-export type QuestNodePrototypeMoveInventory = GetStructType<{
-  Launchers: QuestNodePrototypeLaunchers;
+export interface QuestNodePrototypeMoveInventory extends QuestNodePrototype {
   MoveFrom: string;
   MoveQuestItems: boolean;
   MoveTo: string;
-  NodePrototypeVersion: number;
-  NodeType: "EQuestNodeType::MoveInventory" & EQuestNodeType;
-  QuestSID: string;
-  SID: string;
+  NodeType: "EQuestNodeType::MoveInventory";
   WithEquipped: boolean;
-}>;
+}
 
-export type QuestNodePrototypeNPCBark = GetStructType<{
+export interface QuestNodePrototypeNPCBark extends QuestNodePrototype {
   Event: EDialogEventType;
-  Launchers: string;
-  NodePrototypeVersion: number;
-  NodeType: "EQuestNodeType::NPCBark" & EQuestNodeType;
-  QuestSID: string;
-  Repeatable: boolean;
-  SID: string;
-  TargetQuestGuid: string;
-}>;
+  NodeType: "EQuestNodeType::NPCBark";
 
-export type QuestNodePrototypeOnAbilityEndedEvent = GetStructType<{
+  TargetQuestGuid: string;
+}
+
+export interface QuestNodePrototypeOnAbilityEndedEvent
+  extends QuestNodePrototype {
   AbilityPrototypeSID: string;
   EventType: EQuestEventType;
   LaunchOnQuestStart: boolean;
-  NodePrototypeVersion: number;
-  NodeType: "EQuestNodeType::OnAbilityEndedEvent" & EQuestNodeType;
-  Launchers: QuestNodePrototypeLaunchers;
-  QuestSID: string;
-  SID: string;
+  NodeType: "EQuestNodeType::OnAbilityEndedEvent";
   TargetQuestGuid: string;
   TrackBeforeActive: boolean;
-}>;
+}
 
-export type QuestNodePrototypeOnAbilityUsedEvent = GetStructType<{
+export interface QuestNodePrototypeOnAbilityUsedEvent
+  extends QuestNodePrototype {
   AbilityPrototypeSID: string;
   EventType: EQuestEventType;
   LaunchOnQuestStart: boolean;
-  NodePrototypeVersion: number;
-  NodeType: "EQuestNodeType::OnAbilityUsedEvent" & EQuestNodeType;
-  Launchers: QuestNodePrototypeLaunchers;
-  QuestSID: string;
-  Repeatable: boolean;
-  SID: string;
+  NodeType: "EQuestNodeType::OnAbilityUsedEvent";
   TargetQuestGuid: string;
   TrackBeforeActive: boolean;
-}>;
+}
 
-export type QuestNodePrototypeOnDialogStartEvent = GetStructType<{
+export interface QuestNodePrototypeOnDialogStartEvent
+  extends QuestNodePrototype {
   DialogToStart: string;
   EventType: EQuestEventType;
   LaunchOnQuestStart: boolean;
-  NodePrototypeVersion: number;
-  NodeType: "EQuestNodeType::OnDialogStartEvent" & EQuestNodeType;
-  Launchers: QuestNodePrototypeLaunchers;
-  QuestSID: string;
-  SID: string;
+  NodeType: "EQuestNodeType::OnDialogStartEvent";
   TargetQuestGuid: string;
   TrackBeforeActive: boolean;
-}>;
+}
 
-export type QuestNodePrototypeOnEmissionFinishEvent = GetStructType<{
+export interface QuestNodePrototypeOnEmissionFinishEvent
+  extends QuestNodePrototype {
   BrokenGameDataFilter: EBrokenGameDataFilter;
   EventType: EQuestEventType;
   LaunchOnQuestStart: boolean;
-  NodePrototypeVersion: number;
-  NodeType: "EQuestNodeType::OnEmissionFinishEvent" & EQuestNodeType;
-  Launchers: QuestNodePrototypeLaunchers;
-  QuestSID: string;
-  Repeatable: boolean;
-  SID: string;
+  NodeType: "EQuestNodeType::OnEmissionFinishEvent";
   TrackBeforeActive: boolean;
-}>;
+}
 
-export type QuestNodePrototypeOnEmissionStageActivated = GetStructType<{
+export interface QuestNodePrototypeOnEmissionStageActivated
+  extends QuestNodePrototype {
   EventType: EQuestEventType;
   LaunchOnQuestStart: boolean;
-  NodePrototypeVersion: number;
-  NodeType: "EQuestNodeType::OnEmissionStageActivated" & EQuestNodeType;
-  Launchers: QuestNodePrototypeLaunchers;
-  QuestSID: string;
-  Repeatable: boolean;
-  SID: string;
+  NodeType: "EQuestNodeType::OnEmissionStageActivated";
   StageID: EEmissionStage;
   TrackBeforeActive: boolean;
-}>;
+}
 
-export type QuestNodePrototypeOnEmissionStageFinished = GetStructType<{
+export interface QuestNodePrototypeOnEmissionStageFinished
+  extends QuestNodePrototype {
   EventType: EQuestEventType;
   LaunchOnQuestStart: boolean;
-  NodePrototypeVersion: number;
-  NodeType: "EQuestNodeType::OnEmissionStageFinished" & EQuestNodeType;
-  Launchers: QuestNodePrototypeLaunchers;
-  QuestSID: string;
-  Repeatable: boolean;
-  SID: string;
+  NodeType: "EQuestNodeType::OnEmissionStageFinished";
   StageID: EEmissionStage;
   TrackBeforeActive: boolean;
-}>;
+}
 
-export type QuestNodePrototypeOnEmissionStartEvent = GetStructType<{
+export interface QuestNodePrototypeOnEmissionStartEvent
+  extends QuestNodePrototype {
   BrokenGameDataFilter: EBrokenGameDataFilter;
   EventType: EQuestEventType;
   LaunchOnQuestStart: boolean;
-  NodePrototypeVersion: number;
-  NodeType: "EQuestNodeType::OnEmissionStartEvent" & EQuestNodeType;
-  Launchers: QuestNodePrototypeLaunchers;
-  QuestSID: string;
-  Repeatable: boolean;
-  SID: string;
+  NodeType: "EQuestNodeType::OnEmissionStartEvent";
   TrackBeforeActive: boolean;
-}>;
+}
 
-export type QuestNodePrototypeOnFactionBecomeEnemyEvent = GetStructType<{
+export interface QuestNodePrototypeOnFactionBecomeEnemyEvent
+  extends QuestNodePrototype {
   BrokenGameDataFilter: EBrokenGameDataFilter;
   EventType: EQuestEventType;
   Faction: string;
   LaunchOnQuestStart: boolean;
-  NodePrototypeVersion: number;
-  NodeType: "EQuestNodeType::OnFactionBecomeEnemyEvent" & EQuestNodeType;
-  Launchers: QuestNodePrototypeLaunchers;
-  QuestSID: string;
-  Repeatable: boolean;
-  SID: string;
+  NodeType: "EQuestNodeType::OnFactionBecomeEnemyEvent";
   TrackBeforeActive: boolean;
-}>;
+}
 
-export type QuestNodePrototypeOnFactionBecomeFriendEvent = GetStructType<{
+export interface QuestNodePrototypeOnFactionBecomeFriendEvent
+  extends QuestNodePrototype {
   EventType: EQuestEventType;
   Faction: string;
   LaunchOnQuestStart: boolean;
-  NodePrototypeVersion: number;
-  NodeType: "EQuestNodeType::OnFactionBecomeFriendEvent" & EQuestNodeType;
-  Launchers: QuestNodePrototypeLaunchers;
-  QuestSID: string;
-  SID: string;
+  NodeType: "EQuestNodeType::OnFactionBecomeFriendEvent";
   TrackBeforeActive: boolean;
-}>;
+}
 
-export type QuestNodePrototypeOnGetCompatibleAttachEvent = GetStructType<{
+export interface QuestNodePrototypeOnGetCompatibleAttachEvent
+  extends QuestNodePrototype {
   EventType: EQuestEventType;
   LaunchOnQuestStart: boolean;
-  NodePrototypeVersion: number;
-  NodeType: "EQuestNodeType::OnGetCompatibleAttachEvent" & EQuestNodeType;
-  Launchers: QuestNodePrototypeLaunchers;
-  QuestSID: string;
-  SID: string;
+  NodeType: "EQuestNodeType::OnGetCompatibleAttachEvent";
   TrackBeforeActive: boolean;
-}>;
+}
 
-export type QuestNodePrototypeOnHitEvent = GetStructType<{
+export interface QuestNodePrototypeOnHitEvent extends QuestNodePrototype {
   BrokenGameDataFilter: EBrokenGameDataFilter;
   EventType: EQuestEventType;
   HitProducer: string;
   HitReceiver: string;
   LaunchOnQuestStart: boolean;
-  NodePrototypeVersion: number;
-  NodeType: "EQuestNodeType::OnHitEvent" & EQuestNodeType;
-  Launchers: QuestNodePrototypeLaunchers;
-  QuestSID: string;
-  Repeatable: boolean;
-  SID: string;
-  TrackBeforeActive: boolean;
-}>;
+  NodeType: "EQuestNodeType::OnHitEvent";
 
-export type QuestNodePrototypeOnInfotopicFinishEvent = GetStructType<{
+  TrackBeforeActive: boolean;
+}
+
+export interface QuestNodePrototypeOnInfotopicFinishEvent
+  extends QuestNodePrototype {
   BrokenGameDataFilter: EBrokenGameDataFilter;
   EventType: EQuestEventType;
   InfotopicLastPhrases: QuestNodePrototypeInfotopicLastPhrases;
   LaunchOnQuestStart: boolean;
-  NodePrototypeVersion: number;
-  NodeType: "EQuestNodeType::OnInfotopicFinishEvent" & EQuestNodeType;
-  Launchers: QuestNodePrototypeLaunchers;
-  QuestSID: string;
-  SID: string;
+  NodeType: "EQuestNodeType::OnInfotopicFinishEvent";
   TrackBeforeActive: boolean;
-}>;
+}
 
-export type QuestNodePrototypeOnInteractEvent = GetStructType<{
+export interface QuestNodePrototypeOnInteractEvent extends QuestNodePrototype {
   EventType: EQuestEventType;
   InteractableQuestGuid: string;
   LaunchOnQuestStart: boolean;
-  NodePrototypeVersion: number;
-  NodeType: "EQuestNodeType::OnInteractEvent" & EQuestNodeType;
-  Launchers: QuestNodePrototypeLaunchers;
-  QuestSID: string;
-  Repeatable: boolean;
-  SID: string;
-  TrackBeforeActive: boolean;
-}>;
+  NodeType: "EQuestNodeType::OnInteractEvent";
 
-export type QuestNodePrototypeOnJournalQuestEvent = GetStructType<{
+  TrackBeforeActive: boolean;
+}
+
+export interface QuestNodePrototypeOnJournalQuestEvent
+  extends QuestNodePrototype {
   BrokenGameDataFilter: EBrokenGameDataFilter;
   EventType: EQuestEventType;
   JournalQuestSID: string;
   JournalQuestStageSID: string;
   LaunchOnQuestStart: boolean;
-  NodePrototypeVersion: number;
-  NodeType: "EQuestNodeType::OnJournalQuestEvent" & EQuestNodeType;
-  Launchers: QuestNodePrototypeLaunchers;
-  QuestSID: string;
-  Repeatable: boolean;
-  SID: string;
+  NodeType: "EQuestNodeType::OnJournalQuestEvent";
   TrackBeforeActive: boolean;
-}>;
+}
 
-export type QuestNodePrototypeOnKillerCheckEvent = GetStructType<{
+export interface QuestNodePrototypeOnKillerCheckEvent
+  extends QuestNodePrototype {
   EventType: EQuestEventType;
   FullSquad: boolean;
   IncludeWoundedEvent: boolean;
   LaunchOnQuestStart: boolean;
-  NodePrototypeVersion: number;
-  NodeType: "EQuestNodeType::OnKillerCheckEvent" & EQuestNodeType;
-  Launchers: QuestNodePrototypeLaunchers;
-  QuestSID: string;
+  NodeType: "EQuestNodeType::OnKillerCheckEvent";
   ShouldBeKilled: string;
-  SID: string;
   TargetQuestGuid: string;
   TrackBeforeActive: boolean;
-}>;
+}
 
-export type QuestNodePrototypeOnMoneyAmountReachedEvent = GetStructType<{
+export interface QuestNodePrototypeOnMoneyAmountReachedEvent
+  extends QuestNodePrototype {
   EventType: EQuestEventType;
   LaunchOnQuestStart: boolean;
-  NodePrototypeVersion: number;
-  NodeType: "EQuestNodeType::OnMoneyAmountReachedEvent" & EQuestNodeType;
-  Launchers: QuestNodePrototypeLaunchers;
-  QuestSID: string;
-  SID: string;
+  NodeType: "EQuestNodeType::OnMoneyAmountReachedEvent";
   TargetMoneyAmount: number;
   TrackBeforeActive: boolean;
-}>;
+}
 
-export type QuestNodePrototypeOnNPCBecomeEnemyEvent = GetStructType<{
+export interface QuestNodePrototypeOnNPCBecomeEnemyEvent
+  extends QuestNodePrototype {
   EventType: EQuestEventType;
   LaunchOnQuestStart: boolean;
-  NodePrototypeVersion: number;
-  NodeType: "EQuestNodeType::OnNPCBecomeEnemyEvent" & EQuestNodeType;
-  Launchers: QuestNodePrototypeLaunchers;
-  QuestSID: string;
-  Repeatable: boolean;
-  SID: string;
+  NodeType: "EQuestNodeType::OnNPCBecomeEnemyEvent";
   TargetQuestGuid: string;
   TrackBeforeActive: boolean;
-}>;
+}
 
-export type QuestNodePrototypeOnNPCBecomeFriendEvent = GetStructType<{
+export interface QuestNodePrototypeOnNPCBecomeFriendEvent
+  extends QuestNodePrototype {
   EventType: EQuestEventType;
   LaunchOnQuestStart: boolean;
-  NodePrototypeVersion: number;
-  NodeType: "EQuestNodeType::OnNPCBecomeFriendEvent" & EQuestNodeType;
-  Launchers: QuestNodePrototypeLaunchers;
-  QuestSID: string;
-  Repeatable: boolean;
-  SID: string;
+  NodeType: "EQuestNodeType::OnNPCBecomeFriendEvent";
   TargetQuestGuid: string;
   TrackBeforeActive: boolean;
-}>;
+}
 
-export type QuestNodePrototypeOnNPCCreateEvent = GetStructType<{
+export interface QuestNodePrototypeOnNPCCreateEvent extends QuestNodePrototype {
   BrokenGameDataFilter: EBrokenGameDataFilter;
   EventType: EQuestEventType;
   LaunchOnQuestStart: boolean;
-  NodePrototypeVersion: number;
-  NodeType: "EQuestNodeType::OnNPCCreateEvent" & EQuestNodeType;
-  Launchers: QuestNodePrototypeLaunchers;
-  QuestSID: string;
-  SID: string;
+  NodeType: "EQuestNodeType::OnNPCCreateEvent";
   TargetQuestGuid: string;
   TrackBeforeActive: boolean;
-}>;
+}
 
-export type QuestNodePrototypeOnNPCDeathEvent = GetStructType<{
+export interface QuestNodePrototypeOnNPCDeathEvent extends QuestNodePrototype {
   BrokenGameDataFilter: EBrokenGameDataFilter;
   EventType: EQuestEventType;
   LaunchOnQuestStart: boolean;
-  NodePrototypeVersion: number;
-  NodeType: "EQuestNodeType::OnNPCDeathEvent" & EQuestNodeType;
-  Launchers: QuestNodePrototypeLaunchers;
-  QuestSID: string;
-  Repeatable: boolean;
-  SID: string;
+  NodeType: "EQuestNodeType::OnNPCDeathEvent";
+
   TargetQuestGuid: string;
   TrackBeforeActive: boolean;
-}>;
+}
 
-export type QuestNodePrototypeOnNPCDefeatEvent = GetStructType<{
+export interface QuestNodePrototypeOnNPCDefeatEvent extends QuestNodePrototype {
   EventType: EQuestEventType;
   LaunchOnQuestStart: boolean;
-  NodePrototypeVersion: number;
-  NodeType: "EQuestNodeType::OnNPCDefeatEvent" & EQuestNodeType;
-  Launchers: QuestNodePrototypeLaunchers;
-  QuestSID: string;
-  SID: string;
+  NodeType: "EQuestNodeType::OnNPCDefeatEvent";
   TargetQuestGuid: string;
   TrackBeforeActive: boolean;
-}>;
+}
 
-export type QuestNodePrototypeOnPlayerGetItemEvent = GetStructType<{
+export interface QuestNodePrototypeOnPlayerGetItemEvent
+  extends QuestNodePrototype {
   BrokenGameDataFilter: EBrokenGameDataFilter;
   EventType: EQuestEventType;
   ExpectedItemsCount: number;
   ItemPrototypeSID: string;
   LaunchOnQuestStart: boolean;
-  NodePrototypeVersion: number;
-  NodeType: "EQuestNodeType::OnPlayerGetItemEvent" & EQuestNodeType;
-  Launchers: QuestNodePrototypeLaunchers;
-  QuestSID: string;
-  Repeatable: boolean;
-  SID: string;
+  NodeType: "EQuestNodeType::OnPlayerGetItemEvent";
   TrackBeforeActive: boolean;
   WithEquipped: boolean;
   WithInventory: boolean;
-}>;
+}
 
-export type QuestNodePrototypeOnPlayerLostItemEvent = GetStructType<{
+export interface QuestNodePrototypeOnPlayerLostItemEvent
+  extends QuestNodePrototype {
   EventType: EQuestEventType;
   ExpectedItemsCount: number;
   FullAmount: boolean;
   ItemPrototypeSID: string;
   LaunchOnQuestStart: boolean;
-  NodePrototypeVersion: number;
-  NodeType: "EQuestNodeType::OnPlayerLostItemEvent" & EQuestNodeType;
-  Launchers: QuestNodePrototypeLaunchers;
-  QuestSID: string;
-  Repeatable: boolean;
-  SID: string;
+  NodeType: "EQuestNodeType::OnPlayerLostItemEvent";
   TrackBeforeActive: boolean;
-}>;
+}
 
-export type QuestNodePrototypeOnPlayerNoticedEvent = GetStructType<{
+export interface QuestNodePrototypeOnPlayerNoticedEvent
+  extends QuestNodePrototype {
   AIThreatState: number;
   EventType: EQuestEventType;
   LaunchOnQuestStart: number;
-  NodePrototypeVersion: number;
-  NodeType: "EQuestNodeType::OnPlayerNoticedEvent" & EQuestNodeType;
-  Launchers: QuestNodePrototypeLaunchers;
-  QuestSID: string;
-  Repeatable: boolean;
-  SID: string;
+  NodeType: "EQuestNodeType::OnPlayerNoticedEvent";
   TargetQuestGuid: string;
   ThreatSensor: number;
   TrackBeforeActive: number;
-}>;
+}
 
-export type QuestNodePrototypeOnPlayerRankReachedEvent = GetStructType<{
+export interface QuestNodePrototypeOnPlayerRankReachedEvent
+  extends QuestNodePrototype {
   EventType: EQuestEventType;
   LaunchOnQuestStart: boolean;
-  NodePrototypeVersion: number;
-  NodeType: "EQuestNodeType::OnPlayerRankReachedEvent" & EQuestNodeType;
-  Launchers: QuestNodePrototypeLaunchers;
-  QuestSID: string;
-  SID: string;
+  NodeType: "EQuestNodeType::OnPlayerRankReachedEvent";
   TargetRank: ERank;
   TrackBeforeActive: boolean;
-}>;
+}
 
-export type QuestNodePrototypeOnSignalReceived = GetStructType<{
+export interface QuestNodePrototypeOnSignalReceived extends QuestNodePrototype {
   BrokenGameDataFilter: EBrokenGameDataFilter;
   EventType: EQuestEventType;
   LaunchOnQuestStart: boolean;
-  NodePrototypeVersion: number;
-  NodeType: "EQuestNodeType::OnSignalReceived" & EQuestNodeType;
-  Launchers: QuestNodePrototypeLaunchers;
-  QuestSID: string;
-  Repeatable: boolean;
-  SID: string;
+  NodeType: "EQuestNodeType::OnSignalReceived";
+
   SignalSenderGuid: string;
   TrackBeforeActive: boolean;
-}>;
+}
 
-export type QuestNodePrototypeOnTickEvent = GetStructType<{
+export interface QuestNodePrototypeOnTickEvent extends QuestNodePrototype {
   BrokenGameDataFilter: EBrokenGameDataFilter;
   EventType: EQuestEventType;
   LaunchOnQuestStart: boolean;
-  NodePrototypeVersion: number;
-  NodeType: "EQuestNodeType::OnTickEvent" & EQuestNodeType;
-  Launchers: QuestNodePrototypeLaunchers;
-  QuestSID: string;
-  SID: string;
+  NodeType: "EQuestNodeType::OnTickEvent";
   TrackBeforeActive: boolean;
-}>;
+}
 
-export type QuestNodePrototypeOnUpgradeInstallEvent = GetStructType<{
+export interface QuestNodePrototypeOnUpgradeInstallEvent
+  extends QuestNodePrototype {
   EventType: EQuestEventType;
   LaunchOnQuestStart: boolean;
-  NodePrototypeVersion: number;
-  NodeType: "EQuestNodeType::OnUpgradeInstallEvent" & EQuestNodeType;
-  Launchers: QuestNodePrototypeLaunchers;
-  QuestSID: string;
-  SID: string;
+  NodeType: "EQuestNodeType::OnUpgradeInstallEvent";
   TrackBeforeActive: boolean;
   UpgradePrototypeSID: string;
-}>;
+}
 
 export type QuestNodePrototypeOutputPinNames = GetStructType<
   (number | string)[]
@@ -9284,76 +8902,51 @@ export type QuestNodePrototypePersonalRestriction = GetStructType<
 
 export type QuestNodePrototypePinWeights = GetStructType<number[]>;
 
-export type QuestNodePrototypePlayEffect = GetStructType<{
+export interface QuestNodePrototypePlayEffect extends QuestNodePrototype {
   BrokenGameDataFilter: EBrokenGameDataFilter;
   EffectLocation: AIGlobalRelativeLocation;
   EffectPath: string;
-  Launchers: QuestNodePrototypeLaunchers;
-  NodePrototypeVersion: number;
-  NodeType: "EQuestNodeType::PlayEffect" & EQuestNodeType;
-  QuestSID: string;
-  Repeatable: boolean;
-  SID: string;
-  TargetQuestGuid: string;
-}>;
+  NodeType: "EQuestNodeType::PlayEffect";
 
-export type QuestNodePrototypePlayPostProcess = GetStructType<{
-  Launchers: QuestNodePrototypeLaunchers;
-  NodePrototypeVersion: number;
-  NodeType: "EQuestNodeType::PlayPostProcess" & EQuestNodeType;
+  TargetQuestGuid: string;
+}
+
+export interface QuestNodePrototypePlayPostProcess extends QuestNodePrototype {
+  NodeType: "EQuestNodeType::PlayPostProcess";
   PostEffectProcessorSID: string;
   PostProcessParamValue: number;
-  QuestSID: string;
-  Repeatable: boolean;
-  SID: string;
-}>;
+}
 
-export type QuestNodePrototypePlaySound = GetStructType<{
+export interface QuestNodePrototypePlaySound extends QuestNodePrototype {
   AKEventPath: string;
   BrokenGameDataFilter: EBrokenGameDataFilter;
   FinishOnAKEvent: boolean;
-  Launchers: string;
   MasterAKEventForLoad: string;
-  NodePrototypeVersion: number;
-  NodeType: "EQuestNodeType::PlaySound" & EQuestNodeType;
-  QuestSID: string;
-  Repeatable: boolean;
-  SID: string;
+  NodeType: "EQuestNodeType::PlaySound";
+
   SoundLocation: AIGlobalRelativeLocation;
   SoundPath: string;
-}>;
+}
 
-export type QuestNodePrototypePlayVideo = GetStructType<{
+export interface QuestNodePrototypePlayVideo extends QuestNodePrototype {
   BrokenGameDataFilter: EBrokenGameDataFilter;
   IsFinalVideo: boolean;
-  Launchers: QuestNodePrototypeLaunchers;
-  NodePrototypeVersion: number;
-  NodeType: "EQuestNodeType::PlayVideo" & EQuestNodeType;
-  QuestSID: string;
-  SID: string;
+  NodeType: "EQuestNodeType::PlayVideo";
   TimeToStartNextNodeBeforeEnd: number;
   VideoAssetPath: string;
-}>;
+}
 
-export type QuestNodePrototypeProtectLairNPCSquadItem = GetStructType<{
-  Launchers: QuestNodePrototypeLaunchers;
-  NodePrototypeVersion: number;
-  NodeType: "EQuestNodeType::ProtectLairNPCSquadItem" & EQuestNodeType;
-  QuestSID: string;
-  SID: string;
+export interface QuestNodePrototypeProtectLairNPCSquadItem
+  extends QuestNodePrototype {
+  NodeType: "EQuestNodeType::ProtectLairNPCSquadItem";
   TargetQuestGuid: string;
-}>;
+}
 
-export type QuestNodePrototypeRandom = GetStructType<{
-  Launchers: QuestNodePrototypeLaunchers;
-  NodePrototypeVersion: number;
-  NodeType: "EQuestNodeType::Random" & EQuestNodeType;
+export interface QuestNodePrototypeRandom extends QuestNodePrototype {
+  NodeType: "EQuestNodeType::Random";
   OutputPinNames: QuestNodePrototypeOutputPinNames;
   PinWeights: QuestNodePrototypePinWeights;
-  QuestSID: string;
-  Repeatable: boolean;
-  SID: string;
-}>;
+}
 
 export type QuestNodePrototypeReachPointComments = GetStructType<
   QuestNodePrototypeReachPointCommentsItem[]
@@ -9365,28 +8958,20 @@ export type QuestNodePrototypeReachPointCommentsItem = GetStructType<{
   ReachPointLocation: AIGlobalRelativeLocation;
 }>;
 
-export type QuestNodePrototypeReputationLocker = GetStructType<{
+export interface QuestNodePrototypeReputationLocker extends QuestNodePrototype {
   BrokenGameDataFilter: EBrokenGameDataFilter;
-  Launchers: string;
   MinimalReputationLevel: ERelationLevel;
-  NodePrototypeVersion: number;
-  NodeType: "EQuestNodeType::ReputationLocker" & EQuestNodeType;
-  QuestSID: string;
-  SID: string;
+  NodeType: "EQuestNodeType::ReputationLocker";
   TargetFaction: string;
   TargetQuestGuid: string;
-}>;
+}
 
-export type QuestNodePrototypeResetAI = GetStructType<{
+export interface QuestNodePrototypeResetAI extends QuestNodePrototype {
   BrokenGameDataFilter: EBrokenGameDataFilter;
-  Launchers: QuestNodePrototypeLaunchers;
-  NodePrototypeVersion: number;
-  NodeType: "EQuestNodeType::ResetAI" & EQuestNodeType;
-  QuestSID: string;
-  Repeatable: boolean;
-  SID: string;
+  NodeType: "EQuestNodeType::ResetAI";
+
   TargetQuestGuid: string;
-}>;
+}
 
 export type QuestNodePrototypeRestrictedFaction = GetStructType<{
   Bandits: ESpaceRestrictionType;
@@ -9397,25 +8982,18 @@ export type QuestNodePrototypeRestrictedFaction = GetStructType<{
   Varta: ESpaceRestrictionType;
 }>;
 
-export type QuestNodePrototypeRestrictionArea = GetStructType<{
+export interface QuestNodePrototypeRestrictionArea extends QuestNodePrototype {
   IgnoreDamageType: EIgnoreDamageType;
-  Launchers: QuestNodePrototypeLaunchers;
-  NodeType: "EQuestNodeType::RestrictionArea" & EQuestNodeType;
-  QuestSID: string;
-  SID: string;
+  NodeType: "EQuestNodeType::RestrictionArea";
   SpawnHidden: boolean;
   SpawnNodeExcludeType: ESpawnNodeExcludeType;
   TargetQuestGuid: string;
-}>;
+}
 
-export type QuestNodePrototypeRestrictSave = GetStructType<{
-  Launchers: QuestNodePrototypeLaunchers;
-  NodePrototypeVersion: number;
-  NodeType: "EQuestNodeType::RestrictSave" & EQuestNodeType;
-  QuestSID: string;
+export interface QuestNodePrototypeRestrictSave extends QuestNodePrototype {
+  NodeType: "EQuestNodeType::RestrictSave";
   SaveTypes: QuestNodePrototypeSaveTypes;
-  SID: string;
-}>;
+}
 
 export type QuestNodePrototypeRotationAfterMoveTo = GetStructType<{
   Pitch: number;
@@ -9426,71 +9004,50 @@ export type QuestNodePrototypeRotationAfterMoveTo = GetStructType<{
   Z: number;
 }>;
 
-export type QuestNodePrototypeSaveGame = GetStructType<{
-  Launchers: QuestNodePrototypeLaunchers;
-  NodePrototypeVersion: number;
-  NodeType: "EQuestNodeType::SaveGame" & EQuestNodeType;
-  QuestSID: string;
-  Repeatable: boolean;
-  SID: string;
-}>;
+export interface QuestNodePrototypeSaveGame extends QuestNodePrototype {
+  NodeType: "EQuestNodeType::SaveGame";
+}
 
 export type QuestNodePrototypeSaveTypes = GetStructType<ESaveType[]>;
 
-export type QuestNodePrototypeScheduledContainer = GetStructType<{
+export interface QuestNodePrototypeScheduledContainer
+  extends QuestNodePrototype {
   ContaineredQuestPrototypeSID: string;
   EndHour: number;
-  Launchers: QuestNodePrototypeLaunchers;
-  NodePrototypeVersion: number;
-  NodeType: "EQuestNodeType::ScheduledContainer" & EQuestNodeType;
+  NodeType: "EQuestNodeType::ScheduledContainer";
   OutputPinNames: QuestNodePrototypeOutputPinNames;
-  QuestSID: string;
-  Repeatable: boolean;
   SelectedDaysOfWeek: number;
-  SID: string;
   StartHour: number;
-}>;
+}
 
-export type QuestNodePrototypeSearchPoint = GetStructType<{
-  Launchers: QuestNodePrototypeLaunchers;
-  NodePrototypeVersion: number;
-  NodeType: "EQuestNodeType::SearchPoint" & EQuestNodeType;
-  QuestSID: string;
-  SID: string;
+export interface QuestNodePrototypeSearchPoint extends QuestNodePrototype {
+  NodeType: "EQuestNodeType::SearchPoint";
   TargetLocation: AIGlobalRelativeLocation;
   TargetQuestGuid: string;
-}>;
+}
 
-export type QuestNodePrototypeSendSignal = GetStructType<{
+export interface QuestNodePrototypeSendSignal extends QuestNodePrototype {
   BrokenGameDataFilter: EBrokenGameDataFilter;
-  Launchers: QuestNodePrototypeLaunchers;
-  NodePrototypeVersion: number;
-  NodeType: "EQuestNodeType::SendSignal" & EQuestNodeType;
-  QuestSID: string;
-  Repeatable: boolean;
-  SID: string;
-  SignalReceiverGuid: string;
-}>;
+  NodeType: "EQuestNodeType::SendSignal";
 
-export type QuestNodePrototypeSequenceStart = GetStructType<{
+  SignalReceiverGuid: string;
+}
+
+export interface QuestNodePrototypeSequenceStart extends QuestNodePrototype {
   BlendExpForEaseInOut: number;
   BrokenGameDataFilter: EBrokenGameDataFilter;
-  Launchers: QuestNodePrototypeLaunchers;
   LocalizedSequences: DialogPrototypeLocalizedSequences;
   LoopSequence: number;
-  NodePrototypeVersion: number;
-  NodeType: "EQuestNodeType::SequenceStart" & EQuestNodeType;
+  NodeType: "EQuestNodeType::SequenceStart";
   PreblendSequence: boolean;
   PreblendTime: number;
-  QuestSID: string;
-  Repeatable: boolean;
+
   RotationTime: number;
   SelfLocation: string;
-  SID: string;
   TargetLocation: string;
-}>;
+}
 
-export type QuestNodePrototypeSetAIBehavior = GetStructType<{
+export interface QuestNodePrototypeSetAIBehavior extends QuestNodePrototype {
   BehaviorType: EBehaviorType;
   BrokenGameDataFilter: EBrokenGameDataFilter;
   CanBeInterrupted: boolean;
@@ -9527,7 +9084,6 @@ export type QuestNodePrototypeSetAIBehavior = GetStructType<{
   IgnoreRadiationFeilds: boolean;
   IgnoreThreat: boolean;
   ImmediatelyIdentifyEnemy: boolean;
-  Launchers: QuestNodePrototypeLaunchers;
   LeaveAnomalyZoneComments: string;
   LookAt: QuestNodePrototypeLookAt;
   MaxAcceptanceDistance: number;
@@ -9540,26 +9096,23 @@ export type QuestNodePrototypeSetAIBehavior = GetStructType<{
   MoveToPath: string;
   MoveToPlayer: boolean;
   MoveToSuccessRange: number;
-  NodePrototypeVersion: number;
-  NodeType: "EQuestNodeType::SetAIBehavior" & EQuestNodeType;
+  NodeType: "EQuestNodeType::SetAIBehavior";
   PatrolCycleCount: number;
   PatrolPlaceholderGUID: string;
   PlayerLeavesWhileCombatComments: string;
   PlayerLeavesWhileMovingComments: string;
-  QuestSID: string;
   Radius: number;
   ReachAnomalyZoneComments: string;
   ReachPointComments: QuestNodePrototypeReachPointComments;
   ReactOnApproachWithWeapon: boolean;
   ReactOnNonEnemySounds: boolean;
-  Repeatable: boolean;
+
   RepeatableStayAnimation: boolean;
   RestLocation: AIGlobalRelativeLocation;
   RotationAfterMoveTo: QuestNodePrototypeRotationAfterMoveTo;
   ShootingPosition: AIGlobalRelativeLocation;
   ShootTargetLocation: AIGlobalRelativeLocation;
   ShotsQueueCount: number;
-  SID: string;
   SimulateBattle: boolean;
   SleepLocation: AIGlobalRelativeLocation;
   StartBattleComments: string;
@@ -9579,33 +9132,25 @@ export type QuestNodePrototypeSetAIBehavior = GetStructType<{
   WaitingTime: number;
   WeaponReady: boolean;
   WeaponState: EWeaponState;
-}>;
+}
 
-export type QuestNodePrototypeSetCharacterEffect = GetStructType<{
+export interface QuestNodePrototypeSetCharacterEffect
+  extends QuestNodePrototype {
   BrokenGameDataFilter: EBrokenGameDataFilter;
   EffectPrototypeSID: string;
-  Launchers: QuestNodePrototypeLaunchers;
-  NodePrototypeVersion: number;
-  NodeType: "EQuestNodeType::SetCharacterEffect" & EQuestNodeType;
-  QuestSID: string;
-  Repeatable: boolean;
-  SID: string;
+  NodeType: "EQuestNodeType::SetCharacterEffect";
   TargetQuestGuid: string;
-}>;
+}
 
-export type QuestNodePrototypeSetCharacterParam = GetStructType<{
+export interface QuestNodePrototypeSetCharacterParam
+  extends QuestNodePrototype {
   BrokenGameDataFilter: EBrokenGameDataFilter;
-  Launchers: QuestNodePrototypeLaunchers;
-  NodePrototypeVersion: number;
-  NodeType: "EQuestNodeType::SetCharacterParam" & EQuestNodeType;
+  NodeType: "EQuestNodeType::SetCharacterParam";
   Params: QuestNodePrototypeParams;
-  QuestSID: string;
-  Repeatable: boolean;
-  SID: string;
   TargetQuestGuid: string;
-}>;
+}
 
-export type QuestNodePrototypeSetDialog = GetStructType<{
+export interface QuestNodePrototypeSetDialog extends QuestNodePrototype {
   BrokenGameDataFilter: EBrokenGameDataFilter;
   CallPlayer: boolean;
   CallPlayerRadius: number;
@@ -9616,421 +9161,296 @@ export type QuestNodePrototypeSetDialog = GetStructType<{
   DialogObjectLocation: QuestNodePrototypeDialogObjectLocation;
   IsComment: boolean;
   LastPhrases: QuestNodePrototypeLastPhrases;
-  Launchers: QuestNodePrototypeLaunchers;
-  NodePrototypeVersion: number;
-  NodeType: "EQuestNodeType::SetDialog" & EQuestNodeType;
+  NodeType: "EQuestNodeType::SetDialog";
   NPCToStartDialog: number;
   OutputPinNames: QuestNodePrototypeOutputPinNames;
   OverrideDialogTopic: EOverrideDialogTopic;
-  QuestSID: string;
-  Repeatable: boolean;
+
   SeekPlayer: boolean;
-  SID: string;
   StartForcedDialog: boolean;
   TalkThroughRadio: QuestNodePrototypeTalkThroughRadio;
   WaitAllDialogEndingsToFinish: boolean;
-}>;
+}
 
-export type QuestNodePrototypeSetDurabilityParam = GetStructType<{
-  Launchers: string;
-  NodePrototypeVersion: number;
-  NodeType: "EQuestNodeType::SetDurabilityParam" & EQuestNodeType;
+export interface QuestNodePrototypeSetDurabilityParam
+  extends QuestNodePrototype {
+  NodeType: "EQuestNodeType::SetDurabilityParam";
   PistolDurabilityPercent: number;
   PrimaryWeaponDurabilityPercent: number;
-  QuestSID: string;
   SecondaryWeaponDurabilityPercent: number;
   ShouldTargetPistol: boolean;
   ShouldTargetPrimaryWeapon: boolean;
   ShouldTargetSecondaryWeapon: boolean;
-  SID: string;
   TargetQuestGuid: string;
-}>;
+}
 
-export type QuestNodePrototypeSetFactionRestriction = GetStructType<{
-  Launchers: QuestNodePrototypeLaunchers;
+export interface QuestNodePrototypeSetFactionRestriction
+  extends QuestNodePrototype {
   NavAreaClass: string;
-  NodePrototypeVersion: number;
-  NodeType: "EQuestNodeType::SetFactionRestriction" & EQuestNodeType;
-  QuestSID: string;
+  NodeType: "EQuestNodeType::SetFactionRestriction";
   RestrictedFaction: QuestNodePrototypeRestrictedFaction;
-  SID: string;
-}>;
+}
 
-export type QuestNodePrototypeSetGlobalVariable = GetStructType<{
+export interface QuestNodePrototypeSetGlobalVariable
+  extends QuestNodePrototype {
   BrokenGameDataFilter: EBrokenGameDataFilter;
   ChangeValueMode: EChangeValueMode;
   GlobalVariablePrototypeSID: string;
-  Launchers: QuestNodePrototypeLaunchers;
-  NodePrototypeVersion: number;
-  NodeType: "EQuestNodeType::SetGlobalVariable" & EQuestNodeType;
-  QuestSID: string;
-  Repeatable: boolean;
-  SID: string;
+  NodeType: "EQuestNodeType::SetGlobalVariable";
   VariableValue: VariableValue;
-}>;
+}
 
-export type QuestNodePrototypeSetHubOwner = GetStructType<{
-  Launchers: QuestNodePrototypeLaunchers;
-  NodePrototypeVersion: number;
-  NodeType: "EQuestNodeType::SetHubOwner" & EQuestNodeType;
+export interface QuestNodePrototypeSetHubOwner extends QuestNodePrototype {
+  NodeType: "EQuestNodeType::SetHubOwner";
   OwnedHub: string;
-  QuestSID: string;
-  SID: string;
   TargetQuestGuid: string;
-}>;
+}
 
-export type QuestNodePrototypeSetItemGenerator = GetStructType<{
+export interface QuestNodePrototypeSetItemGenerator extends QuestNodePrototype {
   BrokenGameDataFilter: EBrokenGameDataFilter;
   EquipItems: boolean;
   ItemGeneratorSID: string;
-  Launchers: QuestNodePrototypeLaunchers;
-  NodePrototypeVersion: number;
-  NodeType: "EQuestNodeType::SetItemGenerator" & EQuestNodeType;
-  QuestSID: string;
-  Repeatable: boolean;
+  NodeType: "EQuestNodeType::SetItemGenerator";
   ReplaceInventory: boolean;
-  SID: string;
   TargetQuestGuid: string;
-}>;
+}
 
-export type QuestNodePrototypeSetJournal = GetStructType<{
+export interface QuestNodePrototypeSetJournal extends QuestNodePrototype {
   BrokenGameDataFilter: EBrokenGameDataFilter;
   JournalAction: EJournalAction;
   JournalEntity: EJournalEntity;
   JournalQuestDescriptionIndex: number;
   JournalQuestSID: string;
   JournalQuestStageSID: string;
-  Launchers: QuestNodePrototypeLaunchers;
   Markers: QuestNodePrototypeMarkers;
-  NodePrototypeVersion: number;
-  NodeType: "EQuestNodeType::SetJournal" & EQuestNodeType;
-  QuestSID: string;
-  Repeatable: boolean;
+  NodeType: "EQuestNodeType::SetJournal";
   SetQuestActive: boolean;
-  SID: string;
-}>;
+}
 
-export type QuestNodePrototypeSetLocationName = GetStructType<{
-  Launchers: QuestNodePrototypeLaunchers;
+export interface QuestNodePrototypeSetLocationName extends QuestNodePrototype {
   Location: string;
   NewDescription: number;
   NewTitle: number;
-  NodePrototypeVersion: number;
-  NodeType: "EQuestNodeType::SetLocationName" & EQuestNodeType;
-  QuestSID: string;
-  SID: string;
-}>;
+  NodeType: "EQuestNodeType::SetLocationName";
+}
 
-export type QuestNodePrototypeSetMeshGenerator = GetStructType<{
+export interface QuestNodePrototypeSetMeshGenerator extends QuestNodePrototype {
   BrokenGameDataFilter: EBrokenGameDataFilter;
-  Launchers: QuestNodePrototypeLaunchers;
   MeshGeneratorSID: string;
-  NodePrototypeVersion: number;
-  NodeType: "EQuestNodeType::SetMeshGenerator" & EQuestNodeType;
-  QuestSID: string;
-  SID: string;
+  NodeType: "EQuestNodeType::SetMeshGenerator";
   TargetQuestGuid: string;
-}>;
+}
 
-export type QuestNodePrototypeSetName = GetStructType<{
-  Launchers: QuestNodePrototypeLaunchers;
+export interface QuestNodePrototypeSetName extends QuestNodePrototype {
   NameSID: string;
-  NodePrototypeVersion: number;
-  NodeType: "EQuestNodeType::SetName" & EQuestNodeType;
-  QuestSID: string;
-  SID: string;
+  NodeType: "EQuestNodeType::SetName";
   TargetQuestGuid: string;
-}>;
+}
 
-export type QuestNodePrototypeSetNPCSequentialAbility = GetStructType<{
+export interface QuestNodePrototypeSetNPCSequentialAbility
+  extends QuestNodePrototype {
   AbilityPrototypeSID: string;
-  Launchers: QuestNodePrototypeLaunchers;
-  NodePrototypeVersion: number;
-  NodeType: "EQuestNodeType::SetNPCSequentialAbility" & EQuestNodeType;
-  QuestSID: string;
+  NodeType: "EQuestNodeType::SetNPCSequentialAbility";
   SequentialAbilityModificationMode: EModifyAbilitySequenceQuestNodeMode;
   SequentialAbilityPriority: number;
-  SID: string;
   TargetQuestGuid: string;
-}>;
+}
 
-export type QuestNodePrototypeSetPersonalRestriction = GetStructType<{
+export interface QuestNodePrototypeSetPersonalRestriction
+  extends QuestNodePrototype {
   BrokenGameDataFilter: EBrokenGameDataFilter;
-  Launchers: QuestNodePrototypeLaunchers;
   NavAreaClass: string;
-  NodePrototypeVersion: number;
-  NodeType: "EQuestNodeType::SetPersonalRestriction" & EQuestNodeType;
+  NodeType: "EQuestNodeType::SetPersonalRestriction";
   PersonalRestriction: QuestNodePrototypePersonalRestriction;
-  QuestSID: string;
-  SID: string;
-}>;
+}
 
-export type QuestNodePrototypeSetQuestGiver = GetStructType<{
-  Launchers: QuestNodePrototypeLaunchers;
+export interface QuestNodePrototypeSetQuestGiver extends QuestNodePrototype {
   MainQuest: boolean;
   MarkerDescription: string;
-  NodePrototypeVersion: number;
-  NodeType: "EQuestNodeType::SetQuestGiver" & EQuestNodeType;
-  QuestSID: string;
-  Repeatable: boolean;
-  SID: string;
-  TargetQuestGuid: string;
-}>;
+  NodeType: "EQuestNodeType::SetQuestGiver";
 
-export type QuestNodePrototypeSetSpaceRestrictor = GetStructType<{
-  Launchers: QuestNodePrototypeLaunchers;
-  NodePrototypeVersion: number;
-  NodeType: "EQuestNodeType::SetSpaceRestrictor" & EQuestNodeType;
-  QuestSID: string;
-  SID: string;
   TargetQuestGuid: string;
-}>;
+}
 
-export type QuestNodePrototypeSetTime = GetStructType<{
+export interface QuestNodePrototypeSetSpaceRestrictor
+  extends QuestNodePrototype {
+  NodeType: "EQuestNodeType::SetSpaceRestrictor";
+  TargetQuestGuid: string;
+}
+
+export interface QuestNodePrototypeSetTime extends QuestNodePrototype {
   InGameHours: number;
   InGameMinutes: number;
-  Launchers: QuestNodePrototypeLaunchers;
-  NodePrototypeVersion: number;
-  NodeType: "EQuestNodeType::SetTime" & EQuestNodeType;
-  QuestSID: string;
-  SID: string;
+  NodeType: "EQuestNodeType::SetTime";
   TransitionTime: number;
-}>;
+}
 
-export type QuestNodePrototypeSetTimer = GetStructType<{
+export interface QuestNodePrototypeSetTimer extends QuestNodePrototype {
   BrokenGameDataFilter: EBrokenGameDataFilter;
   InGameHours: number;
-  Launchers: QuestNodePrototypeLaunchers;
-  NodePrototypeVersion: number;
-  NodeType: "EQuestNodeType::SetTimer" & EQuestNodeType;
-  QuestSID: string;
-  Repeatable: boolean;
-  SID: string;
-}>;
+  NodeType: "EQuestNodeType::SetTimer";
+}
 
-export type QuestNodePrototypeSetWeather = GetStructType<{
+export interface QuestNodePrototypeSetWeather extends QuestNodePrototype {
   BrokenGameDataFilter: EBrokenGameDataFilter;
   Force: boolean;
-  Launchers: QuestNodePrototypeLaunchers;
-  NodePrototypeVersion: number;
-  NodeType: "EQuestNodeType::SetWeather" & EQuestNodeType;
-  QuestSID: string;
-  SID: string;
+  NodeType: "EQuestNodeType::SetWeather";
   TransitionTime: number;
   Weather: EWeather;
-}>;
+}
 
-export type QuestNodePrototypeSetWounded = GetStructType<{
+export interface QuestNodePrototypeSetWounded extends QuestNodePrototype {
   BrokenGameDataFilter: EBrokenGameDataFilter;
   HealingType: EHealingType;
-  Launchers: QuestNodePrototypeLaunchers;
-  NodePrototypeVersion: number;
-  NodeType: "EQuestNodeType::SetWounded" & EQuestNodeType;
-  QuestSID: string;
-  Repeatable: boolean;
-  SID: string;
+  NodeType: "EQuestNodeType::SetWounded";
   TargetQuestGuid: string;
   WoundedOn: boolean;
-}>;
+}
 
-export type QuestNodePrototypeShowFadeScreen = GetStructType<{
+export interface QuestNodePrototypeShowFadeScreen extends QuestNodePrototype {
   BrokenGameDataFilter: EBrokenGameDataFilter;
   FadeTime: number;
   ImagePath: string;
-  Launchers: QuestNodePrototypeLaunchers;
-  NodePrototypeVersion: number;
-  NodeType: "EQuestNodeType::ShowFadeScreen" & EQuestNodeType;
-  QuestSID: string;
-  Repeatable: boolean;
+  NodeType: "EQuestNodeType::ShowFadeScreen";
+
   ScreenText: string;
-  SID: string;
-}>;
+}
 
-export type QuestNodePrototypeShowLoadingScreen = GetStructType<{
-  Launchers: QuestNodePrototypeLaunchers;
+export interface QuestNodePrototypeShowLoadingScreen
+  extends QuestNodePrototype {
   LoadingScreenType: ELoadingDestination;
-  NodePrototypeVersion: number;
-  NodeType: "EQuestNodeType::ShowLoadingScreen" & EQuestNodeType;
-  QuestSID: string;
-  SID: string;
-}>;
+  NodeType: "EQuestNodeType::ShowLoadingScreen";
+}
 
-export type QuestNodePrototypeShowMarker = GetStructType<{
+export interface QuestNodePrototypeShowMarker extends QuestNodePrototype {
   BrokenGameDataFilter: EBrokenGameDataFilter;
   Discovered: boolean;
   Explored: boolean;
-  Launchers: QuestNodePrototypeLaunchers;
   MarkerSID: string;
-  NodePrototypeVersion: number;
-  NodeType: "EQuestNodeType::ShowMarker" & EQuestNodeType;
-  QuestSID: string;
-  SID: string;
-}>;
+  NodeType: "EQuestNodeType::ShowMarker";
+}
 
-export type QuestNodePrototypeShowTutorialWidget = GetStructType<{
-  Launchers: QuestNodePrototypeLaunchers;
-  NodePrototypeVersion: number;
-  NodeType: "EQuestNodeType::ShowTutorialWidget" & EQuestNodeType;
+export interface QuestNodePrototypeShowTutorialWidget
+  extends QuestNodePrototype {
+  NodeType: "EQuestNodeType::ShowTutorialWidget";
   PDATutorialNoteSID: string;
-  QuestSID: string;
-  Repeatable: boolean;
   RequiredInputs: CoreVariableLegs;
-  SID: string;
   TimerRate: number;
   TutorialHeadLocalizedSID: string;
   TutorialSID: string;
   TutorialTextLocalizedSID: string;
   WidgetType: number;
-}>;
+}
 
-export type QuestNodePrototypeSpawn = GetStructType<{
+export interface QuestNodePrototypeSpawn extends QuestNodePrototype {
   BrokenGameDataFilter: EBrokenGameDataFilter;
   IgnoreDamageType: EIgnoreDamageType;
-  Launchers: QuestNodePrototypeLaunchers;
-  NodePrototypeVersion: number;
-  NodeType: "EQuestNodeType::Spawn" & EQuestNodeType;
-  QuestSID: string;
-  Repeatable: boolean;
-  SID: string;
+  NodeType: "EQuestNodeType::Spawn";
+
   SpawnHidden: boolean;
   SpawnNodeExcludeType: ESpawnNodeExcludeType;
   TargetQuestGuid: string;
-}>;
+}
 
-export type QuestNodePrototypeSpawnAnomaly = GetStructType<{
+export interface QuestNodePrototypeSpawnAnomaly extends QuestNodePrototype {
   IgnoreDamageType: EIgnoreDamageType;
-  Launchers: QuestNodePrototypeLaunchers;
-  NodeType: "EQuestNodeType::SpawnAnomaly" & EQuestNodeType;
-  QuestSID: string;
-  SID: string;
+  NodeType: "EQuestNodeType::SpawnAnomaly";
   SpawnHidden: boolean;
   SpawnNodeExcludeType: ESpawnNodeExcludeType;
   TargetQuestGuid: string;
-}>;
+}
 
-export type QuestNodePrototypeSpawnAnomalySpawner = GetStructType<{
+export interface QuestNodePrototypeSpawnAnomalySpawner
+  extends QuestNodePrototype {
   IgnoreDamageType: EIgnoreDamageType;
-  Launchers: QuestNodePrototypeLaunchers;
-  NodeType: "EQuestNodeType::SpawnAnomalySpawner" & EQuestNodeType;
-  QuestSID: string;
-  SID: string;
+  NodeType: "EQuestNodeType::SpawnAnomalySpawner";
   SpawnHidden: boolean;
   SpawnNodeExcludeType: ESpawnNodeExcludeType;
   TargetQuestGuid: string;
-}>;
+}
 
-export type QuestNodePrototypeSpawnArtifactSpawner = GetStructType<{
+export interface QuestNodePrototypeSpawnArtifactSpawner
+  extends QuestNodePrototype {
   IgnoreDamageType: EIgnoreDamageType;
-  Launchers: QuestNodePrototypeLaunchers;
-  NodeType: "EQuestNodeType::SpawnArtifactSpawner" & EQuestNodeType;
-  QuestSID: string;
-  SID: string;
+  NodeType: "EQuestNodeType::SpawnArtifactSpawner";
   SpawnHidden: boolean;
   SpawnNodeExcludeType: ESpawnNodeExcludeType;
   TargetQuestGuid: string;
-}>;
+}
 
-export type QuestNodePrototypeSpawnDeadBody = GetStructType<{
+export interface QuestNodePrototypeSpawnDeadBody extends QuestNodePrototype {
   IgnoreDamageType: EIgnoreDamageType;
-  Launchers: QuestNodePrototypeLaunchers;
-  NodeType: "EQuestNodeType::SpawnDeadBody" & EQuestNodeType;
-  QuestSID: string;
-  SID: string;
+  NodeType: "EQuestNodeType::SpawnDeadBody";
   SpawnHidden: boolean;
   SpawnNodeExcludeType: ESpawnNodeExcludeType;
   TargetQuestGuid: string;
-}>;
+}
 
-export type QuestNodePrototypeSpawnItemContainer = GetStructType<{
+export interface QuestNodePrototypeSpawnItemContainer
+  extends QuestNodePrototype {
   IgnoreDamageType: EIgnoreDamageType;
-  Launchers: QuestNodePrototypeLaunchers;
-  NodeType: "EQuestNodeType::SpawnItemContainer" & EQuestNodeType;
-  QuestSID: string;
-  SID: string;
+  NodeType: "EQuestNodeType::SpawnItemContainer";
   SpawnHidden: boolean;
   SpawnNodeExcludeType: ESpawnNodeExcludeType;
   TargetQuestGuid: string;
-}>;
+}
 
-export type QuestNodePrototypeSpawnLair = GetStructType<{
+export interface QuestNodePrototypeSpawnLair extends QuestNodePrototype {
   IgnoreDamageType: EIgnoreDamageType;
-  Launchers: QuestNodePrototypeLaunchers;
-  NodeType: "EQuestNodeType::SpawnLair" & EQuestNodeType;
-  QuestSID: string;
-  SID: string;
+  NodeType: "EQuestNodeType::SpawnLair";
   SpawnHidden: boolean;
   SpawnNodeExcludeType: ESpawnNodeExcludeType;
   TargetQuestGuid: string;
-}>;
+}
 
-export type QuestNodePrototypeSpawnSafeZone = GetStructType<{
+export interface QuestNodePrototypeSpawnSafeZone extends QuestNodePrototype {
   IgnoreDamageType: EIgnoreDamageType;
-  Launchers: QuestNodePrototypeLaunchers;
-  NodeType: "EQuestNodeType::SpawnSafeZone" & EQuestNodeType;
-  QuestSID: string;
-  SID: string;
+  NodeType: "EQuestNodeType::SpawnSafeZone";
   SpawnHidden: boolean;
   SpawnNodeExcludeType: ESpawnNodeExcludeType;
   TargetQuestGuid: string;
-}>;
+}
 
-export type QuestNodePrototypeSpawnSingleObj = GetStructType<{
+export interface QuestNodePrototypeSpawnSingleObj extends QuestNodePrototype {
   IgnoreDamageType: EIgnoreDamageType;
-  Launchers: QuestNodePrototypeLaunchers;
-  NodeType: "EQuestNodeType::SpawnSingleObj" & EQuestNodeType;
-  QuestSID: string;
-  SID: string;
+  NodeType: "EQuestNodeType::SpawnSingleObj";
   SpawnHidden: boolean;
   SpawnNodeExcludeType: ESpawnNodeExcludeType;
   TargetQuestGuid: string;
-}>;
+}
 
-export type QuestNodePrototypeSpawnSquad = GetStructType<{
+export interface QuestNodePrototypeSpawnSquad extends QuestNodePrototype {
   IgnoreDamageType: EIgnoreDamageType;
-  Launchers: QuestNodePrototypeLaunchers;
-  NodeType: "EQuestNodeType::SpawnSquad" & EQuestNodeType;
-  QuestSID: string;
-  SID: string;
+  NodeType: "EQuestNodeType::SpawnSquad";
   SpawnHidden: boolean;
   SpawnNodeExcludeType: ESpawnNodeExcludeType;
   TargetQuestGuid: string;
-}>;
+}
 
-export type QuestNodePrototypeSpawnTrigger = GetStructType<{
+export interface QuestNodePrototypeSpawnTrigger extends QuestNodePrototype {
   IgnoreDamageType: EIgnoreDamageType;
-  Launchers: QuestNodePrototypeLaunchers;
-  NodeType: "EQuestNodeType::SpawnTrigger" & EQuestNodeType;
-  QuestSID: string;
-  SID: string;
+  NodeType: "EQuestNodeType::SpawnTrigger";
   SpawnHidden: boolean;
   SpawnNodeExcludeType: ESpawnNodeExcludeType;
   TargetQuestGuid: string;
-}>;
+}
 
-export type QuestNodePrototypeStartBenchmark = GetStructType<{
+export interface QuestNodePrototypeStartBenchmark extends QuestNodePrototype {
   BenchRuns: number;
   CameraHeight: number;
   CircleRadius: number;
   InitialPitch: number;
   InitialYaw: number;
-  Launchers: QuestNodePrototypeLaunchers;
-  NodePrototypeVersion: number;
-  NodeType: "EQuestNodeType::StartBenchmark" & EQuestNodeType;
+  NodeType: "EQuestNodeType::StartBenchmark";
   ProfileCsv: boolean;
-  QuestSID: string;
-  SID: string;
-}>;
+}
 
-export type QuestNodePrototypeSwitchQuestItemState = GetStructType<{
+export interface QuestNodePrototypeSwitchQuestItemState
+  extends QuestNodePrototype {
   ItemPrototypeSID: string;
-  Launchers: QuestNodePrototypeLaunchers;
-  NodePrototypeVersion: number;
-  NodeType: "EQuestNodeType::SwitchQuestItemState" & EQuestNodeType;
+  NodeType: "EQuestNodeType::SwitchQuestItemState";
   QuestItem: boolean;
-  QuestSID: string;
-  Repeatable: boolean;
-  SID: string;
-}>;
+}
 
 export type QuestNodePrototypeTalkThroughRadio = GetStructType<boolean[]>;
 
@@ -10038,97 +9458,65 @@ export type QuestNodePrototypeTargetLocations = GetStructType<
   AIGlobalRelativeLocation[]
 >;
 
-export type QuestNodePrototypeTechnical = GetStructType<{
+export interface QuestNodePrototypeTechnical extends QuestNodePrototype {
   BrokenGameDataFilter: EBrokenGameDataFilter;
-  Launchers: QuestNodePrototypeLaunchers;
   LaunchOnQuestStart: boolean;
-  NodePrototypeVersion: number;
-  NodeType: "EQuestNodeType::Technical" & EQuestNodeType;
-  QuestSID: string;
-  Repeatable: boolean;
-  SID: string;
-  StartDelay: number;
-}>;
+  NodeType: "EQuestNodeType::Technical";
 
-export type QuestNodePrototypeTeleportCharacter = GetStructType<{
+  StartDelay: number;
+}
+
+export interface QuestNodePrototypeTeleportCharacter
+  extends QuestNodePrototype {
   BrokenGameDataFilter: EBrokenGameDataFilter;
-  Launchers: QuestNodePrototypeLaunchers;
-  NodePrototypeVersion: number;
-  NodeType: "EQuestNodeType::TeleportCharacter" & EQuestNodeType;
-  QuestSID: string;
-  Repeatable: boolean;
+  NodeType: "EQuestNodeType::TeleportCharacter";
   ShouldBlendViaFade: boolean;
-  SID: string;
   TargetQuestGuid: string;
   TeleportLocationAndRotation: QuestNodePrototypeRotationAfterMoveTo;
   TeleportType: EGSCTeleportType;
-}>;
+}
 
-export type QuestNodePrototypeTimeLock = GetStructType<{
-  Launchers: QuestNodePrototypeLaunchers;
-  NodePrototypeVersion: number;
-  NodeType: "EQuestNodeType::TimeLock" & EQuestNodeType;
-  QuestSID: string;
-  SID: string;
-}>;
+export interface QuestNodePrototypeTimeLock extends QuestNodePrototype {
+  NodeType: "EQuestNodeType::TimeLock";
+}
 
-export type QuestNodePrototypeToggleLairActivity = GetStructType<{
+export interface QuestNodePrototypeToggleLairActivity
+  extends QuestNodePrototype {
   Activate: boolean;
   BrokenGameDataFilter: EBrokenGameDataFilter;
   ForceDespawn: boolean;
-  Launchers: QuestNodePrototypeLaunchers;
-  NodePrototypeVersion: number;
-  NodeType: "EQuestNodeType::ToggleLairActivity" & EQuestNodeType;
-  QuestSID: string;
-  Repeatable: boolean;
-  SID: string;
+  NodeType: "EQuestNodeType::ToggleLairActivity";
   TargetQuestGuid: string;
-}>;
+}
 
-export type QuestNodePrototypeToggleNPCHidden = GetStructType<{
+export interface QuestNodePrototypeToggleNPCHidden extends QuestNodePrototype {
   HideViewType: EHideViewType;
-  Launchers: QuestNodePrototypeLaunchers;
-  NodePrototypeVersion: number;
-  NodeType: "EQuestNodeType::ToggleNPCHidden" & EQuestNodeType;
-  QuestSID: string;
-  Repeatable: boolean;
-  SID: string;
+  NodeType: "EQuestNodeType::ToggleNPCHidden";
   TargetQuestGuid: string;
-}>;
+}
 
-export type QuestNodePrototypeTrackJournal = GetStructType<{
+export interface QuestNodePrototypeTrackJournal extends QuestNodePrototype {
   JournalQuestSID: string;
-  Launchers: QuestNodePrototypeLaunchers;
-  NodeType: "EQuestNodeType::TrackJournal" & EQuestNodeType;
-  QuestSID: string;
-  SID: string;
-}>;
+  NodeType: "EQuestNodeType::TrackJournal";
+}
 
-export type QuestNodePrototypeTrackShelter = GetStructType<{
-  Launchers: QuestNodePrototypeLaunchers;
-  NodeType: "EQuestNodeType::TrackShelter" & EQuestNodeType;
-  QuestSID: string;
-  SID: string;
-}>;
+export interface QuestNodePrototypeTrackShelter extends QuestNodePrototype {
+  NodeType: "EQuestNodeType::TrackShelter";
+}
 
-export type QuestNodePrototypeTrigger = GetStructType<{
+export interface QuestNodePrototypeTrigger extends QuestNodePrototype {
   BrokenGameDataFilter: EBrokenGameDataFilter;
   bTriggersByAnybody: boolean;
   EventType: EQuestEventType;
-  Launchers: QuestNodePrototypeLaunchers;
   LaunchOnQuestStart: boolean;
-  NodePrototypeVersion: number;
-  NodeType: "EQuestNodeType::Trigger" & EQuestNodeType;
-  QuestSID: string;
+  NodeType: "EQuestNodeType::Trigger";
   ReactType: ETriggerReact;
-  Repeatable: boolean;
   RequiredSquadMembers: ERequiredSquadMembers;
-  SID: string;
   TargetQuestGuid: string;
   TrackBeforeActive: boolean;
   TriggerAction: number;
   TriggerQuestGuid: string;
-}>;
+}
 
 export type QuestNodePrototypeUpgradeSIDs = StringArray;
 

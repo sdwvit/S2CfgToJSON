@@ -65,6 +65,9 @@
     "typescript": "^5.8.3",
     "vitest": "^3.2.4"
   },
+  "prettier": {
+    "printWidth": 80
+  },
   "engines": {
     "node": ">=24"
   }
