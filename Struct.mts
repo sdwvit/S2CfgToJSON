@@ -155,7 +155,10 @@ export class Struct implements Record<Internal, any> {
         .pop();
       this[nextIndex !== undefined ? nextIndex + 1 : 0] = value;
     } else {
-      if (value instanceof Struct) {
+      if (typeof value === "object") {
+        if (!(value instanceof Struct)) {
+          value = new Struct(value);
+        }
         value.__internal__.rawName = String(key);
       }
       this[key] = value;
