@@ -256,8 +256,8 @@ struct.end`;
   describe("fromBinary()", () => {
     test("1", () => {
       const binary = fs.readFileSync("./test.cfg.bin");
-      expect(() => Struct.fromBinary(binary)).not.toThrow();
-      expect(Struct.fromBinary(binary).length).toBeGreaterThan(0);
+      const roots = Struct.fromBinary(binary);
+      expect(roots.length).toBeGreaterThan(0);
     });
   });
 
