@@ -285,6 +285,34 @@ struct.end`.trim();
         cfg_data.map((s) => s.toJson()),
       );
     });
+
+    test("field block without int32 terminator", () => {
+      // Regression: some field blocks end with only a 1-byte marker instead of
+      // a 4-byte zero terminator. The following block's bytes then read as an
+      // out-of-range value (a pool-index shifted by the 1-byte drift), which
+      // used to make the reader over-read and eventually throw
+      // "Unexpected end of binary cfg data." Values are 1-based string-pool
+      // indices, so anything beyond the pool size marks the block boundary.
+      // The QuadKey field below is such a block ([4,4,5,2] with no int32 zero).
+      const bin = Buffer.from(
+        "010000000600000000000000040000005b305d000a00000053696d706c654b657900" +
+          "0a00000053696d706c6556616c0008000000517561644b657900080000005175616456" +
+          "616c00000000000000000000010000000100000001000000000000000003000000" +
+          "020000000200000003000000000000000004000000040000000500000002000000" +
+          "000500000005000000030000000000000000",
+        "hex",
+      );
+
+      const cfg = `
+[0] : struct.begin
+   SimpleKey = SimpleVal
+   QuadKey = QuadVal
+   QuadVal = SimpleVal
+struct.end`.trim();
+
+      const bin_data = Struct.fromBinary(bin);
+      expect(bin_data.map((s) => s.toString()).join("\n")).toBe(cfg);
+    });
   });
 
   describe("fork", () => {

@@ -134,15 +134,27 @@ function skipPostPoolPadding(reader: BinaryCursor): void {
   }
 }
 
-function readBinaryCfgConfig(reader: BinaryCursor): BinaryCfgConfig {
+function readBinaryCfgConfig(
+  reader: BinaryCursor,
+  poolSize: number,
+): BinaryCfgConfig {
   const position = reader.position;
   const values: number[] = [];
   let value = 0;
 
-  while (
-    reader.position + 4 <= reader.length &&
-    (value = reader.readInt32()) > 0
-  ) {
+  while (reader.position + 4 <= reader.length) {
+    value = reader.readInt32();
+    // A zero/negative int32 is the block terminator.
+    if (value <= 0) {
+      break;
+    }
+    // Every value is a 1-based string-pool index. A value beyond the pool
+    // means this block has no int32 terminator (it ends right at the
+    // following lastByte); rewind so the lastByte is read from here.
+    if (value > poolSize) {
+      reader.position -= 4;
+      break;
+    }
     values.push(value);
   }
 
@@ -151,7 +163,7 @@ function readBinaryCfgConfig(reader: BinaryCursor): BinaryCfgConfig {
 }
 
 function readBinaryStruct(reader: BinaryCursor, stringPool: string[]): Struct {
-  const block = readBinaryCfgConfig(reader);
+  const block = readBinaryCfgConfig(reader, stringPool.length);
   const node = createDynamicClassInstance(
     getBinaryString(block.values[1], stringPool),
   );
@@ -169,7 +181,7 @@ function readBinaryStruct(reader: BinaryCursor, stringPool: string[]): Struct {
 
   const fieldsCount = reader.readInt32();
   for (let currentField = 0; currentField < fieldsCount; currentField++) {
-    const fieldBlock = readBinaryCfgConfig(reader);
+    const fieldBlock = readBinaryCfgConfig(reader, stringPool.length);
     if (fieldBlock.values.length <= 1) {
       continue;
     }
