@@ -1,6 +1,6 @@
 # Stalker 2 CFG to JSON Converter
 
-A utility to convert Stalker 2 `.cfg` configuration files into structured JavaScript objects (POJOs), enabling easier mod development and analysis.
+A utility to convert Stalker 2 `.cfg` and `.cfg.bin` configuration files into structured JavaScript objects (POJOs), enabling easier mod development and analysis.
 
 ---
 
