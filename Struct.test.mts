@@ -253,6 +253,14 @@ struct.end`;
     });
   });
 
+  describe("fromBinary()", () => {
+    test("1", () => {
+      const binary = fs.readFileSync("./test.cfg.bin");
+      expect(() => Struct.fromBinary(binary)).not.toThrow();
+      expect(Struct.fromBinary(binary).length).toBeGreaterThan(0);
+    });
+  });
+
   describe("fork", () => {
     test("1", () => {
       const a = new TradePrototype();
