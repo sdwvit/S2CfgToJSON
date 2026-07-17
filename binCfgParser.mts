@@ -1,4 +1,9 @@
-import { Struct, createDynamicClassInstance, parseValue } from "./Struct.mjs";
+import {
+  Struct,
+  createDynamicClassInstance,
+  parseKey,
+  parseValue,
+} from "./Struct.mjs";
 
 class BinaryCursor {
   private readonly bytes: Uint8Array;
@@ -152,7 +157,14 @@ function readBinaryStruct(reader: BinaryCursor, stringPool: string[]): Struct {
   );
 
   if (block.lastByte > 0 && [1, 5, 7].includes(block.lastByte)) {
-    readBinaryLinkPair(reader);
+    const link = readBinaryLinkPair(reader);
+    // lastByte 1/7 = inherit ref shown in text cfg; 5 = resolved field link, skip
+    if (block.lastByte === 1 || block.lastByte === 7) {
+      node.__internal__.refkey = link.parentName;
+      if (link.refPath) {
+        node.__internal__.refurl = link.refPath;
+      }
+    }
   }
 
   const fieldsCount = reader.readInt32();
@@ -167,14 +179,21 @@ function readBinaryStruct(reader: BinaryCursor, stringPool: string[]): Struct {
       case 2: {
         reader.position = fieldBlock.position;
         const nested = readBinaryStruct(reader, stringPool);
-        node.addNode(nested, fieldName);
+        assignField(
+          node,
+          fieldName,
+          isEmptyNestedStruct(nested) ? "" : nested,
+          currentField,
+        );
         break;
       }
       case 3:
       case 4:
-        node.addNode(
-          parseValue(getBinaryString(fieldBlock.values[2], stringPool).trim()),
+        assignField(
+          node,
           fieldName,
+          parseValue(getBinaryString(fieldBlock.values[2], stringPool).trim()),
+          currentField,
         );
         break;
     }
@@ -183,15 +202,41 @@ function readBinaryStruct(reader: BinaryCursor, stringPool: string[]): Struct {
   return node;
 }
 
+function assignField(
+  parent: Struct,
+  rawKey: string,
+  value: any,
+  index: number,
+) {
+  const key = parseKey(rawKey, parent, index);
+  parent[key] = value;
+}
+
+function isEmptyNestedStruct(node: Struct): boolean {
+  return (
+    node.entries().length === 0 &&
+    !node.__internal__.refkey &&
+    !node.__internal__.refurl &&
+    !node.__internal__.bpatch &&
+    !node.__internal__.bskipref
+  );
+}
+
 function getBinaryString(index: number, stringPool: string[]): string {
   return stringPool[index - 1] ?? "";
 }
 
 function readBinaryLinkPair(reader: BinaryCursor) {
   const parentLength = reader.readInt32();
-  reader.readBytes(parentLength);
+  const parentBytes = reader.readBytes(parentLength);
+  const parentName = Buffer.from(parentBytes.subarray(0, -1)).toString("utf-8");
+
   const refLength = reader.readInt32();
+  let refPath: string | undefined;
   if (refLength > 0) {
-    reader.readBytes(refLength);
+    const refBytes = reader.readBytes(refLength);
+    refPath = Buffer.from(refBytes.subarray(0, -1)).toString("utf-8");
   }
+
+  return { parentName, refPath };
 }

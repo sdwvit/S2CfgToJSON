@@ -256,8 +256,34 @@ struct.end`;
   describe("fromBinary()", () => {
     test("1", () => {
       const binary = fs.readFileSync("./test.cfg.bin");
-      const roots = Struct.fromBinary(binary);
-      expect(roots.length).toBeGreaterThan(0);
+      const bin_data = Struct.fromBinary(binary);
+
+      const cfg = `
+[0] : struct.begin
+   ID = 0
+   SID = empty
+   HiddenLevels : struct.begin
+      [0] =
+   struct.end
+struct.end
+[1] : struct.begin {refkey=[0]}
+   ID = 1
+   SID = WorldMap
+   HiddenLevels : struct.begin
+      [0] = 06_Church_VaultOpen_block
+      [1] = E06_MQ02_C03_LogicLevel
+   struct.end
+struct.end`.trim();
+
+      const cfg_data = Struct.fromString(cfg);
+
+      expect(bin_data.length).toBe(cfg_data.length);
+      expect(bin_data.map((s) => s.toString()).join("\n")).toBe(
+        cfg_data.map((s) => s.toString()).join("\n"),
+      );
+      expect(bin_data.map((s) => s.toJson())).toEqual(
+        cfg_data.map((s) => s.toJson()),
+      );
     });
   });
 
