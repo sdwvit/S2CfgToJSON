@@ -1,3 +1,5 @@
+import { readBinaryCfg } from "./binCfgParser.mjs";
+
 export type * from "./types.mjs";
 export type * from "./enums.mjs";
 
@@ -325,6 +327,12 @@ export class Struct implements Record<Internal, any> {
   static fromString<IntendedType>(text: string): (IntendedType & Struct)[] {
     return walk(text.trim().split("\n")) as any[];
   }
+
+  static fromBinary<IntendedType>(
+    bytes: ArrayBuffer | Uint8Array,
+  ): (IntendedType & Struct)[] {
+    return readBinaryCfg(bytes) as any[];
+  }
 }
 
 export class Refs implements DefaultEntries {
@@ -484,7 +492,7 @@ export function parseKey(key: string, parent: Struct, index: number) {
   return normKey;
 }
 
-function parseValue(value: string): string | number | boolean {
+export function parseValue(value: string): string | number | boolean {
   if (value === "true" || value === "false") {
     return value === "true";
   }
