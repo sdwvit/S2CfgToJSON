@@ -50,11 +50,42 @@ export type GetStructType<In> =
 const TAB = "   ";
 const WILDCARD = "_wildcard";
 const KEYWORDS = [
-  "refurl", // a file path to override
-  "refkey", // SID to override
-  "bskipref", // ??? not sure
-  "bpatch", // allows patching only specific keys
+  /**
+   * Path (relative to this file) of the cfg holding the base struct.
+   * Omit refurl and refkey looks for the struct in the same file.
+   * @example MyMod : struct.begin {refurl=../DialogPoolPrototypes/Brodyaga.cfg; refkey=BusyTopic}
+   */
+  "refurl",
+
+  /**
+   * Key / name of the base struct to inherit from: a name, or a [numeric index].
+   * The base is deep-copied, then this struct's body merges on top.
+   */
+  "refkey",
+
+  /**
+   * Placed on a nested struct/entry: tells the game NOT to inherit that property
+   * from the refkey base. Inheritors must specify their own value or it stays empty.
+   * @example
+   * [0] : struct.begin
+   *    InfotopicDialogs : struct.begin
+   *       InfotopicDialogChain = SomeChain{bskipref}
+   *    struct.end
+   * struct.end
+   */
+  "bskipref",
+
+  /**
+   * Partial override: merges only the listed non-struct keys into the existing
+   * struct. Never removes siblings.
+   */
+  "bpatch",
 ];
+
+/**
+ * Marks a struct as removed during a bpatch. For non-structs, use bpatch and
+ * assign the value `empty` instead.
+ */
 const REMOVE_NODE = "removenode";
 const INTERNAL_PROPS = new Map([
   ["__internal__", "_"],
