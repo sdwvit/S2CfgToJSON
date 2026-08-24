@@ -313,6 +313,64 @@ struct.end`.trim();
       const bin_data = Struct.fromBinary(bin);
       expect(bin_data.map((s) => s.toString()).join("\n")).toBe(cfg);
     });
+
+    test("serializes adjacent roots on separate lines", () => {
+      const binary = fs.readFileSync(
+        "./CharacterWeaponSettingsPrototypes.cfg.bin",
+      );
+      const cfg = Struct.fromBinary(binary)
+        .map((s) => s.toString())
+        .join("\n");
+
+      expect(cfg).toContain("struct.end\nGunDniproDuty_ST_Player :");
+      expect(cfg).not.toContain("struct.end,GunDniproDuty_ST_Player");
+    });
+
+    test("keeps the original float literal", () => {
+      const binary = fs.readFileSync(
+        "./CharacterWeaponSettingsPrototypes.cfg.bin",
+      );
+      const [, dnipro] = Struct.fromBinary(binary);
+
+      expect(dnipro.toString()).toContain("ArmorPiercing = 3.2");
+      expect(dnipro["ArmorPiercing"]).toBe(3.2);
+    });
+  });
+
+  describe("raw literals", () => {
+    test("round-trips trailing zeros and exponents", () => {
+      const cfg = [
+        "A : struct.begin",
+        "   X = 35.0",
+        "   Y = 1e3",
+        "   Z = 0.5",
+        "struct.end",
+      ].join("\n");
+      const [a] = Struct.fromString(cfg);
+
+      expect(a.toString()).toBe(cfg);
+      expect(a["X"]).toBe(35);
+      // parseValue() leaves exponent notation alone, so it survives as-is.
+      expect(a["Y"]).toBe("1e3");
+    });
+
+    test("a reassigned field renders its new value", () => {
+      const [a] = Struct.fromString(
+        "A : struct.begin\n   X = 35.0\nstruct.end",
+      );
+      a["X"] = 12;
+
+      expect(a.toString()).toContain("X = 12");
+    });
+
+    test("clone keeps the literal, toJson does not expose it", () => {
+      const [a] = Struct.fromString(
+        "A : struct.begin\n   X = 35.0\nstruct.end",
+      );
+
+      expect(a.clone().toString()).toContain("X = 35.0");
+      expect(a.toJson()).toEqual({ __internal__: a.__internal__, X: 35 });
+    });
   });
 
   describe("fork", () => {

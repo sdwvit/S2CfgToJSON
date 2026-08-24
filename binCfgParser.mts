@@ -3,6 +3,7 @@ import {
   createDynamicClassInstance,
   parseKey,
   parseValue,
+  rememberRawLiteral,
 } from "./Struct.mjs";
 
 class BinaryCursor {
@@ -200,14 +201,11 @@ function readBinaryStruct(reader: BinaryCursor, stringPool: string[]): Struct {
         break;
       }
       case 3:
-      case 4:
-        assignField(
-          node,
-          fieldName,
-          parseValue(getBinaryString(fieldBlock.values[2], stringPool).trim()),
-          currentField,
-        );
+      case 4: {
+        const raw = getBinaryString(fieldBlock.values[2], stringPool).trim();
+        assignField(node, fieldName, parseValue(raw), currentField, raw);
         break;
+      }
     }
   }
 
@@ -219,9 +217,13 @@ function assignField(
   rawKey: string,
   value: any,
   index: number,
+  raw?: string,
 ) {
   const key = parseKey(rawKey, parent, index);
   parent[key] = value;
+  if (raw !== undefined) {
+    rememberRawLiteral(parent, key, raw);
+  }
 }
 
 function isEmptyNestedStruct(node: Struct): boolean {

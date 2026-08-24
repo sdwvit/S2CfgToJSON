@@ -202,6 +202,7 @@ export class Struct implements Record<Internal, any> {
   clone() {
     const newInstance = new Struct() as typeof this;
     newInstance.__internal__ = new Refs(this.__internal__);
+    copyRawLiterals(this, newInstance);
     this.forEach(([k, v]) => {
       if (v instanceof Struct) {
         newInstance[k] = v.clone();
@@ -345,7 +346,7 @@ export class Struct implements Record<Internal, any> {
         const renderedValue =
           value instanceof Struct && value.__internal__.removenode
             ? REMOVE_NODE
-            : value;
+            : renderLiteral(this, key as string, value);
         return pad(
           `${keyOrIndex}${equalsOrColon}${spaceOrNoSpace}${renderedValue}`,
         );
@@ -462,8 +463,10 @@ function parseKeyValue(line: string, parent: Struct, index: number): void {
   }
 
   const key = parseKey(match[1].trim(), parent, index);
+  const raw = match[3].trim();
 
-  parent[key] = parseValue(match[3].trim());
+  parent[key] = parseValue(raw);
+  rememberRawLiteral(parent, key, raw);
 }
 
 function walk(lines: string[]) {
@@ -540,6 +543,59 @@ export function parseValue(value: string): string | number | boolean {
     }
   } catch (e) {}
   return value;
+}
+
+/**
+ * Numbers are stored as JS numbers, which loses the exact literal a cfg file
+ * used ("35.0" and "1e3" both become 35 / 1000). Renderers need the original
+ * text back, so the literal is kept next to the struct in a hidden,
+ * non-enumerable slot that toJson()/entries() never see.
+ */
+const RAW_LITERALS = "__rawLiterals__";
+
+function rawLiterals(struct: Struct): Record<string, string> | undefined {
+  return struct[RAW_LITERALS];
+}
+
+export function rememberRawLiteral(
+  parent: Struct,
+  key: string | number,
+  raw: string,
+) {
+  const value = parent[key];
+  // Only worth keeping when rendering the number would not reproduce the file.
+  if (typeof value !== "number" || String(value) === raw) {
+    return;
+  }
+  let literals = rawLiterals(parent);
+  if (!literals) {
+    literals = {};
+    Object.defineProperty(parent, RAW_LITERALS, {
+      value: literals,
+      enumerable: false,
+      writable: true,
+      configurable: true,
+    });
+  }
+  literals[key] = raw;
+}
+
+function copyRawLiterals(from: Struct, to: Struct) {
+  const literals = rawLiterals(from);
+  if (literals) {
+    Object.defineProperty(to, RAW_LITERALS, {
+      value: { ...literals },
+      enumerable: false,
+      writable: true,
+      configurable: true,
+    });
+  }
+}
+
+function renderLiteral(parent: Struct, key: string, value: any) {
+  const raw = rawLiterals(parent)?.[key];
+  // A reassigned field must render its new value, not the stale literal.
+  return raw !== undefined && parseValue(raw) === value ? raw : value;
 }
 
 function renderStructName(name: string): string {
