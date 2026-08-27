@@ -606,3 +606,38 @@ const MyRank: ERank = "ERank::Experienced, ERank::Veteran, ERank::Master";
 
 (new Struct() as QuestNodePrototypeRandom).Launchers =
   {} as QuestNodePrototypeLaunchers;
+
+describe("comments", () => {
+  // GameData/PhysicsInteractionPrototypes.cfg uses `;` and `//` on adjacent lines
+  test("`;` starts a line comment, like `#` and `//`", () => {
+    const [struct] = Struct.fromString<{
+      WaterImpulseReduction: number;
+      PlayerPushImpulse: number;
+    }>(
+      [
+        "PhysicsInteraction : struct.begin",
+        "   WaterImpulseReduction = 3.0",
+        "   ;Max impulse to apply to the object when pushed by player",
+        "   PlayerPushImpulse = 1000.0",
+        "   // Default distance to cut all sounds is 10m",
+        "struct.end",
+      ].join("\n"),
+    );
+
+    expect(struct.WaterImpulseReduction).toBe(3);
+    expect(struct.PlayerPushImpulse).toBe(1000);
+    expect(Object.keys(struct).filter((k) => k !== "__internal__")).toEqual([
+      "WaterImpulseReduction",
+      "PlayerPushImpulse",
+    ]);
+  });
+
+  // a commented-out entry would otherwise be read back as real data under the key ";MaxHP"
+  test("a commented-out entry is not parsed", () => {
+    const [struct] = Struct.fromString(
+      ["Foo : struct.begin", "   ;MaxHP = 750", "struct.end"].join("\n"),
+    );
+
+    expect(Object.keys(struct).filter((k) => k !== "__internal__")).toEqual([]);
+  });
+});

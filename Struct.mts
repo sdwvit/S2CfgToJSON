@@ -469,13 +469,21 @@ function parseKeyValue(line: string, parent: Struct, index: number): void {
   rememberRawLiteral(parent, key, raw);
 }
 
+/**
+ * `;` starts a line comment just like `#` and `//` do.
+ * @example GameData/PhysicsInteractionPrototypes.cfg has `;` and `//` comments on adjacent lines.
+ */
+function isComment(line: string) {
+  return line.startsWith("#") || line.startsWith("//") || line.startsWith(";");
+}
+
 function walk(lines: string[]) {
   const roots: Struct[] = [];
   const stack = [];
   let index = 0;
   while (index < lines.length) {
     const line = lines[index++].trim();
-    if (line.startsWith("#") || line.startsWith("//")) {
+    if (isComment(line)) {
       continue; // Skip comments
     }
     const current = stack[stack.length - 1];
