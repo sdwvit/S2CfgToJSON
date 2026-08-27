@@ -1,5 +1,5 @@
 // noinspection JSUnusedGlobalSymbols
-// this file is up to date with game version 1.8
+// this file is up to date with game version 2.0
 
 import type {
   EAIConstraintType,
@@ -589,6 +589,7 @@ export type Achievement = GetStructType<{
 export type AchievementAchievementGoalsItem = GetStructType<{
   Goal: number;
   SID: string;
+  Version: string;
 }>;
 
 export type AchievementArmorSIDs = StringArray;
@@ -613,6 +614,7 @@ export type AIGlobal = GetStructType<{
   ContextualActionSettings: AIGlobalContextualActionSettings;
   CorpseBehaviorFactionRestrictions: NPCPrototypeSkills;
   CoverSettings: AIGlobalCoverSettings;
+  CrossfireReactSoundTypes: string;
   DangerAreaSettings: AIGlobalDangerAreaSettings;
   DeadBodyToConsiderAsThreatDuration: number;
   DistanceToSwitchToWalkIn: number;
@@ -626,14 +628,19 @@ export type AIGlobal = GetStructType<{
   ForceRunInsteadSprintDistanceToNextPortal: number;
   ForceRunInsteadSprintDistanceToPathEnd: number;
   ForceRunInsteadSprintPortalRotationAngleThreshold: number;
+  HealAllyNavigationAcceptanceDistance: number;
+  HealAllyRadius: number;
   HearingSensorSettings: AIGlobalHearingSensorSettings;
   HideWeaponWarningBarkDelay: string;
   LuminanceSettings: AIGlobalLuminanceSettings;
   MaterialTranslucencyList: AIGlobalMaterialTranslucencyList;
   MaxAgentsCount: number;
+  MaxDistanceToPerceiveToCrossfire: number;
+  MaxDistanceToReportCrossfire: number;
   MaxHideWeaponWarningFollowDistance: string;
   MinALifeDespawnDistance: number;
   MinALifeSpawnDistance: number;
+  MinSafeDistanceToIgnoreCrossfire: number;
   MutantCorpseProcessFactionPerRank: AIGlobalMutantCorpseProcessFactionPerRank;
   OfflineUsingGameGraphMoveFactor: number;
   PhysMatSettings: AIGlobalPhysMatSettings;
@@ -679,6 +686,7 @@ export type AIGlobalAvailableGrenadesPerFaction = GetStructType<{
   Army: AIGlobalArmy;
   Bandits: AIGlobalBandits;
   Humanoid: AIGlobalBandits;
+  KorshunovBoss_Faction: AIGlobalArmy;
 }>;
 
 export type AIGlobalBandits = GetStructType<
@@ -1249,6 +1257,8 @@ export type AnomalyPrototype = GetStructType<{
   FlamePillarRadius: number;
   GrenadeAngularVelocityMultiplier: number;
   GrenadeLinearVelocityMultiplier: number;
+  HoverOnRecharge: boolean;
+  HoverPushingImpulse: number;
   HuntDistance: number;
   IdleSwitchPath: string;
   IgnoredProjectileSIDs: NPCPrototypeSkills;
@@ -1263,6 +1273,7 @@ export type AnomalyPrototype = GetStructType<{
   LiftUpTime: number;
   LinearDamping: number;
   MaxArtifactsToUpSpeed: number;
+  MaxPushingImpulse: number;
   MovementLocationPriorityRadius: number;
   MovementSpeed: number;
   MoveToTargetUpdateDelay: number;
@@ -1288,6 +1299,7 @@ export type AnomalyPrototype = GetStructType<{
   PostInteractionEffectPrototypeSIDs: NPCPrototypeSkills;
   PreInteractionEffectPrototypeSIDs: NPCPrototypeSkills;
   PullForce: number;
+  PushForceMultiplier: number;
   PushImpulse: number;
   PushingForce: number;
   PushingImpulse: number;
@@ -1300,6 +1312,7 @@ export type AnomalyPrototype = GetStructType<{
   SpawnParticleBottomThreshold: number;
   SpawnParticleTopThreshold: number;
   SpeedRotationInPlace: number;
+  SpringBoardMode: boolean;
   "ST_GameState-Default": string;
   "ST_GameState-Flycatcher": string;
   TargetChaseTime: number;
@@ -1459,6 +1472,7 @@ export type ArtifactPrototype = GetStructType<{
   DestroyOnPickup: boolean;
   DetectorRequired: boolean;
   DisableCollisionWhenHide: boolean;
+  DropOnPickup: boolean;
   EffectOnPickPrototypeSIDs: ArtifactPrototypeEffectOnPickPrototypeSIDs;
   EffectPrototypeSIDs: CoreVariableTorso;
   EffectsDisplayTypes: ArtifactPrototypeEffectsDisplayTypes;
@@ -1468,7 +1482,6 @@ export type ArtifactPrototype = GetStructType<{
   FakeArtifactDistortionSound: string;
   FakeArtifactDistortionVFX: string;
   FakeArtifactHaloVFX: string;
-  HasPhysics: boolean;
   Icon: string;
   InactiveIcon: string;
   IsQuestItem: boolean;
@@ -1494,6 +1507,7 @@ export type ArtifactPrototype = GetStructType<{
   MinimalDrunkenness: number;
   MinWeight: number;
   NegativeEffectPrototypeSIDs: NPCPrototypeSkills;
+  OverrideIcon: string;
   ParticleOnImpact: string;
   ParticleOnShow: string;
   ParticleStateTransitionFadeIn: string;
@@ -1579,7 +1593,7 @@ export type ArtifactSpawnerPrototypeRarityChance = GetStructType<{
 }>;
 
 export type AssetLibrary = GetStructType<{
-  AkEffectShareSet: AssetLibraryAkEffectShareSet;
+  AkAudioEvent: AssetLibraryAkAudioEvent;
   AKRtpc: AssetLibraryAKRtpc;
   AnimationBlueprints: AssetLibraryAnimationBlueprints;
   AnomalyBlueprint: string;
@@ -1602,6 +1616,12 @@ export type AssetLibrary = GetStructType<{
   TextureRenderTarget2D: AssetLibraryUIIcons;
   UIIcons: AssetLibraryUIIcons;
   UIWidgetBlueprint: AssetLibraryUIWidgetBlueprint;
+}>;
+
+export type AssetLibraryAkAudioEvent = GetStructType<{
+  SetMasteringSuiteFull: string;
+  SetMasteringSuiteMedium: string;
+  SetMasteringSuiteNarrow: string;
 }>;
 
 export type AssetLibraryAkEffectShareSet = GetStructType<{
@@ -1732,6 +1752,7 @@ export type AssetLibraryUIWidgetBlueprint = GetStructType<{
   PlayVideoWidgetClass: string;
   RightClickMenuWidgetClass: string;
   SleepWidgetClass: string;
+  StoryRecapMenuClass: string;
   SubtitleClass: string;
   TradeWidgetClass: string;
   UpgradesWidgetClass: string;
@@ -1929,6 +1950,7 @@ export type AttachMeshPrototypeVariationsItem = GetStructType<{
 }>;
 
 export type AttachPrototype = GetStructType<{
+  AdditionalRestoreSlots: AttachPrototypeAdditionalRestoreSlots;
   AttachInstallSound: string;
   AttachType: EAttachType;
   AttachUninstallSound: string;
@@ -1964,6 +1986,10 @@ export type AttachPrototype = GetStructType<{
   Weight: number;
 }>;
 
+export type AttachPrototypeAdditionalRestoreSlots = GetStructType<
+  EAttachSlot[]
+>;
+
 export type AttachPrototypeAimingEffects = GetStructType<{
   PlayerOnlyEffects: NPCPrototypeSkills;
 }>;
@@ -1996,6 +2022,7 @@ export type AttachPrototypeLaserSight = GetStructType<{
 }>;
 
 export type AttachPrototypeMagazine = GetStructType<{
+  AttachSelectorMagIcon: string;
   BindBulletsToAttach: boolean;
   HasMultipleMeshes: boolean;
   IsTwinMagazine: boolean;
@@ -2102,6 +2129,14 @@ export type AudioScattererPrototypeListOfBrushesItem = GetStructType<{
 export type AutoSaveVariable = GetStructType<{
   AutoSaveIntervalTime: number;
   AutoSaveOnFailRetryIntervalTime: number;
+}>;
+
+export type BackpackAttachPrototype = GetStructType<{
+  MeshPath: string;
+  OffsetRotator: SpawnActorPrototypeRotation;
+  OffsetVector: AIGlobalRelativeLocation;
+  SID: string;
+  SocketName: string;
 }>;
 
 export type BackpackPrototype = GetStructType<{
@@ -2219,6 +2254,85 @@ export type BenchmarkMeshGeneratorPrototypeVariationsItem = GetStructType<{
   Weight: number;
 }>;
 
+export type BinocularsPrototype = GetStructType<{
+  AimInAnimationThreshold: number;
+  AimingEffects: BinocularsPrototypeAimingEffects;
+  AimingFOV: number;
+  AimingInCurve: string;
+  AimingInWeaponFOVCurve: string;
+  AimingMovementSpeedModifier: number;
+  AimingOutCurve: string;
+  AimingOutWeaponFOVCurve: string;
+  AimingSound: string;
+  AimingTime: number;
+  AimOutAnimationThreshold: number;
+  AimPostProcessSID: string;
+  AimShowInAlpha: number;
+  AimShowOutAlpha: number;
+  AnimBlueprint: string;
+  BaseComfort: number;
+  bSortHighlightsFromScreenCenter: boolean;
+  Cost: number;
+  DefaultZoomAlpha: number;
+  DefaultZoomModifier: number;
+  DepthTargetTextureName: string;
+  DepthTargetUpdateTime: number;
+  FullAimingEffects: BinocularsPrototypeAimingEffects;
+  HideEquipmentTime: number;
+  HighlightFrameSound: string;
+  HighlightTargetTextureName: string;
+  Icon: string;
+  Icon1x1: string;
+  IdleSwayTimeModifier: number;
+  IdleSwayXModifier: number;
+  IdleSwayYModifier: number;
+  ItemSlotType: EInventoryEquipmentSlot;
+  ItemTypeSwitchValue: string;
+  LeanAimingRestoreTime: number;
+  LeanAimingTime: number;
+  LocalizationSID: string;
+  MaxHighlightCandidatesCount: number;
+  MaxHighlightDistance: number;
+  MaxHighlightsCount: number;
+  MaxStackCount: number;
+  MeshInWorldPrototypeSID: string;
+  MeshPrototypeSID: string;
+  MinHighlightDistance: number;
+  PhysicsInteractionPrototypeSID: string;
+  ShowEquipmentTime: number;
+  SID: string;
+  StaticMeshParts: BinocularsPrototypeStaticMeshParts;
+  TargetInvisibilityValueThreshold: number;
+  Type: EItemType;
+  Weight: number;
+  ZoomChangeCurve: string;
+  ZoomInSound: string;
+  ZoomInSoundStart: string;
+  ZoomInSoundStop: string;
+  ZoomModifierCurve: string;
+  ZoomModifiers: BinocularsPrototypeZoomModifiers;
+  ZoomOutSound: string;
+  ZoomOutSoundStart: string;
+  ZoomOutSoundStop: string;
+  ZoomType: string;
+}>;
+
+export type BinocularsPrototypeAimingEffects = GetStructType<{
+  Effects: NPCPrototypeSkills;
+  PlayerOnlyEffects: CoreVariableHead;
+}>;
+
+export type BinocularsPrototypeStaticMeshParts = GetStructType<
+  BinocularsPrototypeStaticMeshPartsItem[]
+>;
+
+export type BinocularsPrototypeStaticMeshPartsItem = GetStructType<{
+  MeshPath: string;
+  SocketName: string;
+}>;
+
+export type BinocularsPrototypeZoomModifiers = GetStructType<number[]>;
+
 export type BlueprintPrototype = GetStructType<{
   DestroyOnPickup: boolean;
   FittingWeaponsSIDs: NPCPrototypeSkills;
@@ -2299,7 +2413,9 @@ export type BoltPrototype = GetStructType<{
 export type BoolProviderPrototype = GetStructType<{
   bInvert: boolean;
   bPlayerTarget: boolean;
+  GlobalVarSID: string;
   ParamType: EObjBoolParams;
+  ProviderSIDs: NPCPrototypeSkills;
   SID: string;
   TraceHeight: number;
   Type: EBoolProviderType;
@@ -2446,6 +2562,7 @@ export type ConsumablePrototype = GetStructType<{
   ConsumableType: EConsumableType;
   ConsumeOnUse: boolean;
   Cost: number;
+  DLC: string;
   EffectPrototypeSIDs: SpawnActorPrototypeLockReceivers;
   EffectsDisplayTypes: ConsumablePrototypeEffectsDisplayTypes;
   FastUseGroup: EFastUseGroupType;
@@ -2569,6 +2686,7 @@ export type ContextualActionNodePrototypeAnimationData = GetStructType<
 >;
 
 export type ContextualActionNodePrototypeAnimationDataItem = GetStructType<{
+  HasRootMotion: boolean;
   MontagePath: string;
   MontageSection: string;
 }>;
@@ -2795,6 +2913,7 @@ export type CoreVariable = GetStructType<{
   bEnableDisassembleUI: boolean;
   bEnableHideInformationUI: boolean;
   bEnableWaterElement: boolean;
+  BinocularsViewWidgetClass: string;
   BleedingChanceNonPenetrationMod: number;
   BleedingChanceStackMaxSize: number;
   BleedingPointsNonPenetrationMod: number;
@@ -2818,6 +2937,7 @@ export type CoreVariable = GetStructType<{
   bShouldSaveDefaultLanguage: boolean;
   bStartWithLoadedWeapon: boolean;
   bStartWithMenu: boolean;
+  BubbleTeleportLoadingScreenWidgetClass: string;
   CalmDamageFromPlayerCoef: number;
   CeramicSurfaceMaterial: string;
   ChanceToGetHealOverTimeWhenWounded: string;
@@ -2874,6 +2994,7 @@ export type CoreVariable = GetStructType<{
   CriticalDamageSoundCooldown: number;
   CriticalEffectStartUI: number;
   CriticalShotDamageSound: string;
+  CurrentFOVParameterName: string;
   CutsceneFOVDefault: number;
   DamageInteractVFXs: CoreVariableDamageInteractVFXs;
   DawnStartTime: number;
@@ -2925,11 +3046,14 @@ export type CoreVariable = GetStructType<{
   EmissionCrowsFallFX: string;
   EmissionNeutralityTimer: number;
   EmissionStartLocation: AbilityPrototypeRadius;
+  EndGamePopupClass: string;
   EnergeticOveruseParameter: string;
   EveningStartTime: number;
   ExplosionArmorDifferenceCoef: number;
   FactionRelationUpdateDelay: number;
+  FactionWarSquadWidgetClass: string;
   FadeoutScreenWidgetClass: string;
+  FaradayParams: SingletonConstantArmy;
   FastbackState: string;
   FastDialogClass: string;
   FaustCloneCorpseTimeout: number;
@@ -2950,11 +3074,12 @@ export type CoreVariable = GetStructType<{
   ForestGrassSurfaceMaterial: string;
   ForestPineSurfaceMaterial: string;
   FOVDefault: number;
-  FullDynamicRangeState: string;
   GameLoadingScreenStart: string;
   GameLoadingScreenStop: string;
   GameMusicEvent: string;
   GamePauseMenuClass: string;
+  GameWaitingForInputStart: string;
+  GameWaitingForInputStop: string;
   GaussGunHit: string;
   GaussGunReload: string;
   GaussGunTrace: string;
@@ -3006,6 +3131,7 @@ export type CoreVariable = GetStructType<{
   ItemCostMinPercent: number;
   ItemDropDistance: number;
   ItemDropHeight: number;
+  ItemDropHeightFromFloor: number;
   ItemDurabilityStackDifference: number;
   ItemInfoAffectingEffects: CoreVariableItemInfoAffectingEffects;
   ItemSelectorClass: string;
@@ -3029,6 +3155,9 @@ export type CoreVariable = GetStructType<{
   LimpEffectSIDToThresholdMap: CoreVariableLimpEffectSIDToThresholdMap;
   LoadingScreenWidgetClass: string;
   LocationAmbientState: string;
+  LODFOVDelayAiming: number;
+  LODFOVDelayDefault: number;
+  LODFOVDelayDisabled: number;
   LookGamepadInputCurves: CoreVariableTorso;
   LookUpGamepadInputCurve: string;
   LootMutantDeadBodySound: string;
@@ -3055,7 +3184,6 @@ export type CoreVariable = GetStructType<{
   MaxSubtitlesRange: number;
   MaxTimeSpentOnLoading: number;
   MeatSurfaceMaterial: string;
-  MediumDynamicRangeState: string;
   MediumEffectStartUI: number;
   MeshesDecalsPoolSize: number;
   MeshSoundPlacerDataTable: string;
@@ -3068,6 +3196,7 @@ export type CoreVariable = GetStructType<{
   MinHeightToShowMarkerHeightIndicatorAbove: number;
   MinHeightToShowMarkerHeightIndicatorBelow: number;
   MinimalSubtitlesDuration: number;
+  MotionAccelerationCurves: CoreVariableLegs;
   MotionOffState: string;
   MotionOnState: string;
   MoveGamepadInputCurve: string;
@@ -3078,6 +3207,7 @@ export type CoreVariable = GetStructType<{
   MPC_Foliage: string;
   MPC_FOV: string;
   MPC_PPM: string;
+  MPC_PPM_Faraday: string;
   MusicManagerCombatEnemyAttackActionLifetimeSeconds: number;
   MusicManagerCombatScoreThreshold: number;
   MusicVolumeSlider: string;
@@ -3087,7 +3217,6 @@ export type CoreVariable = GetStructType<{
   MutantLootInteractHeightMax: number;
   MutantLootInteractHeightMin: number;
   MutantLootParams: CoreVariableMutantLootParams;
-  NarrowDynamicRangeState: string;
   NarrowTraceInteractionRadius: number;
   NewDLCPopupDisplayTime: number;
   NewDLCPopupWidgetClass: string;
@@ -3117,6 +3246,9 @@ export type CoreVariable = GetStructType<{
   PauseMenuOn_SFX: string;
   PDAAnimationBlueprint: string;
   PDAClass: string;
+  PDADisabledEffectSID: string;
+  PDADisabledMaterialPath: string;
+  PDADisabledMaterialSlot: number;
   PermissibleAngleOfRotation: number;
   PersonalRelationUpdateDelay: number;
   PerspectiveThirdPersonRTPC: string;
@@ -3124,7 +3256,8 @@ export type CoreVariable = GetStructType<{
   PlacesOfInterest: CoreVariablePlacesOfInterest;
   PlasticSurfaceMaterial: string;
   PlayerAudioLogVolumeDecreaseTime: number;
-  PlayerBedSleepTime: number;
+  PlayerBedBlackScreenTime: number;
+  PlayerBedFadeToBlackTime: number;
   PlayerDeathState: string;
   PlayerMeleeArmorDifferenceCoef: number;
   PlayerPrototypeSID: string;
@@ -3132,9 +3265,11 @@ export type CoreVariable = GetStructType<{
   PlayerStartingMoney: number;
   PlayVideoState: string;
   PlayVideoWidgetClass: string;
+  PNRSaveRestoreClass: string;
   PopupClass: string;
   PopupViewClass: string;
   PossessedWeaponFireIntervals: CoreVariablePossessedWeaponFireIntervals;
+  ProjectileAdditionalTraceDistance: number;
   ProjectileDecalFadeOutTime: number;
   ProjectileDecalLifeSpan: number;
   ProjectileDecalLifeSpanOnCorpse: number;
@@ -3168,6 +3303,7 @@ export type CoreVariable = GetStructType<{
   RubberSurfaceMaterial: string;
   SandSurfaceMaterial: string;
   ScopeMaterialInWorld: string;
+  SettingsFOVParameterName: string;
   SignalStrength: CoreVariableSignalStrength;
   SimulatePhysicsDistance: number;
   SkeletalItemContainer: string;
@@ -3561,9 +3697,10 @@ export type CoverEvaluatorPrototype = GetStructType<{
   AdvanceCoeff: number;
   BaseValue: number;
   CanUseCovers: boolean;
+  DamageThresholdToChangeLocation: number;
   DangerousCoverZoneCoeff: number;
   DefaultCoverSettings: CoverEvaluatorPrototypeDefaultCoverSettings;
-  EnemyCoverageCoeff: string;
+  EnemyCoverageCoeff: number;
   ExplosiveSafeDistanceAddend: number;
   ExplosivesCoverageCoeff: number;
   ExplosivesCoverSettings: CoverEvaluatorPrototypeDefaultCoverSettings;
@@ -3580,9 +3717,10 @@ export type CoverEvaluatorPrototype = GetStructType<{
   MaxPathLength: number;
   NewLocationAdvantageCoeff: string;
   NewLocationAdvantageCoeffsOverride: CoverEvaluatorPrototypeNewLocationAdvantageCoeffsOverride;
-  PathLengthExponentBase: number;
+  PathLengthExponentBase: string;
   RestrictionDistance: number;
   ShouldApproachEnemy: boolean;
+  ShouldReactOnNPCDamageToChangeLocation: boolean;
   SID: string;
   SquadMembersInDirectionCoeff: number;
   WeaponDistanceCoeff: number;
@@ -3622,6 +3760,7 @@ export type CreditNames = StringArray;
 export type CreditRolesItem = GetStructType<{
   Names: CreditNames;
   RoleNameSID: string;
+  SinceSID: string;
 }>;
 
 export type DailySchedulePrototype = GetStructType<{
@@ -3888,6 +4027,7 @@ export type DialogPrototype = GetStructType<{
   SpeechDuration: number;
   TargetLocation: string;
   Text: string;
+  TextToolPhraseSID: string;
   TopicAvailabilityConditions: DialogPrototypeTopicAvailabilityConditions;
   Unskippable: boolean;
   VisibleOnFailedCondition: boolean;
@@ -3922,7 +4062,6 @@ export type DialogPrototypeConditionsItemItem = GetStructType<{
   CompletedNodeLauncherNames: NPCPrototypeSkills;
   ConditionComparance: EConditionComparance;
   ConditionType: EQuestConditionType;
-  DialogMemberIndex: number;
   EmissionPrototypeSID: string;
   Equipment: EMainHandEquipmentType;
   Faction: string;
@@ -4062,9 +4201,11 @@ export type DialogPrototypeTopicAvailabilityConditionsItemItem = GetStructType<{
   ConditionType: EQuestConditionType;
   EmissionPrototypeSID: string;
   Faction: string;
+  FastTravelPrototypeSID: string;
   IncludePartialOverload: boolean;
   ItemPrototypeSID: DialogPrototypeItemPrototypeSID;
   ItemsCount: DialogPrototypeMoney;
+  LocationIndex: number;
   Money: DialogPrototypeMoney;
   NumericValue: number;
   Rank: ERank;
@@ -4088,68 +4229,20 @@ export type DialogPrototypeTrue = GetStructType<{
 }>;
 
 export type DifficultyPrototype = GetStructType<{
-  AccumulatedDamageReductionCurveWeightMax: number;
-  AccumulatedDamageReductionCurveWeightMaxDistance: number;
-  AccumulatedDamageReductionCurveWeightMin: number;
-  AccumulatedDamageReductionIncludesHealedHealth: boolean;
-  AdditionalMechanicsEffects: CoreVariableTorso;
-  AgentCooldownMultipliers: DifficultyPrototypeAgentCooldownMultipliers;
   AllowedSaveTypes: DifficultyPrototypeAllowedSaveTypes;
-  Ammo_Cost: number;
-  Anomaly_Damage: number;
-  Armor_Anomaly: number;
-  Armor_Cost: number;
-  Armor_Durability: number;
-  Armor_PSY: number;
-  Armor_Radiation: number;
-  Armor_Strike_Add: number;
-  Artifact_Cost: number;
   AutosaveAfterQuests: DifficultyPrototypeAutosaveAfterQuests;
   BlockSettings: boolean;
-  bShouldDisableCompass: boolean;
-  bShouldDisableCrosshair: boolean;
-  bShouldDisableDeadBodyMarkers: boolean;
-  bShouldDisableStashMarkers: boolean;
-  BuyCondition: number;
-  Consumable_Cost: number;
-  CorpseSmartLoot: DifficultyPrototypeCorpseSmartLoot;
   DefaultAimAssistPresetType: EAimAssistPresetType;
   DescriptionSID: string;
-  Effect_Bleeding: number;
-  Effect_Degen_Bleeding: number;
-  Effect_Satiety: number;
-  Effect_Sleepiness: number;
-  Explosion_BaseDamage: number;
-  HipAccuracyMultiplier: number;
-  Mutant_AttackCooldown: number;
-  Mutant_BaseDamage: number;
-  NightVisionGoggles_Cost: number;
-  NPC_Armor_Strike_Add: number;
-  NPC_AttackCooldown: number;
+  EconomyDifficulty: DifficultyPrototypeEconomyDifficulty;
+  EnvironmentDifficulty: DifficultyPrototypeEnvironmentDifficulty;
+  MutantCombatDifficulty: DifficultyPrototypeMutantCombatDifficulty;
   NPC_HP: number;
-  NPC_Weapon_BaseDamage: number;
-  NPC_Weapon_Rank_Add: number;
-  PlayerWeapon_HeadshotMultiplier: number;
-  PsyPhantomNPCOverrides: DifficultyPrototypePsyPhantomNPCOverrides;
-  Radiation_AccumulationSpeed: number;
-  Regen_HP: number;
-  Repair_Cost: number;
-  Reward_MainLine_Money: number;
-  Reward_SideLine_Money: number;
-  SellCondition: number;
+  NPCCombatDifficulty: DifficultyPrototypeNPCCombatDifficulty;
   ShowWarningPopup: boolean;
   SID: string;
   TitleSID: string;
   TotalSaveLimits: DifficultyPrototypeTotalSaveLimits;
-  Upgrade_Cost: number;
-  Weapon_BaseDamage: number;
-  Weapon_Cost: number;
-  Weapon_Durability: number;
-  Weapon_DurabilityDamage: number;
-  Weapon_JammingMultiplier: number;
-  Weapon_Rank_Add: number;
-  Weather_Emission_Weight: number;
-  Weather_Storm_Weight: number;
 }>;
 
 export type DifficultyPrototypeAgentCooldownMultipliers = GetStructType<
@@ -4176,6 +4269,66 @@ export type DifficultyPrototypeCooldownMultipliersItem = GetStructType<{
 
 export type DifficultyPrototypeCorpseSmartLoot = GetStructType<{
   GeneralNPC: string;
+}>;
+
+export type DifficultyPrototypeEconomyDifficulty = GetStructType<{
+  Ammo_Cost: number;
+  Armor_Cost: number;
+  Artifact_Cost: number;
+  Binoculars_Cost: number;
+  BuyCondition: number;
+  Consumable_Cost: number;
+  CorpseSmartLoot: DifficultyPrototypeCorpseSmartLoot;
+  NightVisionGoggles_Cost: number;
+  Repair_Cost: number;
+  Reward_MainLine_Money: number;
+  Reward_SideLine_Money: number;
+  SellCondition: number;
+  Upgrade_Cost: number;
+  Weapon_Cost: number;
+}>;
+
+export type DifficultyPrototypeEnvironmentDifficulty = GetStructType<{
+  AdditionalMechanicsEffects: CoreVariableTorso;
+  Anomaly_Damage: number;
+  Armor_Durability: number;
+  Armor_Strike_Add: number;
+  bShouldDisableCompass: boolean;
+  bShouldDisableCrosshair: boolean;
+  bShouldDisableDeadBodyMarkers: boolean;
+  bShouldDisableStashMarkers: boolean;
+  Effect_Bleeding: number;
+  Effect_Degen_Bleeding: number;
+  Effect_Satiety: number;
+  Effect_Sleepiness: number;
+  Explosion_BaseDamage: number;
+  Radiation_AccumulationSpeed: number;
+  Regen_HP: number;
+  Weapon_BaseDamage: number;
+  Weather_Emission_Weight: number;
+  Weather_Storm_Weight: number;
+}>;
+
+export type DifficultyPrototypeMutantCombatDifficulty = GetStructType<{
+  AgentCooldownMultipliers: DifficultyPrototypeAgentCooldownMultipliers;
+  Mutant_AttackCooldown: number;
+  Mutant_BaseDamage: number;
+}>;
+
+export type DifficultyPrototypeNPCCombatDifficulty = GetStructType<{
+  AccumulatedDamageReductionCurveWeightMax: number;
+  AccumulatedDamageReductionCurveWeightMaxDistance: number;
+  AccumulatedDamageReductionCurveWeightMin: number;
+  AccumulatedDamageReductionIncludesHealedHealth: boolean;
+  HipAccuracyMultiplier: number;
+  NPC_Armor_Strike_Add: number;
+  NPC_AttackCooldown: number;
+  NPC_HP: number;
+  NPC_Weapon_BaseDamage: number;
+  NPC_Weapon_Rank_Add: number;
+  PlayerWeapon_HeadshotMultiplier: number;
+  PsyPhantomNPCOverrides: DifficultyPrototypePsyPhantomNPCOverrides;
+  Weapon_JammingMultiplier: number;
 }>;
 
 export type DifficultyPrototypePsyPhantomNPCOverrides = GetStructType<
@@ -4346,8 +4499,8 @@ export type EffectPrototype = GetStructType<{
   TrueEffectSID: string;
   Type: EEffectType;
   UseOnlyOnPlayer: boolean;
-  ValueMax: string;
-  ValueMin: string;
+  ValueMax: number;
+  ValueMin: number;
   ValueProviderSID: string;
   VitalType: EVitalType;
   XAxisMaxValue: number;
@@ -4673,6 +4826,10 @@ export type FlashlightPrototype = GetStructType<{
   FlashlightPriority: EFlashlightPriority;
   HeadBoneNameToCheckHitToFlashlight: string;
   ID: number;
+  MalfunctionAudioEvent: string;
+  MalfunctionDuration: number;
+  MaxFlickerInterval: number;
+  MinFlickerInterval: number;
   PathToFlashlightBurnOutAudioEvent: string;
   PathToFlashlightTurnOffAudioEvent: string;
   PathToFlashlightTurnOnAudioEvent: string;
@@ -4775,6 +4932,7 @@ export type GeneralNPCObjPrototype = GetStructType<{
   Anim: EObjAnim;
   ArmorDifferenceCoefMeleeAttacks: number;
   ArmorDifferenceCoefProjectiles: number;
+  BinocularsParamsSID: string;
   Blueprint: string;
   BoneDamageCoefficients: GeneralNPCObjPrototypeBoneDamageCoefficients;
   CamperFeatureData: ObjPrototypeCamperFeatureData;
@@ -4800,6 +4958,7 @@ export type GeneralNPCObjPrototype = GetStructType<{
   NPCPrototypeSID: string;
   NPCType: ENPCType;
   OfflineCombatWeight: number;
+  Omniscient: boolean;
   Protection: ArmorPrototypeProtection;
   ReactOnApproachWithWeapon: boolean;
   SequentialAbilities: CoreVariableHead;
@@ -4834,11 +4993,11 @@ export type GeneralNPCObjPrototypeBoneDamageCoefficients = GetStructType<
 export type GeneralNPCObjPrototypeCombatParameters = GetStructType<{
   CheckEnemyTime: number;
   CoverEvaluatorSID: string;
-  DamageThresholdToChangeLocation: number;
   EarlyExitReloadTime: number;
   EnemyCouldBeVisibleMaxDistance: number;
   LoseEnemyVisibilityTime: number;
   MaxTimeInBadShootingPosition: number;
+  MinCoverLookOutTimeout: number;
   NearbyDistanceWeaponNotReady: number;
   NearbyDistanceWeaponReady: number;
   RetreatToCoverDistance: number;
@@ -4978,9 +5137,8 @@ export type GenericLairPrototypePreset = GetStructType<{
 
 export type GenericLairPrototypeRat = GetStructType<{
   Faction: string;
-  MinQuantityPerArchetype: number;
+  FactionPriority: number;
   SpawnSettingsPerPlayerRanks: GenericLairPrototypeSpawnSettingsPerPlayerRanks;
-  SpawnWeight: number;
 }>;
 
 export type GenericLairPrototypeSpawnSettingsPerArchetypes = GetStructType<{
@@ -5211,7 +5369,8 @@ export type InfotopicPrototypeBlockingGlobalVariables = GetStructType<
 
 export type InfotopicPrototypeBlockingGlobalVariablesItem = GetStructType<{
   GlobalVariablePrototypeSID: string;
-  GlobalVariableValue: VariableValue;
+  Type: EGlobalVariableType;
+  Value: string;
 }>;
 
 export type InfotopicPrototypeBlockingNPCs = GetStructType<{
@@ -5382,6 +5541,7 @@ export type ItemPrototype = GetStructType<{
 export type JournalQuestPrototype = GetStructType<{
   Description: string;
   Descriptions: SingletonConstantZombie;
+  DLC: string;
   Image: string;
   ImagePath: string;
   LocationSID: string;
@@ -5389,6 +5549,7 @@ export type JournalQuestPrototype = GetStructType<{
   Name: string;
   Region: ERegion;
   RewardTypes: string;
+  SaveLoadImagePath: string;
   SID: string;
   Stages: string;
 }>;
@@ -5599,7 +5760,6 @@ export type KeyboardLayoutPresetUpgradesPopup = GetStructType<
 
 export type KeyItemPrototype = GetStructType<{
   LocalizationSID: string;
-  PhysicsInteractionPrototypeSID: string;
   SID: string;
   Weight: number;
 }>;
@@ -5938,7 +6098,9 @@ export type MoneyPrototype = GetStructType<{
   EffectPrototypeSIDs: NPCPrototypeSkills;
   Icon: string;
   InvisibleInPlayerInventory: boolean;
+  ItemTypeSwitchValue: string;
   LocalizationSID: string;
+  MaxStackCount: number;
   MeshInWorldPrototypeSID: string;
   MeshPrototypeSID: string;
   PhysicsInteractionPrototypeSID: string;
@@ -5980,6 +6142,8 @@ export type MovementFXPrototypeFootstepFXItem = GetStructType<
 
 export type MovementFXPrototypeFootstepFXItemItem = GetStructType<{
   BackFootDecal: string;
+  FootprintOpacityStrength: number;
+  FootprintTint: AIGlobalRelativeLocation;
   FrontFootDecal: string;
   ImpactParticle: string;
   ImpactParticleRunSprint: string;
@@ -6052,6 +6216,9 @@ export type NightVisionGogglesPrototype = GetStructType<{
   ItemSlotType: EInventoryEquipmentSlot;
   ItemTypeSwitchValue: string;
   LocalizationSID: string;
+  MalfunctionDuration: number;
+  MalfunctionTurnOffAudioEvent: string;
+  MalfunctionTurnOnAudioEvent: string;
   MaxStackCount: number;
   MeshPrototypeSID: string;
   NPCGogglesPrototypeSID: string;
@@ -6268,6 +6435,7 @@ export type NPCSpawnerPrototype = GetStructType<{
 export type NPCWeaponAttributesPrototype = GetStructType<{
   AIParameters: NPCWeaponAttributesPrototypeAIParameters;
   AnimBlueprint: string;
+  DefaultWeaponSettingsSID: string;
   MuzzleSocketName: string;
   ParticlesBasedOnHeating: NPCWeaponAttributesPrototypeParticlesBasedOnHeating;
   ShellShutterSocketName: string;
@@ -6350,6 +6518,14 @@ export type ObjAimAssistParamsPrototypeBoneClustersItem = GetStructType<{
   AdditionalBones: ObjAimAssistParamsPrototypeAdditionalBones;
   MainBone: string;
   VisibilityBone: string;
+}>;
+
+export type ObjBinocularsParamsPrototype = GetStructType<{
+  BorderHeightModifier: number;
+  BorderWidthModifier: number;
+  bShowName: boolean;
+  SID: string;
+  TracedBoneNames: SingletonConstantArmy;
 }>;
 
 export type ObjCrouchParamsPrototype = GetStructType<{
@@ -6443,6 +6619,7 @@ export type ObjOnHitParamsPrototypeEffects = GetStructType<
 
 export type ObjOnHitParamsPrototypeEffectsItem = GetStructType<{
   AccumulationTime: number;
+  bIgnoreLowDamage: boolean;
   EffectSID: string;
   MaxDamage: number;
   MaxEffectValueModifier: number;
@@ -6464,6 +6641,7 @@ export type ObjPrototype = GetStructType<{
   ArmorDifferenceCoefMeleeAttacks: number;
   ArmorDifferenceCoefProjectiles: number;
   AttackParams: ObjPrototypeAttackParams;
+  BinocularsParamsSID: string;
   BlinkTeleportActionData: ObjPrototypeBlinkTeleportActionData;
   Blueprint: string;
   BoneBleedingCoefficients: ObjPrototypeBoneBleedingCoefficients;
@@ -6504,7 +6682,6 @@ export type ObjPrototype = GetStructType<{
   EscapeParameters: ObjPrototypeEscapeParameters;
   EvadeParameters: ObjPrototypeEvadeParameters;
   Faction: string;
-  FactoryClassName: string;
   FlairParams: ObjPrototypeFlairParams;
   FlairSensorPrototypeSID: string;
   FlankParameters: ObjPrototypeFlankParameters;
@@ -6519,6 +6696,7 @@ export type ObjPrototype = GetStructType<{
   HumanInteractionParameters: ObjPrototypeHumanInteractionParameters;
   HumanLookAtParameters: ObjPrototypeHumanLookAtParameters;
   Icon: string;
+  IconSecondary: string;
   ID: number;
   IgnoreDamageType: EIgnoreDamageType;
   IgnoreEmission: boolean;
@@ -6551,11 +6729,13 @@ export type ObjPrototype = GetStructType<{
   MutantAmbushParameters: ObjPrototypeMutantAmbushParameters;
   MutantCoverSelectorFeatureData: ObjPrototypeMutantCoverSelectorFeatureData;
   MutantEscapeParameters: ObjPrototypeMutantEscapeParameters;
+  NameSID: string;
   NeedsPresetSID: string;
   npc_size: number;
   NPCPrototypeSID: string;
   NPCType: ENPCType;
   OfflineCombatWeight: number;
+  Omniscient: boolean;
   OnHitParamsSID: string;
   PathFailedContextualAction: string;
   PeacefulChatterFeatureData: ObjPrototypePeacefulChatterFeatureData;
@@ -6592,6 +6772,7 @@ export type ObjPrototype = GetStructType<{
   SleepinessActivationDistance: number;
   SleepinessDeactivationDistance: number;
   SleepParamsSID: string;
+  SmartCoverID: string;
   SpaceRestrictorTag: string;
   SpawnPhantomParams: ObjPrototypeSpawnPhantomParams;
   SpendStaminaInSafeZone: boolean;
@@ -6609,6 +6790,7 @@ export type ObjPrototype = GetStructType<{
   TremblingWhileEmissionContextualAction: string;
   Type: EObjType;
   UnkillableByALife: boolean;
+  UpdateSpawnPositionConsideringSurroundingAgents: boolean;
   UseGroomReplacement: boolean;
   VaultingParams: ObjPrototypeVaultingParams;
   VFXSize: number;
@@ -6620,6 +6802,7 @@ export type ObjPrototype = GetStructType<{
   ZombieBehaviourParameters: ObjPrototypeZombieBehaviourParameters;
   ZombieHearingSensorPrototypeSID: string;
   ZombieLayingIdleTime: number;
+  ZombiePathFailedContextualAction: string;
   ZombieVisionScannerPrototypeSID: string;
 }>;
 
@@ -6776,7 +6959,6 @@ export type ObjPrototypeCombatBehaviour = GetStructType<{
 export type ObjPrototypeCombatParameters = GetStructType<{
   CheckEnemyTime: number;
   CoverEvaluatorSID: string;
-  DamageThresholdToChangeLocation: number;
   EarlyExitReloadTime: number;
   EnemyCouldBeVisibleMaxDistance: number;
   LoseEnemyVisibilityTime: number;
@@ -6858,8 +7040,11 @@ export type ObjPrototypeEnemyValidationActionParams = GetStructType<{
 
 export type ObjPrototypeEscapeIsolatedNavmeshActionData = GetStructType<{
   AbilityActivationTag: string;
+  AnimationZScaleMax: number;
+  AnimationZScaleMin: number;
   bEnabled: boolean;
   JumpDistance: number;
+  JumpHeight: number;
 }>;
 
 export type ObjPrototypeEscapeParameters = GetStructType<{
@@ -7077,6 +7262,7 @@ export type ObjPrototypeJumpToEnemyActionData = GetStructType<{
   bInRadiusOnly: boolean;
   JumpDistance: number;
   MinDist: number;
+  MinJumpDistance: number;
   PredictionTime: number;
   RandomRadius: number;
   ReducedPathCoefToJump: number;
@@ -7258,6 +7444,7 @@ export type ObjPrototypeProcessCorpseObjectFeatureData = GetStructType<{
 
 export type ObjPrototypeProcessCorpseSubjectFeatureData = GetStructType<{
   CorpseInteractionApproachMaxPathLength: number;
+  CorpseInteractionContextualAction: string;
   CorpseInteractionTimeout: number;
   InteractionData: ObjPrototypeInteractionData;
 }>;
@@ -7593,11 +7780,14 @@ export type ObjPrototypeWeaponHandlingOverride = GetStructType<{
 export type ObjPrototypeZombieAllowedEquipItems = GetStructType<{
   GunAK74_ST: ERank;
   GunAKU_PP: ERank;
+  GunArev_ST: ERank;
   GunBucket_PP: ERank;
   GunD12_SG: ERank;
   GunDnipro_ST: ERank;
+  GunFora230_PP: ERank;
   GunFora_ST: ERank;
   GunG37_ST: ERank;
+  GunGP3A_DMR: ERank;
   GunGrim_ST: ERank;
   GunGvintar_ST: ERank;
   GunIntegral_PP: ERank;
@@ -7607,6 +7797,7 @@ export type ObjPrototypeZombieAllowedEquipItems = GetStructType<{
   GunM16_ST: ERank;
   GunObrez_SG: ERank;
   GunRam2_SG: ERank;
+  GunSKP_DMR: ERank;
   GunSPSA_SG: ERank;
   GunThreeLine_SP: ERank;
   GunTOZ_SG: ERank;
@@ -7893,7 +8084,6 @@ export type ProjectilePrototype = GetStructType<{
   ImpactEffectsMinDistance: number;
   ImpactPhysicalMaterialPrototypeSID: string;
   ImpactSound: string;
-  MaxFlybyDistance: number;
   MaxFlyDistance: number;
   MaxSuppressionDistance: number;
   MinExplodeDistance: number;
@@ -8054,6 +8244,7 @@ export type QuestItemPrototype = GetStructType<{
   IsQuestItemPrototype: boolean;
   ItemGridHeight: number;
   ItemGridWidth: number;
+  ItemTypeSwitchValue: string;
   JumpAmount: number;
   JumpDelay: number;
   JumpDistance: number;
@@ -8069,6 +8260,7 @@ export type QuestItemPrototype = GetStructType<{
   MeshPath: string;
   MeshPrototypeSID: string;
   Name: string;
+  PhysicsInteractionPrototypeSID: string;
   PlayerDistance: number;
   Rarity: EArtifactRarity;
   RequireWeight: boolean;
@@ -8191,7 +8383,7 @@ export interface QuestNodePrototypeActivateDataLayerCombination
 
 export interface QuestNodePrototypeActivateInteractableObject
   extends QuestNodePrototype {
-  InteractableQuestGuid: string;
+  InteractableQuestGuid: number;
   NodeType: "EQuestNodeType::ActivateInteractableObject";
   OutputPinNames: QuestNodePrototypeOutputPinNames;
 }
@@ -8381,6 +8573,8 @@ export interface QuestNodePrototypeContainer extends QuestNodePrototype {
   ContaineredQuestPrototypeSID: string;
   NodeType: "EQuestNodeType::Container";
   OutputPinNames: QuestNodePrototypeOutputPinNames;
+  rootgraph_Launcher_PostRelease: QuestNodePrototypeContainer;
+  struct_endrootgraph_OnTickEvent_5: QuestNodePrototypeOnTickEvent;
 }
 
 export interface QuestNodePrototypeDeactivateZone extends QuestNodePrototype {
@@ -8493,7 +8687,6 @@ export interface QuestNodePrototypeHideLoadingScreen
 
 export interface QuestNodePrototypeHideTutorial extends QuestNodePrototype {
   NodeType: "EQuestNodeType::HideTutorial";
-
   WidgetType: number;
 }
 
@@ -8518,7 +8711,6 @@ export interface QuestNodePrototypeItemAdd extends QuestNodePrototype {
   ItemsCount: number;
   ItemSID: string;
   NodeType: "EQuestNodeType::ItemAdd";
-
   TargetQuestGuid: string;
 }
 
@@ -8527,7 +8719,6 @@ export interface QuestNodePrototypeItemRemove extends QuestNodePrototype {
   ItemsCount: number;
   ItemSID: string;
   NodeType: "EQuestNodeType::ItemRemove";
-
   TargetQuestGuid: string;
 }
 
@@ -8571,7 +8762,6 @@ export interface QuestNodePrototypeLookAt extends QuestNodePrototype {
   PresetName: string;
   Priority: number;
   ReactionTime: number;
-
   RotationFreemoveEdge: number;
   RotationStopEdge: number;
   TargetQuestGuid: string;
@@ -8605,7 +8795,6 @@ export interface QuestNodePrototypeMoveInventory extends QuestNodePrototype {
 export interface QuestNodePrototypeNPCBark extends QuestNodePrototype {
   Event: EDialogEventType;
   NodeType: "EQuestNodeType::NPCBark";
-
   TargetQuestGuid: string;
 }
 
@@ -8709,7 +8898,6 @@ export interface QuestNodePrototypeOnHitEvent extends QuestNodePrototype {
   HitReceiver: string;
   LaunchOnQuestStart: boolean;
   NodeType: "EQuestNodeType::OnHitEvent";
-
   TrackBeforeActive: boolean;
 }
 
@@ -8728,7 +8916,6 @@ export interface QuestNodePrototypeOnInteractEvent extends QuestNodePrototype {
   InteractableQuestGuid: string;
   LaunchOnQuestStart: boolean;
   NodeType: "EQuestNodeType::OnInteractEvent";
-
   TrackBeforeActive: boolean;
 }
 
@@ -8796,7 +8983,6 @@ export interface QuestNodePrototypeOnNPCDeathEvent extends QuestNodePrototype {
   EventType: EQuestEventType;
   LaunchOnQuestStart: boolean;
   NodeType: "EQuestNodeType::OnNPCDeathEvent";
-
   TargetQuestGuid: string;
   TrackBeforeActive: boolean;
 }
@@ -8837,11 +9023,11 @@ export interface QuestNodePrototypeOnPlayerNoticedEvent
   extends QuestNodePrototype {
   AIThreatState: number;
   EventType: EQuestEventType;
-  LaunchOnQuestStart: number;
+  LaunchOnQuestStart: boolean;
   NodeType: "EQuestNodeType::OnPlayerNoticedEvent";
   TargetQuestGuid: string;
   ThreatSensor: number;
-  TrackBeforeActive: number;
+  TrackBeforeActive: boolean;
 }
 
 export interface QuestNodePrototypeOnPlayerRankReachedEvent
@@ -8858,7 +9044,6 @@ export interface QuestNodePrototypeOnSignalReceived extends QuestNodePrototype {
   EventType: EQuestEventType;
   LaunchOnQuestStart: boolean;
   NodeType: "EQuestNodeType::OnSignalReceived";
-
   SignalSenderGuid: string;
   TrackBeforeActive: boolean;
 }
@@ -8907,7 +9092,6 @@ export interface QuestNodePrototypePlayEffect extends QuestNodePrototype {
   EffectLocation: AIGlobalRelativeLocation;
   EffectPath: string;
   NodeType: "EQuestNodeType::PlayEffect";
-
   TargetQuestGuid: string;
 }
 
@@ -8923,7 +9107,6 @@ export interface QuestNodePrototypePlaySound extends QuestNodePrototype {
   FinishOnAKEvent: boolean;
   MasterAKEventForLoad: string;
   NodeType: "EQuestNodeType::PlaySound";
-
   SoundLocation: AIGlobalRelativeLocation;
   SoundPath: string;
 }
@@ -8969,7 +9152,6 @@ export interface QuestNodePrototypeReputationLocker extends QuestNodePrototype {
 export interface QuestNodePrototypeResetAI extends QuestNodePrototype {
   BrokenGameDataFilter: EBrokenGameDataFilter;
   NodeType: "EQuestNodeType::ResetAI";
-
   TargetQuestGuid: string;
 }
 
@@ -8980,6 +9162,7 @@ export type QuestNodePrototypeRestrictedFaction = GetStructType<{
   Monolith: ESpaceRestrictionType;
   Mutant: ESpaceRestrictionType;
   Varta: ESpaceRestrictionType;
+  Zombie: ESpaceRestrictionType;
 }>;
 
 export interface QuestNodePrototypeRestrictionArea extends QuestNodePrototype {
@@ -9006,6 +9189,7 @@ export type QuestNodePrototypeRotationAfterMoveTo = GetStructType<{
 
 export interface QuestNodePrototypeSaveGame extends QuestNodePrototype {
   NodeType: "EQuestNodeType::SaveGame";
+  PointOfNoReturnSave: boolean;
 }
 
 export type QuestNodePrototypeSaveTypes = GetStructType<ESaveType[]>;
@@ -9029,7 +9213,6 @@ export interface QuestNodePrototypeSearchPoint extends QuestNodePrototype {
 export interface QuestNodePrototypeSendSignal extends QuestNodePrototype {
   BrokenGameDataFilter: EBrokenGameDataFilter;
   NodeType: "EQuestNodeType::SendSignal";
-
   SignalReceiverGuid: string;
 }
 
@@ -9037,11 +9220,11 @@ export interface QuestNodePrototypeSequenceStart extends QuestNodePrototype {
   BlendExpForEaseInOut: number;
   BrokenGameDataFilter: EBrokenGameDataFilter;
   LocalizedSequences: DialogPrototypeLocalizedSequences;
-  LoopSequence: number;
+  LoopSequence: boolean;
   NodeType: "EQuestNodeType::SequenceStart";
+  PauseEffectsInSequence: boolean;
   PreblendSequence: boolean;
   PreblendTime: number;
-
   RotationTime: number;
   SelfLocation: string;
   TargetLocation: string;
@@ -9106,7 +9289,6 @@ export interface QuestNodePrototypeSetAIBehavior extends QuestNodePrototype {
   ReachPointComments: QuestNodePrototypeReachPointComments;
   ReactOnApproachWithWeapon: boolean;
   ReactOnNonEnemySounds: boolean;
-
   RepeatableStayAnimation: boolean;
   RestLocation: AIGlobalRelativeLocation;
   RotationAfterMoveTo: QuestNodePrototypeRotationAfterMoveTo;
@@ -9165,7 +9347,6 @@ export interface QuestNodePrototypeSetDialog extends QuestNodePrototype {
   NPCToStartDialog: number;
   OutputPinNames: QuestNodePrototypeOutputPinNames;
   OverrideDialogTopic: EOverrideDialogTopic;
-
   SeekPlayer: boolean;
   StartForcedDialog: boolean;
   TalkThroughRadio: QuestNodePrototypeTalkThroughRadio;
@@ -9268,7 +9449,6 @@ export interface QuestNodePrototypeSetQuestGiver extends QuestNodePrototype {
   MainQuest: boolean;
   MarkerDescription: string;
   NodeType: "EQuestNodeType::SetQuestGiver";
-
   TargetQuestGuid: string;
 }
 
@@ -9312,7 +9492,6 @@ export interface QuestNodePrototypeShowFadeScreen extends QuestNodePrototype {
   FadeTime: number;
   ImagePath: string;
   NodeType: "EQuestNodeType::ShowFadeScreen";
-
   ScreenText: string;
 }
 
@@ -9346,7 +9525,6 @@ export interface QuestNodePrototypeSpawn extends QuestNodePrototype {
   BrokenGameDataFilter: EBrokenGameDataFilter;
   IgnoreDamageType: EIgnoreDamageType;
   NodeType: "EQuestNodeType::Spawn";
-
   SpawnHidden: boolean;
   SpawnNodeExcludeType: ESpawnNodeExcludeType;
   TargetQuestGuid: string;
@@ -9462,7 +9640,6 @@ export interface QuestNodePrototypeTechnical extends QuestNodePrototype {
   BrokenGameDataFilter: EBrokenGameDataFilter;
   LaunchOnQuestStart: boolean;
   NodeType: "EQuestNodeType::Technical";
-
   StartDelay: number;
 }
 
@@ -9568,6 +9745,7 @@ export type QuestObjPrototype = GetStructType<{
   Abilities: QuestObjPrototypeAbilities;
   AgentType: EAgentType;
   AttackParams: QuestObjPrototypeAttackParams;
+  BinocularsParamsSID: string;
   Blueprint: string;
   CanProcessCorpses: boolean;
   CustomMeshGeneratorPrototypeSID: string;
@@ -9603,6 +9781,7 @@ export type QuestObjPrototype = GetStructType<{
   Text: string;
   TradePrototypeSID: string;
   UnkillableByALife: boolean;
+  UpdateSpawnPositionConsideringSurroundingAgents: boolean;
   UseGroomReplacement: boolean;
   VitalParams: QuestObjPrototypeVitalParams;
 }>;
@@ -9793,6 +9972,7 @@ export type RelationPrototype = GetStructType<{
   PositiveReactionsExcludedFactions: RelationPrototypePositiveReactionsExcludedFactions;
   RelationLevelRanges: RelationPrototypeRelationLevelRanges;
   Relations: RelationPrototypeRelations;
+  RelationUpdateDeltas: RelationPrototypeRelationUpdateDeltas;
   RelationVersion: number;
   ReputationRollbackCooldown: number;
   ReputationRollbackRadius: number;
@@ -9878,6 +10058,15 @@ export type RelationPrototypeRelations = GetStructType<
   Record<`${Faction}<->${Faction}`, number>
 >;
 
+export type RelationPrototypeRelationUpdateDeltas = GetStructType<
+  RelationPrototypeRelationUpdateDeltasItem[]
+>;
+
+export type RelationPrototypeRelationUpdateDeltasItem = GetStructType<{
+  RelationDeltas: string;
+  RelationVersion: number;
+}>;
+
 export type RestrictorsPrototype = GetStructType<{
   OfflineRestrictors: RestrictorsPrototypeOfflineRestrictors;
   SID: string;
@@ -9889,10 +10078,10 @@ export type RestrictorsPrototypeOfflineRestrictors = GetStructType<
 
 export type RestrictorsPrototypeOfflineRestrictorsItem = GetStructType<{
   Active: boolean;
-  AreasMask: number;
   Center: string;
   Extents: string;
   GUID: string;
+  NavAreaClass: string;
   Orientation0: string;
   Orientation1: string;
   Orientation2: string;
@@ -9932,6 +10121,7 @@ export type SaveLoadVariableSavesLimit = GetStructType<{
   HubExit: number;
   Manual: number;
   ManualHub: number;
+  PointOfNoReturn: number;
   Quest: number;
   Quick: number;
   StartMainQuest: number;
@@ -9967,6 +10157,7 @@ export type ScriptScriptsArrayItem = GetStructType<{
 
 export type SettingsVariablesPC = GetStructType<{
   AimAssistMagnetismModifier: number;
+  AimAssistSettings: SettingsVariablesPCAimAssistSettings;
   AimAssistSnappingModifier: number;
   AimAssistStickinessModifier: number;
   AimAssistTrackingModifier: number;
@@ -9980,6 +10171,13 @@ export type SettingsVariablesPC = GetStructType<{
   SnappingTime: number;
 }> &
   GetStructType<SettingsVariablesPCLookSensitivityCurveKeysItem[]>;
+
+export type SettingsVariablesPCAimAssistSettings = GetStructType<{
+  SnappingAutomaticTargetChangeEnabled: boolean;
+  SnappingCameraMovementToleranceEnabled: boolean;
+  SnappingCameraRadiusToleranceEnabled: boolean;
+  SnappingTime: number;
+}>;
 
 export type SettingsVariablesPCLeftTrigger = GetStructType<{
   LowerThreshold: number;
@@ -9998,6 +10196,7 @@ export type SettingsVariablesPCLookSensitivityCurveKeysItem = GetStructType<{
 
 export type SettingsVariablesPS5Base = GetStructType<{
   AimAssistMagnetismModifier: number;
+  AimAssistSettings: SettingsVariablesPCAimAssistSettings;
   AimAssistSnappingModifier: number;
   AimAssistStickinessModifier: number;
   AimAssistTrackingModifier: number;
@@ -10014,6 +10213,7 @@ export type SettingsVariablesPS5Base = GetStructType<{
 
 export type SettingsVariablesPS5Pro = GetStructType<{
   AimAssistMagnetismModifier: number;
+  AimAssistSettings: SettingsVariablesPCAimAssistSettings;
   AimAssistSnappingModifier: number;
   AimAssistStickinessModifier: number;
   AimAssistTrackingModifier: number;
@@ -10030,6 +10230,7 @@ export type SettingsVariablesPS5Pro = GetStructType<{
 
 export type SettingsVariablesWin64 = GetStructType<{
   AimAssistMagnetismModifier: number;
+  AimAssistSettings: SettingsVariablesPCAimAssistSettings;
   AimAssistSnappingModifier: number;
   AimAssistStickinessModifier: number;
   AimAssistTrackingModifier: number;
@@ -10044,8 +10245,25 @@ export type SettingsVariablesWin64 = GetStructType<{
 }> &
   GetStructType<SettingsVariablesPCLookSensitivityCurveKeysItem[]>;
 
+export type SettingsVariablesWinGDK = GetStructType<{
+  AimAssistMagnetismModifier: number;
+  AimAssistSettings: SettingsVariablesPCAimAssistSettings;
+  AimAssistSnappingModifier: number;
+  AimAssistStickinessModifier: number;
+  AimAssistTrackingModifier: number;
+  LeftThumbstick: SettingsVariablesPCLeftTrigger;
+  LeftTrigger: SettingsVariablesPCLeftTrigger;
+  RightThumbstick: SettingsVariablesPCLeftTrigger;
+  RightTrigger: SettingsVariablesPCLeftTrigger;
+  SnappingAutomaticTargetChangeEnabled: boolean;
+  SnappingCameraMovementToleranceEnabled: boolean;
+  SnappingCameraRadiusToleranceEnabled: boolean;
+  SnappingTime: number;
+}>;
+
 export type SettingsVariablesXSS = GetStructType<{
   AimAssistMagnetismModifier: number;
+  AimAssistSettings: SettingsVariablesPCAimAssistSettings;
   AimAssistSnappingModifier: number;
   AimAssistStickinessModifier: number;
   AimAssistTrackingModifier: number;
@@ -10062,6 +10280,7 @@ export type SettingsVariablesXSS = GetStructType<{
 
 export type SettingsVariablesXSX = GetStructType<{
   AimAssistMagnetismModifier: number;
+  AimAssistSettings: SettingsVariablesPCAimAssistSettings;
   AimAssistSnappingModifier: number;
   AimAssistStickinessModifier: number;
   AimAssistTrackingModifier: number;
@@ -10069,10 +10288,6 @@ export type SettingsVariablesXSX = GetStructType<{
   LeftTrigger: SettingsVariablesPCLeftTrigger;
   RightThumbstick: SettingsVariablesPCLeftTrigger;
   RightTrigger: SettingsVariablesPCLeftTrigger;
-  SnappingAutomaticTargetChangeEnabled: boolean;
-  SnappingCameraMovementToleranceEnabled: boolean;
-  SnappingCameraRadiusToleranceEnabled: boolean;
-  SnappingTime: number;
 }> &
   GetStructType<SettingsVariablesPCLookSensitivityCurveKeysItem[]>;
 
@@ -10283,6 +10498,7 @@ export type SpawnActorPrototype = GetStructType<{
   AllowNightVisionForQuestNPC: boolean;
   AllowSpawnInShelter: boolean;
   AllowSpawnOnIsolatedNavMesh: boolean;
+  AllowsQuestSave: boolean;
   AmmoCount: number;
   AnomaliesPresets: SpawnActorPrototypeAnomaliesPresets;
   AttachmentSID: string;
@@ -10291,7 +10507,9 @@ export type SpawnActorPrototype = GetStructType<{
   bDisableTickForWeatherController: boolean;
   bForceCodePhysicsDisabled: boolean;
   bForceWeather: boolean;
+  bIgnoreWeatherTransitions: boolean;
   bRandomChancesForSeparateItems: boolean;
+  bRestoreWeatherOnExit: boolean;
   bRestrictorVolumeEnabled: boolean;
   BubbleInitialLocation: AIGlobalRelativeLocation;
   bUseCustomLocation: boolean;
@@ -10325,6 +10543,7 @@ export type SpawnActorPrototype = GetStructType<{
   DisablePhysicsAndCollision: boolean;
   DisableRagdollForQuestProtection: boolean;
   DisableSpawnAndStrafeInThisAnomaly: boolean;
+  DisableWeatherVisual: boolean;
   DLC: string;
   Durability: number;
   EffectPrototypeSIDs: NPCPrototypeSkills;
@@ -10334,6 +10553,7 @@ export type SpawnActorPrototype = GetStructType<{
   FogDensity: number;
   FogDensitySecond: number;
   FogDensitySecondFogData: number;
+  FogParamsToUpdate: number;
   FreeformTriggerHeight: number;
   FreeformTriggerVertices: SpawnActorPrototypeFreeformTriggerVertices;
   GeigerCurve: string;
@@ -10357,6 +10577,7 @@ export type SpawnActorPrototype = GetStructType<{
   LairPreferredSpawnType: ELairPreferredSpawnType;
   LairPrototypeSID: string;
   LairType: ELairType;
+  LerpTime: number;
   LevelName: string;
   LightningBallLiveBoxExtent: AIGlobalRelativeLocation;
   LightningBallNavigationPoints: SpawnActorPrototypeLightningBallNavigationPoints;
@@ -10373,13 +10594,15 @@ export type SpawnActorPrototype = GetStructType<{
   MinPatrolNeed: number;
   MinSpawnRank: ERank;
   MoveSpeedMultiplier: number;
-  NavModifierVolume: string;
+  NavModifierVolume: number;
   NavModifierVolumes: UpdatePopupPrototypeContentData;
+  NearFadeInDistance: number;
   NodeCreationVersion: number;
   NodePrototypeVersion: number;
   OnlineModifierDistance: number;
   OverrideArtifactSpawnLocation: string;
   OverrideFaction: string;
+  OverrideGlobalFogSettings: boolean;
   OverrideRank: boolean;
   OwningFaction: string;
   PackOfItemsPrototypeSID: string;
@@ -10512,7 +10735,7 @@ export type SpawnActorPrototypeDestroyReceiver = GetStructType<{
 
 export type SpawnActorPrototypeDestroySender = GetStructType<{
   Guid: string;
-  Signals: string;
+  Signals: SpawnActorPrototypeSignals;
 }>;
 
 export type SpawnActorPrototypeElectroBakedData = GetStructType<
@@ -10649,6 +10872,7 @@ export type SpawnActorPrototypePossibleInhabitantFactions = GetStructType<
 
 export type SpawnActorPrototypePossibleInhabitantFactionsItem = GetStructType<{
   Faction: string;
+  FactionPriority: number;
   SpawnSettingsPerPlayerRanks: SpawnActorPrototypeSpawnSettingsPerPlayerRanks;
 }>;
 
@@ -10663,6 +10887,8 @@ export type SpawnActorPrototypeRotation = GetStructType<{
 export type SpawnActorPrototypeSignalReceivers = GetStructType<{
   DestroyReceiver: SpawnActorPrototypeDestroyReceiver;
 }>;
+
+export type SpawnActorPrototypeSignals = GetStructType<(number | string)[]>;
 
 export type SpawnActorPrototypeSignalSenders = GetStructType<{
   DestroySender: SpawnActorPrototypeDestroySender;
@@ -10819,6 +11045,30 @@ export type StashPrototypeSmartLootParams = GetStructType<{
   SecondaryWeaponParams: StashPrototypeSecondaryWeaponParams;
 }>;
 
+export type Statistic = GetStructType<{
+  Hierarchy: StatisticHierarchy;
+  IgnoreMutantsSID: CoreVariableLegs;
+  Items: StringArray;
+  MutantsSID: StringArray;
+  ReplacementRulesSID: StatisticReplacementRulesSID;
+}>;
+
+export type StatisticHierarchy = GetStructType<StatisticHierarchyItem[]>;
+
+export type StatisticHierarchyItem = GetStructType<{
+  SID: string;
+  Value: number;
+}>;
+
+export type StatisticReplacementRulesSID = GetStructType<
+  StatisticReplacementRulesSIDItem[]
+>;
+
+export type StatisticReplacementRulesSIDItem = GetStructType<{
+  ReplaceSID: string;
+  SID: string;
+}>;
+
 export type TeleportGroupPrototype = GetStructType<{
   MinTeleportDistance: number;
   SID: string;
@@ -10954,8 +11204,11 @@ export type UpdatePopupPrototypeTabDataItem = GetStructType<{
   Background: string;
   ContentData: UpdatePopupPrototypeContentData;
   ContentSID: string;
+  DLCID: number;
+  PageType: string;
   TabBackground: string;
   TabSID: string;
+  Tags: CoreVariableHead;
 }>;
 
 export type UpgradePrototype = GetStructType<{
@@ -11402,6 +11655,7 @@ export type WeaponPrototype = GetStructType<{
   BaseDurability: number;
   Cost: number;
   EffectPrototypeSIDs: NPCPrototypeSkills;
+  ForceFeedbackSID: string;
   GeneralWeaponSetup: string;
   Icon: string;
   IsQuestItem: boolean;
@@ -11420,6 +11674,7 @@ export type WeaponPrototype = GetStructType<{
   PreinstalledUpgrades: WeaponPrototypePreinstalledUpgrades;
   SectionSettings: WeaponPrototypeSectionSettings;
   SID: string;
+  StatisticIconImagePath: string;
   Type: EItemType;
   Weight: number;
 }>;
