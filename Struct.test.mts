@@ -458,7 +458,7 @@ struct.end`.trim();
       expect(a.TradeGenerators[0].BuyLimitations[0]).toBe("EItemType::Weapon");
       expect(a.TradeGenerators[0].BuyLimitations[1]).toBe("EItemType::Armor");
       a.TradeGenerators[0].BuyLimitations.removeNode("0");
-      expect(a.TradeGenerators[0].BuyLimitations[0]).toBe("removenode");
+      expect(a.TradeGenerators[0].BuyLimitations[0]).toBe("empty");
     });
   });
 
