@@ -186,16 +186,15 @@ export class Struct implements Record<Internal, any> {
         .filter((k) => !isNaN(k))
         .sort((a, b) => a - b)
         .pop();
-      this[nextIndex !== undefined ? nextIndex + 1 : 0] = value;
-    } else {
-      if (typeof value === "object") {
-        if (!(value instanceof Struct)) {
-          value = new Struct(value);
-        }
-        value.__internal__.rawName = String(key);
-      }
-      this[key] = value;
+      key = nextIndex !== undefined ? nextIndex + 1 : 0;
     }
+    if (typeof value === "object" && value !== null) {
+      if (!(value instanceof Struct)) {
+        value = new Struct(value);
+      }
+      value.__internal__.rawName = String(key);
+    }
+    this[key] = value;
     return this;
   }
 

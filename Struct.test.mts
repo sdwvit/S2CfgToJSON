@@ -401,6 +401,8 @@ struct.end`.trim();
       expect(a.TradeGenerators[0].BuyLimitations[3]).toBe(
         "EItemType::Artifact",
       );
+      a.addNode({ someProp: 1 });
+      expect(a[0]).instanceof(Struct);
     });
   });
 
