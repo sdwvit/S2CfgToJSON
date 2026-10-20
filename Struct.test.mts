@@ -335,6 +335,74 @@ struct.end`.trim();
       expect(dnipro.toString()).toContain("ArmorPiercing = 3.2");
       expect(dnipro["ArmorPiercing"]).toBe(3.2);
     });
+
+    test("v2 header: PassiveDetectorPrototypes", () => {
+      const binary = fs.readFileSync("./test-v2.cfg.bin");
+      const bin_data = Struct.fromBinary(binary);
+
+      // Binary may include inherited fields from refkey=[0] that the
+      // authored text cfg omits (e.g. DangerLevelSoundParameter on [1]/[3]).
+      const cfg = `
+[0] : struct.begin
+   ID = 0
+   SID = Empty
+   Type = EPassiveDetectorType::None
+   DangerLevelSoundParameter = AkRtpc'/Game/_STALKER2/Audio/WwiseAudio/Game_Parameters/Equipment/AnomalyDetectorDangerLevel.AnomalyDetectorDangerLevel'
+   DetectorRadius = 0.f
+   DetectorWorkSFX = AkAudioEvent''
+   SignalCurve = CurveFloat''
+   DetectorWorkCurve = CurveFloat''
+struct.end
+[1] : struct.begin {refkey=[0]}
+   ID = 1
+   SID = PlayerDetector
+   Type = EPassiveDetectorType::Anomaly
+   DetectorRadius = 1000.0
+   DetectorWorkSFX = AkAudioEvent'/Game/_STALKER2/Audio/WwiseAudio/Events/Detectors/AnomalyDetectorSignal/SFX_AnomalyDetector_Signal.SFX_AnomalyDetector_Signal'
+   SignalCurve = CurveFloat'/Game/GameLite/Resources/Detector/Gilka/DetectAnomalySoundPitchCurve.DetectAnomalySoundPitchCurve'
+   DetectorWorkCurve = CurveFloat'/Game/GameLite/Resources/Detector/Gilka/DetectAnomalySoundFrequencyCurve.DetectAnomalySoundFrequencyCurve'
+   ExclusionAnomalyList : struct.begin
+      [0] = RazorAnomaly
+      [1] = PsyAnomaly
+      [2] = ArchiBulbAnomaly
+      [3] = PillowAnomaly
+      [4] = ClickerAnomaly
+      [5] = LightningBallSmallAnomaly
+      [6] = LightningBallMediumAnomaly
+      [7] = LightningBallBigAnomaly
+      [8] = FlycatcherAnomaly
+   struct.end
+   DangerLevelSoundParameter = AkRtpc'/Game/_STALKER2/Audio/WwiseAudio/Game_Parameters/Equipment/AnomalyDetectorDangerLevel.AnomalyDetectorDangerLevel'
+struct.end
+[2] : struct.begin {refkey=[0]}
+   ID = 2
+   SID = PlayerSearchpointDetector
+   Type = EPassiveDetectorType::Searchpoint
+   DetectorRadius = 1000.0
+   DetectorWorkSFX = /Script/AkAudio.AkAudioEvent'/Game/_STALKER2/Audio/WwiseAudio/Events/Equipment/PDAScaner/SFX_NT_SearchPoint_Signal.SFX_NT_SearchPoint_Signal'
+   DangerLevelSoundParameter = /Script/AkAudio.AkRtpc'/Game/_STALKER2/Audio/WwiseAudio/Game_Parameters/Equipment/RTPC_NT_SearchPoint_Distance.RTPC_NT_SearchPoint_Distance'
+   SignalCurve = CurveFloat'/Game/GameLite/Resources/Detector/Gilka/DetectAnomalySoundPitchCurve.DetectAnomalySoundPitchCurve'
+   DetectorWorkCurve = CurveFloat'/Game/GameLite/Resources/Detector/Gilka/DetectAnomalySoundFrequencyCurve.DetectAnomalySoundFrequencyCurve'
+struct.end
+[3] : struct.begin {refkey=[0]}
+   ID = 3
+   SID = CollarSearchpointDetector
+   Type = EPassiveDetectorType::Searchpoint
+   DetectorRadius = 1000.0
+   DetectorWorkSFX = AkAudio.AkAudioEvent'/Game/_STALKER2/Audio/WwiseAudio/Events/Quests/TestEvents/TEST_Device_WhiteNoise.TEST_Device_WhiteNoise'
+   SignalCurve = CurveFloat'/Game/GameLite/Resources/Detector/Gilka/DetectAnomalySoundPitchCurve.DetectAnomalySoundPitchCurve'
+   DangerLevelSoundParameter = AkRtpc'/Game/_STALKER2/Audio/WwiseAudio/Game_Parameters/Equipment/AnomalyDetectorDangerLevel.AnomalyDetectorDangerLevel'
+   DetectorWorkCurve = CurveFloat''
+struct.end`.trim();
+
+      const cfg_data = Struct.fromString(cfg);
+
+      expect(bin_data.length).toBe(4);
+      expect(bin_data.map((s) => s.toString()).join("\n")).toBe(cfg);
+      expect(bin_data.map((s) => s.toJson())).toEqual(
+        cfg_data.map((s) => s.toJson()),
+      );
+    });
   });
 
   describe("raw literals", () => {
