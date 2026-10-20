@@ -58,6 +58,9 @@ class BinaryCursor {
   }
 }
 
+// Header version written since the 2.0.5 update.
+const VERSION_2_0_5_PLUS = 2;
+
 interface BinaryCfgConfig {
   values: number[];
   lastByte: number;
@@ -70,8 +73,8 @@ export function readBinaryCfg(bytes: ArrayBuffer | Uint8Array): Struct[] {
     return [];
   }
 
-  const stringPool = readBinaryHeader(reader);
-  skipPostPoolPadding(reader);
+  const { version, stringPool } = readBinaryHeader(reader);
+  skipPostPoolPadding(reader, version);
 
   const roots: Struct[] = [];
   while (reader.position < reader.length) {
@@ -81,7 +84,7 @@ export function readBinaryCfg(bytes: ArrayBuffer | Uint8Array): Struct[] {
 
     const childsCount = reader.readInt32();
     for (let currentChild = 0; currentChild < childsCount; currentChild++) {
-      const root = readBinaryStruct(reader, stringPool);
+      const root = readBinaryStruct(reader, stringPool, version);
       root.__internal__.isRoot = true;
       roots.push(root);
     }
@@ -90,8 +93,11 @@ export function readBinaryCfg(bytes: ArrayBuffer | Uint8Array): Struct[] {
   return roots;
 }
 
-function readBinaryHeader(reader: BinaryCursor): string[] {
-  reader.readUint32(); // version
+function readBinaryHeader(reader: BinaryCursor): {
+  version: number;
+  stringPool: string[];
+} {
+  const version = reader.readUint32();
   const stringCount = reader.readInt32();
   const stringPool: string[] = [];
   reader.readUint32(); // reserved
@@ -124,10 +130,20 @@ function readBinaryHeader(reader: BinaryCursor): string[] {
     );
   }
 
-  return stringPool;
+  return { version, stringPool };
 }
 
-function skipPostPoolPadding(reader: BinaryCursor): void {
+function skipPostPoolPadding(reader: BinaryCursor, version: number): void {
+  if (version >= VERSION_2_0_5_PLUS) {
+    if (reader.position + 13 <= reader.length) {
+      reader.readUint32();
+      reader.readUint32();
+      reader.readUint32();
+      reader.readByte();
+    }
+    return;
+  }
+
   if (reader.position + 9 <= reader.length) {
     reader.readUint32();
     reader.readUint32();
@@ -138,8 +154,26 @@ function skipPostPoolPadding(reader: BinaryCursor): void {
 function readBinaryCfgConfig(
   reader: BinaryCursor,
   poolSize: number,
+  version: number,
 ): BinaryCfgConfig {
   const position = reader.position;
+
+  if (version >= VERSION_2_0_5_PLUS) {
+    const nameIndex = reader.readInt32();
+    const typeIndex = reader.readInt32();
+    const valueIndex = reader.readInt32();
+    const values = [nameIndex, typeIndex, valueIndex];
+
+    if (valueIndex === 0) {
+      values.push(reader.readInt32());
+    } else {
+      values.push(reader.readInt32());
+      values.push(reader.readInt32());
+    }
+
+    return { values, lastByte: reader.readByte(), position };
+  }
+
   const values: number[] = [];
   let value = 0;
 
@@ -163,10 +197,16 @@ function readBinaryCfgConfig(
   return { values, lastByte, position };
 }
 
-function readBinaryStruct(reader: BinaryCursor, stringPool: string[]): Struct {
-  const block = readBinaryCfgConfig(reader, stringPool.length);
+function readBinaryStruct(
+  reader: BinaryCursor,
+  stringPool: string[],
+  version: number,
+): Struct {
+  const block = readBinaryCfgConfig(reader, stringPool.length, version);
+  const nameIndex =
+    version >= VERSION_2_0_5_PLUS ? (block.values[0] ?? 0) : block.values[1];
   const node = createDynamicClassInstance(
-    getBinaryString(block.values[1], stringPool),
+    getBinaryString(nameIndex, stringPool),
   );
 
   if (block.lastByte > 0 && [1, 5, 7].includes(block.lastByte)) {
@@ -182,16 +222,43 @@ function readBinaryStruct(reader: BinaryCursor, stringPool: string[]): Struct {
 
   const fieldsCount = reader.readInt32();
   for (let currentField = 0; currentField < fieldsCount; currentField++) {
-    const fieldBlock = readBinaryCfgConfig(reader, stringPool.length);
+    const fieldBlock = readBinaryCfgConfig(reader, stringPool.length, version);
+    const fieldName = getBinaryString(fieldBlock.values[0], stringPool);
+
+    if (version >= VERSION_2_0_5_PLUS) {
+      if (fieldBlock.values.length < 3) {
+        continue;
+      }
+
+      switch (fieldBlock.values.length) {
+        case 4: {
+          reader.position = fieldBlock.position;
+          const nested = readBinaryStruct(reader, stringPool, version);
+          assignField(
+            node,
+            fieldName,
+            isEmptyNestedStruct(nested) ? "" : nested,
+            currentField,
+          );
+          break;
+        }
+        case 5: {
+          const raw = getBinaryString(fieldBlock.values[2], stringPool).trim();
+          assignField(node, fieldName, parseValue(raw), currentField, raw);
+          break;
+        }
+      }
+      continue;
+    }
+
     if (fieldBlock.values.length <= 1) {
       continue;
     }
 
-    const fieldName = getBinaryString(fieldBlock.values[0], stringPool);
     switch (fieldBlock.values.length) {
       case 2: {
         reader.position = fieldBlock.position;
-        const nested = readBinaryStruct(reader, stringPool);
+        const nested = readBinaryStruct(reader, stringPool, version);
         assignField(
           node,
           fieldName,
