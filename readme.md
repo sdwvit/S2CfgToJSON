@@ -1,46 +1,54 @@
-# Stalker 2 CFG to JSON Converter
+# Stalker 2 CFG to JSON converter
 
-A utility to convert Stalker 2 `.cfg` and `.cfg.bin` configuration files into structured JavaScript objects (POJOs), enabling easier mod development and analysis.
-
----
-
-## Key Features
-
-- **Struct Class**: A flexible base class for parsing and generating Stalker 2 config structures, handling nested data, wildcards, and indexed entries.
-- **TypeScript Support**: Built with TypeScript for type safety and clarity.
+Reads Stalker 2 `.cfg` and `.cfg.bin` files into plain JavaScript objects, and writes them back out as `.cfg` text. Use it to write mods in code or to dig through game data.
 
 ---
 
-## Getting Started
+## What's inside
 
-### Prerequisites
-- Node.js ≥24
-- npm (or pnpm/yarn)
+- **`Struct` class.** Parses and writes Stalker 2 config structs, including nested structs, wildcard keys and indexed entries like `[0]`.
+- **TypeScript types.** The package is written in TypeScript and ships its types.
 
-### Installation
-In your project directory, run:
+---
+
+## Getting started
+
+### You'll need
+
+- Node.js 24 or newer
+- npm, pnpm or yarn
+
+### Install
+
+Add it to your project:
+
 ```bash
 npm install s2cfgtojson
 ```
 
-Or, if you checked out the repository, you can install dependencies directly:
+If you cloned this repo instead, install its dependencies:
+
 ```bash
 npm install
 ```
 
-### Usage
-Import the `Struct` class from `Struct.mts` to parse or generate Stalker 2 config data. For example:
+### Use
+
+`Struct.fromString(text)` parses config text and returns an array of structs, one per top-level struct. `struct.toString()` turns a struct back into config text:
+
 ```ts
 import { Struct } from 's2cfgtojson';
 
-const config = new Struct();
-// Use methods like `toString()` or `fromString()` to process configs
+const [struct] = Struct.fromString(configText);
+const text = struct.toString();
 ```
 
 ---
 
 ## Example
-Convert a `.cfg` file to a structured object:
+
+Parse a `.cfg` snippet and read a field:
+
 ```ts
 const configText = `
 BasePhantomAttack : struct.begin {refkey=BaseAttackAbility}
@@ -60,26 +68,38 @@ console.log(parsed.TriggeredCooldowns);
 
 ## How the game applies patches
 
-This describes the retail game's cfg loader, not this library. `Struct` only parses and serializes text; it doesn't merge anything.
+Quick heads-up: this part explains how the game loads cfg files, not how this library works. `Struct` only reads and writes text. The merging happens inside the game.
 
-### Which files are read
+Here's the short version:
 
-When the game loads `X.cfg`, it treats every `.cfg` file in the folder `X/` next to it as a patch to `X.cfg`. A new file is read only if it sits in `<stem>/` next to an existing `<stem>.cfg`. A file anywhere else isn't read.
+- Put your patch file in a folder named after the file you're patching.
+- Add `{bpatch}` to a struct to change a few fields. Leave it off and you replace the whole struct.
+- `@BaseGame/...` refurls only work in ZoneKit mods.
 
-The `<Name>_patch_<Mod>.cfg` file name is a convention, not a requirement. The game itself depends on this rule: `GameData/ObjPrototypes.cfg` is the root, and every file in `GameData/ObjPrototypes/` (for example `QuestObjPrototypes.cfg` and `GeneralNPCObjPrototypes.cfg`) is a patch merged into it.
+The details are below.
 
-### How a patch merges
+### Where to put your files
 
-Merging works per top-level key. The key is the struct name before `: struct.begin`, not its `SID` field. For example, vanilla's `CorpusMedlak` has `SID = CorpMedlak`, and a patch has to target `CorpusMedlak`. For each top-level node in a patch file:
+When the game loads `X.cfg`, it also loads every `.cfg` file in a folder called `X/` right next to it, and treats each one as a patch to `X.cfg`.
 
-| Target already has the key? | Node has | Result |
+So if you want the game to see your new cfg file, put it in `<stem>/` next to an existing `<stem>.cfg`. Anywhere else, the game won't load it.
+
+You can name the file whatever you like. `<Name>_patch_<Mod>.cfg` is just a common habit. The game uses this same rule for its own files: `GameData/ObjPrototypes.cfg` is the root, and everything in `GameData/ObjPrototypes/` (`QuestObjPrototypes.cfg`, `GeneralNPCObjPrototypes.cfg` and so on) gets merged into it as a patch.
+
+### What happens when your patch merges
+
+The game goes through your patch one top-level struct at a time and matches it by key. The key is the name you write before `: struct.begin`, not the `SID` field. These two can differ: vanilla's `CorpusMedlak` has `SID = CorpMedlak`, so your patch has to say `CorpusMedlak`.
+
+Here's what happens to each top-level struct in your patch:
+
+| Does the target already have this key? | Your struct has | What the game does |
 | --- | --- | --- |
-| no | anything | The node is added. |
-| yes | `removenode` | The existing node is deleted. |
-| yes | `{bpatch}` | The node is merged into the existing one field by field, recursively. |
-| yes | neither | The whole existing node is **replaced**. Fields the patch doesn't restate are lost. |
+| no | anything | Adds your struct. |
+| yes | `removenode` | Deletes the existing struct. |
+| yes | `{bpatch}` | Merges your struct into the existing one, field by field, nested structs included. |
+| yes | neither | **Replaces** the existing struct with yours. Any field you didn't write out is gone. |
 
-To replace a node and keep vanilla's fields, point the replacement back at the original file. In a ZoneKit mod (see below) that looks like this:
+That last row catches people out. If you want to replace a struct but keep vanilla's fields, point it back at the original with `refurl` and `refkey`. In a ZoneKit mod (more on those below) that looks like this:
 
 ```
 CorpusMedlak : struct.begin {refurl=@BaseGame/ObjPrototypes/QuestObjPrototypes.cfg;refkey=CorpusMedlak}
@@ -87,18 +107,18 @@ CorpusMedlak : struct.begin {refurl=@BaseGame/ObjPrototypes/QuestObjPrototypes.c
 struct.end
 ```
 
-In code, `struct.fork()` produces a `{bpatch}` copy, which is usually what you want for edits. A struct that isn't forked serializes without `bpatch` and replaces the target node.
+In code, `struct.fork()` gives you a copy marked `{bpatch}`, which is usually what you want for edits. If you don't fork a struct, it's written without `bpatch` and the game will replace the target struct with it.
 
 ### `@` refurls
 
-A refurl can name a config path: `@<ConfigPathName>/<RelativePath>`. The game splits the name off at the first `/` and looks it up among the *active* config paths. If the name isn't active, it logs `refurl '…' references config path '…' which is not active` and the reference isn't resolved. `BaseGame` gets no special treatment.
+A refurl can start with a config path name, like `@<ConfigPathName>/<RelativePath>`. The game takes everything before the first `/` as the name and checks whether that config path is active. If it isn't, you'll see `refurl '…' references config path '…' which is not active` in the log, and the reference won't resolve. `BaseGame` works the same way as any other name. It gets no special treatment.
 
-Config paths are activated by ZoneKit (Game Feature) mods, not by plain pak mods:
+Only ZoneKit (Game Feature) mods turn config paths on. Plain pak mods don't.
 
-- **ZoneKit mods.** When the mod's Game Feature activates, the game logs `Activated config path 'BaseGame' at '…/Content/GameLite/GameData/'` and `Activated config path '<Mod>' at '…/Mods/<Mod>/Content/GameLite/ModGameData/<Mod>/'`. In the logs checked, the mod's config path name was the mod's name. The mod's own cfgs live under `ModGameData/<Mod>/`, and `@BaseGame/...` reaches vanilla files. Workshop ZoneKit mods use `refurl=@BaseGame/...`.
-- **Plain pak mods** (`Content/Paks/~mods`). No config path is active. Every retail run checked logs `No config paths are active, using default parser path '…/GameLite/GameData/'` and never activates one. Cfgs resolve against `GameData/` directly, so use relative refurls. An `@BaseGame/` refurl in a pak mod should fail with the "not active" error. That follows from the code; it hasn't been tested in game.
+- **ZoneKit mods.** When your mod's Game Feature starts, the log shows `Activated config path 'BaseGame' at '…/Content/GameLite/GameData/'` and `Activated config path '<Mod>' at '…/Mods/<Mod>/Content/GameLite/ModGameData/<Mod>/'`. In every log I've checked, the config path name matched the mod's name. Your mod's cfg files go under `ModGameData/<Mod>/`, and `@BaseGame/...` gets you to the vanilla files. Workshop ZoneKit mods use `refurl=@BaseGame/...`.
+- **Plain pak mods** (in `Content/Paks/~mods`). No config path is active. Every retail run I've checked logs `No config paths are active, using default parser path '…/GameLite/GameData/'` and never turns one on. Refurls resolve straight against `GameData/`, so stick to relative refurls. Going by the code, an `@BaseGame/` refurl in a pak mod fails with the "not active" error. I haven't tried it in game yet.
 
-`toBaseGameRefurl(path)` and `toMountRefurl(mount, path)` build `@` refurls from a path relative to the config path root, or from a full path containing `GameLite/GameData/` or `GameLite/ModGameData/<mount>/`. Use them only in ZoneKit mods:
+There are 2 helpers that build `@` refurls for you: `toBaseGameRefurl(path)` and `toMountRefurl(mount, path)`. You can pass a path relative to the config path root, or a full path that contains `GameLite/GameData/` or `GameLite/ModGameData/<mount>/`. Only use them in ZoneKit mods:
 
 ```ts
 import { toBaseGameRefurl } from "s2cfgtojson";
@@ -109,42 +129,44 @@ struct.__internal__.refurl = toBaseGameRefurl(
 struct.__internal__.refkey = "CorpusMedlak";
 ```
 
-The parser knows these flags inside `{...}`: `refurl`, `refkey`, `bpatch`, `removenode` and `bskipref`.
+The parser understands 5 flags inside `{...}`: `refurl`, `refkey`, `bpatch`, `removenode` and `bskipref`.
 
-### Not verified yet
+### Things nobody has confirmed yet
 
-- The order in which several patch files in one folder apply. The loader sorts the list after scanning the folder, and mods that use `zz` prefixes assume alphabetical order, but nobody has confirmed this.
-- Whether a `refkey` on a replacing node that points at its own key (as in the `CorpusMedlak` example above) resolves against the vanilla node from before the swap. In a ZoneKit mod, an explicit `@BaseGame/...` refurl avoids depending on this.
-- Whether a mod's config path name always equals the mod's name, or can be set separately (the engine has a `ConfigPathName` property). The logs also show a second `<Mod>_BaseGame_Overrides` path whose role hasn't been traced.
+If you figure out any of these, please open an issue.
+
+- **The order patch files load in.** When one folder has several patch files, the loader sorts the list after scanning the folder. Mods that start file names with `zz` assume the sort is alphabetical, but nobody has checked.
+- **A `refkey` pointing at its own key.** In the `CorpusMedlak` example above, the replacing struct's `refkey` names its own key. We don't know yet whether that reads the vanilla struct from before the replacement. In a ZoneKit mod you don't have to rely on it: write the full `@BaseGame/...` refurl.
+- **Config path names.** We don't know whether a mod's config path name is always the mod's name or can be set to something else (the engine has a `ConfigPathName` property). The logs also show a second path, `<Mod>_BaseGame_Overrides`, and what it does is still a mystery.
 
 ---
 
-## Quest Node Planner Skill
+## Quest Node Planner skill
 
-This package includes a **Quest Node Planner** skill for AI-assisted quest authoring. It turns plain-language quest descriptions into complete S.T.A.L.K.E.R. 2 quest content packages — quest node graphs, dialog chains, journal entries, markers, rewards, and all supporting structs.
+The package comes with a **Quest Node Planner** skill for writing quests with an AI assistant. You describe a quest in plain words, and it produces the Stalker 2 content for it: quest node graph, dialog chains, journal entries, markers, rewards and the other structs the quest needs.
 
-Describe a quest in plain language and the planner will:
+From your description, the planner:
 
-1. Resolve real content IDs from your local `GameLite` data (NPCs, items, dialogs, journals, markers)
-2. Determine every struct the quest needs (nodes, dialog, journal, globals, rewards, generators)
-3. Produce a structured plan with concrete SIDs, a node graph, edges, placement guidance, and validation risks
+1. Looks up real content IDs (NPCs, items, dialogs, journals, markers) in your local `GameLite` data.
+2. Lists every struct the quest needs: nodes, dialogs, journal entries, globals, rewards and generators.
+3. Writes a plan with exact SIDs, the node graph and its edges, which file each struct goes in, and what could break.
 
 Example prompt:
 
 > Plan a fetch quest where Barkeep in the Skadovsk asks the player to retrieve a unique PDA from a bandit camp, with a money reward on turn-in and an option to decline.
 
-### Key design principles
+### How it decides
 
-- All new structs go into a patch for an **existing base cfg file**: a file in `<stem>/` next to an existing `<stem>.cfg`. The game doesn't read cfg files anywhere else (see [How the game applies patches](#how-the-game-applies-patches)).
-- The skill prefers **reusing existing content** (items, markers, generators) over creating new prototypes.
-- If something can't be resolved from local data, the skill asks you instead of guessing.
+- Every new struct goes into a patch for an **existing base cfg file**, meaning a file in `<stem>/` next to an existing `<stem>.cfg`. The game doesn't read cfg files anywhere else (see [How the game applies patches](#how-the-game-applies-patches)).
+- It reuses existing items, markers and generators before it creates new prototypes.
+- If it can't find something in your local data, it asks you. It doesn't guess.
 
 ---
 
 ## Development
 
 ### Tests
-Run tests using:
+
 ```bash
 npm test
 ```
@@ -153,15 +175,16 @@ npm test
 
 ## Contributing
 
-Feel free to contribute by submitting issues or pull requests. Ensure your code adheres to the project's coding standards and includes tests for new features.
+Issues and pull requests are welcome. Please match the existing code style and add tests for any new feature.
 
 ---
 
 ## License
+
 Free to use in non-commercial projects.
 
 ---
 
-## Notes
+## Thanks
 
-Thanks, GSC and modders for providing the community with tools to enhance the modding experience.
+Thanks to GSC and to the modders who build and share tools for this game.
