@@ -51,9 +51,14 @@ const TAB = "   ";
 const WILDCARD = "_wildcard";
 const KEYWORDS = [
   /**
-   * Path (relative to this file) of the cfg holding the base struct.
+   * Path of the cfg holding the base struct: relative to this file (resolves
+   * only inside this file's own mount), or `@<ConfigPathName>/<RelativePath>`
+   * to address an active config path. `@BaseGame/` is the `GameLite/GameData/`
+   * root. Config paths are active only for ZoneKit (Game Feature) mods.
    * Omit refurl and refkey looks for the struct in the same file.
+   * @see toBaseGameRefurl
    * @example MyMod : struct.begin {refurl=../DialogPoolPrototypes/Brodyaga.cfg; refkey=BusyTopic}
+   * @example CorpusMedlak : struct.begin {refurl=@BaseGame/ObjPrototypes/QuestObjPrototypes.cfg;refkey=CorpusMedlak}
    */
   "refurl",
 
@@ -76,15 +81,16 @@ const KEYWORDS = [
   "bskipref",
 
   /**
-   * Partial override: merges only the listed non-struct keys into the existing
-   * struct. Never removes siblings.
+   * Partial override: merges this struct into the existing one field by field,
+   * recursing into nested structs. Siblings it doesn't list are kept. Without
+   * bpatch, a patch node whose key already exists replaces it whole.
    */
   "bpatch",
 ];
 
 /**
- * Marks a struct as removed during a bpatch. For non-structs, use bpatch and
- * assign the value `empty` instead.
+ * Marks a struct as removed: `Key : removenode` deletes the existing node with
+ * that key. For non-structs, use bpatch and assign the value `empty` instead.
  */
 const REMOVE_NODE = "removenode";
 const INTERNAL_PROPS = new Map([
@@ -316,6 +322,9 @@ export class Struct implements Record<Internal, any> {
       this.__internal__ = new Refs(this.__internal__);
     }
 
+    if (this.__internal__.isRoot && this.__internal__.removenode) {
+      return `${this.__internal__.rawName} : ${REMOVE_NODE}`;
+    }
     let text: string = this.__internal__.isRoot
       ? `${this.__internal__.rawName} : `
       : "";
@@ -326,9 +335,8 @@ export class Struct implements Record<Internal, any> {
       text += ` {${refs}}`;
     }
 
-    text += "\n";
     // Add all keys
-    text += this.entries()
+    const body = this.entries()
       .map(([key, value]) => {
         const nameAlreadyRendered =
           value instanceof Struct && value.__internal__.isRoot;
@@ -351,7 +359,7 @@ export class Struct implements Record<Internal, any> {
         );
       })
       .join("\n");
-    text += "\nstruct.end";
+    text += body ? `\n${body}\nstruct.end` : "\nstruct.end";
     return text;
   }
 
@@ -503,11 +511,68 @@ function walk(lines: string[]) {
       stack.push(newStruct);
     } else if (line.includes("struct.end")) {
       stack.pop();
+    } else if (removeNodeRegex.test(line)) {
+      parseRemoveNode(line, current, index, roots);
     } else if (line.includes("=") && current) {
       parseKeyValue(line, current, index);
     }
   }
   return roots;
+}
+
+const removeNodeRegex = new RegExp(`^([^=]+?)\\s*:\\s*${REMOVE_NODE}$`);
+
+/**
+ * `Key : removenode` deletes the node with that key, so it is kept as an empty
+ * struct flagged `removenode` and renders back the same way.
+ */
+function parseRemoveNode(
+  line: string,
+  parent: Struct | undefined,
+  index: number,
+  roots: Struct[],
+) {
+  const rawName = line.match(removeNodeRegex)[1].trim();
+  const node = createDynamicClassInstance(rawName, index);
+  node.__internal__.removenode = true;
+  if (parent) {
+    parent[parseKey(rawName, parent, index)] = node;
+  } else {
+    node.__internal__.isRoot = true;
+    roots.push(node);
+  }
+}
+
+/**
+ * Turns a path into a `@<mount>/` refurl. Accepts paths relative to the config
+ * path root, or full paths containing `GameLite/GameData/` (vanilla) or
+ * `GameLite/ModGameData/<mount>/` (a ZoneKit mod's own cfgs), with either
+ * slash style. `@` refurls resolve only while that config path is active,
+ * which happens for ZoneKit (Game Feature) mods; plain `~mods` pak mods have
+ * no active config paths and should use relative refurls.
+ * @example toMountRefurl("MyMod", "Mods/MyMod/Content/GameLite/ModGameData/MyMod/ItemPrototypes/Foo.cfg") // "@MyMod/ItemPrototypes/Foo.cfg"
+ */
+export function toMountRefurl(mount: string, path: string): string {
+  const escaped = mount.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  const relative = path
+    .replace(/\\/g, "/")
+    .replace(
+      new RegExp(`^.*?GameLite/(GameData|ModGameData/${escaped})/`, "i"),
+      "",
+    )
+    .replace(/^(\.?\/)+/, "");
+  if (relative.split("/").includes("..")) {
+    throw new Error(`refurl can't leave its mount: '${path}'`);
+  }
+  return `@${mount}/${relative}`;
+}
+
+/**
+ * Refurl into the vanilla `GameLite/GameData/` root.
+ * @example toBaseGameRefurl("GameLite/GameData/ObjPrototypes/QuestObjPrototypes.cfg") // "@BaseGame/ObjPrototypes/QuestObjPrototypes.cfg"
+ */
+export function toBaseGameRefurl(path: string): string {
+  return toMountRefurl("BaseGame", path);
 }
 
 export function parseKey(key: string, parent: Struct, index: number) {

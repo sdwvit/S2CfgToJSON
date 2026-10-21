@@ -8,6 +8,8 @@ import {
   Refs,
   QuestNodePrototypeRandom,
   QuestNodePrototypeLaunchers,
+  toBaseGameRefurl,
+  toMountRefurl,
 } from "./Struct.mjs";
 import fs from "node:fs";
 
@@ -96,7 +98,7 @@ struct.end`,
 
       expect(instance).toBeInstanceOf(Struct);
       expect(instance.toString()).toBe(
-        `DynamicClass : struct.begin\n\nstruct.end`,
+        `DynamicClass : struct.begin\nstruct.end`,
       );
     });
 
@@ -105,7 +107,7 @@ struct.end`,
       instance.__internal__.isRoot = true;
 
       expect(instance).toBeInstanceOf(Struct);
-      expect(instance.toString()).toBe(`default : struct.begin\n\nstruct.end`);
+      expect(instance.toString()).toBe(`default : struct.begin\nstruct.end`);
     });
   });
 
@@ -461,6 +463,102 @@ struct.end`.trim();
       expect(a.TradeGenerators[0].BuyLimitations[1]).toBe("EItemType::Armor");
       a.TradeGenerators[0].BuyLimitations.removeNode("0");
       expect(a.TradeGenerators[0].BuyLimitations[0]).toBe("empty");
+    });
+
+    test("a removed struct renders as `removenode`", () => {
+      const a = new TradePrototype().fork(true);
+      a.TradeGenerators.removeNode("0");
+      expect(a.toString()).toBe(
+        "TradersDontBuyWeaponsArmor : struct.begin {refurl=../TradePrototypes.cfg;refkey=[0];bpatch}\n" +
+          "   TradeGenerators : struct.begin {bpatch}\n" +
+          "      [0] : removenode\n" +
+          "   struct.end\n" +
+          "struct.end",
+      );
+    });
+
+    test("`removenode` survives fromString()", () => {
+      const text =
+        "A : struct.begin {bpatch}\n" +
+        "   B : struct.begin {bpatch}\n" +
+        "      [0] : removenode\n" +
+        "      C : removenode\n" +
+        "   struct.end\n" +
+        "struct.end\n" +
+        "D : removenode";
+      const parsed = Struct.fromString<any>(text);
+      expect(parsed[0].B[0].__internal__.removenode).toBe(true);
+      expect(parsed.map((s) => s.toString()).join("\n")).toBe(text);
+    });
+
+    test("`=` values ending in removenode stay values", () => {
+      const a = Struct.fromString<any>(
+        "A : struct.begin\n   X = a:removenode\nstruct.end",
+      )[0];
+      expect(a.X).toBe("a:removenode");
+    });
+  });
+
+  describe("patch semantics", () => {
+    // The game replaces a whole node when a patch restates its key without
+    // bpatch, so a struct that wasn't forked must not gain the flag.
+    test("a non-bpatch struct serializes without bpatch", () => {
+      const text =
+        "CorpusMedlak : struct.begin\n" +
+        "   TradePrototypeSID = MyTrade\n" +
+        "struct.end";
+      const s = Struct.fromString(text)[0];
+      expect(s.__internal__.bpatch).toBeUndefined();
+      expect(s.toString()).toBe(text);
+      expect(s.clone().toString()).not.toContain("bpatch");
+    });
+
+    test.each([
+      "{refurl=@BaseGame/ObjPrototypes/QuestObjPrototypes.cfg;refkey=CorpusMedlak}",
+      "{refurl=@MyMod/ItemPrototypes/Foo.cfg;refkey=[0];bpatch}",
+      "{refurl=@BaseGame/DialogPrototypes/Bar.cfg;refkey=Baz;bskipref}",
+    ])("`@` mount refurl round-trips: %s", (refs) => {
+      const text =
+        `CorpusMedlak : struct.begin ${refs}\n` +
+        "   TradePrototypeSID = MyTrade\n" +
+        "struct.end";
+      expect(Struct.fromString(text)[0].toString()).toBe(text);
+    });
+
+    test("an empty struct with refs has no blank line", () => {
+      const text =
+        "A : struct.begin {refurl=@MyMod/Foo.cfg;refkey=[0];bpatch}\nstruct.end";
+      expect(Struct.fromString(text)[0].toString()).toBe(text);
+    });
+  });
+
+  describe("refurl helpers", () => {
+    test.each([
+      ["ObjPrototypes/QuestObjPrototypes.cfg"],
+      ["GameLite/GameData/ObjPrototypes/QuestObjPrototypes.cfg"],
+      [
+        "Stalker2\\Content\\GameLite\\GameData\\ObjPrototypes\\QuestObjPrototypes.cfg",
+      ],
+      ["./ObjPrototypes/QuestObjPrototypes.cfg"],
+    ])("toBaseGameRefurl(%s)", (path) => {
+      expect(toBaseGameRefurl(path)).toBe(
+        "@BaseGame/ObjPrototypes/QuestObjPrototypes.cfg",
+      );
+    });
+
+    test.each([
+      ["ItemPrototypes/Foo.cfg"],
+      [
+        "Stalker2/Mods/MyMod/Content/GameLite/ModGameData/MyMod/ItemPrototypes/Foo.cfg",
+      ],
+    ])("toMountRefurl('MyMod', %s)", (path) => {
+      expect(toMountRefurl("MyMod", path)).toBe(
+        "@MyMod/ItemPrototypes/Foo.cfg",
+      );
+    });
+
+    test("rejects paths that leave the mount", () => {
+      expect(() => toBaseGameRefurl("../Foo.cfg")).toThrow();
     });
   });
 
