@@ -36,7 +36,7 @@ Turn human quest intent into a complete quest content package grounded in this r
    - reward generators, item generators, stash generators, or direct items
    - any supporting quest prototype, actor reference, or item prototype that must exist for the design to work
 4. Reuse existing structs where they fit. Create new structs only when the existing content does not cover the need cleanly.
-   - Even when a struct is new, place it into a patch for an existing cfg file in the correct family. Do not plan brand-new standalone cfg files that the game will not read.
+   - Even when a struct is new, place it into a patch for an existing cfg file in the correct family. Do not plan standalone cfg files outside a `<stem>/` patch folder; the game won't read them.
    - In implementation mode, resolve the exact existing base cfg filename for each struct family being patched.
 5. If core inputs are still missing after local lookup, make the smallest safe assumptions and label them clearly.
    - For quest-objective stashes or reward stashes, do a brief local lookup first.
@@ -102,7 +102,7 @@ If the user asks for variants, provide a primary plan first, then 1-2 alternativ
 - Treat journal, marker, reward, and generator structs as part of the quest package, not as optional extras.
 - Create new item or support prototypes only when existing items, markers, generators, or world references are insufficient.
 - When the user wants implementation guidance, explain the expected mod folder structure and patch file family placement.
-- The game will not read arbitrary brand-new cfg files. Every new or changed struct must be emitted into a patch derived from an existing base cfg file in the correct family.
+- The game reads a new cfg file only if it sits in the `<stem>/` folder next to an existing `<stem>.cfg`, where it is applied as a patch. Every new or changed struct must be emitted into a patch for an existing base cfg file in the correct family. See `references/patch-layout.md` for merge rules.
 - In implementation mode, the exact existing base cfg filename is mandatory for each patched struct family.
 - Do not invent a specific quest stash or reward stash if local lookup does not surface one quickly; ask the user instead.
 - If a quest grants a stash as a reward, do not plan it as pre-lootable world content with the final reward already inside; use `SetItemGenerator` in the quest completion flow to populate or unlock the stash reward at completion time.

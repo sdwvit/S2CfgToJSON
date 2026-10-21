@@ -6,7 +6,16 @@ Read this file when the user wants to know where new cfg patches and supporting 
 
 Patch files are generated per target cfg family and stored under the mod's `raw/` tree, preserving the `GameLite/GameData` folder family.
 
-The game does not read arbitrary new cfg files. New structs still have to be written into a patch whose target is an existing base cfg file from the relevant family.
+When the game loads `<stem>.cfg`, it applies every `.cfg` file in the folder `<stem>/` next to it as a patch. A new cfg file is read only from such a folder; a file anywhere else is ignored. So new structs have to be written into a patch whose target is an existing base cfg file from the relevant family.
+
+How a patch merges, per top-level key (the name before `: struct.begin`, not the `SID` field):
+
+- key not in the target: the node is added
+- key present, node has `removenode`: the existing node is deleted
+- key present, node has `{bpatch}`: recursive field-by-field merge
+- key present, neither flag: the existing node is replaced, and fields the patch doesn't restate are lost. To keep them, give the replacing node a `refurl`/`refkey` pointing at the original. In a ZoneKit (Game Feature) mod use `{refurl=@BaseGame/<path to original file>;refkey=<key>}`; `toBaseGameRefurl(path)` from this package builds that value. In a plain `~mods` pak mod no config path is active, so `@BaseGame/` doesn't resolve there; use a relative refurl instead.
+
+When editing an existing struct, use `fork()` so it carries `bpatch`. New structs with new keys don't need it.
 
 For implementation guidance, the exact base cfg filename is mandatory. Do not stop at the family name alone.
 
@@ -40,7 +49,9 @@ Observed implementation pattern:
 - ordinary cfg family: `<BaseName>_patch_<ModName>.cfg`
 - special case for `CoreVariables.cfg`: `<BaseName>.cfg_patch_<ModName>`
 
-Do not invent a different naming pattern unless the user explicitly wants one.
+The game doesn't require the `_patch_` name; it reads every `.cfg` in the `<stem>/` folder. Keep the pattern anyway for consistency with the tooling, and don't invent a different one unless the user explicitly wants it.
+
+Not verified: the order in which several patch files in one folder apply. Don't plan anything that depends on one mod's patch applying before another's.
 
 ## New Struct Placement
 
@@ -58,7 +69,7 @@ Placement rules:
 
 When the plan turns into actual authoring with this repo's `Struct` helpers:
 
-- set `__internal__.rawName` to the engine-facing struct SID or name that should appear before `: struct.begin`
+- set `__internal__.rawName` to the struct key that should appear before `: struct.begin`. The game matches patches by this key, not by the `SID` field, and the two can differ (vanilla's `CorpusMedlak` has `SID = CorpMedlak`)
 - set `__internal__.isRoot = true` on each top-level struct being emitted into the cfg patch
 - leave `isRoot` unset on ordinary nested child structs
 
