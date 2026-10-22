@@ -131,14 +131,6 @@ struct.__internal__.refkey = "CorpusMedlak";
 
 The parser understands 5 flags inside `{...}`: `refurl`, `refkey`, `bpatch`, `removenode` and `bskipref`.
 
-### Things nobody has confirmed yet
-
-If you figure out any of these, please open an issue.
-
-- **The order patch files load in.** When one folder has several patch files, the loader sorts the list after scanning the folder. Mods that start file names with `zz` assume the sort is alphabetical, but nobody has checked.
-- **A `refkey` pointing at its own key.** In the `CorpusMedlak` example above, the replacing struct's `refkey` names its own key. We don't know yet whether that reads the vanilla struct from before the replacement. In a ZoneKit mod you don't have to rely on it: write the full `@BaseGame/...` refurl.
-- **Config path names.** We don't know whether a mod's config path name is always the mod's name or can be set to something else (the engine has a `ConfigPathName` property). The logs also show a second path, `<Mod>_BaseGame_Overrides`, and what it does is still a mystery.
-
 ---
 
 ## Quest Node Planner skill
