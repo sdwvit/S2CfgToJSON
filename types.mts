@@ -3424,6 +3424,23 @@ export type CoreVariable = GetStructType<{
   WoundedStateHealthRegen: number;
   WoundHitAreasThresholds: CoreVariableWoundHitAreasThresholds;
   ZombieFactionUIDName: string;
+  ALifeStreamingDistanceDynamicRangeGrowthCooldownSeconds: number;
+  ALifeStreamingDistanceDynamicRangeGrowthThresholdMB: number;
+  ALifeStreamingDistanceDynamicRangeMax: number;
+  ALifeStreamingDistanceDynamicRangeMaxUnitModelNum: number;
+  ALifeStreamingDistanceDynamicRangeShrinkThresholdMB: number;
+  ALifeStreamingDistanceDynamicRangeSubsteps: number;
+  bAnomalyVFXForceLiveToStreamingDistance: boolean;
+  BinocularsIdentificationRangeMultiplier: number;
+  BinocularsMagnificationMultiplier: number;
+  BinocularsSmoothZoomAlphaRange: number;
+  BinocularsStreamingIdentificationRangeAtMaxDistance: number;
+  BinocularsStreamingMagnificationAtMaxDistance: number;
+  BinocularsZoomGainMultiplier: number;
+  bOverrideALifeStreamingDistanceDynamicRange: boolean;
+  MaxUObjectsInGame: number;
+  PerceptionJournalEnemyRelevanceLifetimeSeconds: number;
+  PlayerBulletDropLengthMultiplier: number;
 }>;
 
 export type CoreVariableAffectingEffectTypes = GetStructType<
@@ -4087,6 +4104,7 @@ export type DialogPrototypeConditionsItemItem = GetStructType<{
   TargetCharacter: string;
   TargetContextualActionPlaceholder: string;
   TargetItemContainer: string;
+  TargetLairPlaceholder: string;
   TargetNode: string;
   TargetNPC: string;
   TargetPlaceholder: string;
@@ -6911,6 +6929,8 @@ export type ObjPrototypeChargeActionData = GetStructType<{
   MaxDistToTarget: number;
   MinDistToTarget: number;
   SyncTag: string;
+  StuckCheckDistance: number;
+  StuckCheckDuration: number;
 }>;
 
 export type ObjPrototypeChaserFeatureData = GetStructType<{
@@ -8647,6 +8667,12 @@ export interface QuestNodePrototypeEnableDataLayer extends QuestNodePrototype {
   NodeType: "EQuestNodeType::EnableDataLayer";
 }
 
+export interface QuestNodePrototypeFWChangePreset extends QuestNodePrototype {
+  FactionWarPlaceholder: string;
+  NodeType: "EQuestNodeType::FWChangePreset";
+  PresetName: string;
+}
+
 export interface QuestNodePrototypeEnd extends QuestNodePrototype {
   BrokenGameDataFilter: EBrokenGameDataFilter;
   ExcludeAllNodesInContainer: boolean;
@@ -8938,6 +8964,15 @@ export interface QuestNodePrototypeOnKillerCheckEvent
   LaunchOnQuestStart: boolean;
   NodeType: "EQuestNodeType::OnKillerCheckEvent";
   ShouldBeKilled: string;
+  TargetQuestGuid: string;
+  TrackBeforeActive: boolean;
+}
+
+export interface QuestNodePrototypeOnLairOwnershipHasChangedEvent
+  extends QuestNodePrototype {
+  EventType: EQuestEventType;
+  LaunchOnQuestStart: boolean;
+  NodeType: "EQuestNodeType::OnLairOwnershipHasChangedEvent";
   TargetQuestGuid: string;
   TrackBeforeActive: boolean;
 }
@@ -10669,6 +10704,8 @@ export type SpawnActorPrototype = GetStructType<{
   Volumes: SpawnActorPrototypeVolumes;
   VolumeSID: string;
   VolumetricCoverRestrictions: SpawnActorPrototypeVolumetricCoverRestrictions;
+  FastTravelDestinationPrototypeSID: string;
+  MinDistanceToPlayerForRespawn: number;
 }>;
 
 export type SpawnActorPrototypeAnomaliesLocationRotation = GetStructType<
@@ -11525,6 +11562,7 @@ export type WeaponGeneralSetupPrototypeCompatibleAttachmentsItem =
     RequiredUpgradeIDs: NPCPrototypeSkills;
     Socket: string;
     WeaponSpecificIcon: string;
+    AimingWeaponFOVCurve: string;
   }>;
 
 export type WeaponGeneralSetupPrototypeDispersionParams = GetStructType<{
@@ -11923,3 +11961,85 @@ export type WeatherSelectionPrototypeFogy = GetStructType<{
 }>;
 
 export type CreditRoles = GetStructType<CreditRolesItem[]>;
+
+export type FastTravelDestinationPrototype = GetStructType<{
+  AnchorPoint: AIGlobalRelativeLocation;
+  ArrivalPoint: FastTravelLocationPrototypePlayerLocation;
+  AvailabilityRadius: number;
+  bEnabled: boolean;
+  bIgnoreHostileTerritory: boolean;
+  bIsMajorLocation: boolean;
+  BlockingGlobalVariables: FastTravelDestinationPrototypeBlockingGlobalVariables;
+  FastTravelLocationPrototypeSID: string;
+  MarkerPrototypeSID: string;
+  PriceSurcharge: number;
+  RequiredGlobalVariables: FastTravelDestinationPrototypeRequiredGlobalVariables;
+  SID: string;
+  TitleSID: string;
+}>;
+
+export type FastTravelDestinationPrototypeBlockingGlobalVariables =
+  GetStructType<FastTravelLocationPrototypeBlockingGlobalVariablesItem[]>;
+
+export type FastTravelDestinationPrototypeRequiredGlobalVariables =
+  GetStructType<FastTravelLocationPrototypeBlockingGlobalVariablesItem[]>;
+
+export type FastTravelEconomyPrototype = GetStructType<{
+  ALifeGuideDialogChainPrototypeSID: string;
+  bSquadTravelsWithGuide: boolean;
+  DefaultRegionCoefficient: number;
+  DifficultyCoefficients: FastTravelEconomyPrototypeDifficultyCoefficients;
+  DiscountCoefficients: FastTravelEconomyPrototypeDiscountCoefficients;
+  GeneralCoefficient: number;
+  GuideCooldownHours: number;
+  GuideMarkerRadius: number;
+  LairOwnershipSearchRadius: number;
+  MaxDynamicDestinations: number;
+  MaxPrice: number;
+  MinorLocationRadius: number;
+  MinPrice: number;
+  MinTravelDistance: number;
+  OverweightCoefficient: number;
+  PriceDivisor: number;
+  PriceRoundingStep: number;
+  PrimaryArrivalSafetyRadius: number;
+  RegionCoefficients: FastTravelEconomyPrototypeRegionCoefficients;
+  RegionSamplingStep: number;
+  SecondaryArrivalSafetyRadius: number;
+  SID: string;
+  SquadArcHalfAngleDegrees: number;
+  SquadArrivalPrepareDuration: number;
+  SquadDistanceBehindPlayer: number;
+  SquadMaxDistanceToGuide: number;
+  TravelCorridorGoalRadiusScale: number;
+  TravelCorridorOvershoot: number;
+}>;
+
+export type FastTravelEconomyPrototypeDifficultyCoefficients = GetStructType<{
+  Custom: number;
+  Easy: number;
+  Hard: number;
+  Medium: number;
+  Stalker: number;
+}>;
+
+export type FastTravelEconomyPrototypeDiscountCoefficients = GetStructType<{
+  GlobalVariableCoefficient: string;
+  RankDiscountCoefficient: AIGlobalArmy;
+  ReputationDiscountCoefficient: FastTravelPrototypeReputationDiscountCoefficient;
+}>;
+
+export type FastTravelEconomyPrototypeRegionCoefficients = GetStructType<
+  FastTravelEconomyPrototypeRegionCoefficientsItem[]
+>;
+
+export type FastTravelEconomyPrototypeRegionCoefficientsItem = GetStructType<{
+  Coefficient: number;
+  Region: ERegion;
+}>;
+
+export type FastTravelLocationPrototypeBlockingGlobalVariablesItem =
+  GetStructType<{
+    GlobalVariablePrototypeSID: string;
+    GlobalVariableValue: number;
+  }>;
