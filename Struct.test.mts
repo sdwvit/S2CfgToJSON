@@ -593,6 +593,14 @@ struct.end`.trim();
       expect(Struct.fromString(text)[0].toString()).toBe(text);
     });
 
+    test("a refkey and a struct key that start with digits stay keys", () => {
+      const text =
+        "38475DEF00000000000000000000000A : struct.begin {refkey=38475DEF00000000000000000000000B}\n" +
+        "   SID = 38475DEF00000000000000000000000A\n" +
+        "struct.end";
+      expect(Struct.fromString(text)[0].toString()).toBe(text);
+    });
+
     test("an empty struct with refs has no blank line", () => {
       const text =
         "A : struct.begin {refurl=@MyMod/Foo.cfg;refkey=[0];bpatch}\nstruct.end";

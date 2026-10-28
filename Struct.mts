@@ -444,8 +444,9 @@ export function pad(text: string): string {
   return `${TAB}${text.replace(/\n+/g, `\n${TAB}`)}`;
 }
 
-function isNumber(ref: string): boolean {
-  return Number.isInteger(parseInt(ref)) || typeof ref === "number";
+/** An array index: a number, or a string of digits only (a GUID such as `38475DEF...` is a key). */
+function isNumber(ref: string | number): boolean {
+  return typeof ref === "number" || /^\d+$/.test(ref);
 }
 
 export function createDynamicClassInstance<T extends Struct = Struct>(
